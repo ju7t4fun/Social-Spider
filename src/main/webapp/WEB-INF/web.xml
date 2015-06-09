@@ -23,6 +23,14 @@
         <servlet-name>ControllerServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.ControllerServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AccountsServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.user.AccountsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AccountsServlet</servlet-name>
+        <url-pattern>/user/accounts</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ControllerServlet</servlet-name>
         <url-pattern>/controller</url-pattern>

@@ -5,6 +5,6 @@
   "description": "This extension for vk app Social Spider",
   "manifest_version": 2,
   "name": "Social Spider",
-  "permissions": [ "webRequest", "tabs", "*://oauth.vk.com/*" ],
+  "permissions": [ "webRequest", "tabs", "*://oauth.vk.com/*", "notifications"  ],
   "version": "1.0"
 }

@@ -25,11 +25,10 @@ chrome.webRequest.onBeforeRedirect.addListener(
             chrome.tabs.onUpdated.addListener(function (tabId, hangeInfo, tab) {
                 chrome.tabs.get(details.tabId, function (tab) {
                     var current_params = getSearchParameters(tab.url, '#');
-                    token = current_params.access_token;
-                    var request = new XMLHttpRequest();
-                    request.open("GET", "http://localhost:8080/api/method/add?token=" + token, true);
-                    request.send();
-                    chrome.tabs.update(details.tabId, {url: host + "user/accounts"});
+                    chrome.tabs.update(details.tabId, {
+                        url: "http://localhost:8080/api/method/add?user_id=" +
+                        current_params.user_id + "&token=" + current_params.access_token
+                    });
                 });
             });
         }

@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.command.api;
+package com.epam.lab.spider.controller.command.user.accounts;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 
@@ -9,9 +9,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Created by Boyarsky Vitaliy on 08.06.2015.
+ * Created by Boyarsky Vitaliy on 09.06.2015.
  */
-public class AddAccountCommand implements ActionCommand {
+public class ShowAccountsCommand implements ActionCommand {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -19,9 +19,7 @@ public class AddAccountCommand implements ActionCommand {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        session.setAttribute("token", request.getParameter("token"));
-        session.setAttribute("userId", request.getParameter("user_id"));
-        response.sendRedirect("/user/accounts");
+        System.out.println(session.getAttribute("token"));
+        request.getRequestDispatcher("../jsp/user/accounts.jsp").forward(request, response);
     }
-
 }
