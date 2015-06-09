@@ -7,6 +7,7 @@
 <body>
 <h2><l:resource key="hello"/></h2>
 <a href="/user/accounts">accounts</a>
+<a href="/login">login</a>
 <button onclick="language('ua')">ua</button>
 <button onclick="language('en')">en</button>
 </body>
