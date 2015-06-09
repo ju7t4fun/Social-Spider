@@ -2,7 +2,7 @@ package com.epam.lab.spider.controller.servlet;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.api.AddAccountCommand;
+import com.epam.lab.spider.controller.command.controller.LocaleCommand;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Boyarsky Vitaliy on 08.06.2015.
+ * Created by Boyarsky Vitaliy on 09.06.2015.
  */
-public class ApiServlet extends HttpServlet {
+public class ControllerServlet extends HttpServlet {
 
     private static ActionFactory factory = new ApiActionFactory();
 
@@ -22,32 +22,17 @@ public class ApiServlet extends HttpServlet {
 
         public ApiActionFactory() {
             commands = new HashMap<String, ActionCommand>();
-            commands.put("add", new AddAccountCommand());
-        }
-
-        @Override
-        public ActionCommand action(HttpServletRequest request, HttpServletResponse response) throws IOException,
-                ServletException {
-            String action = null;
-            String[] args = request.getRequestURI().split("/");
-            if (args[2].equals("method")) {
-                action = args[3];
-            } else {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            }
-            return commands.get(action);
+            commands.put("locale", new LocaleCommand());
         }
 
     }
 
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
         ActionCommand command = factory.action(request, response);
         command.doPost(request, response);
     }
 
-    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
         ActionCommand command = factory.action(request, response);

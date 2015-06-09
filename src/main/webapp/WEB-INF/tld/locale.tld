@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib version="2.1" xmlns="http://java.sun.com/xml/ns/javaee">
+    <tlib-version>1.0</tlib-version>
+    <short-name>l</short-name>
+    <uri>http://lab.epam.com/spider/locale</uri>
+    <tag>
+        <name>resource</name>
+        <tag-class>com.epam.lab.spider.model.tag.LocaleTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>key</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+</taglib>
