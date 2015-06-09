@@ -1,0 +1,10 @@
+{
+  "background": {
+    "scripts": [ "background.js" ]
+  },
+  "description": "This extension for vk app Social Spider",
+  "manifest_version": 2,
+  "name": "Social Spider",
+  "permissions": [ "webRequest", "tabs", "*://oauth.vk.com/*" ],
+  "version": "1.0"
+}
