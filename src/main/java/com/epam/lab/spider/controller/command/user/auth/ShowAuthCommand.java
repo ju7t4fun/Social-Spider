@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Created by Boyarsky Vitaliy on 09.06.2015.
  */
-public class ShowLoginCommand implements ActionCommand {
+public class ShowAuthCommand implements ActionCommand {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Created by Boyarsky Vitaliy on 09.06.2015.
  */
-public class SignInCommand implements ActionCommand {
+public class VkAuthCommand implements ActionCommand {
 
     private static String auth = "https://oauth.vk" +
             ".com/authorize?client_id=4949208&scope=wall&redirect_uri=http://localhost:8080/login" +

@@ -4,6 +4,8 @@
     <title></title>
 </head>
 <body>
-<a href="/login?action=signin">signin</a>
+user_id : ${user_id} <br>
+access_token : ${access_token} <br>
+<a href="/login?action=vkAuth">vkAuth</a>
 </body>
 </html>
