@@ -13,11 +13,7 @@ import java.io.IOException;
  */
 public class ShowAccountsCommand implements ActionCommand {
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         System.out.println(session.getAttribute("token"));
         request.getRequestDispatcher("../jsp/user/accounts.jsp").forward(request, response);

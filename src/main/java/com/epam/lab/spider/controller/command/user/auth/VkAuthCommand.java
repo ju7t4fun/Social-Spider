@@ -16,11 +16,7 @@ public class VkAuthCommand implements ActionCommand {
             ".com/authorize?client_id=4949208&scope=wall&redirect_uri=http://localhost:8080/login" +
             "&response_type=code&v=5.34&state=SESSION_STATE";
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.sendRedirect(auth);
     }
 

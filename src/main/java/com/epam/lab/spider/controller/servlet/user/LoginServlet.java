@@ -30,25 +30,24 @@ public class LoginServlet extends HttpServlet {
         }
 
         @Override
-        public ActionCommand action(HttpServletRequest request, HttpServletResponse response) throws
+        public void action(HttpServletRequest request, HttpServletResponse response) throws
                 ServletException, IOException {
             if (request.getParameter("code") != null) {
-                return commands.get("vkAuthResponse");
+                commands.get("vkAuthResponse").execute(request, response);
+                return;
             }
-            return super.action(request, response);
+            super.action(request, response);
         }
 
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
-        ActionCommand command = factory.action(request, response);
-        command.doPost(request, response);
+        factory.action(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
-        ActionCommand command = factory.action(request, response);
-        command.doGet(request, response);
+        factory.action(request, response);
     }
 }

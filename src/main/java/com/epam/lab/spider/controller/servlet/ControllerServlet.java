@@ -1,6 +1,5 @@
 package com.epam.lab.spider.controller.servlet;
 
-import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.command.ActionFactory;
 import com.epam.lab.spider.controller.command.controller.LocaleCommand;
 
@@ -21,7 +20,7 @@ public class ControllerServlet extends HttpServlet {
     private static class ApiActionFactory extends ActionFactory {
 
         public ApiActionFactory() {
-            commands = new HashMap<String, ActionCommand>();
+            commands = new HashMap<>();
             commands.put("locale", new LocaleCommand());
         }
 
@@ -29,14 +28,12 @@ public class ControllerServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
-        ActionCommand command = factory.action(request, response);
-        command.doPost(request, response);
+        factory.action(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
-        ActionCommand command = factory.action(request, response);
-        command.doGet(request, response);
+        factory.action(request, response);
     }
 
 }

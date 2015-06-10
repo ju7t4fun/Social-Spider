@@ -13,11 +13,8 @@ import java.io.IOException;
  */
 public class AddAccountCommand implements ActionCommand {
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.setAttribute("token", request.getParameter("token"));
         session.setAttribute("userId", request.getParameter("user_id"));

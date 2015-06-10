@@ -21,11 +21,7 @@ import java.io.InputStream;
  */
 public class VkAuthResponseCommand implements ActionCommand {
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String auth = "https://oauth.vk.com/access_token?client_id=4949208&client_secret=780FmVhvpLu8HobgGD8J&code=";
         if (request.getParameter("code") != null) {
             CloseableHttpClient client = HttpClients.createDefault();

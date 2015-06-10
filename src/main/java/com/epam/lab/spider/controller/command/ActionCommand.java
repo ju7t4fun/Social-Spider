@@ -10,8 +10,6 @@ import java.io.IOException;
  */
 public interface ActionCommand {
 
-    void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
-
-    void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+    void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 
 }
