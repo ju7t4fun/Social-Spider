@@ -1,6 +1,7 @@
 *.class
 .idea
-Social-Spider.iml
+Social-Spider.
+spider.iml
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

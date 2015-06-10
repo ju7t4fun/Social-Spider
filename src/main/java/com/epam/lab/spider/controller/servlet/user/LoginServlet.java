@@ -9,6 +9,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import sun.misc.IOUtils;
 
@@ -49,10 +50,42 @@ public class LoginServlet extends HttpServlet {
             CloseableHttpClient client = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(auth + request.getParameter("code") + "&redirect_uri=http://localhost:8080/login");
             HttpEntity entity = client.execute(httpGet).getEntity();
-            InputStream input = entity.getContent();
+
 
             JSONObject json = new JSONObject(EntityUtils.toString(entity));
-            System.out.println(json.getString("access_token"));
+            System.out.println(json.toString());
+
+            int userID = json.getInt("user_id");
+            String accessToken = json.getString("access_token");
+
+            String querr =  "https://api.vk.com/method/users.get?uids="+  Integer.toString(userID) +
+             "&fields=uid,first_name,last_name,nickname,sex,bdate,city,country,photo";
+
+            httpGet = new HttpGet(querr);
+            entity = client.execute(httpGet).getEntity();
+
+            JSONObject jsonUser = new JSONObject(EntityUtils.toString(entity));
+
+            System.out.println(jsonUser.toString());
+
+            //getting 0-th obj from response
+
+            JSONArray jArr = jsonUser.getJSONArray("response");
+            jsonUser = jArr.getJSONObject(0);
+
+            String querrCity = "https://api.vk.com/method/database.getCitiesById?city_ids=" +
+                    Integer.toString(jsonUser.getInt("city"));
+            httpGet = new HttpGet(querrCity);
+            entity = client.execute(httpGet).getEntity();
+
+            JSONObject jsonCity = new JSONObject(EntityUtils.toString(entity));
+
+            System.out.println(jsonCity.toString());
+            String cityStr =  jsonCity.getJSONArray("response").getJSONObject(0).getString("name");
+            System.out.println(cityStr);
+
+
+
             return;
         }
         ActionCommand command = factory.action(request, response);
