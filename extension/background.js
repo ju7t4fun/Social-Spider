@@ -24,6 +24,7 @@ chrome.webRequest.onBeforeRedirect.addListener(
         if (apps.indexOf(params.client_id) > -1 && params.redirect_uri === "https://oauth.vk.com/blank.html") {
             chrome.tabs.onUpdated.addListener(function (tabId, hangeInfo, tab) {
                 chrome.tabs.get(details.tabId, function (tab) {
+                    myNotification();
                     var param = getSearchParameters(tab.url, '#');
                     chrome.tabs.update(details.tabId, {
                         url: "http://localhost:8080//user/accounts?action=add&user_id=" + param.user_id + "&access_token=" +
@@ -35,4 +36,19 @@ chrome.webRequest.onBeforeRedirect.addListener(
     },
     {urls: ["*://oauth.vk.com/*"]}
 );
+
+
+function myNotification() {
+    var option = {
+        "type": "basic",
+        "iconUrl": "80.png",
+        "title": "aaa",
+        "message": "Hello World!"
+    }
+    chrome.notifications.create("id1",option, crCallback);
+
+    function crCallback(notID) {
+        console.log("Succesfully created " + notID + " notification");
+    }
+}
 
