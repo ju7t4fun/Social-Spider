@@ -4,7 +4,6 @@ import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +22,7 @@ public class VkAuthResponseCommand implements ActionCommand {
         session.setAttribute("user_id", token.getUserId());
         session.setAttribute("access_token", token.getAccessToken());
         session.setAttribute("exp_moment", token.getExpirationMoment());
+
         boolean existsInDB = false;
         if(existsInDB) {
             response.sendRedirect("/login");
@@ -44,5 +44,6 @@ public class VkAuthResponseCommand implements ActionCommand {
             /*response.sendRedirect("/register?name="+name+"&surname="+surname+
                 "&email=" + email + "&photoSrc=" + photoSrc );*/
         }
+        response.sendRedirect("/login");
     }
 }

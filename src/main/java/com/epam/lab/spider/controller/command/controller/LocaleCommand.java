@@ -16,11 +16,7 @@ import java.util.ResourceBundle;
  */
 public class LocaleCommand implements ActionCommand {
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String lang = request.getParameter("lang");
         Locale locale = new Locale(lang);
         ResourceBundle bundle = ResourceBundle.getBundle("locale/messages", locale);

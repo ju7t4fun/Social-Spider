@@ -26,7 +26,7 @@ public class ApiServlet extends HttpServlet {
         }
 
         @Override
-        public ActionCommand action(HttpServletRequest request, HttpServletResponse response) throws IOException,
+        public void action(HttpServletRequest request, HttpServletResponse response) throws IOException,
                 ServletException {
             String action = null;
             String[] args = request.getRequestURI().split("/");
@@ -34,8 +34,9 @@ public class ApiServlet extends HttpServlet {
                 action = args[3];
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
-            return commands.get(action);
+            commands.get(action).execute(request, response);
         }
 
     }
@@ -43,15 +44,13 @@ public class ApiServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
-        ActionCommand command = factory.action(request, response);
-        command.doPost(request, response);
+        factory.action(request, response);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
-        ActionCommand command = factory.action(request, response);
-        command.doGet(request, response);
+        factory.action(request, response);
     }
 
 }

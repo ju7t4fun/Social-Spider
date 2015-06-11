@@ -4,8 +4,9 @@
     <title></title>
 </head>
 <body>
-user_id : ${userId} <br>
-token : ${token} <br>
+user_id : ${user_id} <br>
+access_token : ${access_token} <br>
+exp_moment : ${exp_moment} <br>
 <a href="/user/accounts?action=add">Add</a>
 </body>
 </html>

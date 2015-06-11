@@ -22,7 +22,7 @@ public class AccountsServlet extends HttpServlet {
     private static class AccountsActionFactory extends ActionFactory {
 
         public AccountsActionFactory() {
-            commands = new HashMap<String, ActionCommand>();
+            commands = new HashMap<>();
             commands.put("default", new ShowAccountsCommand());
             commands.put("add", new AddAccountCommand());
         }
@@ -31,14 +31,12 @@ public class AccountsServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
-        ActionCommand command = factory.action(request, response);
-        command.doPost(request, response);
+        factory.action(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
-        ActionCommand command = factory.action(request, response);
-        command.doGet(request, response);
+        factory.action(request, response);
     }
 
 }

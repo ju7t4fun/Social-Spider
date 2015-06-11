@@ -2,7 +2,7 @@
 <%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <html>
 <head>
-    <script src="../js/language.js"></script>
+    <script src="js/language.js"></script>
 </head>
 <body>
 <h2><l:resource key="hello"/></h2>

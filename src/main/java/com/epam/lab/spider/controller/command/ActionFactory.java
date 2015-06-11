@@ -17,7 +17,7 @@ public abstract class ActionFactory {
 
     protected Map<String, ActionCommand> commands = null;
 
-    public ActionCommand action(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+    public void action(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
         String action = request.getParameter("action");
         if (action == null) {
@@ -26,7 +26,8 @@ public abstract class ActionFactory {
         if (logger.isDebugEnabled()) {
             logger.debug("method=" + request.getMethod() + ", param=" + request.getParameterMap().keySet());
         }
-        return commands.get(action);
+        ActionCommand command = commands.get(action);
+        command.execute(request, response);
     }
 
 }
