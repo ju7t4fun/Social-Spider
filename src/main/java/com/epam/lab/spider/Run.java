@@ -1,5 +1,6 @@
 package com.epam.lab.spider;
 
+import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.Scope;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 
@@ -12,7 +13,6 @@ public class Run {
         Vkontakte vk = new Vkontakte(4949208);
         vk.conf().setPermissions(Scope.FRIENDS, Scope.WALL, Scope.GROUPS);
         vk.conf().setSecretKey("780FmVhvpLu8HobgGD8J");
-
     }
 
 }
