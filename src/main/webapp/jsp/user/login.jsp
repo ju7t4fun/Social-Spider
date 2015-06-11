@@ -8,7 +8,7 @@
     <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
     <meta name="author" content="GeeksLabs">
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
-    <link rel="shortcut icon" href="img/favicon.png">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
     <title>Login Page</title>
 
@@ -55,8 +55,8 @@
 
             <span class="pull-right"> <a href="${pageContext.request.contextPath}/jsp/user/registration.jsp"> <l:resource key="login.signup"/> </a> </span>
 
-            <span> <l:resource key="login.signinwith"/> <a href="/login?action=vkAuth"><img src="img/vk.png"></a> </span>
-            <span> <l:resource key="login.or"/> <a href="/login?action=fbAuth"><img src="img/fb.png"></a> </span>
+            <span> <l:resource key="login.signinwith"/> <a href="/login?action=vkAuth"><img src="${pageContext.request.contextPath}/img/vk.png"></a> </span>
+            <span> <l:resource key="login.or"/> <a href="/login?action=fbAuth"><img src="${pageContext.request.contextPath}/img/fb.png"></a> </span>
 
 
         </div>
