@@ -22,6 +22,25 @@ public class VkAuthResponseCommand implements ActionCommand {
         session.setAttribute("user_id", token.getUserId());
         session.setAttribute("access_token", token.getAccessToken());
         session.setAttribute("exp_moment", token.getExpirationMoment());
+
+        boolean existsInDB = false;
+        if (existsInDB) {
+            response.sendRedirect("/login");
+        } else {
+            String name = "some name";
+            String surname = "some surname";
+            String email = "some email";
+            String photoSrc = "some  photo uri";
+
+            request.setAttribute("photoSrc", photoSrc);
+            request.setAttribute("surname", surname);
+            request.setAttribute("email", email);
+            request.setAttribute("name", name);
+            request.getRequestDispatcher("/register").forward(request, response);
+
+            /*response.sendRedirect("/register?name="+name+"&surname="+surname+
+                "&email=" + email + "&photoSrc=" + photoSrc );*/
+        }
         response.sendRedirect("/login");
     }
 }
