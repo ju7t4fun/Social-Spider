@@ -38,7 +38,7 @@
         <div class="login-wrap">
             <p class="login-img"><i class="icon_lock_alt"></i></p>
             <div class="input-group">
-                <span class="input-group-addon"><i class="icon_profile"></i></span>
+                <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
                 <input type="email" class="form-control" placeholder="E-mail" style="border-color:#ffffff;" autofocus>
             </div>
             <div class="input-group">
@@ -54,7 +54,7 @@
             <span> Sign in with <a href="/login?action=vkAuth"><img src="img/vk.png" style="margin-left:10px;"></a> </span>
             <span> or <a href="/login?action=fbAuth"><img src="img/fb.png"></a> </span>
 
-            <span class="pull-right"> <a href="#"> Register </a> </span>
+            <span class="pull-right"> <a href="${pageContext.request.contextPath}/jsp/user/registration.jsp"> Register </a> </span>
 
         </div>
     </form>
