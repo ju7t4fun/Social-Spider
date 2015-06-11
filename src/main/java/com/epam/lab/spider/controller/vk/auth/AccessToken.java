@@ -1,7 +1,5 @@
 package com.epam.lab.spider.controller.vk.auth;
 
-import com.epam.lab.spider.controller.oauth.OAuth;
-
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 

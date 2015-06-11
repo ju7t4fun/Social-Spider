@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.oauth;
+package com.epam.lab.spider.controller.vk.auth;
 
 import java.util.Date;
 

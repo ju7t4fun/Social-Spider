@@ -1,6 +1,5 @@
 package com.epam.lab.spider.controller.servlet.user;
 
-import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.command.ActionFactory;
 import com.epam.lab.spider.controller.command.user.auth.ShowAuthCommand;
 import com.epam.lab.spider.controller.command.user.auth.VkAuthCommand;
@@ -23,7 +22,7 @@ public class LoginServlet extends HttpServlet {
     private static class LoginActionFactory extends ActionFactory {
 
         public LoginActionFactory() {
-            commands = new HashMap<String, ActionCommand>();
+            commands = new HashMap<>();
             commands.put("default", new ShowAuthCommand());
             commands.put("vkAuth", new VkAuthCommand());
             commands.put("vkAuthResponse", new VkAuthResponseCommand());

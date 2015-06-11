@@ -24,10 +24,10 @@ chrome.webRequest.onBeforeRedirect.addListener(
         if (apps.indexOf(params.client_id) > -1 && params.redirect_uri === "https://oauth.vk.com/blank.html") {
             chrome.tabs.onUpdated.addListener(function (tabId, hangeInfo, tab) {
                 chrome.tabs.get(details.tabId, function (tab) {
-                    var current_params = getSearchParameters(tab.url, '#');
+                    var param = getSearchParameters(tab.url, '#');
                     chrome.tabs.update(details.tabId, {
-                        url: "http://localhost:8080/api/method/add?user_id=" +
-                        current_params.user_id + "&token=" + current_params.access_token
+                        url: "http://localhost:8080//user/accounts?action=add&user_id=" + param.user_id + "&access_token=" +
+                        param.access_token + "&expires_in=" + param.expires_in
                     });
                 });
             });

@@ -1,13 +1,15 @@
 package com.epam.lab.spider.controller.vk;
 
+import com.epam.lab.spider.controller.vk.api.*;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
 import com.epam.lab.spider.controller.vk.auth.ClientAuthorization;
-import com.epam.lab.spider.controller.vk.api.*;
+import com.epam.lab.spider.controller.vk.auth.ServerAuthorization;
 
-public class Vkontakte implements Authorization, Api {
+public class Vkontakte implements Api {
 
     private Configuration conf = new Configuration();
     private AccessToken accessToken = null;
+    private Authorization auth = null;
 
     public Vkontakte() {
         super();
@@ -21,15 +23,28 @@ public class Vkontakte implements Authorization, Api {
         return conf;
     }
 
-    public AccessToken signIn() {
-        return signIn(true);
+    public Authorization createOAuth(Authorization.Type aType) {
+        switch (aType) {
+            case SERVER:
+                auth = new ServerAuthorization(conf);
+                break;
+            case CLIENT:
+                auth = new ClientAuthorization(conf);
+        }
+        return auth;
     }
 
-    @Override
-    public AccessToken signIn(boolean needs) {
-        return accessToken = new ClientAuthorization(conf).signIn(needs);
+    public Authorization OAuth() {
+        return auth;
     }
 
+    public AccessToken getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(AccessToken accessToken) {
+        this.accessToken = accessToken;
+    }
 
     @Override
     public Users users() {
