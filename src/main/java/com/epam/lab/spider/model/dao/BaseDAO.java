@@ -65,6 +65,13 @@ public abstract class BaseDAO {
                 statement.setBoolean(i, (Boolean) arg);
                 continue;
             }
+            if (arg.getClass() == Long.class) {
+                statement.setLong(i, (Long) arg);
+                continue;
+            }
+            if (arg.getClass() == java.util.Date.class) {
+                statement.setDate(i, new Date(((java.util.Date) arg).getTime()));
+            }
         }
         return statement;
     }
