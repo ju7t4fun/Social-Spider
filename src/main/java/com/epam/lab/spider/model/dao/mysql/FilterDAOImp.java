@@ -1,6 +1,5 @@
 package com.epam.lab.spider.model.dao.mysql;
 
-import com.epam.lab.spider.model.dao.BaseDAO;
 import com.epam.lab.spider.model.dao.FilterDAO;
 import com.epam.lab.spider.model.entity.Filter;
 

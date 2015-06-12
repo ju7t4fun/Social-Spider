@@ -1,6 +1,6 @@
 package com.epam.lab.spider.model.dao.mysql;
 
-import com.epam.lab.spider.model.dao.BaseDAO;
+import com.epam.lab.spider.model.dao.PostDAO;
 import com.epam.lab.spider.model.entity.Post;
 
 import java.sql.Connection;
@@ -27,7 +27,7 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
 
     @Override
     public boolean update(Connection connection, int id, Post post) throws SQLException {
-        return changeQuery(connection, SQL_UPDATE_QUERY, post.getMessage());
+        return changeQuery(connection, SQL_UPDATE_QUERY, post.getMessage(), id);
     }
 
     @Override

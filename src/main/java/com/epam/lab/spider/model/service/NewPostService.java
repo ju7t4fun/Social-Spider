@@ -2,9 +2,9 @@ package com.epam.lab.spider.model.service;
 
 import com.epam.lab.spider.model.PoolConnection;
 import com.epam.lab.spider.model.dao.DAOFactory;
-import com.epam.lab.spider.model.dao.UserDAO;
+import com.epam.lab.spider.model.dao.NewPostDAO;
 import com.epam.lab.spider.model.dao.mysql.DAOFactoryImp;
-import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.entity.NewPost;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -13,19 +13,19 @@ import java.util.List;
 /**
  * Created by Boyarsky Vitaliy on 12.06.2015.
  */
-public class UserService implements BaseService<User> {
+public class NewPostService implements BaseService<NewPost> {
 
     private DAOFactory factory = new DAOFactoryImp();
-    private UserDAO udao = factory.create(UserDAO.class);
+    private NewPostDAO npdao = factory.create(NewPostDAO.class);
 
     @Override
-    public boolean insert(User user) {
+    public boolean insert(NewPost newPost) {
         boolean res = false;
         try {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                res = udao.insert(connection, user);
+                res = npdao.insert(connection, newPost);
                 connection.commit();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -40,13 +40,13 @@ public class UserService implements BaseService<User> {
     }
 
     @Override
-    public boolean update(int id, User user) {
+    public boolean update(int id, NewPost newPost) {
         boolean res = false;
         try {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                res = udao.update(connection, id, user);
+                res = npdao.update(connection, id, newPost);
                 connection.commit();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -67,7 +67,7 @@ public class UserService implements BaseService<User> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                res = udao.delete(connection, id);
+                res = npdao.delete(connection, id);
                 connection.commit();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -82,9 +82,9 @@ public class UserService implements BaseService<User> {
     }
 
     @Override
-    public List<User> getAll() {
+    public List<NewPost> getAll() {
         try (Connection connection = PoolConnection.getConnection()) {
-            return udao.getAll(connection);
+            return npdao.getAll(connection);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -92,13 +92,12 @@ public class UserService implements BaseService<User> {
     }
 
     @Override
-    public User getById(int id) {
+    public NewPost getById(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return udao.getById(connection, id);
+            return npdao.getById(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
-
 }

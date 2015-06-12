@@ -1,4 +1,4 @@
-package com.epam.lab.spider.model.dao;
+package com.epam.lab.spider.model.dao.mysql;
 
 import java.sql.*;
 import java.util.List;
@@ -64,6 +64,13 @@ public abstract class BaseDAO {
             if (arg.getClass() == Boolean.class) {
                 statement.setBoolean(i, (Boolean) arg);
                 continue;
+            }
+            if (arg.getClass() == Long.class) {
+                statement.setLong(i, (Long) arg);
+                continue;
+            }
+            if (arg.getClass() == java.util.Date.class) {
+                statement.setDate(i, new Date(((java.util.Date) arg).getTime()));
             }
         }
         return statement;
