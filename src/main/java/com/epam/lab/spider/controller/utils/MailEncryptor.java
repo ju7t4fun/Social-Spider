@@ -15,9 +15,9 @@ public class MailEncryptor {
 
     public static String decoding(String in) {
         StringBuilder builder = new StringBuilder();
-        char [] chars = in.toCharArray();
-        for (int i=0; i<in.length();  i=i+2 ) {
-            builder.append((char) Integer.parseInt("" +  chars[i] + chars[i +1], 16));
+        char[] chars = in.toCharArray();
+        for (int i = 0; i < in.length(); i = i + 2) {
+            builder.append((char) Integer.parseInt("" + chars[i] + chars[i + 1], 16));
         }
         return builder.toString();
     }

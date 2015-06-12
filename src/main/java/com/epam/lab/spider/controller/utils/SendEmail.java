@@ -9,7 +9,7 @@ import javax.mail.internet.*;
  * Created by Marian Voronovskyi on 11.06.2015.
  */
 public class SendEmail {
-    public static void send(String to, String title, String html){
+    public static void send(String to, String title, String html) {
         final String username = "epam.social.spider@gmail.com";
         final String password = "epamspider";
 
