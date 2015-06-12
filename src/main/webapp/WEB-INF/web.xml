@@ -31,9 +31,25 @@
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.user.LoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.user.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ActivationServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.user.ActivationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ActivationServlet</servlet-name>
+        <url-pattern>/activation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/register</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AccountsServlet</servlet-name>

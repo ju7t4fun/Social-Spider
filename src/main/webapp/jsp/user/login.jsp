@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,16 +34,17 @@
 
 <div class="container">
 
-    <form class="login-form" action="index.html">
+    <form class="login-form" action="/login?action=signIn" method="post">
         <div class="login-wrap">
             <p class="login-img"><i class="icon_lock_alt"></i></p>
+            ${loginMessage}
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
-                <input type="email" class="form-control" placeholder="<l:resource key="login.email"/>" style="border-color:#ffffff;" autofocus>
+                <input type="email" value="${login}" name="email" class="form-control" placeholder="<l:resource key="login.email"/>" style="border-color:#ffffff;" autofocus>
             </div>
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                <input type="password" class="form-control" placeholder="<l:resource key="login.password"/>">
+                <input type="password" name="password" class="form-control" placeholder="<l:resource key="login.password"/>">
             </div>
             <label class="checkbox">
                 <input type="checkbox" value="remember-me"> <l:resource key="login.remember"/>
