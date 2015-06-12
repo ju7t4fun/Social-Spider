@@ -41,20 +41,20 @@
 
 <div class="container">
 
-  <form class="login-form" action="index.html">
+  <form class="login-form" action="/register?action=register" method="post" >
     <div class="login-wrap">
       <p class="login-img"><i class="icon_house_alt"></i></p>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_profile"></i></span>
-        <input type="text" class="form-control" placeholder="Username">
+        <input type="text" class="form-control" value="${username}" placeholder="Username">
       </div>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
-        <input type="email" class="form-control" placeholder="E-mail" style="border-color:#ffffff;" autofocus>
+        <input type="email" class="form-control" name="email" placeholder="E-mail" style="border-color:#ffffff;" autofocus>
       </div>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-        <input type="password" class="form-control" placeholder="Password">
+        <input type="password" class="form-control" name="password" placeholder="Password">
       </div>
 
       <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-bottom:20px;margin-right:10px;"> Sign up </button>

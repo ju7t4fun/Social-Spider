@@ -34,12 +34,13 @@
 
 <div class="container">
 
-    <form class="login-form" action="index.html">
+    <form class="login-form" action="/login?action=signIn" method="post">
         <div class="login-wrap">
             <p class="login-img"><i class="icon_lock_alt"></i></p>
+            ${loginMessage}
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_profile"></i></span>
-                <input type="email" class="form-control" placeholder="E-mail" style="border-color:#ffffff;" autofocus>
+                <input type="email" name="email" class="form-control" value="${login}" placeholder="E-mail" style="border-color:#ffffff;" autofocus>
             </div>
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_key_alt"></i></span>

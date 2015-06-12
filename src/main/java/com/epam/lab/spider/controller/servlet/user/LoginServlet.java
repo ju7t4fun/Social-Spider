@@ -32,6 +32,7 @@ public class LoginServlet extends HttpServlet {
         public void action(HttpServletRequest request, HttpServletResponse response) throws
                 ServletException, IOException {
             if (request.getParameter("code") != null) {
+
                 commands.get("vkAuthResponse").execute(request, response);
                 return;
             }

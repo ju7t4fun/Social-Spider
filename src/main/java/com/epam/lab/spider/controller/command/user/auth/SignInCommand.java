@@ -15,12 +15,28 @@ public class SignInCommand implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
+        System.out.println("rgtgecrh");
         String password = request.getParameter("password");
         boolean isAuth = false;
+        boolean isActive = false;
         if (isAuth) {
+            if (!isActive) {
+                request.getSession().setAttribute("loginMessage","Your account is non-activated." +
+                        "Please activate your account via email");
+                request.getSession().setAttribute("login", email);
+                response.sendRedirect("/login");
+                return;
+            }
+            //needtoDO: add to session neccessery variables
             response.sendRedirect("/");
+            return;
         } else {
-            request.getRequestDispatcher("jsp/user/login.jsp").forward(request, response);
+            System.out.println(email);
+            request.getSession().setAttribute("loginMessage", "wrong username or password");
+            request.getSession().setAttribute("login", email);
+            response.sendRedirect("/login");
+
+            return;
         }
     }
 
