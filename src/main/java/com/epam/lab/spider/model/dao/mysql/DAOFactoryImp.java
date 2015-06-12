@@ -21,6 +21,7 @@ public class DAOFactoryImp implements DAOFactory {
         map.put(VkProfileDAO.class, new VkProfileDAOImp());
         map.put(PostDAO.class, new PostDAOImp());
         map.put(WallDao.class, new WallDaoImp());
+        map.put(CategoryDAO.class, new CategoryDAOImp());
     }
 
     @Override
