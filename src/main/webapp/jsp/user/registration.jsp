@@ -40,15 +40,15 @@
       <p class="login-img"><i class="icon_house_alt"></i></p>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_profile"></i></span>
-        <input type="text" class="form-control" value="${username}" placeholder="<l:resource key="reg.username" />
+        <input type="text" class="form-control" value="${username}" placeholder="<l:resource key="reg.username"  />" />
       </div>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
-        <input type="email" class="form-control" name="email" placeholder="<l:resource key="login.email" style="border-color:#ffffff;" autofocus />
+        <input type="email" class="form-control" name="email" placeholder="<l:resource key="login.email" />" style="border-color:#ffffff;" autofocus />
       </div>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-        <input type="password" class="form-control" name="password" placeholder="<l:resource key="login.password" />
+        <input type="password" class="form-control" name="password" placeholder="<l:resource key="login.password" />" />
       </div>
 
       <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-bottom:20px;margin-right:10px;"> Sign up </button>
