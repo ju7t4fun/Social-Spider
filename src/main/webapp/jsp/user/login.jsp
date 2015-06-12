@@ -7,9 +7,9 @@
     <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
     <meta name="author" content="GeeksLabs">
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/favicon.png">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-    <title>Login Page 2 | Creative - Bootstrap 3 Responsive Admin Template</title>
+    <title>Login Page</title>
 
     <!-- Bootstrap CSS -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -39,23 +39,25 @@
             <p class="login-img"><i class="icon_lock_alt"></i></p>
             ${loginMessage}
             <div class="input-group">
-                <span class="input-group-addon"><i class="icon_profile"></i></span>
-                <input type="email" name="email" class="form-control" value="${login}" placeholder="E-mail" style="border-color:#ffffff;" autofocus>
+                <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
+                <input type="email" value="${login}" name="email" class="form-control" placeholder="<l:resource key="login.email"/>" style="border-color:#ffffff;" autofocus>
             </div>
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                <input type="password" class="form-control" placeholder="Password">
+                <input type="password" name="password" class="form-control" placeholder="<l:resource key="login.password"/>">
             </div>
             <label class="checkbox">
-                <input type="checkbox" value="remember-me"> Remember me
-                <span class="pull-right"> <a href="#"> Forgot Password?</a></span>
+                <input type="checkbox" value="remember-me"> <l:resource key="login.remember"/>
+                <span class="pull-right"> <a href="#"> <l:resource key="login.forgotpw"/> </a></span>
             </label>
-            <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-bottom:20px;margin-right:10px;"> Login</button>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-bottom:20px;margin-right:10px;"> <l:resource key="login.signin"/> </button>
 
-            <span> Sign in with <a href="/login?action=vkAuth"><img src="img/vk.png" style="margin-left:10px;"></a> </span>
-            <span> or <a href="/login?action=fbAuth"><img src="img/fb.png"></a> </span>
 
-            <span class="pull-right"> <a href="#"> Register </a> </span>
+            <span class="pull-right"> <a href="${pageContext.request.contextPath}/jsp/user/registration.jsp"> <l:resource key="login.signup"/> </a> </span>
+
+            <span> <l:resource key="login.signinwith"/> <a href="/login?action=vkAuth"><img src="${pageContext.request.contextPath}/img/vk.png"></a> </span>
+            <span> <l:resource key="login.or"/> <a href="/login?action=fbAuth"><img src="${pageContext.request.contextPath}/img/fb.png"></a> </span>
+
 
         </div>
     </form>

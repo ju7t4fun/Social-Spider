@@ -14,9 +14,9 @@
   <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
   <meta name="author" content="GeeksLabs">
   <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
-  <link rel="shortcut icon" href="img/favicon.png">
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-  <title>Login Page 2 | Creative - Bootstrap 3 Responsive Admin Template</title>
+  <title>Sign Up</title>
 
   <!-- Bootstrap CSS -->
   <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -46,15 +46,15 @@
       <p class="login-img"><i class="icon_house_alt"></i></p>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_profile"></i></span>
-        <input type="text" class="form-control" value="${username}" placeholder="Username">
+        <input type="text" class="form-control" value="${username}" placeholder="<l:resource key="reg.username" />
       </div>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
-        <input type="email" class="form-control" name="email" placeholder="E-mail" style="border-color:#ffffff;" autofocus>
+        <input type="email" class="form-control" name="email" placeholder="<l:resource key="login.email" style="border-color:#ffffff;" autofocus />
       </div>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-        <input type="password" class="form-control" name="password" placeholder="Password">
+        <input type="password" class="form-control" name="password" placeholder="<l:resource key="login.password" />
       </div>
 
       <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-bottom:20px;margin-right:10px;"> Sign up </button>
