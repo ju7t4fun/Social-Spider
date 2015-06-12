@@ -1,4 +1,4 @@
-package com.epam.lab.spider.model.dao;
+package com.epam.lab.spider.model.dao.mysql;
 
 import java.sql.*;
 import java.util.List;

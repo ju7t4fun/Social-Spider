@@ -20,12 +20,44 @@ public class UserService implements BaseService<User> {
 
     @Override
     public boolean insert(User user) {
-        return false;
+        boolean res = false;
+        try {
+            Connection connection = PoolConnection.getConnection();
+            try {
+                connection.setAutoCommit(false);
+                res = udao.insert(connection, user);
+                connection.commit();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                connection.rollback();
+            } finally {
+                connection.setAutoCommit(true);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     @Override
     public boolean update(int id, User user) {
-        return false;
+        boolean res = false;
+        try {
+            Connection connection = PoolConnection.getConnection();
+            try {
+                connection.setAutoCommit(false);
+                res = udao.update(connection, id, user);
+                connection.commit();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                connection.rollback();
+            } finally {
+                connection.setAutoCommit(true);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     @Override
@@ -35,7 +67,7 @@ public class UserService implements BaseService<User> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                udao.delete(connection, id);
+                res = udao.delete(connection, id);
                 connection.commit();
             } catch (SQLException e) {
                 e.printStackTrace();

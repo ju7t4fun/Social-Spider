@@ -1,6 +1,6 @@
 package com.epam.lab.spider;
 
-import com.epam.lab.spider.model.dao.BaseDAO;
+import com.epam.lab.spider.model.dao.mysql.BaseDAO;
 import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.dao.UserDAO;
 import com.epam.lab.spider.model.dao.mysql.DAOFactoryImp;

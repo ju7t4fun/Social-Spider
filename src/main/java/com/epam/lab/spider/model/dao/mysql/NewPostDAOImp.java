@@ -1,6 +1,6 @@
 package com.epam.lab.spider.model.dao.mysql;
 
-import com.epam.lab.spider.model.dao.BaseDAO;
+import com.epam.lab.spider.model.dao.NewPostDAO;
 import com.epam.lab.spider.model.entity.NewPost;
 
 import java.sql.Connection;

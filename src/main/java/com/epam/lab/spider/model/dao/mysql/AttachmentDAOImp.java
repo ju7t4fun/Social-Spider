@@ -1,6 +1,6 @@
 package com.epam.lab.spider.model.dao.mysql;
 
-import com.epam.lab.spider.model.dao.BaseDAO;
+import com.epam.lab.spider.model.dao.AttachmentDAO;
 import com.epam.lab.spider.model.entity.Attachment;
 
 import java.sql.Connection;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Sasha on 12.06.2015.
  */
-public class AttachmentDAOImp extends BaseDAO implements AttachmentDAO{
+public class AttachmentDAOImp extends BaseDAO implements AttachmentDAO {
 
     private static final String SQL_INSERT_QUERY = "INSERT INTO attachment (url, post_id, type)" +
             "VALUES (?, ?, ?)";

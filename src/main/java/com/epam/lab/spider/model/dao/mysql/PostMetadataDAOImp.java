@@ -1,11 +1,8 @@
 package com.epam.lab.spider.model.dao.mysql;
 
-import com.epam.lab.spider.model.dao.BaseDAO;
 import com.epam.lab.spider.model.dao.PostMetadataDAO;
 import com.epam.lab.spider.model.entity.PostMetadata;
-import com.epam.lab.spider.model.vk.Post;
 
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
