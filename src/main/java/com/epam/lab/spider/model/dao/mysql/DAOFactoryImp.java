@@ -17,6 +17,7 @@ public class DAOFactoryImp implements DAOFactory {
     public DAOFactoryImp() {
         map.put(UserDAO.class, new UserDAOImp());
         map.put(PostDAO.class, new PostDAOImp());
+        map.put(AttachmentDAO.class, new AttachmentDAOImp());
     }
 
     @Override

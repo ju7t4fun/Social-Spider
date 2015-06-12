@@ -4,9 +4,11 @@ import com.epam.lab.spider.model.ConnectionManager;
 import com.epam.lab.spider.model.dao.BaseDAO;
 import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.dao.UserDAO;
+import com.epam.lab.spider.model.dao.mysql.AttachmentDAO;
 import com.epam.lab.spider.model.dao.mysql.DAOFactoryImp;
-import com.epam.lab.spider.model.dao.mysql.PostDAO;
-import com.epam.lab.spider.model.entity.Post;
+import com.epam.lab.spider.model.entity.Attachment;
+import com.epam.lab.spider.model.entity.Attachment.Type;
+
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,14 +21,15 @@ public class Run {
     public static void main(String[] args) throws SQLException {
         Connection connection = ConnectionManager.getConnection();
         DAOFactory factory = new DAOFactoryImp();
-        Post post = new Post();
-        post.setMessage("testtest");
-        PostDAO dao = factory.create(PostDAO.class);
+        Attachment attachment = new Attachment();
+        attachment.setUrl("urlurl");
+        attachment.setPostId(2);
+        attachment.setType(Type.IMAGE);
+        AttachmentDAO dao = factory.create(AttachmentDAO.class);
         System.out.println(dao);
+        dao.delete(connection, 2);
         System.out.println(dao.getById(connection, 1));
-        //dao.delete(connection, 1);
-        dao.update(connection, 2, post);
-        System.out.println(dao.getById(connection, 2));
+
     }
 
 }

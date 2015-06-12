@@ -27,7 +27,7 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
 
     @Override
     public boolean update(Connection connection, int id, Post post) throws SQLException {
-        return changeQuery(connection, SQL_UPDATE_QUERY, post.getMessage());
+        return changeQuery(connection, SQL_UPDATE_QUERY, post.getMessage(), id);
     }
 
     @Override
