@@ -1,13 +1,10 @@
 package com.epam.lab.spider;
 
-import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.model.ConnectionManager;
 import com.epam.lab.spider.model.dao.BaseDAO;
 import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.dao.UserDAO;
 import com.epam.lab.spider.model.dao.mysql.DAOFactoryImp;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
@@ -19,8 +16,7 @@ public class Run {
         Connection connection = ConnectionManager.getConnection();
         DAOFactory factory = new DAOFactoryImp();
         BaseDAO dao = (BaseDAO) factory.create(UserDAO.class);
-        Vkontakte vk = new Vkontakte(7410);
-
+        
     }
 
 }
