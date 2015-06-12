@@ -11,7 +11,7 @@ public interface CRUD<T> {
 
     boolean insert(Connection connection, T t) throws SQLException;
 
-    boolean update(Connection connection, int id, T t) throws SQLException;
+    boolean update(Connection connection, int i, T t) throws SQLException;
 
     boolean delete(Connection connection, int id) throws SQLException;
 
