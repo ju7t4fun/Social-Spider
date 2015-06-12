@@ -1,10 +1,22 @@
 {
   "background": {
-    "scripts": [ "background.js" ]
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": true
   },
   "description": "This extension for vk app Social Spider",
   "manifest_version": 2,
   "name": "Social Spider",
-  "permissions": [ "webRequest", "tabs", "*://oauth.vk.com/*", "notifications"  ],
+  "permissions": [
+    "tabs",
+    "webRequest",
+    "webRequestBlocking",
+    "https://*/*",
+    "http://*/*",
+    "activeTab",
+    "storage",
+    "notifications"
+  ],
   "version": "1.0"
 }
