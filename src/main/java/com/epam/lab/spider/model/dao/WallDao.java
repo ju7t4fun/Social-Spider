@@ -1,6 +1,5 @@
 package com.epam.lab.spider.model.dao;
 
-import com.epam.lab.spider.model.dao.CRUD;
 import com.epam.lab.spider.model.entity.Wall;
 
 /**

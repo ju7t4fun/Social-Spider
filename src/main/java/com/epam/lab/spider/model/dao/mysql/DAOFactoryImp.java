@@ -1,10 +1,6 @@
 package com.epam.lab.spider.model.dao.mysql;
 
-import com.epam.lab.spider.model.dao.BaseDAO;
-import com.epam.lab.spider.model.dao.DAOFactory;
-import com.epam.lab.spider.model.dao.UserDAO;
-import com.epam.lab.spider.model.dao.VkProfileDAO;
-import com.epam.lab.spider.model.dao.WallDao;
+import com.epam.lab.spider.model.dao.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +23,7 @@ public class DAOFactoryImp implements DAOFactory {
         map.put(CategoryDAO.class, new CategoryDAOImp());
         map.put(AttachmentDAO.class, new AttachmentDAOImp());
         map.put(NewPostDAO.class, new NewPostDAOImp());
+        map.put(TaskDAO.class, new TaskDAOImp());
     }
 
     @Override
