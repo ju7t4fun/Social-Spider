@@ -41,7 +41,7 @@
             ${loginMessage}
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
-                <input type="email" value="${login}" name="email" class="form-control" placeholder="<l:resource key="login.email"/>" style="border-color:#ffffff;" autofocus>
+                <input type="email" value="${login}" name="email" class="form-control" placeholder="<l:resource key="login.email"/>" style="border-color:#ffffff;" autofocus />
             </div>
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_key_alt"></i></span>
