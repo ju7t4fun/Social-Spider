@@ -1,10 +1,12 @@
 package com.epam.lab.spider;
 
+import com.epam.lab.spider.model.ConnectionManager;
 import com.epam.lab.spider.model.dao.mysql.BaseDAO;
 import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.dao.UserDAO;
 import com.epam.lab.spider.model.dao.mysql.DAOFactoryImp;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
