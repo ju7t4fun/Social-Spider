@@ -5,5 +5,5 @@ package com.epam.lab.spider.model.entity;
  */
 public class Attachment {
 
-    private
+    //private
 }

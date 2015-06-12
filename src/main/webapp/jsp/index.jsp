@@ -35,7 +35,7 @@
     <header class="header dark-bg">
         <div class="main">
             <a href="index.html" class="logo">Social <span class="lite">Spider</span></a>
-            <a href="${pageContext.request.contextPath}/jsp/user/login.jsp" style=""> <span style="color:#fff;line-height:65px;margin-left:600px;">SIGN IN</span> </a>
+            <a href="/login" style=""> <span style="color:#fff;line-height:65px;margin-left:600px;">SIGN IN</span> </a>
         </div>
     </header>
 

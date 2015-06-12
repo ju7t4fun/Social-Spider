@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.user.auth;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.model.dao.mysql.UserDAOImp;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ public class ActivateCommand implements ActionCommand {
 
 
         boolean userExistsInBD = false;
+
 
         if (userExistsInBD) {
             String password ="";
