@@ -3,6 +3,7 @@ package com.epam.lab.spider.model.dao.mysql;
 import com.epam.lab.spider.model.dao.BaseDAO;
 import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.dao.UserDAO;
+import com.epam.lab.spider.model.dao.WallDao;
 
 import java.util.HashMap;
 import java.util.Map;
