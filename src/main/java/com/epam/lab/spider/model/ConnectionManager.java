@@ -24,7 +24,7 @@ public class ConnectionManager {
 
     private static void initialization() {
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/vk_spider", "root", "1111");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/vk_spider", "root", "root");
         } catch (SQLException e) {
             e.printStackTrace();
         }
