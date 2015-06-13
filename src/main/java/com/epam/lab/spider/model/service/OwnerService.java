@@ -1,9 +1,8 @@
 package com.epam.lab.spider.model.service;
 
 import com.epam.lab.spider.model.PoolConnection;
-import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.dao.OwnerDAO;
-import com.epam.lab.spider.model.dao.mysql.DAOFactoryImp;
+import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.entity.Owner;
 
 import java.sql.Connection;
@@ -15,9 +14,8 @@ import java.util.List;
  */
 public class OwnerService implements BaseService<Owner> {
 
-    private DAOFactory factory = new DAOFactoryImp();
+    private DAOFactory factory = DAOFactory.getInstance();
     private OwnerDAO odao = factory.create(OwnerDAO.class);
-
 
     @Override
     public boolean insert(Owner owner) {

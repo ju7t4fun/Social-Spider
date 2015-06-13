@@ -1,9 +1,8 @@
 package com.epam.lab.spider.model.service;
 
 import com.epam.lab.spider.model.PoolConnection;
-import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.dao.UserDAO;
-import com.epam.lab.spider.model.dao.mysql.DAOFactoryImp;
+import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.entity.User;
 
 import java.sql.Connection;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 public class UserService implements BaseService<User> {
 
-    private DAOFactory factory = new DAOFactoryImp();
+    private DAOFactory factory = DAOFactory.getInstance();
     private UserDAO udao = factory.create(UserDAO.class);
 
     @Override

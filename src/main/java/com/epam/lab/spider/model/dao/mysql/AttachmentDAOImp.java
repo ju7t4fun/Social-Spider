@@ -14,23 +14,36 @@ import java.util.List;
  */
 public class AttachmentDAOImp extends BaseDAO implements AttachmentDAO {
 
-    private static final String SQL_INSERT_QUERY = "INSERT INTO attachment (url, post_id, type)" +
-            "VALUES (?, ?, ?)";
-    private static final String SQL_UPDATE_QUERY = "UPDATE attachment SET url = ?, post_id = ?, type = ? WHERE id = ?";
-    private static final String SQL_DELETE_QUERY = "DELETE FROM attachment WHERE id = ?";
+    private static final String SQL_INSERT_QUERY = "INSERT INTO attachment (url, post_id, type_id, deleted)" +
+            "VALUES (?, ?, ?, ?)";
+    private static final String SQL_UPDATE_QUERY = "UPDATE attachment SET url = ?, post_id = ?, type_id = ?, deleted " +
+            "= ?" +
+            " WHERE id = ?";
+    //private static final String SQL_DELETE_QUERY = "DELETE FROM attachment WHERE id = ?";
+    private static final String SQL_DELETE_QUERY = "UPDATE attachment SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM attachment";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM attachment WHERE id = ?";
+    private static final String SQL_GET_BY_POST_ID_QUERY = "SELECT * FROM attachment WHERE post_id = ?";
 
     @Override
     public boolean insert(Connection connection, Attachment attachment) throws SQLException {
-        return changeQuery(connection, SQL_INSERT_QUERY, attachment.getUrl(), attachment.getPostId(),
-                attachment.getType().toString());
+        boolean res = changeQuery(connection, SQL_INSERT_QUERY,
+                attachment.getUrl(),
+                attachment.getPostId(),
+                attachment.getType().getId(),
+                attachment.getDeleted());
+        attachment.setId(getLastInsertId(connection));
+        return res;
     }
 
     @Override
     public boolean update(Connection connection, int id, Attachment attachment) throws SQLException {
-        return changeQuery(connection, SQL_UPDATE_QUERY, attachment.getUrl(), attachment.getPostId(),
-                attachment.getType(), id);
+        return changeQuery(connection, SQL_UPDATE_QUERY,
+                attachment.getUrl(),
+                attachment.getPostId(),
+                attachment.getType().getId(),
+                attachment.getDeleted(),
+                id);
     }
 
     @Override
@@ -48,7 +61,8 @@ public class AttachmentDAOImp extends BaseDAO implements AttachmentDAO {
             attachment.setId(rs.getInt("id"));
             attachment.setUrl(rs.getString("url"));
             attachment.setPostId(rs.getInt("post_id"));
-            attachment.setType(Attachment.Type.valueOf(rs.getString("type").toUpperCase()));
+            attachment.setType(Attachment.Type.getById(rs.getInt("type_id")));
+            attachment.setDeleted(rs.getBoolean("deleted"));
             attachments.add(attachment);
         }
         return attachments;
@@ -63,4 +77,10 @@ public class AttachmentDAOImp extends BaseDAO implements AttachmentDAO {
     public Attachment getById(Connection connection, int id) throws SQLException {
         return first(select(connection, SQL_GET_BY_ID_QUERY, id));
     }
+
+    @Override
+    public List<Attachment> getByPostId(Connection connection, int id) throws SQLException {
+        return select(connection, SQL_GET_BY_POST_ID_QUERY, id);
+    }
+
 }

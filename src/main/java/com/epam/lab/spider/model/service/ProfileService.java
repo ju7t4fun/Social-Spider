@@ -1,10 +1,9 @@
 package com.epam.lab.spider.model.service;
 
 import com.epam.lab.spider.model.PoolConnection;
+import com.epam.lab.spider.model.dao.ProfileDAO;
 import com.epam.lab.spider.model.dao.DAOFactory;
-import com.epam.lab.spider.model.dao.VkProfileDAO;
-import com.epam.lab.spider.model.dao.mysql.DAOFactoryImp;
-import com.epam.lab.spider.model.entity.VkProfile;
+import com.epam.lab.spider.model.entity.Profile;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -13,13 +12,13 @@ import java.util.List;
 /**
  * Created by Boyarsky Vitaliy on 12.06.2015.
  */
-public class VkProfileService implements BaseService<VkProfile> {
+public class ProfileService implements BaseService<Profile> {
 
-    private DAOFactory factory = new DAOFactoryImp();
-    private VkProfileDAO pdao = factory.create(VkProfileDAO.class);
+    private DAOFactory factory = DAOFactory.getInstance();
+    private ProfileDAO pdao = factory.create(ProfileDAO.class);
 
     @Override
-    public boolean insert(VkProfile profile) {
+    public boolean insert(Profile profile) {
         boolean res = false;
         try {
             Connection connection = PoolConnection.getConnection();
@@ -40,7 +39,7 @@ public class VkProfileService implements BaseService<VkProfile> {
     }
 
     @Override
-    public boolean update(int id, VkProfile profile) {
+    public boolean update(int id, Profile profile) {
         boolean res = false;
         try {
             Connection connection = PoolConnection.getConnection();
@@ -82,7 +81,7 @@ public class VkProfileService implements BaseService<VkProfile> {
     }
 
     @Override
-    public List<VkProfile> getAll() {
+    public List<Profile> getAll() {
         try (Connection connection = PoolConnection.getConnection()) {
             return pdao.getAll(connection);
         } catch (SQLException e) {
@@ -92,9 +91,18 @@ public class VkProfileService implements BaseService<VkProfile> {
     }
 
     @Override
-    public VkProfile getById(int id) {
+    public Profile getById(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
             return pdao.getById(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Profile> getByUserId(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getByUserId(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

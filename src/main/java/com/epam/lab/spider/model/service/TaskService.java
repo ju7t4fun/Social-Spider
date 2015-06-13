@@ -1,9 +1,8 @@
 package com.epam.lab.spider.model.service;
 
 import com.epam.lab.spider.model.PoolConnection;
-import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.dao.TaskDAO;
-import com.epam.lab.spider.model.dao.mysql.DAOFactoryImp;
+import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.entity.Task;
 
 import java.sql.Connection;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 public class TaskService implements BaseService<Task> {
 
-    private DAOFactory factory = new DAOFactoryImp();
+    private DAOFactory factory = DAOFactory.getInstance();
     private TaskDAO tdao = factory.create(TaskDAO.class);
 
 
@@ -96,6 +95,24 @@ public class TaskService implements BaseService<Task> {
     public Task getById(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
             return tdao.getById(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Task> getByUserId(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getByUserId(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Task> getByCategoryId(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getByCategoryId(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

@@ -1,9 +1,8 @@
 package com.epam.lab.spider.model.service;
 
 import com.epam.lab.spider.model.PoolConnection;
-import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.dao.NewPostDAO;
-import com.epam.lab.spider.model.dao.mysql.DAOFactoryImp;
+import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.entity.NewPost;
 
 import java.sql.Connection;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 public class NewPostService implements BaseService<NewPost> {
 
-    private DAOFactory factory = new DAOFactoryImp();
+    private DAOFactory factory = DAOFactory.getInstance();
     private NewPostDAO npdao = factory.create(NewPostDAO.class);
 
     @Override

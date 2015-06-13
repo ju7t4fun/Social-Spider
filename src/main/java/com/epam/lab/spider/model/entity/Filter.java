@@ -4,6 +4,7 @@ package com.epam.lab.spider.model.entity;
  * Created by Marian Voronovskyi on 12.06.2015.
  */
 public class Filter {
+
     private Integer id;
     private Integer likes;
     private Integer reposts;

@@ -5,6 +5,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
@@ -19,10 +20,11 @@ public class PoolConnection {
     }
 
     public static Connection getConnection() throws SQLException {
-        if (dataSource == null) {
-            dataSource = init();
-        }
-        return dataSource.getConnection();
+//        if (dataSource == null) {
+//            dataSource = init();
+//        }
+//        return dataSource.getConnection();
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/vk_spider", "root", "1111");
     }
 
     private static DataSource init() {

@@ -1,5 +1,12 @@
 package com.epam.lab.spider.model.entity;
 
+import com.epam.lab.spider.model.service.ProfileService;
+import com.epam.lab.spider.model.service.ServiceFactory;
+import com.epam.lab.spider.model.service.TaskService;
+
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by Boyarsky Vitaliy on 12.06.2015.
  */
@@ -10,10 +17,30 @@ public class User {
     private String surname;
     private String email;
     private String password;
-    private String createTime;
+    private Date createTime;
     private Role role;
-    private Boolean deleted;
-    private Boolean confirm;
+    private Boolean deleted = false;
+    private Boolean confirm = false;
+    private List<Profile> profiles = null;
+    private List<Task> tasks = null;
+
+    public List<Task> getTasks() {
+        if (tasks == null) {
+            ServiceFactory factory = ServiceFactory.getInstance();
+            TaskService service = factory.create(TaskService.class);
+            tasks = service.getByUserId(id);
+        }
+        return tasks;
+    }
+
+    public List<Profile> getProfiles() {
+        if (profiles == null) {
+            ServiceFactory factory = ServiceFactory.getInstance();
+            ProfileService service = factory.create(ProfileService.class);
+            profiles = service.getByUserId(id);
+        }
+        return profiles;
+    }
 
     public enum Role {
 
@@ -79,11 +106,11 @@ public class User {
         this.password = password;
     }
 
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 

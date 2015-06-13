@@ -9,9 +9,31 @@ public class Attachment {
     private String url;
     private Integer postId;
     private Type type;
+    private Boolean deleted = false;
 
     public enum Type {
-        IMAGE, AUDIO, VIDEO
+
+        AUDIO(1), IMAGE(2), VIDEO(3);
+
+        private int id;
+
+        Type(int id) {
+            this.id = id;
+        }
+
+        public static Type getById(int id) {
+            Type[] types = values();
+            for (Type type : types) {
+                if (type.id == id)
+                    return type;
+            }
+            return null;
+        }
+
+        public int getId() {
+            return id;
+        }
+
     }
 
     public Integer getId() {
@@ -46,12 +68,22 @@ public class Attachment {
         this.type = type;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public String toString() {
-        return "Attachment { " +
+        return "Attachment{" +
                 "id=" + id +
-                " url=" + url +
-                " post_id=" + postId +
-                " type=" + type + "}";
+                ", url='" + url + '\'' +
+                ", postId=" + postId +
+                ", type=" + type +
+                ", deleted=" + deleted +
+                '}';
     }
 }

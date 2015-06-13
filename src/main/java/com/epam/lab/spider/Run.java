@@ -1,13 +1,14 @@
 package com.epam.lab.spider;
 
-import com.epam.lab.spider.model.ConnectionManager;
-import com.epam.lab.spider.model.dao.mysql.BaseDAO;
-import com.epam.lab.spider.model.dao.DAOFactory;
-import com.epam.lab.spider.model.dao.UserDAO;
-import com.epam.lab.spider.model.dao.mysql.DAOFactoryImp;
+import com.epam.lab.spider.model.entity.Category;
+import com.epam.lab.spider.model.entity.Task;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.service.CategoryService;
+import com.epam.lab.spider.model.service.ServiceFactory;
+import com.epam.lab.spider.model.service.UserService;
 
-import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by Boyarsky Vitaliy on 05.06.2015.
@@ -15,10 +16,16 @@ import java.sql.SQLException;
 public class Run {
 
     public static void main(String[] args) throws SQLException {
-        Connection connection = ConnectionManager.getConnection();
-        DAOFactory factory = new DAOFactoryImp();
-        BaseDAO dao = (BaseDAO) factory.create(UserDAO.class);
-        
+        ServiceFactory factory = ServiceFactory.getInstance();
+        UserService service = factory.create(UserService.class);
+        User user = new User();
+        user.setName("fsdf");
+        user.setSurname("dfsdfsdf");
+        user.setEmail("fsdfsdf");
+        user.setPassword("dfsdfsdf");
+        user.setRole(User.Role.ADMIN);
+        service.insert(user);
+        System.out.println(service.getById(6));
     }
 
 }

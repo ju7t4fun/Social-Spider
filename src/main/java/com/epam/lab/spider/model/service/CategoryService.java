@@ -2,9 +2,10 @@ package com.epam.lab.spider.model.service;
 
 import com.epam.lab.spider.model.PoolConnection;
 import com.epam.lab.spider.model.dao.CategoryDAO;
+import com.epam.lab.spider.model.dao.CategoryHasTaskDAO;
 import com.epam.lab.spider.model.dao.DAOFactory;
-import com.epam.lab.spider.model.dao.mysql.DAOFactoryImp;
 import com.epam.lab.spider.model.entity.Category;
+import com.epam.lab.spider.model.entity.Task;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,9 +16,9 @@ import java.util.List;
  */
 public class CategoryService implements BaseService<Category> {
 
-
-    private DAOFactory factory = new DAOFactoryImp();
+    private DAOFactory factory = DAOFactory.getInstance();
     private CategoryDAO cdao = factory.create(CategoryDAO.class);
+    private CategoryHasTaskDAO chtdao = factory.create(CategoryHasTaskDAO.class);
 
     @Override
     public boolean insert(Category category) {
@@ -27,12 +28,19 @@ public class CategoryService implements BaseService<Category> {
             try {
                 connection.setAutoCommit(false);
                 res = cdao.insert(connection, category);
+                List<Task> tasks = category.getTasks();
+                for (Task task : tasks) {
+                    chtdao.insert(connection, category.getId(), task.getId());
+                }
                 connection.commit();
             } catch (SQLException e) {
-                e.printStackTrace();
                 connection.rollback();
+                throw e;
             } finally {
-                connection.setAutoCommit(true);
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,12 +56,16 @@ public class CategoryService implements BaseService<Category> {
             try {
                 connection.setAutoCommit(false);
                 res = cdao.update(connection, id, category);
+
                 connection.commit();
             } catch (SQLException e) {
-                e.printStackTrace();
                 connection.rollback();
+                throw e;
             } finally {
-                connection.setAutoCommit(true);
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -68,13 +80,17 @@ public class CategoryService implements BaseService<Category> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                res = cdao.delete(connection, id);
+                res = chtdao.deleteByCategoryId(connection, id);
+                res = res && cdao.delete(connection, id);
                 connection.commit();
             } catch (SQLException e) {
-                e.printStackTrace();
                 connection.rollback();
+                throw e;
             } finally {
-                connection.setAutoCommit(true);
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,8 +104,8 @@ public class CategoryService implements BaseService<Category> {
             return cdao.getAll(connection);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -98,8 +114,8 @@ public class CategoryService implements BaseService<Category> {
             return cdao.getById(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
 }
