@@ -24,6 +24,8 @@
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
     <script src="${pageContext.request.contextPath}js/language.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
 
 </head>
 <body>
@@ -46,7 +48,7 @@
 
     <div class="inf">
         <div class="main">
-            <h1>Main things about our service</h1>
+            <h1 class="loc-t" locres="main.things.about.our.service"><l:resource key="main.things.about.our.service"/></h1>
             <table>
                 <tr>
                     <th style="width:350px;height:170px;"><img src="img/m1.png" width="100" height="100"></th>
@@ -64,7 +66,7 @@
 
     <div class="discover">
         <div class="main">
-            <h1>Discover the Features</h1>
+            <h1 class="loc-t" locres="discover.the.features"><l:resource key="discover.the.features"/></h1>
             <table>
                 <tr> <th class="tableBorder"><h2>Post/Schedule</h2></th> <th class="tableBorder"><h2>Group Lists</h2></th> <th class="tableBorder"><h2>Saved Campaigns</h2></th> <th class="tableBorder"><h2>Posting Statistics</h2></th> </tr>
                 <tr>
@@ -91,7 +93,7 @@
 
     <div id="testimonials">
         <div class="main">
-            <p><h1>What people say about those our service.</h1></p>
+            <p><h1 class="loc-t" locres="what.people.say.about.those.our.service"><l:resource key="what.people.say.about.those.our.service"/></h1></p>
 
             <div id="speech1">Most usually cotton is employed, with varying levels of ply, with the lower numbers meaning finer quality.
                 <div class="corner"><img src="img/corner.png" width="23" height="13"></div>
@@ -125,9 +127,30 @@
     <div class="footer dark-bg" style="padding-top:30px;padding-bottom:30px;line-height:25px;border-bottom: 0;">
         <div class="main">
             <div style="margin-left:750px;">
-                <button onclick="language('ua')" style="background-color:#fed189; border: 2px solid #fed189;border-radius:10px;">ua</button>
-                <button onclick="language('en')" style="background-color:#00a0df; border: 2px solid #00a0df;border-radius:10px;">en</button>
+                <button class="language-button-logic" change="ua" style="background-color:#fed189; border: 2px solid #fed189;border-radius:10px;">ua</button>
+                <button class="language-button-logic" change="en" style="background-color:#00a0df; border: 2px solid #00a0df;border-radius:10px;">en</button>
             </div>
+            <script>
+                $( document ).ready(function() {
+                    $(".language-button-logic").click(function(){
+                        var lang = $(this).attr("change");
+                        var names =[];i=0;
+                        $(".loc-t").each(function(){
+                            names[i++]=$(this).attr("locres")
+                        });
+
+                        var myJsonString = JSON.stringify(names);
+                        $.post( "controller?action=locale&lang=".concat(lang),{ names:myJsonString})
+                                .done(function( data ) {
+                                    alert( "Data Loaded: " + data );
+                                });
+
+                        //alert(names)
+                        //language(lang);
+                    })
+                });
+
+            </script>
             <div style="margin-top:-20px;">
                 <h4>Social-Spider Corp. </h4>
                 <h4><p>7 X Evo Ave Rev3 - Victoria 70913 EU</p>
