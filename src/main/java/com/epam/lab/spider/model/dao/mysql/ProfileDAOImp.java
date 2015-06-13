@@ -18,7 +18,9 @@ public class ProfileDAOImp extends BaseDAO implements ProfileDAO {
             "VALUES (?, ?, ?, ?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE vk_profile SET user_id = ?, vk_id = ?, access_token = ?, " +
             "ext_time = ? WHERE id = ?";
-    private static final String SQL_DELETE_QUERY = "DELETE FROM vk_profile WHERE id = ?";
+   // private static final String SQL_DELETE_QUERY = "DELETE FROM vk_profile WHERE id = ?";
+    private static final String SQL_DELETE_QUERY = "UPDATE vk_profile SET deleted = true WHERE id = ?";
+
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM vk_profile";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM vk_profile WHERE id = ?";
     private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT * FROM vk_profile WHERE user_id = ?";
