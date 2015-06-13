@@ -51,12 +51,11 @@
                 <input type="checkbox" value="remember-me"> <l:resource key="login.remember"/>
                 <span class="pull-right"> <a href="#"> <l:resource key="login.forgotpw"/> </a></span>
             </label>
-            <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-bottom:20px;margin-right:10px;"> <l:resource key="login.signin"/> </button>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-bottom:20px;margin-right:10px;"> <l:resource key="login.signin"/>
+            </button>
 
-
-            <span class="pull-right"> <a href="${pageContext.request.contextPath}/jsp/user/registration.jsp"> <l:resource key="login.signup"/> </a> </span>
-
-            <span> <l:resource key="login.signinwith"/> <a href="/login?action=vkAuth"><img src="${pageContext.request.contextPath}/img/vk.png"></a> </span>
+            <span class="pull-right"> <a href="/register"> <l:resource key="login.signup"/> </a> </span>
+            <span> <l:resource key="login.signinwith"/> <a href="/login?action=vkAuth"><img src="${pageContext.request.contextPath}/img/vk.png"></a></span>
             <span> <l:resource key="login.or"/> <a href="/login?action=fbAuth"><img src="${pageContext.request.contextPath}/img/fb.png"></a> </span>
 
 
