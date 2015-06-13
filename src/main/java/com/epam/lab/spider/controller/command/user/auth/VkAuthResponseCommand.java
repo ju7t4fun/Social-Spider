@@ -67,7 +67,7 @@ public class VkAuthResponseCommand implements ActionCommand {
                 currUser = userServ.getById(id);
         }
 
-        if (userServ!=null) {
+        if (currUser!=null) {
             if (!currUser.getDeleted()) {
                 existsInDB = true;
             }
