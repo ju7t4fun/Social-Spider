@@ -2,7 +2,9 @@
 .idea
 Social-Spider.iml
 spider.iml
-
+*context.xml
+*ConnectionManager.java
+*PoolConnection.java
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 

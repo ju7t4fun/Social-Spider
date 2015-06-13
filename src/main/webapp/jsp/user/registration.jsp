@@ -40,7 +40,7 @@
       <p class="login-img"><i class="icon_house_alt"></i></p>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_profile"></i></span>
-        <input type="text" class="form-control" value="${username}" placeholder="<l:resource key="reg.username"  />" />
+        <input type="text" class="form-control" value="${name} ${surname}" placeholder="<l:resource key="reg.username"  />" />
       </div>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_mail_alt"></i></span>

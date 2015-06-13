@@ -14,9 +14,8 @@ public class ShowRegisterCommand implements ActionCommand {
 
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
         request.getRequestDispatcher("jsp/user/registration.jsp").forward(request, response);
-        //response.sendRedirect("jsp/user/registration.jsp");
+
     }
 
 }
