@@ -3,7 +3,6 @@ package com.epam.lab.spider.model.service;
 import com.epam.lab.spider.model.PoolConnection;
 import com.epam.lab.spider.model.dao.AttachmentDAO;
 import com.epam.lab.spider.model.dao.DAOFactory;
-import com.epam.lab.spider.model.dao.mysql.DAOFactoryImp;
 import com.epam.lab.spider.model.entity.Attachment;
 
 import java.sql.Connection;
@@ -15,70 +14,37 @@ import java.util.List;
  */
 public class AttachmentService implements BaseService<Attachment> {
 
-    private DAOFactory factory = new DAOFactoryImp();
+    private DAOFactory factory = DAOFactory.getInstance();
     private AttachmentDAO adao = factory.create(AttachmentDAO.class);
 
     @Override
     public boolean insert(Attachment a) {
-        boolean res = false;
-        try {
-            Connection connection = PoolConnection.getConnection();
-            try {
-                connection.setAutoCommit(false);
-                res = adao.insert(connection, a);
-                connection.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-            }
+        try (Connection connection = PoolConnection.getConnection()) {
+            return adao.insert(connection, a);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return res;
+        return false;
     }
 
     @Override
     public boolean update(int id, Attachment a) {
-        boolean res = false;
-        try {
-            Connection connection = PoolConnection.getConnection();
-            try {
-                connection.setAutoCommit(false);
-                res = adao.update(connection, id, a);
-                connection.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-            }
+        try (Connection connection = PoolConnection.getConnection()) {
+            return adao.update(connection, id, a);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return res;
+        return false;
     }
 
     @Override
     public boolean delete(int id) {
-        boolean res = false;
-        try {
-            Connection connection = PoolConnection.getConnection();
-            try {
-                connection.setAutoCommit(false);
-                res = adao.delete(connection, id);
-                connection.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-            }
+        try (Connection connection = PoolConnection.getConnection()) {
+            return adao.delete(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return res;
+        return false;
     }
 
     @Override
@@ -87,8 +53,8 @@ public class AttachmentService implements BaseService<Attachment> {
             return adao.getAll(connection);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -97,7 +63,17 @@ public class AttachmentService implements BaseService<Attachment> {
             return adao.getById(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
+
+    public List<Attachment> getByPostId(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return adao.getByPostId(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
