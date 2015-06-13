@@ -8,6 +8,16 @@ import java.util.List;
  */
 public abstract class BaseDAO {
 
+    private static final String SQL_GET_LAST_INSERT_ID_QUERY = "SELECT LAST_INSERT_ID()";
+
+    public int getLastInsertId(Connection connection) throws SQLException {
+        ResultSet rs = selectQuery(connection, SQL_GET_LAST_INSERT_ID_QUERY);
+        if (rs.next()) {
+            return rs.getInt("LAST_INSERT_ID()");
+        }
+        return 0;
+    }
+
     public <T> T first(List<T> list) {
         try {
             return list.get(0);

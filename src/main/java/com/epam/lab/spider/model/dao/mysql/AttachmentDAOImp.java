@@ -27,11 +27,13 @@ public class AttachmentDAOImp extends BaseDAO implements AttachmentDAO {
 
     @Override
     public boolean insert(Connection connection, Attachment attachment) throws SQLException {
-        return changeQuery(connection, SQL_INSERT_QUERY,
+        boolean res = changeQuery(connection, SQL_INSERT_QUERY,
                 attachment.getUrl(),
                 attachment.getPostId(),
                 attachment.getType().getId(),
                 attachment.getDeleted());
+        attachment.setId(getLastInsertId(connection));
+        return res;
     }
 
     @Override
