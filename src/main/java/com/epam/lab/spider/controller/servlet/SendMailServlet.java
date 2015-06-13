@@ -23,7 +23,7 @@ public class SendMailServlet extends HttpServlet {
             throws ServletException, IOException {
 
         SendEmail.send("marik1993@i.ua", "Email confirm", "<p><a href=\"http://localhost:8080/spider?" +
-                "param=" + new Date().getTime() + MailEncryptor.encoding("marik1993@i.ua") + "\">" +
+                "param=" + new Date().getTime() + MailEncryptor.encoding("oles.int@gmail.com") + "\">" +
                 "Please click here to " +
                 "confirm your account</a></p>");
         request.getRequestDispatcher("/").forward(request,
