@@ -19,7 +19,8 @@ public class WallDaoImp extends BaseDAO implements WallDao {
             " VALUES (?, ?, ?, ?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE wall SET owner_id= ?, profile_id = ?, permission = ?" +
             " WHERE id = ?";
-    private static final String SQL_DELETE_QUERY = "DELETE FROM wall WHERE id = ?";
+    //private static final String SQL_DELETE_QUERY = "DELETE FROM wall WHERE id = ?";
+    private static final String SQL_DELETE_QUERY = "UPDATE wall SET deleted = true WHERE id = ?";
 
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM wall";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM wall WHERE id = ?";

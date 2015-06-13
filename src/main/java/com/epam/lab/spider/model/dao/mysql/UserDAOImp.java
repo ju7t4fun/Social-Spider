@@ -18,8 +18,8 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
             "deleted, confirm) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE user SET name = ?, surname = ?, email = ?, password = ?, " +
             "role_id = ?, deleted = ?, confirm = ? WHERE id = ?";
-    private static final String SQL_DELETE_QUERY = "DELETE FROM user WHERE id = ?";
-
+    //private static final String SQL_DELETE_QUERY = "DELETE FROM user WHERE id = ?";
+    private static final String SQL_DELETE_QUERY = "UPDATE user SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM user";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM user WHERE id = ?";
 

@@ -16,7 +16,9 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
 
     private static final String SQL_INSERT_QUERY = "INSERT INTO post (message) VALUES (?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE post SET message = ?";
-    private static final String SQL_DELETE_QUERY = "DELETE FROM post WHERE id = ?";
+    //private static final String SQL_DELETE_QUERY = "DELETE FROM post WHERE id = ?";
+    private static final String SQL_DELETE_QUERY = "UPDATE post SET deleted = true WHERE id = ?";
+
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM post";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM post WHERE id = ?";
 

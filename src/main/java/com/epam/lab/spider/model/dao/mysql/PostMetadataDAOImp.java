@@ -17,7 +17,8 @@ public class PostMetadataDAOImp extends BaseDAO implements PostMetadataDAO {
             "VALUES (?, ?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE post_metadata SET like = ?, repost = ? " +
             "WHERE id = ?";
-    private static final String SQL_DELETE_QUERY = "DELETE * FROM post_metadata WHERE id = ?";
+   // private static final String SQL_DELETE_QUERY = "DELETE * FROM post_metadata WHERE id = ?";
+    private static final String SQL_DELETE_QUERY = "UPDATE post_metadata SET deleted = true WHERE id = ?";
 
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM post_metadata";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM post_metadata WHERE id = ?";

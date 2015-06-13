@@ -17,7 +17,8 @@ public class FilterDAOImp extends BaseDAO implements FilterDAO {
             "VALUES (?, ?, ?, ?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE filter SET likes = ?, reposts = ?, min_time = ?, max_time = ? " +
             "WHERE id = ?";
-    private static final String SQL_DELETE_QUERY = "DELETE * FROM filter WHERE id = ?";
+    //private static final String SQL_DELETE_QUERY = "DELETE * FROM filter WHERE id = ?";
+    private static final String SQL_DELETE_QUERY = "UPDATE filter SET deleted = true WHERE id = ?";
 
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM filter";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM filter WHERE id = ?";

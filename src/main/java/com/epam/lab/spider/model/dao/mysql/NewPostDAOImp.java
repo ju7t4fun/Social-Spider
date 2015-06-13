@@ -20,7 +20,8 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
             "metadate_id) VALUES (?,?,?,?,?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE new_post SET post_id = ?, wall_id = ?, post_time = ?," +
             "delete_time = ?, metadate_id = ? WHERE id = ?";
-    private static final String SQL_DELETE_QUERY = "DELETE FROM new_post WHERE id = ?";
+   // private static final String SQL_DELETE_QUERY = "DELETE FROM new_post WHERE id = ?";
+    private static final String SQL_DELETE_QUERY = "UPDATE new_post SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM new_post";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM new_post WHERE id = ?";
 
