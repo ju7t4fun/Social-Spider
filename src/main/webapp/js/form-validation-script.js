@@ -11,7 +11,7 @@ var Script = function () {
         // validate signup form on keyup and submit
         $("#register_form").validate({
             rules: {
-                fullname: {
+                name: {
                     required: true,
                     minlength: 6
                 },
@@ -19,7 +19,7 @@ var Script = function () {
                     required: true,
                     minlength: 10
                 },
-                username: {
+                surname: {
                     required: true,
                     minlength: 5
                 },
@@ -42,7 +42,7 @@ var Script = function () {
                 },
                 agree: "required"
             },
-            messages: {                
+            messages: {
                 fullname: {
                     required: "Please enter a Full Name.",
                     minlength: "Your Full Name must consist of at least 6 characters long."
