@@ -23,6 +23,7 @@ public class ProfileDAOImp extends BaseDAO implements ProfileDAO {
 
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM vk_profile";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM vk_profile WHERE id = ?";
+    private static final String SQL_GET_BY_VKID_QUERY = "SELECT * FROM vk_profile WHERE vk_id = ?";
     private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT * FROM vk_profile WHERE user_id = ?";
 
     @Override
@@ -72,5 +73,10 @@ public class ProfileDAOImp extends BaseDAO implements ProfileDAO {
     @Override
     public List<Profile> getByUserId(Connection connection, int id) throws SQLException {
         return select(connection, SQL_GET_BY_USER_ID_QUERY, id);
+    }
+
+    @Override
+    public Profile getByVkId(Connection connection, int vkId) throws SQLException {
+        return first(select(connection, SQL_GET_BY_VKID_QUERY, vkId));
     }
 }

@@ -22,63 +22,31 @@ public class SignInCommand implements ActionCommand {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        UserService serv = new UserService();
-        User currUser = null;
-        List<User> users = serv.getAll();
+        HashMD5 hashHelper = new HashMD5();
+        UserService userServ = new UserService();
+        User currUser = userServ.getByEmailAndPass(email, hashHelper.hash(password));
 
-        if (users!=null) {
-            for (int i = 0; i < users.size(); ++i) {
-
-                if ( users.get(i).getEmail().equalsIgnoreCase(email) && !users.get(i).getDeleted() ) {
-                    currUser = users.get(i);
-                }
-
-            }
-        }
-
-
-        if (currUser != null) {
+        if (currUser != null && !currUser.getDeleted()) {
 
             boolean isActive = currUser.getConfirm();
-            boolean isAuth = false;
-            HashMD5 hashHelper = new HashMD5();
 
+            if (!isActive) {
 
-            System.out.println(hashHelper.hash(password));
-            System.out.println(hashHelper.hash(currUser.getPassword()));
-
-            if (hashHelper.hash(password).equals(currUser.getPassword())) {
-                isAuth = true;
-            }
-
-            if (isAuth) {
-                if (!isActive) {
-                    request.getSession().setAttribute("loginMessage", "Your account is non-activated." +
-                            "Please activate your account via email");
-                    System.out.println("is active :" +  isActive);
-                    request.getSession().setAttribute("login", email);
-                    response.sendRedirect("/login");
-                    return;
-                }
-                System.out.println("is active : nonactive" );
-                request.getSession().setAttribute("user",currUser);
-                response.sendRedirect("/");
-                return;
-            } else {
-                System.out.println("is not auth" );
-                request.getSession().setAttribute("loginMessage", "wrong username or password");
+                request.getSession().setAttribute("loginMessage", "Your account is non-activated." +
+                        "Please activate your account via email");
                 request.getSession().setAttribute("login", email);
                 response.sendRedirect("/login");
-
                 return;
-
             }
+            request.getSession().setAttribute("user", currUser);
+            response.sendRedirect("/");
+            return;
+
         } else {
 
             request.getSession().setAttribute("loginMessage", "There is no such a user!");
             request.getSession().setAttribute("login", email);
             response.sendRedirect("/login");
-
             return;
 
         }
