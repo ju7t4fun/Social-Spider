@@ -35,17 +35,17 @@
 
 <div class="container">
 
-    <form class="login-form" action="/login?action=signIn" method="post">
+    <form class="login-form" action="/login?action=signIn" method="post" id="register_form">
         <div class="login-wrap">
             <p class="login-img"><i class="icon_lock_alt"></i></p>
             ${loginMessage}
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
-                <input type="email" value="${login}" name="email" class="form-control" placeholder="<l:resource key="login.email"/>" style="border-color:#ffffff;" autofocus />
+                <input type="email" value="${login}" name="email" class="form-control" placeholder="<l:resource key="login.email"/>" style="border-color:#ffffff;" required/>
             </div>
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                <input type="password" name="password" class="form-control" placeholder="<l:resource key="login.password"/>">
+                <input type="password" name="password" class="form-control" placeholder="<l:resource key="login.password"/>" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" required/>
             </div>
             <label class="checkbox">
                 <input type="checkbox" value="remember-me"> <l:resource key="login.remember"/>
@@ -64,6 +64,19 @@
 
 </div>
 
+<!-- javascripts -->
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- nice scroll -->
+<script src="js/jquery.scrollTo.min.js"></script>
+<script src="js/jquery.nicescroll.js" type="text/javascript"></script>
+<!-- jquery validate js -->
+<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+
+<!-- custom form validation script for this page-->
+<script src="js/form-validation-script.js"></script>
+<!--custome script for all page-->
+<script src="js/scripts.js"></script>
 
 </body>
 </html>
