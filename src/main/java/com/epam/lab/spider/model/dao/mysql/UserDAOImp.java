@@ -14,10 +14,10 @@ import java.util.List;
  */
 public class UserDAOImp extends BaseDAO implements UserDAO {
 
-    private static final String SQL_INSERT_QUERY = "INSERT INTO user (name, surname, email, password, create_time, " +
-            "role_id, deleted, confirm) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INSERT_QUERY = "INSERT INTO user (name, surname, email, password, role_id, " +
+            "deleted, confirm) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE user SET name = ?, surname = ?, email = ?, password = ?, " +
-            "create_time = ?, role_id = ?, deleted = ?, confirm = ? WHERE id = ?";
+            "role_id = ?, deleted = ?, confirm = ? WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "DELETE FROM user WHERE id = ?";
 
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM user";
@@ -25,14 +25,28 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
 
     @Override
     public boolean insert(Connection connection, User user) throws SQLException {
-        return changeQuery(connection, SQL_INSERT_QUERY, user.getName(), user.getSurname(), user.getEmail(), user
-                .getPassword(), user.getCreateTime(), user.getRole().getId(), user.getDeleted(), user.getConfirm());
+        System.out.println(user);
+        return changeQuery(connection, SQL_INSERT_QUERY,
+                user.getName(),
+                user.getSurname(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getRole().getId(),
+                user.getDeleted(),
+                user.getConfirm());
     }
 
     @Override
     public boolean update(Connection connection, int id, User user) throws SQLException {
-        return changeQuery(connection, SQL_UPDATE_QUERY, user.getName(), user.getSurname(), user.getEmail(), user
-                .getPassword(), user.getCreateTime(), user.getRole().getId(), user.getDeleted(), user.getConfirm(), id);
+        return changeQuery(connection, SQL_UPDATE_QUERY,
+                user.getName(),
+                user.getSurname(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getRole().getId(),
+                user.getDeleted(),
+                user.getConfirm(),
+                id);
     }
 
     @Override
@@ -52,6 +66,7 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
             user.setSurname(rs.getString("surname"));
             user.setEmail(rs.getString("email"));
             user.setPassword(rs.getString("password"));
+            user.setCreateTime(rs.getTimestamp("create_time"));
             user.setRole(User.Role.getById(rs.getInt("role_id")));
             user.setDeleted(rs.getBoolean("deleted"));
             user.setConfirm(rs.getBoolean("confirm"));

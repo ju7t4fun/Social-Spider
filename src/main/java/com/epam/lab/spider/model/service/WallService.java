@@ -1,9 +1,8 @@
 package com.epam.lab.spider.model.service;
 
 import com.epam.lab.spider.model.PoolConnection;
-import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.dao.WallDao;
-import com.epam.lab.spider.model.dao.mysql.DAOFactoryImp;
+import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.entity.Wall;
 
 import java.sql.Connection;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 public class WallService implements BaseService<Wall> {
 
-    private DAOFactory factory = new DAOFactoryImp();
+    private DAOFactory factory = DAOFactory.getInstance();
     private WallDao wdao = factory.create(WallDao.class);
 
     @Override
@@ -95,6 +94,24 @@ public class WallService implements BaseService<Wall> {
     public Wall getById(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
             return wdao.getById(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Wall> getDestinationByTaskId(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getAll(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Wall> getSourceByTaskId(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getAll(connection);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

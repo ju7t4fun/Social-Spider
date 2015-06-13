@@ -7,6 +7,7 @@ public class PostMetadata {
     private Integer id;
     private Integer like;
     private Integer repost;
+    private Boolean deleted = false;
 
     public Integer getId() {
         return id;

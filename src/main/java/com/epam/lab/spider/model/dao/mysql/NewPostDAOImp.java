@@ -2,6 +2,8 @@ package com.epam.lab.spider.model.dao.mysql;
 
 import com.epam.lab.spider.model.dao.NewPostDAO;
 import com.epam.lab.spider.model.entity.NewPost;
+import com.epam.lab.spider.model.entity.Post;
+import com.epam.lab.spider.model.entity.PostMetadata;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -24,14 +26,14 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
 
     @Override
     public boolean insert(Connection connection, NewPost post) throws SQLException {
-        return changeQuery(connection, SQL_INSERT_QUERY, post.getPostId(), post.getWallId(), post.getPostTime(),
-                post.getDeleteTime(), post.getMetadateId());
+        return changeQuery(connection, SQL_INSERT_QUERY, post.getPost().getId(), post.getWallId(), post.getPostTime(),
+                post.getDeleteTime(), post.getMetadata().getId());
     }
 
     @Override
     public boolean update(Connection connection, int id, NewPost post) throws SQLException {
-        return changeQuery(connection, SQL_UPDATE_QUERY, post.getPostId(), post.getWallId(), post.getPostTime(),
-                post.getDeleteTime(), post.getMetadateId(), id);
+        return changeQuery(connection, SQL_UPDATE_QUERY, post.getPost().getId(), post.getWallId(), post.getPostTime(),
+                post.getDeleteTime(), post.getMetadata().getId(), id);
     }
 
     @Override
@@ -47,11 +49,15 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
         while (rs.next()) {
             post = new NewPost();
             post.setId(rs.getInt("id"));
-            post.setPostId(rs.getInt("post_id"));
+            Post p = new Post();
+            p.setId(rs.getInt("post_id"));
+            post.setPost(p);
             post.setWallId(rs.getInt("wall_id"));
             post.setPostTime(rs.getDate("post_time"));
             post.setDeleteTime(rs.getDate("delete_time"));
-            post.setMetadateId(rs.getInt("metadate_id"));
+            PostMetadata metadata = new PostMetadata();
+            metadata.setId(rs.getInt("metadata_id"));
+            post.setMetadata(metadata);
             posts.add(post);
         }
         return posts;

@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by Boyarsky Vitaliy on 12.06.2015.
  */
-public class VkProfile {
+public class Profile {
 
     private Integer id;
     private Integer userId;

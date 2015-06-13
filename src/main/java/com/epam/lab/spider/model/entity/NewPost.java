@@ -8,11 +8,37 @@ import java.util.Date;
 public class NewPost {
 
     private Integer id;
-    private Integer postId;
+    private Post post;
     private Integer wallId;
     private Date postTime;
     private Date deleteTime;
-    private Integer metadateId;
+    private PostMetadata metadata;
+    private State state = State.CREATED;
+    private Boolean deleted;
+
+    public enum State {
+        CREATED(1), POSTED(2), REMOVED(3);
+
+        private int id;
+
+        State(int id) {
+            this.id = id;
+        }
+
+        public static State getById(int id) {
+            State[] states = values();
+            for (State state : states) {
+                if (state.id == id)
+                    return state;
+            }
+            return null;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+    }
 
     public Integer getId() {
         return id;
@@ -22,12 +48,12 @@ public class NewPost {
         this.id = id;
     }
 
-    public Integer getPostId() {
-        return postId;
+    public Post getPost() {
+        return post;
     }
 
-    public void setPostId(Integer postId) {
-        this.postId = postId;
+    public void setPost(Post post) {
+        this.post = post;
     }
 
     public Integer getWallId() {
@@ -54,22 +80,41 @@ public class NewPost {
         this.deleteTime = deleteTime;
     }
 
-    public Integer getMetadateId() {
-        return metadateId;
+    public PostMetadata getMetadata() {
+        return metadata;
     }
 
-    public void setMetadateId(Integer metadateId) {
-        this.metadateId = metadateId;
+    public void setMetadata(PostMetadata metadata) {
+        this.metadata = metadata;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override
     public String toString() {
-        return "New Post {" +
-                "id="+ id +
-                " postId=" + postId +
-                " wallId=" + wallId +
-                " postTime=" + postTime +
-                " deleteTime=" + deleteTime +
-                " metadateId=" + metadateId + "}";
+        return "NewPost{" +
+                "id=" + id +
+                ", post=" + post +
+                ", wallId=" + wallId +
+                ", postTime=" + postTime +
+                ", deleteTime=" + deleteTime +
+                ", metadata=" + metadata +
+                ", state=" + state +
+                ", deleted=" + deleted +
+                '}';
     }
 }
