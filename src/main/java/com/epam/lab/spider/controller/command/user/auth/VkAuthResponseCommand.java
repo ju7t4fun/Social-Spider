@@ -6,6 +6,8 @@ import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.api.Users;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
+import com.epam.lab.spider.model.entity.Profile;
+import com.epam.lab.spider.model.service.ProfileService;
 import com.epam.lab.spider.model.service.UserService;
 import com.epam.lab.spider.model.vk.User;
 
@@ -22,6 +24,7 @@ import java.util.List;
 public class VkAuthResponseCommand implements ActionCommand {
 
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println(request.getParameterMap());
         HttpSession session = request.getSession();
         Vkontakte vk = (Vkontakte) session.getAttribute("siteVk");
         AccessToken token = vk.OAuth().signIn(request);
@@ -31,30 +34,42 @@ public class VkAuthResponseCommand implements ActionCommand {
 
         String name = "some name";
         String surname = "some surname";
+        String email ="";
+
         vk.setAccessToken(token);
         Parameters param = new Parameters();
         param.add("fields","photo_200");
+
+
+        ProfileService profServ = new ProfileService();
+        Profile pro = null;
+
         try {
             List<User> users = vk.users().get(param);
             User user = users.get(0);
             name = user.getFirstName();
             surname = user.getLastName();
+            pro = profServ.getByVkId(user.getId());
         } catch (VKException e) {
             e.printStackTrace();
         }
 
         boolean existsInDB = false;
 
-        UserService serv = new UserService();
+        UserService userServ = new UserService();
+
         com.epam.lab.spider.model.entity.User currUser = null;
-        List<com.epam.lab.spider.model.entity.User> users = serv.getAll();
-        if (users != null) {
-            for (int i = 0; i < users.size(); ++i) {
-                if (users.get(i).getName().equalsIgnoreCase(name) &&
-                        users.get(i).getSurname().equalsIgnoreCase(surname) && !users.get(i).getDeleted()) {
-                    currUser = users.get(i);
-                    existsInDB = true;
-                }
+
+
+
+        if (pro!= null) {
+                int id = pro.getUserId();
+                currUser = userServ.getById(id);
+        }
+
+        if (userServ!=null) {
+            if (!currUser.getDeleted()) {
+                existsInDB = true;
             }
         }
 
@@ -74,14 +89,11 @@ public class VkAuthResponseCommand implements ActionCommand {
 
         } else {
 
-            /*String email = "some email";
-            String photoSrc = "some  photo uri";*/
             request.getSession().setAttribute("name", name);
             request.getSession().setAttribute("surname", surname);
-            /*request.setAttribute("photoSrc", photoSrc);
-            request.setAttribute("email", email);*/
             response.sendRedirect("/register");
             return;
+
         }
     }
 }
