@@ -6,6 +6,7 @@ import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.api.Users;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
+import com.epam.lab.spider.model.service.UserService;
 import com.epam.lab.spider.model.vk.User;
 
 import javax.servlet.ServletException;
@@ -28,36 +29,57 @@ public class VkAuthResponseCommand implements ActionCommand {
         session.setAttribute("access_token", token.getAccessToken());
         session.setAttribute("exp_moment", token.getExpirationMoment());
 
+        String name = "some name";
+        String surname = "some surname";
+        vk.setAccessToken(token);
+        Parameters param = new Parameters();
+        param.add("fields","photo_200");
+        try {
+            List<User> users = vk.users().get(param);
+            User user = users.get(0);
+            name = user.getFirstName();
+            surname = user.getLastName();
+        } catch (VKException e) {
+            e.printStackTrace();
+        }
+
         boolean existsInDB = false;
-        //needtoDo : if such a user exists in DB (check by uid i guess) then :
+
+        UserService serv = new UserService();
+        com.epam.lab.spider.model.entity.User currUser = null;
+        List<com.epam.lab.spider.model.entity.User> users = serv.getAll();
+        if (users != null) {
+            for (int i = 0; i < users.size(); ++i) {
+                if (users.get(i).getName().equalsIgnoreCase(name) &&
+                        users.get(i).getSurname().equalsIgnoreCase(surname) && !users.get(i).getDeleted()) {
+                    currUser = users.get(i);
+                    existsInDB = true;
+                }
+            }
+        }
+
         if (existsInDB) {
 
-            // if he is activated then redirect him to main page
-            //else : redirect him to login with message that he is not activated
+                boolean isActive = currUser.getConfirm();
+                if (!isActive) {
+                    request.getSession().setAttribute("loginMessage", "Your account is non-activated." +
+                            "Please activate your account via email");
+                    request.getSession().setAttribute("login", currUser.getEmail());
+                    response.sendRedirect("/login");
+                    return;
+                }
+                request.getSession().setAttribute("user",currUser);
+                response.sendRedirect("/");
+                return;
 
-            return;
         } else {
-            String name = "some name";
-            String surname = "some surname";
+
             /*String email = "some email";
             String photoSrc = "some  photo uri";*/
-
-            vk.setAccessToken(token);
-            Parameters param = new Parameters();
-            param.add("fields","photo_200");
-            try {
-                List<User> users = vk.users().get(param);
-                User user = users.get(0);
-                name = user.getFirstName();
-                surname = user.getLastName();
-            } catch (VKException e) {
-                e.printStackTrace();
-            }
-
-            request.getSession().setAttribute("username", name+ " " +surname);
+            request.getSession().setAttribute("name", name);
+            request.getSession().setAttribute("surname", surname);
             /*request.setAttribute("photoSrc", photoSrc);
             request.setAttribute("email", email);*/
-
             response.sendRedirect("/register");
             return;
         }

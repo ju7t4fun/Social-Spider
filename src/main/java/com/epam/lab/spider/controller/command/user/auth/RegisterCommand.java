@@ -1,7 +1,11 @@
 package com.epam.lab.spider.controller.command.user.auth;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.hash.HashMD5;
+import com.epam.lab.spider.controller.hash.HashSHA;
 import com.epam.lab.spider.controller.mail.ConcreteSender;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.service.UserService;
 import org.apache.http.client.utils.URIBuilder;
 
 import javax.servlet.ServletException;
@@ -17,6 +21,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Dmytro on 11.06.2015.
@@ -24,65 +29,56 @@ import java.util.Date;
 public class RegisterCommand implements ActionCommand {
 
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
+
+        String name = request.getParameter("name");
+        String surname = request.getParameter("surname");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
         boolean existsInBD = false;
 
+        UserService serv = new UserService();
+        User currUser = null;
+        List<User> users = serv.getAll();
+        if (users!=null) {
+            for (int i = 0; i < users.size(); ++i) {
+                if (users.get(i).getEmail().equalsIgnoreCase(email) && !users.get(i).getDeleted()) {
+                    currUser = users.get(i);
+                    existsInBD = true;
+                }
+            }
+        }
+
         if (existsInBD) {
+            request.getSession().setAttribute("registerMessage","User with email :" + currUser.getEmail()
+                    + " already exists!");
             response.sendRedirect("/register");
             return;
         } else {
 
-            //needtodo: add registrationDate while adding user to DB!!!!
-            Date registrationDate = new Date();
-            //needtoDo: add new user with non-activated status
+            User user = new User();
+            user.setConfirm(false);
+            user.setDeleted(false);
+            user.setEmail(email);
+            user.setName(name);
+            user.setSurname(surname);
+            user.setPassword(new HashMD5().hash(password));
+            user.setRole(User.Role.USER);
+            System.out.println(serv.insert(user));
 
-            //sending email
-
-
+            HashSHA hashHelper = new HashSHA();
             String emailPartUri = "email="+email;
-            String hashPartUri = "hash=" + code(email+password);
+            String hashPartUri = "hash=" + hashHelper.hash(email + user.getPassword());
 
             ConcreteSender.getInstance().send("http://localhost:8080/activation?action=activate&" +
-                    emailPartUri+"&"+hashPartUri,"dzyubaorest@gmail.com");
+                    emailPartUri+"&"+hashPartUri,email);
 
-            request.getSession().setAttribute("activationMessage","You have been successfuly registered. " +
+            request.getSession().setAttribute("activationMessage", "You have been successfuly registered. " +
                     "Please activate your account");
             response.sendRedirect("/activation");
             return;
         }
     }
-    private  String code(String someStr) {
 
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        md.update(someStr.getBytes());
-
-        byte byteData[] = md.digest();
-
-        //convert the byte to hex format method 1
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < byteData.length; i++) {
-            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-        }
-
-        System.out.println("Hex format : " + sb.toString());
-
-        //convert the byte to hex format method 2
-        StringBuffer hexString = new StringBuffer();
-        for (int i=0;i<byteData.length;i++) {
-            String hex=Integer.toHexString(0xff & byteData[i]);
-            if(hex.length()==1) hexString.append('0');
-            hexString.append(hex);
-        }
-        return hexString.toString();
-
-    }
 
 }

@@ -63,7 +63,7 @@ public abstract class BaseDAO {
                 statement.setNull(i, Types.NULL);
                 continue;
             }
-            if (arg.getClass() == String.class) {
+            if (arg.getClass() == String.class ) {
                 statement.setString(i, arg.toString());
                 continue;
             }
