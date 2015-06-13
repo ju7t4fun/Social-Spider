@@ -36,11 +36,11 @@
 
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_profile"></i></span>
-        <input type="text" class="form-control" id="name" name="name" maxlength="45" value="${name}" placeholder="<l:resource key="reg.name" />" pattern="^[a-zA-Zа-яА-яіІєЄїЇ]+$" />
+        <input type="text" class="form-control" id="name" name="name" maxlength="45" value="${name}" placeholder="<l:resource key="reg.name" />" pattern="^[a-zA-Z\u0400-\u04ff]+$"  />
       </div>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_profile"></i></span>
-        <input type="text" class="form-control" id="surname" name="surname" maxlength="45" value="${surname}" placeholder="<l:resource key="reg.surname"  />" pattern="^[a-zA-Zа-яА-яіІєЄїЇ]+$" />
+        <input type="text" class="form-control" id="surname" name="surname" maxlength="45" value="${surname}" placeholder="<l:resource key="reg.surname"  />" pattern="^[a-zA-Z\u0400-\u04ff]+$"  />
       </div>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
@@ -48,7 +48,7 @@
       </div>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-        <input type="password" class="form-control" id="password" name="password" placeholder="<l:resource key="login.password" />" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"/>
+        <input type="password" class="form-control" id="password" name="password" placeholder="<l:resource key="login.password" />" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" />
       </div>
 
       <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-bottom:20px;margin-right:10px;"> Sign up </button>
