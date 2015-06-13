@@ -56,29 +56,19 @@ public class RegisterCommand implements ActionCommand {
             return;
         } else {
 
-            DateFormat df = new SimpleDateFormat("dd MM yyyy HH:mm:ss");
-            Date registrationDate = new Date();
             User user = new User();
             user.setConfirm(false);
             user.setDeleted(false);
             user.setEmail(email);
-            /*String[] parts = username.split(" ");
-            if (parts!=null && parts.length >0 ) {
-                user.setSurname(parts[0]);
-            }
-            if (parts!=null && parts.length >1 ) {
-                user.setName(parts[1]);
-            }*/
             user.setName(name);
             user.setSurname(surname);
             user.setPassword(new HashMD5().hash(password));
-            //user.setCreateTime(df.format(registrationDate));
             user.setRole(User.Role.USER);
             System.out.println(serv.insert(user));
 
             HashSHA hashHelper = new HashSHA();
             String emailPartUri = "email="+email;
-            String hashPartUri = "hash=" + hashHelper.hash(email + password);
+            String hashPartUri = "hash=" + hashHelper.hash(email + user.getPassword());
 
             ConcreteSender.getInstance().send("http://localhost:8080/activation?action=activate&" +
                     emailPartUri+"&"+hashPartUri,email);

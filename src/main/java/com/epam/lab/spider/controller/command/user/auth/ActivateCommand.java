@@ -44,15 +44,8 @@ public class ActivateCommand implements ActionCommand {
 
         if (currUser!=null) {
 
-            DateFormat df = new SimpleDateFormat("dd MM yyyy HH:mm:ss");
-            Date createDate = null;
+            Date createDate = currUser.getCreateTime();
             String password = currUser.getPassword();
-            try {
-                createDate = df.parse(currUser.getCreateTime());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
 
             java.sql.Timestamp expireDate = new java.sql.Timestamp(createDate.getTime());
 
@@ -62,7 +55,12 @@ public class ActivateCommand implements ActionCommand {
             expireDate = new java.sql.Timestamp(c.getTime().getTime());
             java.sql.Timestamp currDate = new java.sql.Timestamp(createDate.getTime());
             HashSHA hashHelper = new HashSHA();
-            if (hash.equals(hashHelper.hash(password+email)) && currDate.before(expireDate) ) {
+            System.out.println("Hash from uri: " + hash);
+            System.out.println("hash from bd" + hashHelper.hash(email+password));
+            System.out.println(currDate);
+            System.out.println(expireDate);
+
+            if (hash.equals(hashHelper.hash(email+password)) && currDate.before(expireDate) ) {
 
                 currUser.setConfirm(true);
                 serv.update(currUser.getId(),currUser);

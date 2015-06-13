@@ -20,12 +20,14 @@ public class LoginServlet extends HttpServlet {
     private static class LoginActionFactory extends ActionFactory {
 
         public LoginActionFactory() {
+
             commands = new HashMap<>();
             commands.put("default", new ShowAuthCommand());
             commands.put("signIn", new SignInCommand());
             commands.put("signOut", new SignOutCommand());
             commands.put("vkAuth", new VkAuthCommand());
             commands.put("vkAuthResponse", new VkAuthResponseCommand());
+
         }
 
         @Override
