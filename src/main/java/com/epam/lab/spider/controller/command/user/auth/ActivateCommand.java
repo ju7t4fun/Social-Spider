@@ -53,7 +53,7 @@ public class ActivateCommand implements ActionCommand {
             c.setTime(expireDate);
             c.add(Calendar.DATE, 1);
             expireDate = new java.sql.Timestamp(c.getTime().getTime());
-            java.sql.Timestamp currDate = new java.sql.Timestamp(createDate.getTime());
+            java.sql.Timestamp currDate = new java.sql.Timestamp(new Date().getTime());
             HashSHA hashHelper = new HashSHA();
             System.out.println("Hash from uri: " + hash);
             System.out.println("hash from bd" + hashHelper.hash(email+password));
