@@ -1,5 +1,6 @@
 package com.epam.lab.spider.controller.utils.validation;
 
+import com.epam.lab.spider.controller.utils.FrontEndValidatorBrige;
 import com.epam.lab.spider.model.entity.User;
 
 import java.util.Map;
@@ -19,11 +20,16 @@ public class ValidationTestRun {
         for(Map.Entry e:rs.getInvalideMessage().entrySet()){
             System.out.println(""+e);
         }
-
         System.out.println(validator.isValid(user));
         /**                                                 */
         user.setEmail("str@number.four");
         user.setName("str4");
         System.out.println(validator.isValid(user));
+
+        FrontEndValidatorBrige brige = new FrontEndValidatorBrige();
+        String code = brige.getFrontEndValidationCodeByFieldPath("user.email");
+        System.out.println(code);
+
+
     }
 }

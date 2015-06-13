@@ -21,7 +21,8 @@ public class User {
     private String name;
     private String surname;
     @NotNull(message = "Email can not be null")
-    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z]{2,4}$",message = "Fail Email format", flags = Pattern.Flag.CASE_INSENSITIVE)
+    @Size(max = 255)
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$",message = "Fail Email format")
     private String email;
     private String password;
     private Date createTime;
