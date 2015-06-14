@@ -98,6 +98,26 @@ th, td {
 #speech2,#person2 {margin-left:300px;}
 #speech3,#person3 {margin-left:600px;}
 
+.simple_footer {
+    position: absolute;
+    right:100px;
+    bottom:20px;
+}
+
+.simple_footer button {
+    background:rgba(213, 215, 222, 0.9);
+    width:40px;
+    height:40px;
+    opacity:0.7;
+    border-radius:10px;
+    color:#fff;
+    font-size:20px;
+}
+
+.simple_footer a {
+    color:#00cbfd;
+}
+
 h1, h2, h3, h4, h5 {
     font-weight: 300;
 }
@@ -195,7 +215,7 @@ table tr th {
 
 .login-form {
     max-width: 350px;
-    margin: 200px auto 0;
+    margin: 150px auto 0;
     background: #d5d7de;
 }
 
