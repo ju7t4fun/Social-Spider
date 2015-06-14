@@ -93,7 +93,7 @@
 
     <div id="testimonials">
         <div class="main">
-            <p><h1 class="loc-t" locres="what.people.say.about.those.our.service"><l:resource key="what.people.say.about.those.our.service"/></h1></p>
+            <p><h1><l:resource key="what.people.say.about.those.our.service"/></h1></p>
 
             <div id="speech1">Most usually cotton is employed, with varying levels of ply, with the lower numbers meaning finer quality.
                 <div class="corner"><img src="img/corner.png" width="23" height="13"></div>

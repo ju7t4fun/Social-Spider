@@ -36,9 +36,6 @@ public class LocaleCommand implements ActionCommand {
 
 
         String namesJson = request.getParameter("names");
-        //request.
-        //System.out.println(namesJson);
-
 
 
         JSONObject resultJson = new JSONObject();

@@ -25,6 +25,7 @@ import java.util.ResourceBundle;
  */
 public class LocaleTag extends BodyTagSupport {
     static DocumentBuilderFactory factory;
+    static TransformerFactory tf = TransformerFactory.newInstance();
     static{
         factory =
                 DocumentBuilderFactory.newInstance();
@@ -83,24 +84,29 @@ public class LocaleTag extends BodyTagSupport {
                         body.getBytes("UTF-8"));
                 Document doc = builder.parse(input);
                 Element root = doc.getDocumentElement();
-                root.setTextContent(value);
 
+
+                boolean placeholder = root.getNodeName().equals("input");
+                if(placeholder){
+                    root.setAttribute("placeholder",value);
+                }else root.setTextContent(value);
+
+                String localeClass = placeholder?"loc-p":"loc-t";
                 root.setAttribute("locres",key);
                 String classes = root.getAttribute("class");
                 if(classes!=null && classes.isEmpty()){
-                    classes = "loc-t";
+                    classes = localeClass;
                 }else{
-                    classes+= "loc-t";
+                    classes+= " "+localeClass;
                 }root.setAttribute("class",classes);
 
                 //System.out.println(root.getNodeName());
 
-                TransformerFactory tf = TransformerFactory.newInstance();
                 Transformer transformer = tf.newTransformer();
                 transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
                 StringWriter writer = new StringWriter();
                 transformer.transform(new DOMSource(doc), new StreamResult(writer));
-                String output = writer.getBuffer().toString().replaceAll("\n|\r", "");
+                String output = writer.getBuffer().toString();
 
                 safeWrite(output);
 
@@ -115,7 +121,7 @@ public class LocaleTag extends BodyTagSupport {
 
         Long end = System.nanoTime();
         Long d = (end - begin)/1000;
-        System.out.println("Tag creating time:" + d);
+        System.out.println("Tag creating time:" + d+ "mircosecond");
         return EVAL_PAGE;
     }
 
