@@ -3,7 +3,7 @@ package com.epam.lab.spider.controller.utils;
 /**
  * Created by Marian Voronovskyi on 12.06.2015.
  */
-public class MailEncryptor {
+public class Encryptor {
 
     public static String encoding(String in) {
         StringBuilder builder = new StringBuilder();
