@@ -5,7 +5,8 @@ import com.epam.lab.spider.model.service.ServiceFactory;
 import com.epam.lab.spider.model.service.TaskService;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Boyarsky Vitaliy on 12.06.2015.
@@ -21,23 +22,29 @@ public class User {
     private Role role;
     private Boolean deleted = false;
     private Boolean confirm = false;
-    private List<Profile> profiles = null;
-    private List<Task> tasks = null;
+    private Set<Profile> profiles = null;
+    private Set<Task> tasks = null;
 
-    public List<Task> getTasks() {
+    public Set<Task> getTasks() {
         if (tasks == null) {
+            if (id == null) {
+                return new HashSet<>();
+            }
             ServiceFactory factory = ServiceFactory.getInstance();
             TaskService service = factory.create(TaskService.class);
-            tasks = service.getByUserId(id);
+            tasks = new HashSet<>(service.getByUserId(id));
         }
         return tasks;
     }
 
-    public List<Profile> getProfiles() {
+    public Set<Profile> getProfiles() {
         if (profiles == null) {
+            if (id == null) {
+                return new HashSet<>();
+            }
             ServiceFactory factory = ServiceFactory.getInstance();
             ProfileService service = factory.create(ProfileService.class);
-            profiles = service.getByUserId(id);
+            profiles = new HashSet<>(service.getByUserId(id));
         }
         return profiles;
     }
@@ -64,6 +71,7 @@ public class User {
         public int getId() {
             return id;
         }
+
     }
 
     public Integer getId() {

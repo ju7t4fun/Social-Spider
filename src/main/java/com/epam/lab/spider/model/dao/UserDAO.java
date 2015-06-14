@@ -7,6 +7,4 @@ import com.epam.lab.spider.model.entity.User;
  */
 public interface UserDAO extends CRUD<User> {
 
-
-
 }
