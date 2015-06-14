@@ -1,4 +1,5 @@
 *.class
+*.gitignore
 .idea
 Social-Spider.iml
 spider.iml
