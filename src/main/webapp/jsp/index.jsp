@@ -48,7 +48,7 @@
 
     <div class="inf">
         <div class="main">
-            <h1 class="loc-t" locres="main.things.about.our.service"><l:resource key="main.things.about.our.service"/></h1>
+            <l:resource key="main.things.about.our.service"><h1>LOKI</h1></l:resource>
             <table>
                 <tr>
                     <th style="width:350px;height:170px;"><img src="img/m1.png" width="100" height="100"></th>
@@ -66,7 +66,7 @@
 
     <div class="discover">
         <div class="main">
-            <h1 class="loc-t" locres="discover.the.features"><l:resource key="discover.the.features"/></h1>
+            <l:resource key="discover.the.features"><h1></h1></l:resource>
             <table>
                 <tr> <th class="tableBorder"><h2>Post/Schedule</h2></th> <th class="tableBorder"><h2>Group Lists</h2></th> <th class="tableBorder"><h2>Saved Campaigns</h2></th> <th class="tableBorder"><h2>Posting Statistics</h2></th> </tr>
                 <tr>
