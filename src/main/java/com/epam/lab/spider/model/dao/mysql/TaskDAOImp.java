@@ -19,9 +19,8 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
             "VALUES (?, ?, ?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE task SET user_id = ?, filter_id = ?, type = ? " +
             "WHERE id = ?";
-   // private static final String SQL_DELETE_QUERY = "DELETE * FROM task WHERE id = ?";
+    // private static final String SQL_DELETE_QUERY = "DELETE * FROM task WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE task SET deleted = true WHERE id = ?";
-
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM task";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM task WHERE id = ?";
     private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT * FROM task WHERE user_id = ?";

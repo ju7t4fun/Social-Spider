@@ -3,7 +3,8 @@ package com.epam.lab.spider.model.entity;
 import com.epam.lab.spider.model.service.ServiceFactory;
 import com.epam.lab.spider.model.service.WallService;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Marian Voronovskyi on 12.06.2015.
@@ -14,8 +15,8 @@ public class Task {
     private Integer userId;
     private Filter filter;
     private Type type;
-    private List<Wall> destination = null;
-    private List<Wall> source = null;
+    private Set<Wall> destination = null;
+    private Set<Wall> source = null;
 
     public enum Type {
         COPY, REPOST, FAVORITE
@@ -53,29 +54,35 @@ public class Task {
         this.type = type;
     }
 
-    public List<Wall> getDestination() {
+    public Set<Wall> getDestination() {
         if (destination == null) {
+            if (id == null) {
+                destination = new HashSet<>();
+            }
             ServiceFactory factory = ServiceFactory.getInstance();
             WallService service = factory.create(WallService.class);
-            destination = service.getDestinationByTaskId(id);
+            destination = new HashSet<>(service.getDestinationByTaskId(id));
         }
         return destination;
     }
 
-    public void setDestination(List<Wall> destination) {
+    public void setDestination(Set<Wall> destination) {
         this.destination = destination;
     }
 
-    public List<Wall> getSource() {
+    public Set<Wall> getSource() {
         if (source == null) {
+            if (id == null) {
+                source = new HashSet<>();
+            }
             ServiceFactory factory = ServiceFactory.getInstance();
             WallService service = factory.create(WallService.class);
-            source = service.getSourceByTaskId(id);
+            source = new HashSet<>(service.getSourceByTaskId(id));
         }
         return source;
     }
 
-    public void setSource(List<Wall> source) {
+    public void setSource(Set<Wall> source) {
         this.source = source;
     }
 

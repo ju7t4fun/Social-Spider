@@ -7,6 +7,7 @@ import java.sql.SQLException;
  * Created by Marian Voronovskyi on 13.06.2015.
  */
 public interface TaskSourceDAO {
+
     boolean insert(Connection connection, int taskId, int wallId) throws SQLException;
 
     boolean delete(Connection connection, int taskId, int wallId) throws SQLException;
