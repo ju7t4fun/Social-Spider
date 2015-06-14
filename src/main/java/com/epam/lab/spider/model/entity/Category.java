@@ -3,7 +3,8 @@ package com.epam.lab.spider.model.entity;
 import com.epam.lab.spider.model.service.ServiceFactory;
 import com.epam.lab.spider.model.service.TaskService;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Sasha on 12.06.2015.
@@ -12,7 +13,7 @@ public class Category {
 
     private Integer id;
     private String name;
-    private List<Task> tasks = null;
+    private Set<Task> tasks = null;
 
     public Integer getId() {
         return id;
@@ -30,17 +31,33 @@ public class Category {
         this.name = name;
     }
 
-    public List<Task> getTasks() {
+    public Set<Task> getTasks() {
         if (tasks == null) {
+            if (id == null)
+                return new HashSet<>();
             ServiceFactory factory = ServiceFactory.getInstance();
             TaskService service = factory.create(TaskService.class);
-            tasks = service.getByCategoryId(id);
+            tasks = new HashSet<>(service.getByCategoryId(id));
         }
         return tasks;
     }
 
-    public void setTasks(List<Task> tasks) {
+    public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public boolean addTask(Task task) {
+        if (tasks == null) {
+            tasks = getTasks();
+        }
+        return tasks.add(task);
+    }
+
+    public boolean removeTask(Task task) {
+        if (tasks == null) {
+            tasks = getTasks();
+        }
+        return tasks.remove(task);
     }
 
     @Override

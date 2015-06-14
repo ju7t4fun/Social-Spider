@@ -10,13 +10,14 @@ import com.epam.lab.spider.model.entity.Task;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Boyarsky Vitaliy on 12.06.2015.
  */
 public class CategoryService implements BaseService<Category> {
 
-    private DAOFactory factory = DAOFactory.getInstance();
+    private static final DAOFactory factory = DAOFactory.getInstance();
     private CategoryDAO cdao = factory.create(CategoryDAO.class);
     private CategoryHasTaskDAO chtdao = factory.create(CategoryHasTaskDAO.class);
 
@@ -28,9 +29,9 @@ public class CategoryService implements BaseService<Category> {
             try {
                 connection.setAutoCommit(false);
                 res = cdao.insert(connection, category);
-                List<Task> tasks = category.getTasks();
+                Set<Task> tasks = category.getTasks();
                 for (Task task : tasks) {
-                    chtdao.insert(connection, category.getId(), task.getId());
+                    res = res && chtdao.insert(connection, category.getId(), task.getId());
                 }
                 connection.commit();
             } catch (SQLException e) {
@@ -56,7 +57,10 @@ public class CategoryService implements BaseService<Category> {
             try {
                 connection.setAutoCommit(false);
                 res = cdao.update(connection, id, category);
-
+                res = res && chtdao.deleteByCategoryId(connection, id);
+                for (Task task : category.getTasks()) {
+                    chtdao.insert(connection, id, task.getId());
+                }
                 connection.commit();
             } catch (SQLException e) {
                 connection.rollback();

@@ -22,14 +22,16 @@ public class CategoryDAOImp extends BaseDAO implements CategoryDAO {
 
     @Override
     public boolean insert(Connection connection, Category category) throws SQLException {
-        boolean res = changeQuery(connection, SQL_INSERT_QUERY, category.getName());
+        boolean res = changeQuery(connection, SQL_INSERT_QUERY,
+                category.getName());
         category.setId(getLastInsertId(connection));
         return res;
     }
 
     @Override
     public boolean update(Connection connection, int id, Category category) throws SQLException {
-        return changeQuery(connection, SQL_UPDATE_QUERY, category.getName(), id);
+        return changeQuery(connection, SQL_UPDATE_QUERY,
+                category.getName(), id);
     }
 
     @Override
