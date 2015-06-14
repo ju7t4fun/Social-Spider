@@ -72,6 +72,24 @@ public class UserService implements BaseService<User> {
         return null;
     }
 
+    public User getByEmailAndPass(String email, String password) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return udao.getByEmailAndPass(connection, email, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public User getByEmail(String email) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return udao.getByEmail(connection, email);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @Override
     public User getById(int id) {
         try (Connection connection = PoolConnection.getConnection()) {

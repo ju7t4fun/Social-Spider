@@ -1,5 +1,6 @@
 package com.epam.lab.spider.model.entity;
 
+import com.epam.lab.spider.controller.utils.validation.annotation.*;
 import com.epam.lab.spider.model.service.ProfileService;
 import com.epam.lab.spider.model.service.ServiceFactory;
 import com.epam.lab.spider.model.service.TaskService;
@@ -8,14 +9,21 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+
+
 /**
  * Created by Boyarsky Vitaliy on 12.06.2015.
  */
 public class User {
 
     private Integer id;
+    @NotNull(message = "Name can not be null")
+    @Size(min = 4, max = 16)
     private String name;
     private String surname;
+    @NotNull(message = "Email can not be null")
+    @Size(max = 255)
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$",message = "Fail Email format")
     private String email;
     private String password;
     private Date createTime;

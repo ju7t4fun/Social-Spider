@@ -84,6 +84,15 @@ public class ProfileService implements BaseService<Profile> {
         return null;
     }
 
+    public Profile getByVkId(int vkId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getByVkId(connection, vkId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public List<Profile> getByUserId(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
             return pdao.getByUserId(connection, id);

@@ -21,6 +21,9 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
     //private static final String SQL_DELETE_QUERY = "DELETE FROM user WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE user SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM user";
+    private static final String SQL_VALIDATE_BY_EMAIL_AND_PASSWORD_QUERY = "SELECT * FROM user WHERE email=? " +
+            " AND password=?";
+    private static final String SQL_GET_BY_EMAIL_QUERY = "SELECT * FROM user WHERE email=? ";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM user WHERE id = ?";
 
     @Override
@@ -81,9 +84,17 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
         return select(connection, SQL_GET_ALL_QUERY);
     }
 
+
     @Override
     public User getById(Connection connection, int id) throws SQLException {
         return first(select(connection, SQL_GET_BY_ID_QUERY, id));
     }
 
+    public User getByEmail(Connection connection, String email) throws SQLException {
+        return first(select(connection, SQL_GET_BY_EMAIL_QUERY, email));
+    }
+
+    public User getByEmailAndPass(Connection connection, String email, String password) throws SQLException {
+        return first(select(connection, SQL_VALIDATE_BY_EMAIL_AND_PASSWORD_QUERY, email, password));
+    }
 }
