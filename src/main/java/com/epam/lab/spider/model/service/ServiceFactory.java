@@ -31,7 +31,7 @@ public class ServiceFactory {
         return instance;
     }
 
-    public <T> T create(Class<T> serviceClass) {
+    public <T extends BaseService> T create(Class<T> serviceClass) {
         return (T) services.get(serviceClass);
     }
 
