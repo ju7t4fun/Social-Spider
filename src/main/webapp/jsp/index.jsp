@@ -142,7 +142,13 @@
                         var myJsonString = JSON.stringify(names);
                         $.post( "controller?action=locale&lang=".concat(lang),{ names:myJsonString})
                                 .done(function( data ) {
-                                    alert( "Data Loaded: " + data );
+                                    var map = data;
+//                                    for (var key in map) {
+//                                        console.log(key + ': ' + map[key]);
+//                                    }
+                                    $(".loc-t").each(function(){
+                                      $(this).text(map[$(this).attr("locres")]);
+                                    })
                                 });
 
                         //alert(names)

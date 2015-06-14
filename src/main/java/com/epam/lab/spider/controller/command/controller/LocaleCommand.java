@@ -2,8 +2,10 @@ package com.epam.lab.spider.controller.command.controller;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+
+import com.epam.lab.spider.controller.utils.UTF8;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -34,7 +37,7 @@ public class LocaleCommand implements ActionCommand {
 
         String namesJson = request.getParameter("names");
         //request.
-        System.out.println(namesJson);
+        //System.out.println(namesJson);
 
 
 
@@ -45,21 +48,23 @@ public class LocaleCommand implements ActionCommand {
             Object obj;
             obj = parser.parse(namesJson);
             JSONArray jsonArray = (JSONArray) obj;
-            for (int i = 0; i <jsonArray.length() ; i++) {
-                String name = jsonArray.getString(i);
-                String value = bundle.getString(name);
+            for (int i = 0; i <jsonArray.size() ; i++) {
+                String name = (String) jsonArray.get(i);
+
+                String value =  UTF8.encoding(bundle.getString(name));
                 resultJson.put(name,value);
             }
         } catch (ParseException|ClassCastException e) {
             e.printStackTrace();
         }
 
-
-
+        String result = resultJson.toString();
+        response.setContentType("application/json;charset=UTF-8");
         response.addCookie(cookie);
         //response.sendRedirect("/");
-        response.getOutputStream().print(resultJson.toString());
-        response.flushBuffer();
+        PrintWriter out = response.getWriter();
+        out.print(result);
+        out.flush();
     }
 
 }
