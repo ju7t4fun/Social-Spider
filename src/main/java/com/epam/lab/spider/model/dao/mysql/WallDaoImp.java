@@ -26,6 +26,7 @@ public class WallDaoImp extends BaseDAO implements WallDao {
             "task_destination.wall_id = wall.id WHERE task_id = ?";
     private static final String SQL_GET_SOURCE_BY_TASK_ID_QUERY = "SELECT * FROM wall JOIN task_source ON " +
             "task_source.wall_id = wall.id WHERE task_id = ?";
+    private static final String SQL_DELETED_BY_PROFILE_ID_QUERY = "UPDATE wall SET delete = true WHERE profile_id = ?";
 
     @Override
     public boolean insert(Connection connection, Wall wall) throws SQLException {
@@ -89,6 +90,11 @@ public class WallDaoImp extends BaseDAO implements WallDao {
     @Override
     public List<Wall> getSourceByTaskId(Connection connection, int id) throws SQLException {
         return select(connection, SQL_GET_SOURCE_BY_TASK_ID_QUERY, id);
+    }
+
+    @Override
+    public boolean deleteByProfileId(Connection connection, int id) throws SQLException {
+        return changeQuery(connection, SQL_DELETED_BY_PROFILE_ID_QUERY, id);
     }
 
 }

@@ -15,4 +15,6 @@ public interface WallDao extends CRUD<Wall> {
 
     List<Wall> getSourceByTaskId(Connection connection, int id) throws SQLException;
 
+    boolean deleteByProfileId(Connection connection, int id) throws SQLException;
+
 }
