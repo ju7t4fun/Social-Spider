@@ -25,8 +25,7 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
 
     @Override
     public boolean insert(Connection connection, User user) throws SQLException {
-        System.out.println(user);
-        return changeQuery(connection, SQL_INSERT_QUERY,
+        boolean res = changeQuery(connection, SQL_INSERT_QUERY,
                 user.getName(),
                 user.getSurname(),
                 user.getEmail(),
@@ -34,6 +33,8 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
                 user.getRole().getId(),
                 user.getDeleted(),
                 user.getConfirm());
+        user.setId(getLastInsertId(connection));
+        return res;
     }
 
     @Override
