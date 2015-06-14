@@ -4,6 +4,7 @@ package com.epam.lab.spider.model.entity;
  * Created by Marian Voronovskyi on 12.06.2015.
  */
 public class PostMetadata {
+
     private Integer id;
     private Integer like;
     private Integer repost;
@@ -33,12 +34,22 @@ public class PostMetadata {
         this.repost = repost;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public String toString() {
         return "PostMetadata{" +
                 "id=" + id +
                 ", like=" + like +
                 ", repost=" + repost +
+                ", deleted=" + deleted +
                 '}';
     }
+
 }
