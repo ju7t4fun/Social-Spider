@@ -24,6 +24,9 @@
   <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="${pageContext.request.contextPath}js/language.js"></script>
+
 </head>
 
 <body class="login-img3-body">
