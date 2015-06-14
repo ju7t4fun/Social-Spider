@@ -23,9 +23,9 @@
     <!-- Custom styles -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
-    <script src="${pageContext.request.contextPath}js/language.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}js/language.js"></script>
 
 </head>
 <body>
@@ -130,33 +130,6 @@
                 <button class="language-button-logic" change="ua" style="background-color:#fed189; border: 2px solid #fed189;border-radius:10px;">ua</button>
                 <button class="language-button-logic" change="en" style="background-color:#00a0df; border: 2px solid #00a0df;border-radius:10px;">en</button>
             </div>
-            <script>
-                $( document ).ready(function() {
-                    $(".language-button-logic").click(function(){
-                        var lang = $(this).attr("change");
-                        var names =[];i=0;
-                        $(".loc-t").each(function(){
-                            names[i++]=$(this).attr("locres")
-                        });
-
-                        var myJsonString = JSON.stringify(names);
-                        $.post( "controller?action=locale&lang=".concat(lang),{ names:myJsonString})
-                                .done(function( data ) {
-                                    var map = data;
-//                                    for (var key in map) {
-//                                        console.log(key + ': ' + map[key]);
-//                                    }
-                                    $(".loc-t").each(function(){
-                                      $(this).text(map[$(this).attr("locres")]);
-                                    })
-                                });
-
-                        //alert(names)
-                        //language(lang);
-                    })
-                });
-
-            </script>
             <div style="margin-top:-20px;">
                 <h4>Social-Spider Corp. </h4>
                 <h4><p>7 X Evo Ave Rev3 - Victoria 70913 EU</p>
