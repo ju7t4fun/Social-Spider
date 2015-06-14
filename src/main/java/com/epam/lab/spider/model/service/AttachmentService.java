@@ -18,9 +18,9 @@ public class AttachmentService implements BaseService<Attachment> {
     private AttachmentDAO adao = factory.create(AttachmentDAO.class);
 
     @Override
-    public boolean insert(Attachment a) {
+    public boolean insert(Attachment attachment) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return adao.insert(connection, a);
+            return adao.insert(connection, attachment);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -28,9 +28,9 @@ public class AttachmentService implements BaseService<Attachment> {
     }
 
     @Override
-    public boolean update(int id, Attachment a) {
+    public boolean update(int id, Attachment attachment) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return adao.update(connection, id, a);
+            return adao.update(connection, id, attachment);
         } catch (SQLException e) {
             e.printStackTrace();
         }
