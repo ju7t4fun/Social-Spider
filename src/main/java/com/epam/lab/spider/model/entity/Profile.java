@@ -12,6 +12,7 @@ public class Profile {
     private Integer vkId;
     private String accessToken;
     private Date extTime;
+    private Boolean deleted;
 
     public Integer getId() {
         return id;
@@ -53,14 +54,23 @@ public class Profile {
         this.extTime = extTime;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public String toString() {
-        return "VkProfile{" +
+        return "Profile{" +
                 "id=" + id +
                 ", userId=" + userId +
                 ", vkId=" + vkId +
                 ", accessToken='" + accessToken + '\'' +
                 ", extTime=" + extTime +
+                ", deleted=" + deleted +
                 '}';
     }
 
