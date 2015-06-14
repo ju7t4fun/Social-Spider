@@ -1,21 +1,19 @@
 package com.epam.lab.spider.model.tag;
 
 import com.epam.lab.spider.controller.utils.UTF8;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.*;
+
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyTagSupport;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.ByteArrayInputStream;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ResourceBundle;
@@ -24,13 +22,10 @@ import java.util.ResourceBundle;
  * Created by Boyarsky Vitaliy on 08.06.2015.
  */
 public class LocaleTag extends BodyTagSupport {
-    static DocumentBuilderFactory factory;
-    static TransformerFactory tf = TransformerFactory.newInstance();
-    static{
-        factory =
-                DocumentBuilderFactory.newInstance();
 
-    }
+//    static DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    static TransformerFactory tf = TransformerFactory.newInstance();
+
 
     private String key;
 
@@ -79,38 +74,35 @@ public class LocaleTag extends BodyTagSupport {
             String body = this.getBodyContent().getString();
             try {
                 //if(body!=null) System.out.println(body);
-                DocumentBuilder builder = factory.newDocumentBuilder();
-                ByteArrayInputStream input =  new ByteArrayInputStream(
-                        body.getBytes("UTF-8"));
-                Document doc = builder.parse(input);
-                Element root = doc.getDocumentElement();
 
 
-                boolean placeholder = root.getNodeName().equals("input");
+
+                Document doc = Jsoup.parse(body);
+                Element root = doc.body();
+
+                boolean placeholder = root.tagName().equals("input");
                 if(placeholder){
-                    root.setAttribute("placeholder",value);
-                }else root.setTextContent(value);
+                    root.attr("placeholder",value);
+                    //root.setAttribute(,value);
+                }else root.text(value);
 
                 String localeClass = placeholder?"loc-p":"loc-t";
-                root.setAttribute("locres",key);
-                String classes = root.getAttribute("class");
-                if(classes!=null && classes.isEmpty()){
-                    classes = localeClass;
-                }else{
-                    classes+= " "+localeClass;
-                }root.setAttribute("class",classes);
+                root.attr("locres", key);
+                root.addClass(localeClass);
 
+
+                String output =       doc.outerHtml();
                 //System.out.println(root.getNodeName());
 
-                Transformer transformer = tf.newTransformer();
-                transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-                StringWriter writer = new StringWriter();
-                transformer.transform(new DOMSource(doc), new StreamResult(writer));
-                String output = writer.getBuffer().toString();
+//                Transformer transformer = tf.newTransformer();
+//                transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+//                StringWriter writer = new StringWriter();
+//                transformer.transform(new DOMSource(doc), new StreamResult(writer));
+//                String output = writer.getBuffer().toString();
 
                 safeWrite(output);
 
-            } catch (ParserConfigurationException| SAXException | IOException|NullPointerException|TransformerException e) {
+            } catch (NullPointerException e) {
                 e.printStackTrace();
                 safeWrite(simpleFormat(key,value));
             }

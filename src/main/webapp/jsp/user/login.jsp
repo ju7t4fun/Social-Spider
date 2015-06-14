@@ -41,11 +41,11 @@
             ${loginMessage}
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
-                <input type="email" value="${login}" name="email" class="form-control" placeholder="<l:resource key="login.email"/>" style="border-color:#ffffff;" required/>
+                <l:resource key="login.email"><input type="email" value="${login}" name="email" class="form-control" placeholder="" style="border-color:#ffffff;" required/></l:resource>
             </div>
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                <input type="password" name="password" class="form-control" placeholder="<l:resource key="login.password"/>" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" required/>
+                <l:resource key="login.password"><input type="password" name="password" class="form-control" placeholder="" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" required/></l:resource>
             </div>
             <label class="checkbox">
                 <input type="checkbox" value="remember-me"> <l:resource key="login.remember"/>
