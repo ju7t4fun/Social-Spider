@@ -13,22 +13,25 @@ import java.util.List;
  * Created by Marian Voronovskyi on 12.06.2015.
  */
 public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
-    private static final String SQL_INSERT_QUERY = "INSERT INTO owner (vk_id, name, domain) " +
+
+    private static final String SQL_INSERT_QUERY = "INSERT INTO owner (vk_id, name, domain, deleted) " +
             "VALUES (?, ?, ?)";
-    private static final String SQL_UPDATE_QUERY = "UPDATE owner SET vk_id = ?, name = ?, domain = ? " +
+    private static final String SQL_UPDATE_QUERY = "UPDATE owner SET vk_id = ?, name = ?, domain = ?, deleted = ? " +
             "WHERE id = ?";
-   // private static final String SQL_DELETE_QUERY = "DELETE * FROM owner WHERE id = ?";
+    // private static final String SQL_DELETE_QUERY = "DELETE * FROM owner WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE owner SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM owner";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM owner WHERE id = ?";
 
-
     @Override
     public boolean insert(Connection connection, Owner owner) throws SQLException {
-        return changeQuery(connection, SQL_INSERT_QUERY,
+        boolean res = changeQuery(connection, SQL_INSERT_QUERY,
                 owner.getVk_id(),
                 owner.getName(),
-                owner.getDomain());
+                owner.getDomain(),
+                owner.getDeleted());
+        owner.setId(getLastInsertId(connection));
+        return res;
     }
 
     @Override
@@ -37,6 +40,7 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
                 owner.getVk_id(),
                 owner.getName(),
                 owner.getDomain(),
+                owner.getDeleted(),
                 id);
     }
 
@@ -56,6 +60,7 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
             owner.setVk_id(rs.getInt("vk_id"));
             owner.setName(rs.getString("name"));
             owner.setDomain((rs.getString("domain")));
+            owner.setDeleted(rs.getBoolean("deleted"));
             ownerList.add(owner);
         }
         return ownerList;
@@ -70,4 +75,5 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
     public Owner getById(Connection connection, int id) throws SQLException {
         return first(select(connection, SQL_GET_BY_ID_QUERY, id));
     }
+
 }
