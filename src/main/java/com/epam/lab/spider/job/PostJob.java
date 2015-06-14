@@ -22,6 +22,10 @@ public class PostJob implements Job {
         System.out.println("Hard Job at " + dateFormat.format(date)+" next hard job at "+dateFormat.format(nextDate));
 
 
+
+
+
+
         SimpleTrigger trigger = (SimpleTrigger) newTrigger()
                 .startAt(nextDate) // some Date
                 .forJob(jobExecutionContext.getJobDetail()) // identify job with name, group strings
