@@ -1,4 +1,4 @@
-<div class="footer dark-bg" style="padding-top:30px;padding-bottom:30px;line-height:25px;border-bottom: 0;">
+<div class="footer dark-bg" style="padding-top:30px;padding-bottom:30px;line-height:25px;border-bottom: 0;background: rgba(2, 10, 29, 1)">
   <div class="main">
     <div style="margin-left:750px;">
       <button class="language-button-logic" change="ua" style="background-color:#fed189; border: 2px solid #fed189;border-radius:10px;">ua</button>
