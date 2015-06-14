@@ -24,22 +24,14 @@ public class PoolConnection {
             dataSource = init();
         }
         return dataSource.getConnection();
-        //return DriverManager.getConnection("jdbc:mysql://localhost:3306/vk_spider", "dzyuba", "1111");
+//        return DriverManager.getConnection("jdbc:mysql://localhost:3306/vk_spider", "root", "1111");
     }
 
     private static DataSource init() {
         DataSource ds = null;
         try {
-            Context initCtx = new InitialContext();
-            Context envCtx = (Context) initCtx.lookup("java:comp/env");
-
-            // Look up our data source
-             ds = (DataSource) envCtx.lookup("jdbc/vk_spider");
-
-            // Allocate and use a connection from the pool
-
-            /*InitialContext ctx = new InitialContext();
-            ds = (DataSource) ctx.lookup("java:comp/env/jdbc/vk_spider");*/
+            InitialContext ctx = new InitialContext();
+            ds = (DataSource) ctx.lookup("java:comp/env/jdbc/vk_spider");
         } catch (NamingException e) {
             e.printStackTrace();
         }
