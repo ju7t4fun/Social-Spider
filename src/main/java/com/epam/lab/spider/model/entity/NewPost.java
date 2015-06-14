@@ -14,10 +14,11 @@ public class NewPost {
     private Date deleteTime;
     private PostMetadata metadata;
     private State state = State.CREATED;
-    private Boolean deleted;
+    private Boolean deleted = false;
 
     public enum State {
-        CREATED(1), POSTED(2), REMOVED(3);
+
+        CREATED(1), POSTED(2), DELETED(3);
 
         private int id;
 
@@ -117,4 +118,5 @@ public class NewPost {
                 ", deleted=" + deleted +
                 '}';
     }
+
 }
