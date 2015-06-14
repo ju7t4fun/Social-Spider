@@ -32,17 +32,12 @@ public class ActivateCommand implements ActionCommand {
         String hash = request.getParameter("hash");
 
         UserService serv = new UserService();
-        User currUser = null;
-        List<User> users = serv.getAll();
-        if (users != null) {
-            for (int i = 0; i < users.size(); ++i) {
-                if (users.get(i).getEmail().equalsIgnoreCase(email) && !users.get(i).getDeleted()) {
-                    currUser = users.get(i);
-                }
-            }
-        }
+        User currUser =  null;
 
-        if (currUser!=null) {
+        currUser = serv.getByEmail(email);
+
+
+        if (currUser!=null && !currUser.getDeleted()) {
 
             Date createDate = currUser.getCreateTime();
             String password = currUser.getPassword();
@@ -55,10 +50,6 @@ public class ActivateCommand implements ActionCommand {
             expireDate = new java.sql.Timestamp(c.getTime().getTime());
             java.sql.Timestamp currDate = new java.sql.Timestamp(new Date().getTime());
             HashSHA hashHelper = new HashSHA();
-            System.out.println("Hash from uri: " + hash);
-            System.out.println("hash from bd" + hashHelper.hash(email+password));
-            System.out.println(currDate);
-            System.out.println(expireDate);
 
             if (hash.equals(hashHelper.hash(email+password)) && currDate.before(expireDate) ) {
 

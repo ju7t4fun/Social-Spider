@@ -98,6 +98,7 @@ public class User extends Model {
     public static final String PHONE = "phone";
     public static final String FOUND_WITH = "found_with";
 
+
     private List<University> universities;
     private List<School> schools;
     private List<Relative> relatives;

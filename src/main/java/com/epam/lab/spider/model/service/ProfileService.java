@@ -1,8 +1,9 @@
 package com.epam.lab.spider.model.service;
 
 import com.epam.lab.spider.model.PoolConnection;
-import com.epam.lab.spider.model.dao.ProfileDAO;
 import com.epam.lab.spider.model.dao.DAOFactory;
+import com.epam.lab.spider.model.dao.ProfileDAO;
+import com.epam.lab.spider.model.dao.WallDao;
 import com.epam.lab.spider.model.entity.Profile;
 
 import java.sql.Connection;
@@ -16,47 +17,26 @@ public class ProfileService implements BaseService<Profile> {
 
     private DAOFactory factory = DAOFactory.getInstance();
     private ProfileDAO pdao = factory.create(ProfileDAO.class);
+    private WallDao wdao = factory.create(WallDao.class);
 
     @Override
     public boolean insert(Profile profile) {
-        boolean res = false;
-        try {
-            Connection connection = PoolConnection.getConnection();
-            try {
-                connection.setAutoCommit(false);
-                res = pdao.insert(connection, profile);
-                connection.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-            }
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.insert(connection, profile);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return res;
+        return false;
     }
 
     @Override
     public boolean update(int id, Profile profile) {
-        boolean res = false;
-        try {
-            Connection connection = PoolConnection.getConnection();
-            try {
-                connection.setAutoCommit(false);
-                res = pdao.update(connection, id, profile);
-                connection.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-            }
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.update(connection, id, profile);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return res;
+        return false;
     }
 
     @Override
@@ -66,13 +46,17 @@ public class ProfileService implements BaseService<Profile> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
+                wdao.deleteByProfileId(connection, id);
                 res = pdao.delete(connection, id);
                 connection.commit();
             } catch (SQLException e) {
-                e.printStackTrace();
                 connection.rollback();
+                throw e;
             } finally {
-                connection.setAutoCommit(true);
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -86,14 +70,23 @@ public class ProfileService implements BaseService<Profile> {
             return pdao.getAll(connection);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     @Override
     public Profile getById(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
             return pdao.getById(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Profile getByVkId(int vkId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getByVkId(connection, vkId);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -105,7 +98,7 @@ public class ProfileService implements BaseService<Profile> {
             return pdao.getByUserId(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 }

@@ -24,6 +24,10 @@
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
 
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}js/language.js"></script>
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
     <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
@@ -41,11 +45,11 @@
             ${loginMessage}
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
-                <input type="email" value="${login}" name="email" class="form-control" placeholder="<l:resource key="login.email"/>" style="border-color:#ffffff;" required/>
+                <l:resource key="login.email"><input type="email" value="${login}" name="email" class="form-control" placeholder="" style="border-color:#ffffff;" required/></l:resource>
             </div>
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                <input type="password" name="password" class="form-control" placeholder="<l:resource key="login.password"/>" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" required/>
+                <l:resource key="login.password"><input type="password" name="password" class="form-control" placeholder="" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" required/></l:resource>
             </div>
             <label class="checkbox">
                 <input type="checkbox" value="remember-me"> <l:resource key="login.remember"/>
@@ -64,19 +68,21 @@
 
 </div>
 
+<jsp:include page="../pagecontent/simple_footer.jsp" />
+
 <!-- javascripts -->
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <!-- nice scroll -->
-<script src="js/jquery.scrollTo.min.js"></script>
-<script src="js/jquery.nicescroll.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
 <!-- jquery validate js -->
-<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+<script type="${pageContext.request.contextPath}/text/javascript" src="js/jquery.validate.min.js"></script>
 
 <!-- custom form validation script for this page-->
-<script src="js/form-validation-script.js"></script>
+<script src="${pageContext.request.contextPath}/js/form-validation-script.js"></script>
 <!--custome script for all page-->
-<script src="js/scripts.js"></script>
+<script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 
 </body>
 </html>

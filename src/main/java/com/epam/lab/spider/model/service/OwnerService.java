@@ -1,8 +1,8 @@
 package com.epam.lab.spider.model.service;
 
 import com.epam.lab.spider.model.PoolConnection;
-import com.epam.lab.spider.model.dao.OwnerDAO;
 import com.epam.lab.spider.model.dao.DAOFactory;
+import com.epam.lab.spider.model.dao.OwnerDAO;
 import com.epam.lab.spider.model.entity.Owner;
 
 import java.sql.Connection;
@@ -19,65 +19,32 @@ public class OwnerService implements BaseService<Owner> {
 
     @Override
     public boolean insert(Owner owner) {
-        boolean res = false;
-        try {
-            Connection connection = PoolConnection.getConnection();
-            try {
-                connection.setAutoCommit(false);
-                res = odao.insert(connection, owner);
-                connection.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-            }
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.insert(connection, owner);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return res;
+        return false;
     }
 
     @Override
     public boolean update(int id, Owner owner) {
-        boolean res = false;
-        try {
-            Connection connection = PoolConnection.getConnection();
-            try {
-                connection.setAutoCommit(false);
-                res = odao.update(connection, id, owner);
-                connection.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-            }
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.update(connection, id, owner);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return res;
+        return false;
     }
 
     @Override
     public boolean delete(int id) {
-        boolean res = false;
-        try {
-            Connection connection = PoolConnection.getConnection();
-            try {
-                connection.setAutoCommit(false);
-                res = odao.delete(connection, id);
-                connection.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-            }
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.delete(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return res;
+        return false;
     }
 
     @Override
@@ -86,8 +53,8 @@ public class OwnerService implements BaseService<Owner> {
             return odao.getAll(connection);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -96,7 +63,7 @@ public class OwnerService implements BaseService<Owner> {
             return odao.getById(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 }

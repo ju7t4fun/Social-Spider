@@ -8,16 +8,9 @@ public class Filter {
     private Integer id;
     private Integer likes;
     private Integer reposts;
-    private Long min_time;
-    private Long max_time;
-
-    public Integer getLikes() {
-        return likes;
-    }
-
-    public void setLikes(Integer likes) {
-        this.likes = likes;
-    }
+    private Long minTime;
+    private Long maxTime;
+    private Boolean deleted = false;
 
     public Integer getId() {
         return id;
@@ -25,6 +18,14 @@ public class Filter {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
     }
 
     public Integer getReposts() {
@@ -35,20 +36,28 @@ public class Filter {
         this.reposts = reposts;
     }
 
-    public Long getMin_time() {
-        return min_time;
+    public Long getMinTime() {
+        return minTime;
     }
 
-    public void setMin_time(Long min_time) {
-        this.min_time = min_time;
+    public void setMinTime(Long minTime) {
+        this.minTime = minTime;
     }
 
-    public Long getMax_time() {
-        return max_time;
+    public Long getMaxTime() {
+        return maxTime;
     }
 
-    public void setMax_time(Long max_time) {
-        this.max_time = max_time;
+    public void setMaxTime(Long maxTime) {
+        this.maxTime = maxTime;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override
@@ -57,8 +66,9 @@ public class Filter {
                 "id=" + id +
                 ", likes=" + likes +
                 ", reposts=" + reposts +
-                ", min_time=" + min_time +
-                ", max_time=" + max_time +
+                ", minTime=" + minTime +
+                ", maxTime=" + maxTime +
+                ", deleted=" + deleted +
                 '}';
     }
 }

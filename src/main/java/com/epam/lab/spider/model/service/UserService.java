@@ -1,8 +1,8 @@
 package com.epam.lab.spider.model.service;
 
 import com.epam.lab.spider.model.PoolConnection;
-import com.epam.lab.spider.model.dao.UserDAO;
 import com.epam.lab.spider.model.dao.DAOFactory;
+import com.epam.lab.spider.model.dao.UserDAO;
 import com.epam.lab.spider.model.entity.User;
 
 import java.sql.Connection;
@@ -19,44 +19,22 @@ public class UserService implements BaseService<User> {
 
     @Override
     public boolean insert(User user) {
-        boolean res = false;
-        try {
-            Connection connection = PoolConnection.getConnection();
-            try {
-                connection.setAutoCommit(false);
-                res = udao.insert(connection, user);
-                connection.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-            }
+        try (Connection connection = PoolConnection.getConnection()) {
+            return udao.insert(connection, user);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return res;
+        return false;
     }
 
     @Override
     public boolean update(int id, User user) {
-        boolean res = false;
-        try {
-            Connection connection = PoolConnection.getConnection();
-            try {
-                connection.setAutoCommit(false);
-                res = udao.update(connection, id, user);
-                connection.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-            }
+        try (Connection connection = PoolConnection.getConnection()) {
+            return udao.update(connection, id, user);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return res;
+        return false;
     }
 
     @Override
@@ -66,13 +44,17 @@ public class UserService implements BaseService<User> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
+
                 res = udao.delete(connection, id);
                 connection.commit();
             } catch (SQLException e) {
-                e.printStackTrace();
                 connection.rollback();
+                throw e;
             } finally {
-                connection.setAutoCommit(true);
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -86,6 +68,24 @@ public class UserService implements BaseService<User> {
             return udao.getAll(connection);
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    public User getByEmailAndPass(String email, String password) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return udao.getByEmailAndPass(connection, email, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public User getByEmail(String email) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return udao.getByEmail(connection, email);
+        } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -96,8 +96,8 @@ public class UserService implements BaseService<User> {
             return udao.getById(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
 }

@@ -3,6 +3,7 @@ package com.epam.lab.spider.model.entity;
 import com.epam.lab.spider.model.service.AttachmentService;
 import com.epam.lab.spider.model.service.ServiceFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +26,9 @@ public class Post {
 
     public List<Attachment> getAttachments() {
         if (attachments == null) {
+            if (id == null) {
+                attachments = new ArrayList<>();
+            }
             ServiceFactory factory = ServiceFactory.getInstance();
             AttachmentService service = factory.create(AttachmentService.class);
             attachments = service.getByPostId(id);

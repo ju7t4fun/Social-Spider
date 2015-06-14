@@ -8,7 +8,8 @@ import java.sql.SQLException;
 /**
  * Created by Marian Voronovskyi on 13.06.2015.
  */
-public class TaskSourceDAOImp extends BaseDAO implements TaskSourceDAO{
+public class TaskSourceDAOImp extends BaseDAO implements TaskSourceDAO {
+
     private static final String SQL_INSERT_QUERY = "INSERT INTO task_source (task_id, wall_id) " +
             "VALUES (?, ?)";
     private static final String SQL_DELETE_QUERY = "DELETE FROM task_source WHERE task_id = ? AND " +

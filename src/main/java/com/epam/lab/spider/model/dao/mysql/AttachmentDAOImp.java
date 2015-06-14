@@ -14,11 +14,10 @@ import java.util.List;
  */
 public class AttachmentDAOImp extends BaseDAO implements AttachmentDAO {
 
-    private static final String SQL_INSERT_QUERY = "INSERT INTO attachment (url, post_id, type_id, deleted)" +
-            "VALUES (?, ?, ?, ?)";
+    private static final String SQL_INSERT_QUERY = "INSERT INTO attachment (url, post_id, type_id, deleted) VALUES " +
+            "(?, ?, ?, ?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE attachment SET url = ?, post_id = ?, type_id = ?, deleted " +
-            "= ?" +
-            " WHERE id = ?";
+            "= ?  WHERE id = ?";
     //private static final String SQL_DELETE_QUERY = "DELETE FROM attachment WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE attachment SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM attachment";

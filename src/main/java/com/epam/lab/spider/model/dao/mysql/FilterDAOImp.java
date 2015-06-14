@@ -13,24 +13,26 @@ import java.util.List;
  * Created by Marian Voronovskyi on 12.06.2015.
  */
 public class FilterDAOImp extends BaseDAO implements FilterDAO {
-    private static final String SQL_INSERT_QUERY = "INSERT INTO filter (likes, reposts, min_time, max_time) " +
+
+    private static final String SQL_INSERT_QUERY = "INSERT INTO filter (likes, reposts, min_time, max_time, deleted) " +
             "VALUES (?, ?, ?, ?)";
-    private static final String SQL_UPDATE_QUERY = "UPDATE filter SET likes = ?, reposts = ?, min_time = ?, max_time = ? " +
-            "WHERE id = ?";
+    private static final String SQL_UPDATE_QUERY = "UPDATE filter SET likes = ?, reposts = ?, min_time = ?, max_time " +
+            "= ?, deleted = ? WHERE id = ?";
     //private static final String SQL_DELETE_QUERY = "DELETE * FROM filter WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE filter SET deleted = true WHERE id = ?";
-
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM filter";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM filter WHERE id = ?";
 
-
     @Override
     public boolean insert(Connection connection, Filter filter) throws SQLException {
-        return changeQuery(connection, SQL_INSERT_QUERY,
+        boolean res = changeQuery(connection, SQL_INSERT_QUERY,
                 filter.getLikes(),
                 filter.getReposts(),
-                filter.getMin_time(),
-                filter.getMax_time());
+                filter.getMinTime(),
+                filter.getMaxTime(),
+                filter.getDeleted());
+        filter.setId(getLastInsertId(connection));
+        return res;
     }
 
     @Override
@@ -38,8 +40,9 @@ public class FilterDAOImp extends BaseDAO implements FilterDAO {
         return changeQuery(connection, SQL_UPDATE_QUERY,
                 filter.getLikes(),
                 filter.getReposts(),
-                filter.getMin_time(),
-                filter.getMax_time(),
+                filter.getMinTime(),
+                filter.getMaxTime(),
+                filter.getDeleted(),
                 id);
     }
 
@@ -58,8 +61,9 @@ public class FilterDAOImp extends BaseDAO implements FilterDAO {
             filter.setId(rs.getInt("id"));
             filter.setLikes(rs.getInt("likes"));
             filter.setReposts(rs.getInt("reports"));
-            filter.setMin_time(rs.getLong("min_time"));
-            filter.setMax_time(rs.getLong("max_time"));
+            filter.setMinTime(rs.getLong("min_time"));
+            filter.setMaxTime(rs.getLong("max_time"));
+            filter.setDeleted(rs.getBoolean("deleted"));
             filterList.add(filter);
         }
         return filterList;

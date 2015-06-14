@@ -35,21 +35,10 @@ public class RegisterCommand implements ActionCommand {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        boolean existsInBD = false;
+        UserService userServ = new UserService();
+        User currUser = userServ.getByEmail(email);
 
-        UserService serv = new UserService();
-        User currUser = null;
-        List<User> users = serv.getAll();
-        if (users!=null) {
-            for (int i = 0; i < users.size(); ++i) {
-                if (users.get(i).getEmail().equalsIgnoreCase(email) && !users.get(i).getDeleted()) {
-                    currUser = users.get(i);
-                    existsInBD = true;
-                }
-            }
-        }
-
-        if (existsInBD) {
+        if (currUser!=null && !currUser.getDeleted()) {
             request.getSession().setAttribute("registerMessage","User with email :" + currUser.getEmail()
                     + " already exists!");
             response.sendRedirect("/register");
@@ -64,7 +53,7 @@ public class RegisterCommand implements ActionCommand {
             user.setSurname(surname);
             user.setPassword(new HashMD5().hash(password));
             user.setRole(User.Role.USER);
-            System.out.println(serv.insert(user));
+            userServ.insert(user);
 
             HashSHA hashHelper = new HashSHA();
             String emailPartUri = "email="+email;
@@ -76,6 +65,7 @@ public class RegisterCommand implements ActionCommand {
             request.getSession().setAttribute("activationMessage", "You have been successfuly registered. " +
                     "Please activate your account");
             response.sendRedirect("/activation");
+
             return;
         }
     }

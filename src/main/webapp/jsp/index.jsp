@@ -23,6 +23,8 @@
     <!-- Custom styles -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}js/language.js"></script>
 
 </head>
@@ -46,7 +48,7 @@
 
     <div class="inf">
         <div class="main">
-            <h1>Main things about our service</h1>
+            <l:resource key="main.things.about.our.service"><h1>LOKI</h1></l:resource>
             <table>
                 <tr>
                     <th style="width:350px;height:170px;"><img src="img/m1.png" width="100" height="100"></th>
@@ -64,7 +66,7 @@
 
     <div class="discover">
         <div class="main">
-            <h1>Discover the Features</h1>
+            <l:resource key="discover.the.features"><h1></h1></l:resource>
             <table>
                 <tr> <th class="tableBorder"><h2>Post/Schedule</h2></th> <th class="tableBorder"><h2>Group Lists</h2></th> <th class="tableBorder"><h2>Saved Campaigns</h2></th> <th class="tableBorder"><h2>Posting Statistics</h2></th> </tr>
                 <tr>
@@ -91,7 +93,7 @@
 
     <div id="testimonials">
         <div class="main">
-            <p><h1>What people say about those our service.</h1></p>
+            <p><h1><l:resource key="what.people.say.about.those.our.service"/></h1></p>
 
             <div id="speech1">Most usually cotton is employed, with varying levels of ply, with the lower numbers meaning finer quality.
                 <div class="corner"><img src="img/corner.png" width="23" height="13"></div>
@@ -122,21 +124,8 @@
         </div>
     </div>
 
-    <div class="footer dark-bg" style="padding-top:30px;padding-bottom:30px;line-height:25px;border-bottom: 0;">
-        <div class="main">
-            <div style="margin-left:750px;">
-                <button onclick="language('ua')" style="background-color:#fed189; border: 2px solid #fed189;border-radius:10px;">ua</button>
-                <button onclick="language('en')" style="background-color:#00a0df; border: 2px solid #00a0df;border-radius:10px;">en</button>
-            </div>
-            <div style="margin-top:-20px;">
-                <h4>Social-Spider Corp. </h4>
-                <h4><p>7 X Evo Ave Rev3 - Victoria 70913 EU</p>
-                    <p>(432)555-9876</p>
-                </h4>
-                <p><a href="mailto:example@gmail.com"><h4>socialspider@gmail.com</h4></a></p>
-            </div>
-        </div>
-    </div>
+    <jsp:include page="pagecontent/footer.jsp" />
+
 </section>
 </body>
 </html>

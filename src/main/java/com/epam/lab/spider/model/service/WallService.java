@@ -1,8 +1,10 @@
 package com.epam.lab.spider.model.service;
 
 import com.epam.lab.spider.model.PoolConnection;
-import com.epam.lab.spider.model.dao.WallDao;
 import com.epam.lab.spider.model.dao.DAOFactory;
+import com.epam.lab.spider.model.dao.TaskDestinationDAO;
+import com.epam.lab.spider.model.dao.TaskSourceDAO;
+import com.epam.lab.spider.model.dao.WallDao;
 import com.epam.lab.spider.model.entity.Wall;
 
 import java.sql.Connection;
@@ -16,47 +18,27 @@ public class WallService implements BaseService<Wall> {
 
     private DAOFactory factory = DAOFactory.getInstance();
     private WallDao wdao = factory.create(WallDao.class);
+    private TaskSourceDAO tsdao = factory.create(TaskSourceDAO.class);
+    private TaskDestinationDAO tddao = factory.create(TaskDestinationDAO.class);
 
     @Override
     public boolean insert(Wall wall) {
-        boolean res = false;
-        try {
-            Connection connection = PoolConnection.getConnection();
-            try {
-                connection.setAutoCommit(false);
-                res = wdao.insert(connection, wall);
-                connection.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-            }
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.insert(connection, wall);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return res;
+        return false;
     }
 
     @Override
     public boolean update(int id, Wall wall) {
-        boolean res = false;
-        try {
-            Connection connection = PoolConnection.getConnection();
-            try {
-                connection.setAutoCommit(false);
-                res = wdao.update(connection, id, wall);
-                connection.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-            }
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.update(connection, id, wall);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return res;
+        return false;
     }
 
     @Override
@@ -66,13 +48,18 @@ public class WallService implements BaseService<Wall> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
+                tsdao.deleteByWallId(connection, id);
+                tddao.deleteByWallId(connection, id);
                 res = wdao.delete(connection, id);
                 connection.commit();
             } catch (SQLException e) {
-                e.printStackTrace();
                 connection.rollback();
+                throw e;
             } finally {
-                connection.setAutoCommit(true);
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -86,8 +73,8 @@ public class WallService implements BaseService<Wall> {
             return wdao.getAll(connection);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -96,25 +83,25 @@ public class WallService implements BaseService<Wall> {
             return wdao.getById(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     public List<Wall> getDestinationByTaskId(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return wdao.getAll(connection);
+            return wdao.getDestinationByTaskId(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     public List<Wall> getSourceByTaskId(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return wdao.getAll(connection);
+            return wdao.getSourceByTaskId(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 }

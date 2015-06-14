@@ -1,8 +1,8 @@
 package com.epam.lab.spider.model.service;
 
 import com.epam.lab.spider.model.PoolConnection;
-import com.epam.lab.spider.model.dao.PostMetadataDAO;
 import com.epam.lab.spider.model.dao.DAOFactory;
+import com.epam.lab.spider.model.dao.PostMetadataDAO;
 import com.epam.lab.spider.model.entity.PostMetadata;
 
 import java.sql.Connection;
@@ -19,65 +19,32 @@ public class PostMetadataService implements BaseService<PostMetadata> {
 
     @Override
     public boolean insert(PostMetadata pm) {
-        boolean res = false;
-        try {
-            Connection connection = PoolConnection.getConnection();
-            try {
-                connection.setAutoCommit(false);
-                res = pmdao.insert(connection, pm);
-                connection.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-            }
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pmdao.insert(connection, pm);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return res;
+        return false;
     }
 
     @Override
     public boolean update(int id, PostMetadata pm) {
-        boolean res = false;
-        try {
-            Connection connection = PoolConnection.getConnection();
-            try {
-                connection.setAutoCommit(false);
-                res = pmdao.update(connection, id, pm);
-                connection.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-            }
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pmdao.update(connection, id, pm);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return res;
+        return false;
     }
 
     @Override
     public boolean delete(int id) {
-        boolean res = false;
-        try {
-            Connection connection = PoolConnection.getConnection();
-            try {
-                connection.setAutoCommit(false);
-                res = pmdao.delete(connection, id);
-                connection.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-            }
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pmdao.delete(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return res;
+        return false;
     }
 
     @Override
@@ -86,8 +53,8 @@ public class PostMetadataService implements BaseService<PostMetadata> {
             return pmdao.getAll(connection);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -96,7 +63,7 @@ public class PostMetadataService implements BaseService<PostMetadata> {
             return pmdao.getById(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 }

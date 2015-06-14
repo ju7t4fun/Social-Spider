@@ -12,5 +12,6 @@ import java.util.List;
 public interface ProfileDAO extends CRUD<Profile> {
 
     List<Profile> getByUserId(Connection connection, int id) throws SQLException;
+    Profile getByVkId(Connection connection, int vkId) throws SQLException;
 
 }

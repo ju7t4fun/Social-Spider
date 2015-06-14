@@ -20,7 +20,7 @@ public class VkAuthCommand implements ActionCommand {
 
     public VkAuthCommand() {
         vk = new Vkontakte(4949208);
-        vk.conf().setPermissions(Scope.FRIENDS);
+        vk.conf().setPermissions(Scope.FRIENDS, Scope.EMAIL);
         vk.conf().setSecretKey("780FmVhvpLu8HobgGD8J");
         vk.createOAuth(Authorization.Type.SERVER);
     }

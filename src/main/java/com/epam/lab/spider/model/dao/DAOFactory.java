@@ -27,6 +27,8 @@ public class DAOFactory {
         dao.put(WallDao.class, new WallDaoImp());
 
         dao.put(CategoryHasTaskDAO.class, new CategoryHasTaskDAOImp());
+        dao.put(TaskSourceDAO.class, new TaskSourceDAOImp());
+        dao.put(TaskDestinationDAO.class, new TaskDestinationDAOImp());
     }
 
     public static DAOFactory getInstance() {

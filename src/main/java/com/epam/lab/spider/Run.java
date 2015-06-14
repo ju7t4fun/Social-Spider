@@ -17,18 +17,16 @@ import java.util.List;
 public class Run {
 
     public static void main(String[] args) throws SQLException {
-       /* ServiceFactory factory = ServiceFactory.getInstance();
+       ServiceFactory factory = ServiceFactory.getInstance();
         UserService service = factory.create(UserService.class);
         User user = new User();
-        user.setName("fsdf");
-        user.setSurname("dfsdfsdf");
+        user.setName("виик");
+        user.setSurname("хуйло");
         user.setEmail("fsdfsdf");
         user.setPassword("dfsdfsdf");
         user.setRole(User.Role.ADMIN);
-        service.insert(user);*/
-        HashMD5 h = new HashMD5();
-        System.out.println(h.hash("aza"));
-        System.out.println(h.hash("aza"));
+        service.insert(user);
+
     }
 
 }

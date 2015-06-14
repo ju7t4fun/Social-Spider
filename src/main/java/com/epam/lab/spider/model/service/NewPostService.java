@@ -1,8 +1,10 @@
 package com.epam.lab.spider.model.service;
 
 import com.epam.lab.spider.model.PoolConnection;
-import com.epam.lab.spider.model.dao.NewPostDAO;
 import com.epam.lab.spider.model.dao.DAOFactory;
+import com.epam.lab.spider.model.dao.NewPostDAO;
+import com.epam.lab.spider.model.dao.PostDAO;
+import com.epam.lab.spider.model.dao.PostMetadataDAO;
 import com.epam.lab.spider.model.entity.NewPost;
 
 import java.sql.Connection;
@@ -16,21 +18,27 @@ public class NewPostService implements BaseService<NewPost> {
 
     private DAOFactory factory = DAOFactory.getInstance();
     private NewPostDAO npdao = factory.create(NewPostDAO.class);
+    private PostDAO pdao = factory.create(PostDAO.class);
+    private PostMetadataDAO pmdao = factory.create(PostMetadataDAO.class);
 
     @Override
-    public boolean insert(NewPost newPost) {
+    public boolean insert(NewPost nPost) {
         boolean res = false;
         try {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                res = npdao.insert(connection, newPost);
+                res = pmdao.insert(connection, nPost.getMetadata());
+                res = res && npdao.insert(connection, nPost);
                 connection.commit();
             } catch (SQLException e) {
-                e.printStackTrace();
                 connection.rollback();
+                throw e;
             } finally {
-                connection.setAutoCommit(true);
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -39,19 +47,24 @@ public class NewPostService implements BaseService<NewPost> {
     }
 
     @Override
-    public boolean update(int id, NewPost newPost) {
+    public boolean update(int id, NewPost nPost) {
         boolean res = false;
         try {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                res = npdao.update(connection, id, newPost);
+                pdao.insert(connection, nPost.getPost());
+                pmdao.update(connection, nPost.getId(), nPost.getMetadata());
+                npdao.update(connection, id, nPost);
                 connection.commit();
             } catch (SQLException e) {
-                e.printStackTrace();
                 connection.rollback();
+                throw e;
             } finally {
-                connection.setAutoCommit(true);
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,6 +79,7 @@ public class NewPostService implements BaseService<NewPost> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
+                pmdao.delete(connection, npdao.getById(connection, id).getMetadata().getId());
                 res = npdao.delete(connection, id);
                 connection.commit();
             } catch (SQLException e) {
@@ -86,8 +100,8 @@ public class NewPostService implements BaseService<NewPost> {
             return npdao.getAll(connection);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -96,7 +110,7 @@ public class NewPostService implements BaseService<NewPost> {
             return npdao.getById(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 }

@@ -1,5 +1,7 @@
 package com.epam.lab.spider.model.dao.mysql;
 
+import org.apache.log4j.Logger;
+
 import java.sql.*;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import java.util.List;
  */
 public abstract class BaseDAO {
 
+    private static final Logger logger = Logger.getLogger(BaseDAO.class);
     private static final String SQL_GET_LAST_INSERT_ID_QUERY = "SELECT LAST_INSERT_ID()";
 
     public int getLastInsertId(Connection connection) throws SQLException {
@@ -63,8 +66,8 @@ public abstract class BaseDAO {
                 statement.setNull(i, Types.NULL);
                 continue;
             }
-            if (arg.getClass() == String.class ) {
-                statement.setString(i, arg.toString());
+            if (arg.getClass() == String.class) {
+                statement.setString(i, (String) arg);
                 continue;
             }
             if (arg.getClass() == Integer.class) {

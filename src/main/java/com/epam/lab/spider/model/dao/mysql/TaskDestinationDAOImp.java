@@ -9,6 +9,7 @@ import java.sql.SQLException;
  * Created by Marian Voronovskyi on 13.06.2015.
  */
 public class TaskDestinationDAOImp extends BaseDAO implements TaskDestinationDAO {
+
     private static final String SQL_INSERT_QUERY = "INSERT INTO task_destination (task_id, wall_id) " +
             "VALUES (?, ?)";
     private static final String SQL_DELETE_QUERY = "DELETE FROM task_destination WHERE task_id = ? AND " +
@@ -35,4 +36,5 @@ public class TaskDestinationDAOImp extends BaseDAO implements TaskDestinationDAO
     public boolean deleteByWallId(Connection connection, int wallId) throws SQLException {
         return changeQuery(connection, SQL_DELETE_BY_WALL_ID, wallId);
     }
+
 }
