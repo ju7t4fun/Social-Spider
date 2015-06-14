@@ -1,31 +1,23 @@
 package com.epam.lab.spider.model.tag;
 
 import com.epam.lab.spider.controller.utils.UTF8;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
-
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ResourceBundle;
 
 /**
  * Created by Boyarsky Vitaliy on 08.06.2015.
  */
 public class LocaleTag extends BodyTagSupport {
-
-//    static DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    static TransformerFactory tf = TransformerFactory.newInstance();
-
+    public static final Logger LOG = Logger.getLogger(LocaleTag.class);
 
     private String key;
 
@@ -73,33 +65,19 @@ public class LocaleTag extends BodyTagSupport {
         if(getBodyContent()!=null){
             String body = this.getBodyContent().getString();
             try {
-                //if(body!=null) System.out.println(body);
-
-
-
                 Document doc = Jsoup.parse(body);
                 Element root = doc.body().child(0);
 
                 boolean placeholder = root.tagName().equals("input");
                 if(placeholder){
                     root.attr("placeholder",value);
-                    //root.setAttribute(,value);
                 }else root.text(value);
 
                 String localeClass = placeholder?"loc-p":"loc-t";
                 root.attr("locres", key);
                 root.addClass(localeClass);
 
-
                 String output =       doc.outerHtml();
-                //System.out.println(root.getNodeName());
-
-//                Transformer transformer = tf.newTransformer();
-//                transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-//                StringWriter writer = new StringWriter();
-//                transformer.transform(new DOMSource(doc), new StreamResult(writer));
-//                String output = writer.getBuffer().toString();
-
                 safeWrite(output);
 
             } catch (NullPointerException e) {
@@ -113,7 +91,7 @@ public class LocaleTag extends BodyTagSupport {
 
         Long end = System.nanoTime();
         Long d = (end - begin)/1000;
-        System.out.println("Tag creating time:" + d+ "mircosecond");
+        LOG.debug("Tag creating time:" + d+ " microsecond");
         return EVAL_PAGE;
     }
 
