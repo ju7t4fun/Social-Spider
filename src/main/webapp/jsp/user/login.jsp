@@ -24,6 +24,10 @@
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
 
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}js/language.js"></script>
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
     <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
@@ -61,6 +65,22 @@
 
         </div>
     </form>
+
+    <div class="footer dark-bg" style="padding-top:30px;padding-bottom:30px;line-height:25px;border-bottom: 0;">
+        <div class="main">
+            <div style="margin-left:750px;">
+                <button class="language-button-logic" change="ua" style="background-color:#fed189; border: 2px solid #fed189;border-radius:10px;">ua</button>
+                <button class="language-button-logic" change="en" style="background-color:#00a0df; border: 2px solid #00a0df;border-radius:10px;">en</button>
+            </div>
+            <div style="margin-top:-20px;">
+                <h4>Social-Spider Corp. </h4>
+                <h4><p>7 X Evo Ave Rev3 - Victoria 70913 EU</p>
+                    <p>(432)555-9876</p>
+                </h4>
+                <p><a href="mailto:example@gmail.com"><h4>socialspider@gmail.com</h4></a></p>
+            </div>
+        </div>
+    </div>
 
 </div>
 

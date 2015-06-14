@@ -78,7 +78,7 @@ public class LocaleTag extends BodyTagSupport {
 
 
                 Document doc = Jsoup.parse(body);
-                Element root = doc.body();
+                Element root = doc.body().child(0);
 
                 boolean placeholder = root.tagName().equals("input");
                 if(placeholder){
