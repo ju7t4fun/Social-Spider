@@ -9,10 +9,12 @@ import com.epam.lab.spider.model.entity.NewPost;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Boyarsky Vitaliy on 12.06.2015.
+ * Updated by shell on 15.06.2015.
  */
 public class NewPostService implements BaseService<NewPost> {
 
@@ -113,4 +115,13 @@ public class NewPostService implements BaseService<NewPost> {
         }
         return null;
     }
+    public List<NewPost> getAllUnpostedByDate(Date date) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.getAllUnpostedByDate(connection,date);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

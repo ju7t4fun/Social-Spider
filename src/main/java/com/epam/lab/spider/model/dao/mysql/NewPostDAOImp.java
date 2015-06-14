@@ -9,10 +9,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Sasha on 12.06.2015.
+ * Updated by shell on 15.06.2015.
  */
 public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
 
@@ -25,6 +27,7 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM new_post";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM new_post WHERE id = ?";
 
+    private static final String SQL_SELECT_CREATED_BY_DATE_LE = "SELECT * FROM new_post WHERE state_id = '1' AND post_time < ?";
     @Override
     public boolean insert(Connection connection, NewPost post) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY, post.getPost().getId(), post.getWallId(), post
@@ -80,5 +83,7 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     public NewPost getById(Connection connection, int id) throws SQLException {
         return first(select(connection, SQL_GET_BY_ID_QUERY, id));
     }
-
+    public List<NewPost> getAllUnpostedByDate(Connection connection, Date date) throws SQLException {
+        return select(connection, SQL_SELECT_CREATED_BY_DATE_LE, date);
+    }
 }
