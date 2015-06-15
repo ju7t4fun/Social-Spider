@@ -1,6 +1,6 @@
 package com.epam.lab.spider.model.dao.mysql;
 
-import com.epam.lab.spider.model.dao.WallDAO1;
+import com.epam.lab.spider.model.dao.WallDAO;
 import com.epam.lab.spider.model.entity.Wall;
 
 import java.sql.Connection;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Dmytro on 12.06.2015.
  */
-public class WallDAO1Imp extends BaseDAO implements WallDAO1 {
+public class WallDAOImp extends BaseDAO implements WallDAO {
 
     private static final String SQL_INSERT_QUERY = "INSERT INTO wall (id, owner_id, profile_id, permission, deleted" +
             " VALUES (?, ?, ?, ?, ?)";
