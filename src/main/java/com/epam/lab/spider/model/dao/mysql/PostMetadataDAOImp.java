@@ -14,14 +14,14 @@ import java.util.List;
  */
 public class PostMetadataDAOImp extends BaseDAO implements PostMetadataDAO {
 
-    private static final String SQL_INSERT_QUERY = "INSERT INTO post_metadata (like, repost, deleted) " +
+    private static final String SQL_INSERT_QUERY = "INSERT INTO post_metadata (likes, reposts, deleted) " +
             "VALUES (?, ?, ?)";
-    private static final String SQL_UPDATE_QUERY = "UPDATE post_metadata SET like = ?, repost = ? deleted = ?" +
+    private static final String SQL_UPDATE_QUERY = "UPDATE post_metadata SET likes = ?, reposts = ?, deleted = ? " +
             "WHERE id = ?";
     // private static final String SQL_DELETE_QUERY = "DELETE * FROM post_metadata WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE post_metadata SET deleted = true WHERE id = ?";
-    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM post_metadata";
-    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM post_metadata WHERE id = ?";
+    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM post_metadata WHERE deleted = false";
+    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM post_metadata WHERE id = ? AND deleted = false";
 
     @Override
     public boolean insert(Connection connection, PostMetadata metadata) throws SQLException {
@@ -55,8 +55,8 @@ public class PostMetadataDAOImp extends BaseDAO implements PostMetadataDAO {
         while (rs.next()) {
             postMetadata = new PostMetadata();
             postMetadata.setId(rs.getInt("id"));
-            postMetadata.setLike(rs.getInt("like"));
-            postMetadata.setRepost(rs.getInt("repost"));
+            postMetadata.setLike(rs.getInt("likes"));
+            postMetadata.setRepost(rs.getInt("reposts"));
             postMetadata.setDeleted(rs.getBoolean("deleted"));
             listPostMetadata.add(postMetadata);
         }
