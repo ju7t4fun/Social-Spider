@@ -9,7 +9,8 @@ var Script = function () {
             rules: {
                 name: {
                     required: true,
-                    minlength: 6
+                    minlength: 1,
+                    pattern: /^[a-zA-Z\u0400-\u04ff]+$/
                 },
                 address: {
                     required: true,
@@ -17,7 +18,7 @@ var Script = function () {
                 },
                 surname: {
                     required: true,
-                    minlength: 5
+                    minlength: 1
                 },
                 password: {
                     required: true,
@@ -39,17 +40,19 @@ var Script = function () {
                 agree: "required"
             },
             messages: {
-                fullname: {
-                    required: "Please enter a Full Name.",
-                    minlength: "Your Full Name must consist of at least 6 characters long."
+                name: {
+                    required: "Please enter your Name.",
+                    minlength: "Your Name is too short.",
+                    pattern: "Please enter correct Name."
                 },
                 address: {
-                    required: "Please enter a Address.",
+                    required: "Please enter your Address.",
                     minlength: "Your Address must consist of at least 10 characters long."
                 },
-                username: {
-                    required: "Please enter a Username.",
-                    minlength: "Your username must consist of at least 5 characters long."
+                surname: {
+                    required: "Please enter your Surname.",
+                    minlength: "Your surname is too short.",
+                    pattern: "Please enter correct Surname."
                 },
                 password: {
                     required: "Please provide a password.",
@@ -62,15 +65,6 @@ var Script = function () {
                 },
                 email: "Please enter a valid email address.",
                 agree: "Please accept our terms & condition."
-            }
-        });
-
-        // propose username by combining first- and lastname
-        $("#username").focus(function() {
-            var firstname = $("#firstname").val();
-            var lastname = $("#lastname").val();
-            if(firstname && lastname && !this.value) {
-                this.value = firstname + "." + lastname;
             }
         });
 

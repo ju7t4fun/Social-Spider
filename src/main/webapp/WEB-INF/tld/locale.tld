@@ -6,7 +6,7 @@
     <tag>
         <name>resource</name>
         <tag-class>com.epam.lab.spider.model.tag.LocaleTag</tag-class>
-        <body-content>empty</body-content>
+        <body-content>JSP</body-content>
         <attribute>
             <name>key</name>
             <required>true</required>

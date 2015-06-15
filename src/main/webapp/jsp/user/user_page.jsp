@@ -81,19 +81,19 @@
                 <a href="#" class="wclose"><i class="fa fa-times"></i></a>
               </div>
 
-            </div><br><br>div id="calendar"></div>
-
-        </div>
-      </div>
-
-      </div>
-
-      <div class<br>
+            </div><br><br><br>
             <div class="panel-body">
               <!-- Widget content -->
 
               <!-- Below line produces calendar. I am using FullCalendar plugin. -->
-              <="col-md-6 portlets">
+              <div id="calendar"></div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-md-6 portlets">
           <div class="panel panel-default">
             <div class="panel-heading">
               <div class="pull-left">Quick Post</div>
@@ -172,6 +172,7 @@
     </section>
   </section>
   <!--main content end-->
+
 
 </section>
 

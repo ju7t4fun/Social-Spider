@@ -24,6 +24,9 @@
   <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="${pageContext.request.contextPath}js/language.js"></script>
+
 </head>
 
 <body class="login-img3-body">
@@ -36,19 +39,19 @@
 
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_profile"></i></span>
-        <input type="text" class="form-control" id="name" name="name" maxlength="45" value="${name}" placeholder="<l:resource key="reg.name" />" pattern="^[a-zA-Z\u0400-\u04ff]+$"  />
+        <l:resource key="reg.name"><input type="text" class="form-control" id="name" name="name" maxlength="45" value="${name}" placeholder="" pattern="^[a-zA-Z\u0400-\u04ff]+$"  /></l:resource>
       </div>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_profile"></i></span>
-        <input type="text" class="form-control" id="surname" name="surname" maxlength="45" value="${surname}" placeholder="<l:resource key="reg.surname"  />" pattern="^[a-zA-Z\u0400-\u04ff]+$"  />
+        <l:resource key="reg.surname" ><input type="text" class="form-control" id="surname" name="surname" maxlength="45" value="${surname}" placeholder="" pattern="^[a-zA-Z\u0400-\u04ff]+$"  /></l:resource>
       </div>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
-        <input type="email" class="form-control" id="email" name="email" maxlength="255" placeholder="<l:resource key="login.email" />" style="border-color:#ffffff;" />
+        <l:resource key="login.email"><input type="email" class="form-control" id="email" name="email" maxlength="255" placeholder="" style="border-color:#ffffff;" /></l:resource>
       </div>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-        <input type="password" class="form-control" id="password" name="password" placeholder="<l:resource key="login.password" />" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" />
+        <l:resource key="login.password"><input type="password" class="form-control" id="password" name="password" placeholder="" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" /></l:resource>
       </div>
 
       <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-bottom:20px;margin-right:10px;"> Sign up </button>
@@ -57,6 +60,8 @@
   </form>
 
 </div>
+
+<jsp:include page="../pagecontent/simple_footer.jsp" />
 
 <!-- javascripts -->
 <script src="js/jquery.js"></script>
@@ -73,5 +78,6 @@
 <script src="js/scripts.js"></script>
 
 </body>
+
 </html>
 

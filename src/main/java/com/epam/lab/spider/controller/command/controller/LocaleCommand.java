@@ -4,6 +4,7 @@ import com.epam.lab.spider.controller.command.ActionCommand;
 
 
 import com.epam.lab.spider.controller.utils.UTF8;
+import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -36,9 +37,6 @@ public class LocaleCommand implements ActionCommand {
 
 
         String namesJson = request.getParameter("names");
-        //request.
-        //System.out.println(namesJson);
-
 
 
         JSONObject resultJson = new JSONObject();

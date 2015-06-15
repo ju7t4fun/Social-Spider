@@ -1,4 +1,4 @@
-<header class="header dark-bg">
+<header class="header dark-bg" style="background: rgba(2, 10, 29, 1)">
   <div class="toggle-nav">
     <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"></div>
   </div>
@@ -14,7 +14,7 @@
       <!-- task notificatoin start -->
       <li id="task_notificatoin_bar" class="dropdown">
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="icon-task-l"></i>
+                            <span class="icon-task-l"></span>
                               <span class="badge bg-important">6</span>
         </a>
         <ul class="dropdown-menu extended tasks-bar">
@@ -211,7 +211,7 @@
       <li class="dropdown">
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="profile-ava">
-                                <img alt="" src="img/avatar1_small.jpg">
+                                <img alt="" src="${pageContext.request.contextPath}/img/avatar1_small.jpg">
                             </span>
           <span class="username">User Name</span>
           <b class="caret"></b>
