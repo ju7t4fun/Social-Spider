@@ -1,9 +1,10 @@
 package com.epam.lab.spider.controller.servlet.user;
 
-import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.user.auth.RegisterCommand;
-import com.epam.lab.spider.controller.command.user.auth.ShowRegisterCommand;
+import com.epam.lab.spider.controller.command.user.signup.ActivateCommand;
+import com.epam.lab.spider.controller.command.user.signup.RegisterCommand;
+import com.epam.lab.spider.controller.command.user.signup.ShowActivationCommand;
+import com.epam.lab.spider.controller.command.user.signup.ShowRegisterCommand;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +17,7 @@ import java.util.HashMap;
  * Created by Dmytro on 11.06.2015.
  */
 public class RegisterServlet extends HttpServlet {
+
     private static ActionFactory factory = new RegisterActionFactory();
 
     private static class RegisterActionFactory extends ActionFactory {
@@ -24,6 +26,8 @@ public class RegisterServlet extends HttpServlet {
             commands = new HashMap<>();
             commands.put("default", new ShowRegisterCommand());
             commands.put("register", new RegisterCommand());
+            commands.put("activateResult", new ShowActivationCommand());
+            commands.put("activate", new ActivateCommand());
         }
 
     }

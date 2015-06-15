@@ -74,7 +74,8 @@ public class ServerAuthorization implements Authorization {
         token.setUserId(json.getInt("user_id"));
         token.setAccessToken(json.getString("access_token"));
         token.setExpirationMoment(json.getLong("expires_in"));
-        System.out.println(token);
+        if (!json.isNull("email"))
+            token.setEmail(json.getString("email"));
         return token;
     }
 

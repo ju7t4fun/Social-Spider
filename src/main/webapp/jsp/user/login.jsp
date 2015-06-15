@@ -49,11 +49,11 @@
             </div>
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                <l:resource key="login.password"><input type="password" name="password" id="password" class="form-control" placeholder="" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" required /></l:resource>
+                <l:resource key="login.password"><input type="password" name="password" id="password" class="form-control" placeholder="" required /></l:resource>
             </div>
             <label class="checkbox">
                 <input type="checkbox" value="remember-me"> <l:resource key="login.remember"/>
-                <span class="pull-right"> <a href="#"> <l:resource key="login.forgotpw"/> </a></span>
+                <span class="pull-right"> <a href="${pageContext.request.contextPath}/jsp/user/pwrestore_email.jsp"> <l:resource key="login.forgotpw"/> </a></span>
             </label>
             <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-bottom:20px;margin-right:10px;"> <l:resource key="login.signin"/>
             </button>

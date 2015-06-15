@@ -10,7 +10,8 @@ import java.util.List;
  */
 public abstract class BaseDAO {
 
-    private static final Logger logger = Logger.getLogger(BaseDAO.class);
+    private static final Logger LOG = Logger.getLogger(BaseDAO.class);
+
     private static final String SQL_GET_LAST_INSERT_ID_QUERY = "SELECT LAST_INSERT_ID()";
 
     public int getLastInsertId(Connection connection) throws SQLException {
@@ -34,6 +35,9 @@ public abstract class BaseDAO {
         ResultSet rs = null;
         try {
             statement = buildPreparedStatement(connection, query, args);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Выполнение SQL запроса : " + statement.toString().substring(48) + ";");
+            }
             rs = statement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,6 +50,9 @@ public abstract class BaseDAO {
         PreparedStatement statement = null;
         try {
             statement = buildPreparedStatement(connection, query, args);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Выполнение SQL запроса : " + statement.toString().substring(48) + ";");
+            }
             insertRow = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,10 +91,9 @@ public abstract class BaseDAO {
             }
             if (arg.getClass() == java.util.Date.class) {
                 statement.setTimestamp(i, new Timestamp(((java.util.Date) arg).getTime()));
-            }else{
-                statement.setNull(i, Types.NULL);
                 continue;
             }
+            LOG.error("Объект класса \"" + arg.getClass().getName() + "\" не установлен в PreparedStatement");
         }
         return statement;
     }

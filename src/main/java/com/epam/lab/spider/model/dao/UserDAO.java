@@ -11,6 +11,8 @@ import java.sql.SQLException;
 public interface UserDAO extends CRUD<User> {
 
     User getByEmailAndPass(Connection connection, String email, String password) throws SQLException;
+
     User getByEmail(Connection connection, String email) throws SQLException;
 
+    boolean checkPassword(Connection connection, String email, String password) throws SQLException;
 }

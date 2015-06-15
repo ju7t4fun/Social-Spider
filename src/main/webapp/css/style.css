@@ -28,7 +28,7 @@ body {
 .poster {
     text-align:center;
     color:#fff;
-    height:350px;
+    height:400px;
     background-color: #000000;
     background: url('../img/poster_bg1.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;

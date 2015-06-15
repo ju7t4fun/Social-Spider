@@ -4,10 +4,10 @@ import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.controller.vk.api.Users;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
 import com.epam.lab.spider.model.entity.Profile;
 import com.epam.lab.spider.model.service.ProfileService;
+import com.epam.lab.spider.model.service.ServiceFactory;
 import com.epam.lab.spider.model.service.UserService;
 import com.epam.lab.spider.model.vk.User;
 
@@ -23,77 +23,52 @@ import java.util.List;
  */
 public class VkAuthResponseCommand implements ActionCommand {
 
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println(request.getParameterMap());
-        HttpSession session = request.getSession();
-        Vkontakte vk = (Vkontakte) session.getAttribute("siteVk");
-        AccessToken token = vk.OAuth().signIn(request);
-        session.setAttribute("user_id", token.getUserId());
-        session.setAttribute("access_token", token.getAccessToken());
-        session.setAttribute("exp_moment", token.getExpirationMoment());
+    private static ServiceFactory factory = ServiceFactory.getInstance();
+    private static ProfileService profileService = factory.create(ProfileService.class);
+    private static UserService userService = factory.create(UserService.class);
 
-        String name = "some name";
-        String surname = "some surname";
-        String email ="";
-
-        vk.setAccessToken(token);
-        Parameters param = new Parameters();
-        param.add("fields","photo_200");
-
-
-        ProfileService profServ = new ProfileService();
-        Profile pro = null;
-
+    // Отримання даних поточного користувача з ВК
+    private User authUser(Vkontakte vk) {
+        User user = null;
         try {
+            Parameters param = new Parameters();
+            param.add("fields", "photo_200");
             List<User> users = vk.users().get(param);
-            User user = users.get(0);
-            name = user.getFirstName();
-            surname = user.getLastName();
-            pro = profServ.getByVkId(user.getId());
+            user = users.get(0);
         } catch (VKException e) {
             e.printStackTrace();
         }
+        return user;
+    }
 
-        boolean existsInDB = false;
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Vkontakte vk = (Vkontakte) session.getAttribute("siteVk");
+        AccessToken token = vk.OAuth().signIn(request);
+        vk.setAccessToken(token);
 
-        UserService userServ = new UserService();
-
-        com.epam.lab.spider.model.entity.User currUser = null;
-
-
-
-        if (pro!= null) {
-                int id = pro.getUserId();
-                currUser = userServ.getById(id);
-        }
-
-        if (currUser!=null) {
-            if (!currUser.getDeleted()) {
-                existsInDB = true;
-            }
-        }
-
-        if (existsInDB) {
-
-                boolean isActive = currUser.getConfirm();
-                if (!isActive) {
-                    request.getSession().setAttribute("loginMessage", "Your account is non-activated." +
-                            "Please activate your account via email");
-                    request.getSession().setAttribute("login", currUser.getEmail());
-                    response.sendRedirect("/login");
-                    return;
-                }
-                request.getSession().setAttribute("user",currUser);
-                response.sendRedirect("/");
+        User vkUser = authUser(vk);
+        Profile vkProfile = profileService.getByVkId(vkUser.getId());
+        if (vkProfile != null) {
+            // Авторизація
+            com.epam.lab.spider.model.entity.User user = userService.getById(vkProfile.getUserId());
+            boolean isActive = user.getConfirm();
+            if (!isActive) {
+                // Користувач не активний
+                request.setAttribute("loginMessage", "Your account is non-activated. Please activate " +
+                        "your account via email");
+                request.getRequestDispatcher("jsp/user/login.jsp").forward(request, response);
                 return;
-
+            }
+            request.getSession().setAttribute("user", user);
+            response.sendRedirect("/");
         } else {
-
-            request.getSession().setAttribute("name", name);
-            request.getSession().setAttribute("surname", surname);
+            // Перехід на реєстрацію
+            session.setAttribute("name", vkUser.getFirstName());
+            session.setAttribute("surname", vkUser.getLastName());
+            session.setAttribute("email", token.getEmail());
             response.sendRedirect("/register");
-            return;
-
         }
     }
+
 }

@@ -28,7 +28,7 @@ public class VkAuthCommand implements ActionCommand {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.setAttribute("siteVk", vk);
-        vk.OAuth().open(response, false);
+        vk.OAuth().open(response, true);
     }
 
 }

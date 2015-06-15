@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.hash;
+package com.epam.lab.spider.controller.utils.hash;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

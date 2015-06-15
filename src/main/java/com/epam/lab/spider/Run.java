@@ -20,8 +20,8 @@ public class Run {
        ServiceFactory factory = ServiceFactory.getInstance();
         UserService service = factory.create(UserService.class);
         User user = new User();
-        user.setName("виик");
-        user.setSurname("хуйло");
+        user.setName("пїЅпїЅпїЅпїЅ");
+        user.setSurname("пїЅпїЅпїЅпїЅпїЅ");
         user.setEmail("fsdfsdf");
         user.setPassword("dfsdfsdf");
         user.setRole(User.Role.ADMIN);

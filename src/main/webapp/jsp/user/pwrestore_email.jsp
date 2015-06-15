@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Sasha
+  Date: 15.06.2015
+  Time: 12:13
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <!DOCTYPE html>
@@ -10,7 +17,7 @@
   <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
   <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-  <title>Sign Up</title>
+  <title>Password</title>
 
   <!-- Bootstrap CSS -->
   <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -24,37 +31,32 @@
   <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
 
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="${pageContext.request.contextPath}js/language.js"></script>
 
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
+  <!--[if lt IE 9]>
+  <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
+  <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
+  <![endif]-->
 </head>
 
 <body class="login-img3-body">
 
 <div class="container">
 
-  <form class="login-form" action="/register?action=register" method="post" id="register_form">
+  <form class="login-form" action="/login?action=signIn" method="post" id="register_form">
     <div class="login-wrap">
-      <p class="login-img"><i class="icon_house_alt"></i></p>
-
-      <div class="input-group">
-        <span class="input-group-addon"><i class="icon_profile"></i></span>
-        <l:resource key="reg.name"><input type="text" class="form-control" id="name" name="name" maxlength="45" value="${name}" placeholder="" pattern="^[a-zA-Z\u0400-\u04ff]+$"  /></l:resource>
-      </div>
-      <div class="input-group">
-        <span class="input-group-addon"><i class="icon_profile"></i></span>
-        <l:resource key="reg.surname" ><input type="text" class="form-control" id="surname" name="surname" maxlength="45" value="${surname}" placeholder="" pattern="^[a-zA-Z\u0400-\u04ff]+$"  /></l:resource>
-      </div>
+      <p class="login-img"><i class="icon_lock_alt"></i></p>
+      ${loginMessage}
+      Enter an e-mail you've been using on this site.
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
-        <l:resource key="login.email"><input type="email" class="form-control" id="email" name="email"  maxlength="255" value="${email}" placeholder="" style="border-color:#ffffff;" /></l:resource>
+        <l:resource key="login.email"><input type="email" value="${login}" name="email" id="email" class="form-control" placeholder="" style="border-color:#ffffff;" required /></l:resource>
       </div>
-      <div class="input-group">
-        <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-        <l:resource key="login.password"><input type="password" class="form-control" id="password" name="password" placeholder="" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" /></l:resource>
-      </div>
-
-      <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-bottom:20px;margin-right:10px;"> Sign up </button>
+      <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-bottom:20px;margin-right:10px;"> <l:resource key="send"/>
+      </button>
 
     </div>
   </form>
@@ -64,20 +66,18 @@
 <jsp:include page="../pagecontent/simple_footer.jsp" />
 
 <!-- javascripts -->
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <!-- nice scroll -->
-<script src="js/jquery.scrollTo.min.js"></script>
-<script src="js/jquery.nicescroll.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
 <!-- jquery validate js -->
-<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+<script type="${pageContext.request.contextPath}/text/javascript" src="js/jquery.validate.min.js"></script>
 
 <!-- custom form validation script for this page-->
-<script src="js/form-validation-script.js"></script>
+<script src="${pageContext.request.contextPath}/js/form-validation-script.js"></script>
 <!--custome script for all page-->
-<script src="js/scripts.js"></script>
+<script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 
 </body>
-
 </html>
-
