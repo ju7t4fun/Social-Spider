@@ -66,8 +66,10 @@ public class PostJob implements Job {
                 Parameters parameters = new Parameters();
                 parameters.add("owner_id",owner.getVk_id());
                 parameters.add("message",newPost.getPost().getMessage());
-                long response = vk.wall().post(parameters);
 
+                if(false) {
+                    long response = vk.wall().post(parameters);
+                }
                 PostMetadata metadata = new PostMetadata();
                 metadata.setLike(0);
                 metadata.setRepost(0);
@@ -86,6 +88,7 @@ public class PostJob implements Job {
             System.out.println(newPost.getPost().getMessage());
         }
 
+        Date nextRunDate = new Date();
 
 
         SimpleTrigger trigger = (SimpleTrigger) newTrigger()

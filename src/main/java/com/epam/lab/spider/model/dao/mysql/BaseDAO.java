@@ -93,6 +93,14 @@ public abstract class BaseDAO {
                 statement.setTimestamp(i, new Timestamp(((java.util.Date) arg).getTime()));
                 continue;
             }
+            if (arg.getClass() == Timestamp.class) {
+                statement.setTimestamp(i, (Timestamp) arg);
+                continue;
+            }
+//            else{
+//                statement.setObject(i, arg);
+//                continue;
+//            }
             LOG.error("Объект класса \"" + arg.getClass().getName() + "\" не установлен в PreparedStatement");
         }
         return statement;

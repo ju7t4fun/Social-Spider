@@ -9,6 +9,7 @@ import com.epam.lab.spider.model.entity.NewPost;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public class NewPostService implements BaseService<NewPost> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                pdao.insert(connection, nPost.getPost());
+                pdao.update(connection, nPost.getPost().getId(), nPost.getPost());
                 if (nPost.getMetadata() != null)
                     pmdao.insert(connection, nPost.getMetadata());
                 res = npdao.insert(connection, nPost);
