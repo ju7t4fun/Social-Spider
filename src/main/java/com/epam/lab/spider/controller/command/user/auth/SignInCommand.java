@@ -28,6 +28,7 @@ public class SignInCommand implements ActionCommand {
         if (us.checkPassword(email, md5.hash(password))) {
             // Авторизація
             User user = us.getByEmail(email);
+
             boolean isActive = user.getConfirm();
             if (!isActive) {
                 // Користувач не активний
