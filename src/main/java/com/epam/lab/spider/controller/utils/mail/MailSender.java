@@ -1,23 +1,29 @@
-package com.epam.lab.spider.controller.mail;
-
-import java.util.Properties;
+package com.epam.lab.spider.controller.utils.mail;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Properties;
+
 /**
  * Created by Dmytro on 12.06.2015.
  */
 
-public class Sender {
+public class MailSender {
 
-    private String username;
-    private String password;
-    private Properties props;
+    private final String username;
+    private final String password;
+    private final Properties props;
+    private final ContextType contextType;
 
-    public Sender(String username, String password) {
+    public MailSender(String username, String password) {
+        this(username, password, ContextType.TEXT);
+    }
+
+    public MailSender(String username, String password, ContextType contextType) {
         this.username = username;
         this.password = password;
+        this.contextType = contextType;
 
         props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -26,7 +32,7 @@ public class Sender {
         props.put("mail.smtp.port", "587");
     }
 
-    public void send(String subject, String text, String toEmail){
+    public void send(String subject, String text, String toEmail) {
         Session session = Session.getInstance(props, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username, password);
@@ -35,19 +41,24 @@ public class Sender {
 
         try {
             Message message = new MimeMessage(session);
-            //от кого
             message.setFrom(new InternetAddress(username));
-            //кому
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
-            //Заголовок письма
             message.setSubject(subject);
-            //Содержимое
-            message.setText(text);
-
-            //Отправляем сообщение
+            switch (contextType) {
+                case HTML:
+                    message.setContent(text, "text/html; charset=utf-8");
+                    break;
+                case TEXT:
+                    message.setText(text);
+            }
             Transport.send(message);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
     }
+
+    public enum ContextType {
+        TEXT, HTML
+    }
+
 }

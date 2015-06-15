@@ -101,4 +101,9 @@ public class ProfileService implements BaseService<Profile> {
         }
         return null;
     }
+
+    public boolean isByVkId(int id) {
+        return getByVkId(id) != null;
+    }
+
 }

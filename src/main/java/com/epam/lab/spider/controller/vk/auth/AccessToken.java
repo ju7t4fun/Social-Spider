@@ -11,6 +11,7 @@ public class AccessToken implements OAuth {
     private String accessToken;
     private Date expirationMoment;
     private int userId;
+    private String email;
 
     @Override
     public String getAccessToken() {
@@ -44,6 +45,14 @@ public class AccessToken implements OAuth {
 
     public void setUserId(int id) {
         this.userId = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

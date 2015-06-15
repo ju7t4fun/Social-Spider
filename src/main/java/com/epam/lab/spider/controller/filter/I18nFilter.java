@@ -22,7 +22,7 @@ public class I18nFilter implements Filter {
         HttpSession session = ((HttpServletRequest) req).getSession();
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         if (bundle == null) {
-            bundle = ResourceBundle.getBundle("locale/messages", new Locale("en", "US"));
+            bundle = ResourceBundle.getBundle("locale/messages", new Locale(defaultLanguage((HttpServletRequest) req)));
             session.setAttribute("bundle", bundle);
         }
         chain.doFilter(req, resp);

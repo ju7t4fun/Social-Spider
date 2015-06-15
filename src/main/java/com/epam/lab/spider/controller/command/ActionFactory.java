@@ -1,11 +1,13 @@
 package com.epam.lab.spider.controller.command;
 
+import com.epam.lab.spider.controller.utils.UTF8;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -13,7 +15,7 @@ import java.util.Map;
  */
 public abstract class ActionFactory {
 
-    private static final Logger logger = Logger.getLogger(ActionFactory.class);
+    private static final Logger LOG = Logger.getLogger(ActionFactory.class);
 
     protected Map<String, ActionCommand> commands = null;
 
@@ -23,10 +25,18 @@ public abstract class ActionFactory {
         if (action == null) {
             action = "default";
         }
-        if (logger.isDebugEnabled()) {
-            logger.debug("method=" + request.getMethod() + ", param=" + request.getParameterMap().keySet());
-        }
         ActionCommand command = commands.get(action);
+        if (LOG.isDebugEnabled()) {
+            Map<String, String> param = new HashMap<>();
+            for (Object key : request.getParameterMap().keySet()) {
+                param.put(key.toString(), "\"" + UTF8.encoding(request.getParameter(key.toString())) + "\"");
+            }
+            LOG.debug("Обработка запроса \"" + request.getRequestURI() + "\" {method=" + request.getMethod() + "," +
+                    " param=" + param + "}");
+        }
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Выполнение команды \"" + command.getClass().getCanonicalName().substring(39) + "\"");
+        }
         command.execute(request, response);
     }
 

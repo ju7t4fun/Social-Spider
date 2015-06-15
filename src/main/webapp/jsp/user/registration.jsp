@@ -47,7 +47,7 @@
       </div>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
-        <l:resource key="login.email"><input type="email" class="form-control" id="email" name="email" maxlength="255" placeholder="" style="border-color:#ffffff;" /></l:resource>
+        <l:resource key="login.email"><input type="email" class="form-control" id="email" name="email"  maxlength="255" value="${email}" placeholder="" style="border-color:#ffffff;" /></l:resource>
       </div>
       <div class="input-group">
         <span class="input-group-addon"><i class="icon_key_alt"></i></span>

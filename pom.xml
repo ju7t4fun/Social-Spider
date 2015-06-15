@@ -7,10 +7,6 @@
     <version>1.0-SNAPSHOT</version>
     <name>Social Spider Maven Webapp</name>
     <url>http://maven.apache.org</url>
-     <properties>
-          <java.version>7</java.version>
-           <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      </properties>
     <dependencies>
         <dependency>
             <groupId>org.json</groupId>
