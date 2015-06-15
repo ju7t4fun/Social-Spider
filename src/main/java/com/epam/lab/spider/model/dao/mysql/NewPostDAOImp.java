@@ -30,8 +30,14 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     private static final String SQL_SELECT_CREATED_BY_DATE_LE = "SELECT * FROM new_post WHERE state_id = '1' AND post_time < ?";
     @Override
     public boolean insert(Connection connection, NewPost post) throws SQLException {
-        boolean res = changeQuery(connection, SQL_INSERT_QUERY, post.getPost().getId(), post.getWallId(), post
-                .getPostTime(), post.getDeleteTime(), post.getMetadata().getId());
+        boolean res = changeQuery(connection, SQL_INSERT_QUERY,
+                post.getPost().getId(),
+                post.getWallId(),
+                post.getPostTime(),
+                post.getDeleteTime(),
+                post.getMetadata() == null ? null : post.getMetadata().getId(),
+                post.getState().getId(),
+                post.getDeleted());
         post.setId(getLastInsertId(connection));
         return res;
     }

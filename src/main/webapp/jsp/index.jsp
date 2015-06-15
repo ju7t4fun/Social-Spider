@@ -30,7 +30,7 @@
 </head>
 <body>
 <section id="container" class="">
-    <header class="header dark-bg">
+    <header class="header dark-bg" style="background: rgba(2, 10, 29, 1)">
         <div class="main">
             <a href="/" class="logo">Social <span class="lite">Spider</span></a>
             <a href="/login" style=""> <span style="color:#fff;line-height:65px;margin-left:600px;">SIGN IN</span> </a>

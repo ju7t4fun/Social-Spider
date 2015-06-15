@@ -11,13 +11,12 @@ import java.util.List;
 
 /**
  * Created by Marian Voronovskyi on 12.06.2015.
- * Updeted by shell on 15.06.2015
  */
 public class PostMetadataDAOImp extends BaseDAO implements PostMetadataDAO {
 
-    private static final String SQL_INSERT_QUERY = "INSERT INTO post_metadata (`like`, repost, deleted) " +
+    private static final String SQL_INSERT_QUERY = "INSERT INTO post_metadata (like, repost, deleted) " +
             "VALUES (?, ?, ?)";
-    private static final String SQL_UPDATE_QUERY = "UPDATE post_metadata SET `like` = ?, repost = ?, deleted = ? " +
+    private static final String SQL_UPDATE_QUERY = "UPDATE post_metadata SET like = ?, repost = ? deleted = ?" +
             "WHERE id = ?";
     // private static final String SQL_DELETE_QUERY = "DELETE * FROM post_metadata WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE post_metadata SET deleted = true WHERE id = ?";

@@ -8,7 +8,7 @@
 <div class="simple_footer">
   <button class="language-button-logic" change="ua">ua</button>
   <button class="language-button-logic" change="en">en</button>
-  <div style="color:#fff;margin-right:1100px;">
+  <div style="color:#fff;">
     <h5>Social-Spider Corp. </h5>
     <h5><p>7 X Evo Ave Rev3 - Victoria 70913 EU</p>
       <p>(432)555-9876</p>
