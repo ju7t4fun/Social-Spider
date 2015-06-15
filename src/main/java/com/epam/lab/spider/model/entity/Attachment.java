@@ -12,28 +12,7 @@ public class Attachment {
     private Boolean deleted = false;
 
     public enum Type {
-
-        AUDIO(1), IMAGE(2), VIDEO(3);
-
-        private int id;
-
-        Type(int id) {
-            this.id = id;
-        }
-
-        public static Type getById(int id) {
-            Type[] types = values();
-            for (Type type : types) {
-                if (type.id == id)
-                    return type;
-            }
-            return null;
-        }
-
-        public int getId() {
-            return id;
-        }
-
+        AUDIO, PHOTO, VIDEO
     }
 
     public Integer getId() {

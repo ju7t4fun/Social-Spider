@@ -76,4 +76,13 @@ public class AttachmentService implements BaseService<Attachment> {
         return null;
     }
 
+    public boolean deleteByPostId(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return adao.deleteByPostId(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

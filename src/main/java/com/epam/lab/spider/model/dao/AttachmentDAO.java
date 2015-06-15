@@ -13,4 +13,6 @@ public interface AttachmentDAO extends CRUD<Attachment> {
 
     List<Attachment> getByPostId(Connection connection, int id) throws SQLException;
 
+    boolean deleteByPostId(Connection connection, int id) throws SQLException;
+
 }
