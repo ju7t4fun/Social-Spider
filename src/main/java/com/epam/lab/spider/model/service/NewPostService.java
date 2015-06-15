@@ -9,10 +9,12 @@ import com.epam.lab.spider.model.entity.NewPost;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Boyarsky Vitaliy on 12.06.2015.
+ * Updated by shell on 15.06.2015.
  */
 public class NewPostService implements BaseService<NewPost> {
 
@@ -23,12 +25,12 @@ public class NewPostService implements BaseService<NewPost> {
 
     @Override
     public boolean insert(NewPost nPost) {
-        boolean res = false;
+        boolean res = true;
         try {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                pdao.insert(connection, nPost.getPost());
+                pdao.update(connection, nPost.getPost().getId(), nPost.getPost());
                 if (nPost.getMetadata() != null)
                     pmdao.insert(connection, nPost.getMetadata());
                 res = npdao.insert(connection, nPost);
@@ -55,9 +57,8 @@ public class NewPostService implements BaseService<NewPost> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                pdao.insert(connection, nPost.getPost());
-                if (nPost.getMetadata() != null)
-                    pmdao.update(connection, nPost.getId(), nPost.getMetadata());
+                pdao.update(connection, nPost.getPost().getId(), nPost.getPost());
+                if(nPost.getMetadata()!=null)pmdao.update(connection, nPost.getId(), nPost.getMetadata());
                 npdao.update(connection, id, nPost);
                 connection.commit();
             } catch (SQLException e) {
@@ -116,4 +117,13 @@ public class NewPostService implements BaseService<NewPost> {
         }
         return null;
     }
+    public List<NewPost> getAllUnpostedByDate(Date date) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.getAllUnpostedByDate(connection,date);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
