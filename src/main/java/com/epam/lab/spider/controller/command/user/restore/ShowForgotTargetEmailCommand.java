@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.command.user.auth;
+package com.epam.lab.spider.controller.command.user.restore;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 
@@ -13,7 +13,7 @@ import java.io.IOException;
 public class ShowForgotTargetEmailCommand implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("jsp/user/forgotPasswordTargetEmail.jsp").forward(request, response);
+        request.getRequestDispatcher("jsp/user/restorationTargetEmail.jsp").forward(request, response);
     }
 
 }

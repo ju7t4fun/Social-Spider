@@ -53,7 +53,7 @@
             </div>
             <label class="checkbox">
                 <input type="checkbox" value="remember-me"> <l:resource key="login.remember"/>
-                <span class="pull-right"> <a href="${pageContext.request.contextPath}/jsp/user/pwrestore_email.jsp"> <l:resource key="login.forgotpw"/> </a></span>
+                <span class="pull-right"> <a href="/forgotpassword"> <l:resource key="login.forgotpw"/> </a></span>
             </label>
             <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-bottom:20px;margin-right:10px;"> <l:resource key="login.signin"/>
             </button>

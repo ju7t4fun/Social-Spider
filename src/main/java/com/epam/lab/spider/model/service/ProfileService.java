@@ -3,7 +3,7 @@ package com.epam.lab.spider.model.service;
 import com.epam.lab.spider.model.PoolConnection;
 import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.dao.ProfileDAO;
-import com.epam.lab.spider.model.dao.WallDao;
+import com.epam.lab.spider.model.dao.WallDAO;
 import com.epam.lab.spider.model.entity.Profile;
 
 import java.sql.Connection;
@@ -17,7 +17,7 @@ public class ProfileService implements BaseService<Profile> {
 
     private DAOFactory factory = DAOFactory.getInstance();
     private ProfileDAO pdao = factory.create(ProfileDAO.class);
-    private WallDao wdao = factory.create(WallDao.class);
+    private WallDAO wdao = factory.create(WallDAO.class);
 
     @Override
     public boolean insert(Profile profile) {

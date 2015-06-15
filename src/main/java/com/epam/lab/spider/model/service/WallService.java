@@ -4,7 +4,7 @@ import com.epam.lab.spider.model.PoolConnection;
 import com.epam.lab.spider.model.dao.DAOFactory;
 import com.epam.lab.spider.model.dao.TaskDestinationDAO;
 import com.epam.lab.spider.model.dao.TaskSourceDAO;
-import com.epam.lab.spider.model.dao.WallDao;
+import com.epam.lab.spider.model.dao.WallDAO;
 import com.epam.lab.spider.model.entity.Wall;
 
 import java.sql.Connection;
@@ -17,7 +17,7 @@ import java.util.List;
 public class WallService implements BaseService<Wall> {
 
     private DAOFactory factory = DAOFactory.getInstance();
-    private WallDao wdao = factory.create(WallDao.class);
+    private WallDAO wdao = factory.create(WallDAO.class);
     private TaskSourceDAO tsdao = factory.create(TaskSourceDAO.class);
     private TaskDestinationDAO tddao = factory.create(TaskDestinationDAO.class);
 

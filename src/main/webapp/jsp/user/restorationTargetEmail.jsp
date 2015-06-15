@@ -8,17 +8,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title></title>
+  <title></title>
 </head>
 <body>
-<form  action="/register?action=register" method="post" >
-
+<form  action="/forgotpassword" method="post" >
+  ${restoreMessage}
   <div >
+    <input type="hidden" name="action" value="sendmail">
     <input type="email"   name="email" placeholder=""  />
   </div>
 
   <button type="submit" > OK </button>
 
 </form>
+<a href="/" > Main </a>
 </body>
 </html>

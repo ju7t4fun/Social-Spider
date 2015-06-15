@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.command.user.auth;
+package com.epam.lab.spider.controller.command.user.restore;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 
@@ -13,6 +13,6 @@ import java.io.IOException;
 public class ShowForgotInput implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("jsp/user/forgotPasswordInput.jsp").forward(request, response);
+        request.getRequestDispatcher("jsp/user/restorationInput.jsp").forward(request, response);
     }
 }

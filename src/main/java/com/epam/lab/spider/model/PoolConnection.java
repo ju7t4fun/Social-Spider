@@ -24,7 +24,7 @@ public class PoolConnection {
             dataSource = init();
         }
         return dataSource.getConnection();
-//        return DriverManager.getConnection("jdbc:mysql://localhost:3306/vk_spider", "root", "1111");
+        //return DriverManager.getConnection("jdbc:mysql://localhost:3306/vk_spider", "root", "1111");
     }
 
     private static DataSource init() {

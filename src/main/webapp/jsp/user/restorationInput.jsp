@@ -8,24 +8,25 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title></title>
+  <title></title>
 </head>
 <body>
-<form  action="/register?action=register" method="post" >
+<form  action="/forgotpassword?action=changepassword&email=${email}" method="post" >
 
-    <div >
-      ${email}
-    </div>
+  <div >
+    email : ${email} <br>
+    ${changeMessage}
+  </div>
 
-    <div >
-     <input type="password"   name="password" placeholder=""  />
-    </div>
+  <div >
+    <input type="password"   name="password" placeholder=""  />
+  </div>
   <div >
     <input type="password"   name="repeatPassword" placeholder=""  />
   </div>
 
-<button type="submit" > OK </button>
-
+  <button type="submit" > OK </button>
+  <a href="/" >Main</a>
 </form>
 </body>
 </html>
