@@ -100,4 +100,12 @@ public class UserService implements BaseService<User> {
         return null;
     }
 
+    public boolean checkPassword(String email, String password) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return udao.checkPassword(connection, email, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

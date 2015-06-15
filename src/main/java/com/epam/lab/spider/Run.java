@@ -1,15 +1,14 @@
 package com.epam.lab.spider;
 
-import com.epam.lab.spider.controller.hash.HashMD5;
-import com.epam.lab.spider.model.entity.Category;
-import com.epam.lab.spider.model.entity.Task;
-import com.epam.lab.spider.model.entity.User;
-import com.epam.lab.spider.model.service.CategoryService;
+import com.epam.lab.spider.model.entity.NewPost;
+import com.epam.lab.spider.model.entity.Post;
+import com.epam.lab.spider.model.entity.PostMetadata;
+import com.epam.lab.spider.model.service.NewPostService;
+import com.epam.lab.spider.model.service.PostMetadataService;
 import com.epam.lab.spider.model.service.ServiceFactory;
-import com.epam.lab.spider.model.service.UserService;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.Date;
 
 /**
  * Created by Boyarsky Vitaliy on 05.06.2015.
@@ -17,15 +16,17 @@ import java.util.List;
 public class Run {
 
     public static void main(String[] args) throws SQLException {
-       ServiceFactory factory = ServiceFactory.getInstance();
-        UserService service = factory.create(UserService.class);
-        User user = new User();
-        user.setName("виик");
-        user.setSurname("хуйло");
-        user.setEmail("fsdfsdf");
-        user.setPassword("dfsdfsdf");
-        user.setRole(User.Role.ADMIN);
-        service.insert(user);
+        ServiceFactory factory = ServiceFactory.getInstance();
+        NewPostService postService = factory.create(NewPostService.class);
+        Post post = new Post();
+        post.setMessage("asadasd");
+        NewPost nPost = new NewPost();
+        nPost.setPost(post);
+        nPost.setWallId(3);
+        Date date = new Date();
+        System.out.println(date);
+        nPost.setPostTime(new Date());
+        postService.insert(nPost);
 
     }
 

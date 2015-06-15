@@ -20,11 +20,13 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
             "role_id = ?, deleted = ?, confirm = ? WHERE id = ?";
     //private static final String SQL_DELETE_QUERY = "DELETE FROM user WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE user SET deleted = true WHERE id = ?";
-    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM user";
+    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM user WHERE deleted = false";
     private static final String SQL_VALIDATE_BY_EMAIL_AND_PASSWORD_QUERY = "SELECT * FROM user WHERE email=? " +
-            " AND password=?";
-    private static final String SQL_GET_BY_EMAIL_QUERY = "SELECT * FROM user WHERE email=? ";
-    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM user WHERE id = ?";
+            " AND password=? AND deleted = false";
+    private static final String SQL_GET_BY_EMAIL_QUERY = "SELECT * FROM user WHERE email=? AND deleted = false";
+    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM user WHERE id = ? AND deleted = false";
+    private static final String SQL_CHECK_PASSWORD_QUERY = "SELECT * FROM user WHERE email = ? AND password = ? AND " +
+            "deleted = false";
 
     @Override
     public boolean insert(Connection connection, User user) throws SQLException {
@@ -92,6 +94,11 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
 
     public User getByEmail(Connection connection, String email) throws SQLException {
         return first(select(connection, SQL_GET_BY_EMAIL_QUERY, email));
+    }
+
+    @Override
+    public boolean checkPassword(Connection connection, String email, String password) throws SQLException {
+        return first(select(connection, SQL_CHECK_PASSWORD_QUERY, email, password)) != null;
     }
 
     public User getByEmailAndPass(Connection connection, String email, String password) throws SQLException {
