@@ -28,8 +28,10 @@ public class NewPostService implements BaseService<NewPost> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                res = pmdao.insert(connection, nPost.getMetadata());
-                res = res && npdao.insert(connection, nPost);
+                pdao.insert(connection, nPost.getPost());
+                if (nPost.getMetadata() != null)
+                    pmdao.insert(connection, nPost.getMetadata());
+                res = npdao.insert(connection, nPost);
                 connection.commit();
             } catch (SQLException e) {
                 connection.rollback();
@@ -54,7 +56,8 @@ public class NewPostService implements BaseService<NewPost> {
             try {
                 connection.setAutoCommit(false);
                 pdao.insert(connection, nPost.getPost());
-                pmdao.update(connection, nPost.getId(), nPost.getMetadata());
+                if (nPost.getMetadata() != null)
+                    pmdao.update(connection, nPost.getId(), nPost.getMetadata());
                 npdao.update(connection, id, nPost);
                 connection.commit();
             } catch (SQLException e) {
