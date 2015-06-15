@@ -37,7 +37,7 @@
         </div>
     </header>
 
-    <div class="poster" style="padding-top:130px;">
+    <div class="poster" style="padding-top:180px;">
         <div class="main">
 		        <span>
 		            <h1>SOCIAL-SPIDER </h1>
