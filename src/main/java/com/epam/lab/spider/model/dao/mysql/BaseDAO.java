@@ -83,7 +83,10 @@ public abstract class BaseDAO {
                 continue;
             }
             if (arg.getClass() == java.util.Date.class) {
-                statement.setDate(i, new Date(((java.util.Date) arg).getTime()));
+                statement.setTimestamp(i, new Timestamp(((java.util.Date) arg).getTime()));
+            }else{
+                statement.setNull(i, Types.NULL);
+                continue;
             }
         }
         return statement;

@@ -25,12 +25,12 @@ public class NewPostService implements BaseService<NewPost> {
 
     @Override
     public boolean insert(NewPost nPost) {
-        boolean res = false;
+        boolean res = true;
         try {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                res = pmdao.insert(connection, nPost.getMetadata());
+                if(nPost.getMetadata()!=null)res = pmdao.insert(connection, nPost.getMetadata());
                 res = res && npdao.insert(connection, nPost);
                 connection.commit();
             } catch (SQLException e) {
@@ -55,8 +55,8 @@ public class NewPostService implements BaseService<NewPost> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                pdao.insert(connection, nPost.getPost());
-                pmdao.update(connection, nPost.getId(), nPost.getMetadata());
+                pdao.update(connection, nPost.getPost().getId(), nPost.getPost());
+                if(nPost.getMetadata()!=null)pmdao.update(connection, nPost.getId(), nPost.getMetadata());
                 npdao.update(connection, id, nPost);
                 connection.commit();
             } catch (SQLException e) {

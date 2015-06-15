@@ -5,10 +5,7 @@ import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.model.entity.NewPost;
-import com.epam.lab.spider.model.entity.Owner;
-import com.epam.lab.spider.model.entity.Profile;
-import com.epam.lab.spider.model.entity.Wall;
+import com.epam.lab.spider.model.entity.*;
 import com.epam.lab.spider.model.service.*;
 import com.epam.lab.spider.model.vk.App;
 import org.apache.log4j.Logger;
@@ -30,6 +27,9 @@ public class PostJob implements Job {
     WallService wallService = new WallService();
     OwnerService ownerService = new OwnerService();
     ProfileService profileService = new ProfileService();
+
+    PostMetadataService metadataService = new PostMetadataService();
+
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         DateFormat dateFormat = DateFormat.getDateTimeInstance();
@@ -68,12 +68,20 @@ public class PostJob implements Job {
                 parameters.add("message",newPost.getPost().getMessage());
                 long response = vk.wall().post(parameters);
 
+                PostMetadata metadata = new PostMetadata();
+                metadata.setLike(0);
+                metadata.setRepost(0);
+
+                metadataService.insert(metadata);
+
+                newPost.setMetadata(metadata);
                 newPost.setState(NewPost.State.POSTED);
                 newPostService.update(newPost.getId(),newPost);
 
-
+                LOG.debug("new post succes : ");
             }catch (NullPointerException|VKException x){
                 LOG.error("Posting has failed. Corrupted new_post #" + newPost.getId());
+                x.printStackTrace();
             } 
             System.out.println(newPost.getPost().getMessage());
         }

@@ -21,7 +21,7 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     private static final String SQL_INSERT_QUERY = "INSERT INTO new_post (post_id, wall_id, post_time, delete_time, " +
             "metadata_id, state_id, deleted) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE new_post SET post_id = ?, wall_id = ?, post_time = ?," +
-            "delete_time = ?, metadata_id = ?, stat_id = ?, deleted = ? WHERE id = ?";
+            "delete_time = ?, metadata_id = ?, state_id = ?, deleted = ? WHERE id = ?";
     // private static final String SQL_DELETE_QUERY = "DELETE FROM new_post WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE new_post SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM new_post";
@@ -39,7 +39,7 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     @Override
     public boolean update(Connection connection, int id, NewPost post) throws SQLException {
         return changeQuery(connection, SQL_UPDATE_QUERY, post.getPost().getId(), post.getWallId(), post.getPostTime(),
-                post.getDeleteTime(), post.getMetadata().getId(), id);
+                post.getDeleteTime(), post.getMetadata().getId(), post.getState().getId(), post.getDeleted(), id);
     }
 
     @Override
@@ -61,7 +61,8 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
                 post.setPost(p);
             }
             post.setWallId(rs.getInt("wall_id"));
-            post.setPostTime(rs.getDate("post_time"));
+
+            post.setPostTime(rs.getTimestamp("post_time"));
             post.setDeleteTime(rs.getDate("delete_time"));
             {
                 PostMetadata metadata = new PostMetadata();
