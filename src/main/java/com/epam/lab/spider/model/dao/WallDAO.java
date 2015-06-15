@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Dmytro on 12.06.2015.
  */
-public interface WallDao extends CRUD<Wall> {
+public interface WallDAO extends CRUD<Wall> {
 
     List<Wall> getDestinationByTaskId(Connection connection, int id) throws SQLException;
 
