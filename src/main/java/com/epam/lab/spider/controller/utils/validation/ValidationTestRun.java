@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.utils.validation;
 
 import com.epam.lab.spider.controller.utils.FrontEndValidatorBrige;
-import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.db.entity.User;
 
 import java.util.Map;
 

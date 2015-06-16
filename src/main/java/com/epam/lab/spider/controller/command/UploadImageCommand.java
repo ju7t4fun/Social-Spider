@@ -19,6 +19,22 @@ import java.util.List;
  */
 public class UploadImageCommand implements ActionCommand {
 
+    enum Type {
+
+        IMAGE("/upload/images", ".jpg", ".bmp");
+
+        String path;
+
+        String[] format;
+
+        Type(String path, String... format) {
+            this.path = path;
+            this.format = format;
+        }
+
+
+        }
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
