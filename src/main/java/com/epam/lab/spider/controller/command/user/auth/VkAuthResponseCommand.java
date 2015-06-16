@@ -5,10 +5,10 @@ import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.model.entity.Profile;
-import com.epam.lab.spider.model.service.ProfileService;
-import com.epam.lab.spider.model.service.ServiceFactory;
-import com.epam.lab.spider.model.service.UserService;
+import com.epam.lab.spider.model.db.entity.Profile;
+import com.epam.lab.spider.model.db.service.ProfileService;
+import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.db.service.UserService;
 import com.epam.lab.spider.model.vk.User;
 
 import javax.servlet.ServletException;
@@ -51,8 +51,8 @@ public class VkAuthResponseCommand implements ActionCommand {
         Profile vkProfile = profileService.getByVkId(vkUser.getId());
         if (vkProfile != null) {
             // Авторизація
-            com.epam.lab.spider.model.entity.User user = userService.getById(vkProfile.getUserId());
-            boolean isActive = user.getConfirm();
+            com.epam.lab.spider.model.db.entity.User user = userService.getById(vkProfile.getUserId());
+            boolean isActive = user.getState() == com.epam.lab.spider.model.db.entity.User.State.ACTIVATED;
             if (!isActive) {
                 // Користувач не активний
                 request.setAttribute("loginMessage", "Your account is non-activated. Please activate " +

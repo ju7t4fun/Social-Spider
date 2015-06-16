@@ -4,7 +4,7 @@ import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.utils.mail.MailSender;
 import com.epam.lab.spider.controller.utils.mail.MailSenderFactory;
-import com.epam.lab.spider.model.service.UserService;
+import com.epam.lab.spider.model.db.service.UserService;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.servlet.ServletException;

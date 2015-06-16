@@ -2,9 +2,6 @@
 .idea
 Social-Spider.iml
 spider.iml
-*context.xml
-*PoolConnection.java
-
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -18,3 +15,5 @@ spider.iml
 hs_err_pid*
 
 src/main/java/com/epam/lab/spider/Run.java
+src/main/webapp/META-INF/context.xml
+src/main/java/com/epam/lab/spider/model/PoolConnection.java
