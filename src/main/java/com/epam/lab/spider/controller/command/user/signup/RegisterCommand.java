@@ -6,9 +6,9 @@ import com.epam.lab.spider.controller.utils.hash.HashMD5;
 import com.epam.lab.spider.controller.utils.hash.HashSHA;
 import com.epam.lab.spider.controller.utils.mail.MailSender;
 import com.epam.lab.spider.controller.utils.mail.MailSenderFactory;
-import com.epam.lab.spider.model.entity.User;
-import com.epam.lab.spider.model.service.ServiceFactory;
-import com.epam.lab.spider.model.service.UserService;
+import com.epam.lab.spider.model.db.entity.User;
+import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.db.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

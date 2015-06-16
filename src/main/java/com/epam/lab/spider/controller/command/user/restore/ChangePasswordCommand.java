@@ -2,8 +2,8 @@ package com.epam.lab.spider.controller.command.user.restore;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.hash.HashMD5;
-import com.epam.lab.spider.model.entity.User;
-import com.epam.lab.spider.model.service.UserService;
+import com.epam.lab.spider.model.db.entity.User;
+import com.epam.lab.spider.model.db.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

@@ -2,9 +2,9 @@ package com.epam.lab.spider.controller.command.user.auth;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.hash.HashMD5;
-import com.epam.lab.spider.model.entity.User;
-import com.epam.lab.spider.model.service.ServiceFactory;
-import com.epam.lab.spider.model.service.UserService;
+import com.epam.lab.spider.model.db.entity.User;
+import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.db.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +29,7 @@ public class SignInCommand implements ActionCommand {
             // Авторизація
             User user = us.getByEmail(email);
 
-            boolean isActive = user.getConfirm();
+            boolean isActive = user.getState() == User.State.ACTIVATED;
             if (!isActive) {
                 // Користувач не активний
                 request.setAttribute("loginMessage", "Your account is non-activated. Please activate " +
