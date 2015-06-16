@@ -52,21 +52,28 @@ public class VkAuthResponseCommand implements ActionCommand {
         if (vkProfile != null) {
             // Авторизація
             com.epam.lab.spider.model.db.entity.User user = userService.getById(vkProfile.getUserId());
-            boolean isActive = user.getState() == com.epam.lab.spider.model.db.entity.User.State.ACTIVATED;
-            if (!isActive) {
-                // Користувач не активний
-                request.setAttribute("loginMessage", "Your account is non-activated. Please activate " +
-                        "your account via email");
-                request.getRequestDispatcher("jsp/user/login.jsp").forward(request, response);
-                return;
+            switch (user.getState()) {
+                case CREATED:
+                    // Користувач не активний
+                    request.setAttribute("loginMessage", "Your account is non-activated. Please activate " +
+                            "your account via email");
+                    request.getRequestDispatcher("jsp/user/login.jsp").forward(request, response);
+                    return;
+                case BANNED:
+                    // Користувач забанений
+                    request.setAttribute("loginMessage", "Your account is Banned");
+                    request.getRequestDispatcher("jsp/user/login.jsp").forward(request, response);
+                    return;
+                case ACTIVATED:
+                    request.getSession().setAttribute("user", user);
+                    response.sendRedirect("/");
             }
-            request.getSession().setAttribute("user", user);
-            response.sendRedirect("/");
         } else {
             // Перехід на реєстрацію
             session.setAttribute("name", vkUser.getFirstName());
             session.setAttribute("surname", vkUser.getLastName());
             session.setAttribute("email", token.getEmail());
+            session.setAttribute("vkId", token.getUserId());
             response.sendRedirect("/register");
         }
     }

@@ -28,21 +28,27 @@ public class SignInCommand implements ActionCommand {
         if (us.checkPassword(email, md5.hash(password))) {
             // Авторизація
             User user = us.getByEmail(email);
-
-            boolean isActive = user.getState() == User.State.ACTIVATED;
-            if (!isActive) {
-                // Користувач не активний
-                request.setAttribute("loginMessage", "Your account is non-activated. Please activate " +
-                        "your account via email");
-                request.setAttribute("login", email);
-                request.getRequestDispatcher("jsp/user/login.jsp").forward(request, response);
-                return;
+            switch (user.getState()) {
+                case CREATED:
+                    // Користувач не активний
+                    request.setAttribute("loginMessage", "Your account is non-activated. Please activate " +
+                            "your account via email");
+                    request.setAttribute("login", email);
+                    request.getRequestDispatcher("jsp/user/login.jsp").forward(request, response);
+                    return;
+                case BANNED:
+                    // Користувач забанений
+                    request.setAttribute("loginMessage", "Your account is Banned");
+                    request.setAttribute("login", email);
+                    request.getRequestDispatcher("jsp/user/login.jsp").forward(request, response);
+                    return;
+                case ACTIVATED:
+                    request.getSession().setAttribute("user", user);
+                    response.sendRedirect("/");
             }
-            request.getSession().setAttribute("user", user);
-            response.sendRedirect("/");
         } else {
             // Помилка авторизації
-            request.setAttribute("loginMessage", "There is no such a user!");
+            request.setAttribute("loginMessage", "Incorrect username or password.");
             request.setAttribute("login", email);
             request.getRequestDispatcher("jsp/user/login.jsp").forward(request, response);
         }

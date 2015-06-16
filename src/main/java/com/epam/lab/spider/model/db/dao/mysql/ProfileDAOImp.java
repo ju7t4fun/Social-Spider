@@ -14,16 +14,16 @@ import java.util.List;
  */
 public class ProfileDAOImp extends BaseDAO implements ProfileDAO {
 
-    private static final String SQL_INSERT_QUERY = "INSERT INTO vk_profile (user_id, vk_id, access_token, ext_time, " +
+    private static final String SQL_INSERT_QUERY = "INSERT INTO profile (user_id, vk_id, access_token, ext_time, " +
             "app_id, deleted) VALUES (?, ?, ?, ?, ?, ?)";
-    private static final String SQL_UPDATE_QUERY = "UPDATE vk_profile SET user_id = ?, vk_id = ?, access_token = ?, " +
+    private static final String SQL_UPDATE_QUERY = "UPDATE profile SET user_id = ?, vk_id = ?, access_token = ?, " +
             "ext_time = ?, app_id = ?, deleted = ? WHERE id = ?";
     // private static final String SQL_DELETE_QUERY = "DELETE FROM vk_profile WHERE id = ?";
-    private static final String SQL_DELETE_QUERY = "UPDATE vk_profile SET deleted = true WHERE id = ?";
-    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM vk_profile WHERE deleted = false";
-    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM vk_profile WHERE id = ? AND deleted = false";
-    private static final String SQL_GET_BY_VK_ID_QUERY = "SELECT * FROM vk_profile WHERE vk_id = ? AND deleted = false";
-    private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT * FROM vk_profile WHERE user_id = ? AND deleted = " +
+    private static final String SQL_DELETE_QUERY = "UPDATE profile SET deleted = true WHERE id = ?";
+    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM profile WHERE deleted = false";
+    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM profile WHERE id = ? AND deleted = false";
+    private static final String SQL_GET_BY_VK_ID_QUERY = "SELECT * FROM profile WHERE vk_id = ? AND deleted = false";
+    private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT * FROM profile WHERE user_id = ? AND deleted = " +
             "false";
 
     @Override

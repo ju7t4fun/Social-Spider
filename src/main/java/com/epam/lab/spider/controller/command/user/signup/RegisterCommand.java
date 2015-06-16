@@ -6,7 +6,9 @@ import com.epam.lab.spider.controller.utils.hash.HashMD5;
 import com.epam.lab.spider.controller.utils.hash.HashSHA;
 import com.epam.lab.spider.controller.utils.mail.MailSender;
 import com.epam.lab.spider.controller.utils.mail.MailSenderFactory;
+import com.epam.lab.spider.model.db.entity.Profile;
 import com.epam.lab.spider.model.db.entity.User;
+import com.epam.lab.spider.model.db.service.ProfileService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
 import com.epam.lab.spider.model.db.service.UserService;
 
@@ -24,12 +26,20 @@ public class RegisterCommand implements ActionCommand {
 
     private ServiceFactory factory = ServiceFactory.getInstance();
     private UserService userService = factory.create(UserService.class);
+    private ProfileService profileService = factory.create(ProfileService.class);
 
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = UTF8.encoding(request.getParameter("name"));
         String surname = UTF8.encoding(request.getParameter("surname"));
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+
+        // Очищуємо сесію від мусору
+        HttpSession session = request.getSession();
+        session.removeAttribute("name");
+        session.removeAttribute("surname");
+        session.removeAttribute("vkId");
+        session.removeAttribute("email");
 
         User user = userService.getByEmail(email);
         if (user != null && !user.getDeleted()) {
@@ -48,6 +58,14 @@ public class RegisterCommand implements ActionCommand {
             user.setRole(User.Role.USER);
             userService.insert(user);
 
+            // Якщо зареєстувався через вк привязати user_id до vk_id
+            if (!request.getParameter("vkId").equals("")) {
+                Profile profile = new Profile();
+                profile.setUserId(user.getId());
+                profile.setVkId(Integer.parseInt(request.getParameter("vkId")));
+                profileService.insert(profile);
+            }
+
             // Надсилання повідомлення активації
             sendActivationEmail(userService.getById(user.getId()), request);
 
@@ -63,7 +81,7 @@ public class RegisterCommand implements ActionCommand {
 
         HashSHA sha = new HashSHA();
         String emailPartUri = "&email=" + user.getEmail();
-        String hashPartUri = "&hash=" + sha.hash(user.getCreateTime().toString() + false);
+        String hashPartUri = "&hash=" + sha.hash(user.getCreateTime().toString() + user.getState());
         String activateUrl = "http://localhost:8080/register?action=activate" + emailPartUri + hashPartUri;
 
         // Створення вмісту повідомлення

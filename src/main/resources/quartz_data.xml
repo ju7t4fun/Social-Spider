@@ -17,7 +17,6 @@
                 <job-name>PostJob</job-name>
                 <start-time-seconds-in-future>15</start-time-seconds-in-future>
             </simple>
-
         </trigger>
     </schedule>
 
