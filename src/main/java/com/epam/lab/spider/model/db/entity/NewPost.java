@@ -24,7 +24,7 @@ public class NewPost {
     private Post post;
 
     public enum State {
-        CREATED, POSTED, DELETED, ERROR
+        CREATED, POSTING, POSTED, DELETED, ERROR
     }
 
     public Integer getId() {

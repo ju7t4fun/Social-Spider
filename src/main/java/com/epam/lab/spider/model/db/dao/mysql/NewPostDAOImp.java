@@ -22,9 +22,9 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
             "delete_time = ?, state = ?, deleted = ? WHERE id = ?";
     // private static final String SQL_DELETE_QUERY = "DELETE FROM new_post WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE new_post SET deleted = true WHERE id = ?";
-    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM new_post WHERE deleted = ?";
-    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM new_post WHERE id = ? AND deleted = ?";
-    private static final String SQL_SELECT_CREATED_BY_DATE_LE = "SELECT * FROM new_post WHERE state = 'CREATED' AND " +
+    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM new_post WHERE deleted = false";
+    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM new_post WHERE id = ? AND deleted = false";
+    private static final String SQL_SELECT_CREATED_BY_DATE_LE = "SELECT * FROM new_post WHERE state = '"+NewPost.State.CREATED+"' AND " +
             "post_time < ? AND deleted = false";
 
     @Override

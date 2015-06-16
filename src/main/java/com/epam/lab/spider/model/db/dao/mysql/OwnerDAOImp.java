@@ -21,7 +21,7 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
     // private static final String SQL_DELETE_QUERY = "DELETE * FROM owner WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE owner SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM owner WHERE deleted = false";
-    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM owner WHERE id = ? WHERE deleted = false";
+    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM owner WHERE id = ? AND deleted = false";
 
     @Override
     public boolean insert(Connection connection, Owner owner) throws SQLException {

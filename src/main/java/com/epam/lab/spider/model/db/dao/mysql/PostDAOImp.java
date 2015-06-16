@@ -18,8 +18,8 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
     private static final String SQL_UPDATE_QUERY = "UPDATE post SET message = ?, deleted = ? WHERE id = ?";
     //private static final String SQL_DELETE_QUERY = "DELETE FROM post WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE post SET deleted = true WHERE id = ?";
-    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM post WHERE deleted = ?";
-    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM post WHERE id = ? AND deleted = ?";
+    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM post WHERE deleted = false";
+    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM post WHERE id = ? AND deleted = false";
 
     @Override
     public boolean insert(Connection connection, Post post) throws SQLException {

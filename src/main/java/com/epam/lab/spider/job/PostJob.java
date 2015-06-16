@@ -1,7 +1,7 @@
 package com.epam.lab.spider.job;
 
 
-;
+
 import com.epam.lab.spider.model.db.entity.NewPost;
 import com.epam.lab.spider.model.db.service.NewPostService;
 
@@ -29,16 +29,18 @@ public class PostJob implements Job {
 
 //                System.out.println("Executing Job");
         Date date = new Date(System.currentTimeMillis());
-        Date nextDate = new Date(System.currentTimeMillis() + 50*1000);
-        System.out.println("Post Job start at " + dateFormat.format(date)+" next hard job at "+dateFormat.format(nextDate));
+        Date nextDate = new Date(System.currentTimeMillis() + 60*1000);
+        LOG.info("Post Job start at " + dateFormat.format(date)+" next post job at "+dateFormat.format(nextDate));
 
 
         List<NewPost> newPosts = newPostService.getAllUnpostedByDate(nextDate);
         for(NewPost newPost:newPosts){
+            newPost.setState(NewPost.State.POSTING);
+            newPostService.update(newPost.getId(),newPost);
             JobDetail jobDetail = newJob(OnePostJob.class).usingJobData("new_post_id", newPost.getId()).build();
             SimpleTrigger jobTrigger = (SimpleTrigger) newTrigger()
-                    .startAt(newPost.getPostTime())                          // some Date
-                    .forJob(jobDetail) // identify job with name, group strings
+                    .startAt(newPost.getPostTime())
+                    .forJob(jobDetail)
                     .build();
             try {
                 jobExecutionContext.getScheduler().scheduleJob(jobDetail,jobTrigger);
@@ -48,10 +50,10 @@ public class PostJob implements Job {
 
         }
 
-        nextDate = new Date(System.currentTimeMillis() + 60*1000);
+
         SimpleTrigger trigger = (SimpleTrigger) newTrigger()
-                .startAt(nextDate)                          // some Date
-                .forJob(jobExecutionContext.getJobDetail()) // identify job with name, group strings
+                .startAt(nextDate)
+                .forJob(jobExecutionContext.getJobDetail())
                 .build();
 
         try {

@@ -25,6 +25,7 @@ public class TaskJob implements Job {
 
     TaskService taskService = new TaskService();
 
+    FilterService filterService = new FilterService();
     PostService postService = new PostService();
 
     TaskSynchronizedDataService synchronizedService = new TaskSynchronizedDataService();
@@ -34,6 +35,7 @@ public class TaskJob implements Job {
         LOG.info("TaskJob going grab.");
         List<Task> tasks = taskService.getAll();
         for (Task task : tasks) {
+            Filter filter = filterService.getById(task.getFilterId());
             List<Wall> sourceWalls = wallService.getSourceByTaskId(task.getId());
             List<Wall> destinationWalls = wallService.getDestinationByTaskId(task.getId());
 
@@ -45,14 +47,18 @@ public class TaskJob implements Job {
 
                 Set<Integer> alreadyAddSet = synchronizedService.getProcessedPost(task, wall, 10);
                 try {
-                    Vkontakte vk = new Vkontakte(4949213);
-                    // да здраствует безумие!!!!
+                    Integer appId = profile.getAppId();
+                    if(appId==null){
+                        appId = 4949213;
+                    }
+                    Vkontakte vk = new Vkontakte(appId);
+                    // Initialization auth_token
                     AccessToken accessToken = new AccessToken();
                     accessToken.setAccessToken(profile.getAccessToken());
                     accessToken.setUserId(profile.getVkId());
                     accessToken.setExpirationMoment(profile.getExtTime().getTime());
                     vk.setAccessToken(accessToken);
-                    //слава Ктулху!!!
+                    // !Initialization auth_token
                     Parameters parameters = new Parameters();
                     parameters.add("owner_id", owner.getVk_id());
                     parameters.add("filter", "owner");
@@ -63,14 +69,24 @@ public class TaskJob implements Job {
                     LinkedList<Integer> addedToProcessingBlocks = new LinkedList<>();
                     for (com.epam.lab.spider.model.vk.Post vkPost : posts) {
                         boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));
+
+
                         if (alreadyProceededPost) {
                             LOG.debug("Post " + owner.getVk_id() + "_" + vkPost.getId() + " already processed.");
                         } else {
-                            Post post = new Post();
-                            post.setMessage(vkPost.getText());
-                            addedToProcessingPosts.addFirst(post);
-                            addedToProcessingBlocks.addFirst(vkPost.getId());
-                            LOG.info("Post " + owner.getVk_id() + "_" + vkPost.getId() + " has added to processing.");
+                            boolean qualityCondition = true;
+                            if(filter.getLikes()!=null)     qualityCondition &= vkPost.getLikes().getCount() >= filter.getLikes().intValue();
+                            if(filter.getReposts()!=null)   qualityCondition &= vkPost.getReposts().getCount() >= filter.getLikes().intValue();
+                            if(filter.getComments()!=null)  qualityCondition &= vkPost.getComments().getCount() >= filter.getComments().intValue();
+                            if (qualityCondition) {
+                                Post post = new Post();
+                                post.setMessage(vkPost.getText());
+                                addedToProcessingPosts.addFirst(post);
+                                addedToProcessingBlocks.addFirst(vkPost.getId());
+                                LOG.debug("Post " + owner.getVk_id() + "_" + vkPost.getId() + " has added to processing.");
+                            }else {
+                                LOG.debug("Post " + owner.getVk_id() + "_" + vkPost.getId() + " has failed filter.");
+                            }
                         }
                     }
                     blockMap.put(wall, addedToProcessingBlocks);
@@ -95,7 +111,6 @@ public class TaskJob implements Job {
                     newPost.setState(NewPost.State.CREATED);
 
 
-
                     newPosts.addFirst(newPost);
                 }
 
@@ -103,7 +118,7 @@ public class TaskJob implements Job {
             NewPostService newPostService = new NewPostService();
             for (NewPost newPost : newPosts) {
                 boolean result = newPostService.insert(newPost);
-                if(!result)LOG.fatal("ТЕРМІНОВО ФІКСИТЬ БАЗУ, БРУДНА ТВАРИНО!");
+                if (!result) LOG.fatal("ТЕРМІНОВО ФІКСИТЬ БАЗУ, БРУДНА ТВАРИНО!");
             }
             for (Map.Entry<Wall, List<Integer>> entry : blockMap.entrySet()) {
                 synchronizedService.markIdLastProcessedPost(task, entry.getKey(), entry.getValue());
