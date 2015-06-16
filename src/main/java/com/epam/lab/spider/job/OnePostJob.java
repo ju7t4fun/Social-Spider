@@ -80,15 +80,19 @@ public class OnePostJob implements Job {
 
                 LOG.debug("new post success : " + owner.getVk_id() + "_" + response);
             } catch (VKException x) {
-                if (x.getExceptionCode() == VKException.VK_CAPTCHA_NEEDED) {
-                    Locker.getInstance().lock(profile);
-                    LOG.error("Posting has failed. Profile is locked.");
-                } else if (x.getExceptionCode() == VKException.VK_ACCESS_DENIED) {
-                    Locker.getInstance().lock(wall);
-                    LOG.error("Posting has failed. Wall is locked.");
-                } else {
-                    LOG.error("Posting has failed. Corrupted new_post #" + newPost.getId());
-                    x.printStackTrace();
+                switch (x.getExceptionCode()){
+                    case VKException.VK_CAPTCHA_NEEDED:{
+                        Locker.getInstance().lock(profile);
+                        LOG.error("Posting has failed. Profile is locked.");
+                    }break;
+                    case VKException.VK_ACCESS_DENIED:{
+                        Locker.getInstance().lock(wall);
+                        LOG.error("Posting has failed. Wall is locked.");
+                    }break;
+                    default:{
+                        LOG.error("Posting has failed. Corrupted new_post #" + newPost.getId());
+                        x.printStackTrace();
+                    }
                 }
             }
         } catch (NullPointerException x) {

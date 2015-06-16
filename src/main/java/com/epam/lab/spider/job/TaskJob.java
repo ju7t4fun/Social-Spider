@@ -106,7 +106,7 @@ public class TaskJob implements Job {
                     newPost.setWallId(wall.getId());
 
                     newPost.setPostTime(new Date(timeToPost));
-                    timeToPost += 500;
+                    timeToPost += 5000;
 
                     newPost.setState(NewPost.State.CREATED);
 
@@ -129,7 +129,7 @@ public class TaskJob implements Job {
 
 
         Date nextRunDate = new Date(System.currentTimeMillis() + (2 * 60 * 1000));
-        nextRunDate = new Date(System.currentTimeMillis() + 10000);
+//        nextRunDate = new Date(System.currentTimeMillis() + 10000);
         LOG.info("Next run task job at " + nextRunDate.toString());
 
         SimpleTrigger trigger = (SimpleTrigger) newTrigger()
