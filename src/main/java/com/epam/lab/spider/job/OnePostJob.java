@@ -4,8 +4,9 @@ import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.model.entity.*;
-import com.epam.lab.spider.model.service.*;
+import com.epam.lab.spider.model.db.entity.*;
+import com.epam.lab.spider.model.db.service.*;
+
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -24,7 +25,7 @@ public class OnePostJob implements Job {
     OwnerService ownerService = new OwnerService();
     ProfileService profileService = new ProfileService();
 
-    PostMetadataService metadataService = new PostMetadataService();
+
 
 
 
@@ -70,13 +71,7 @@ public class OnePostJob implements Job {
             if(true) {
                 response = vk.wall().post(parameters);
             }
-            PostMetadata metadata = new PostMetadata();
-            metadata.setLike(0);
-            metadata.setRepost(0);
 
-            metadataService.insert(metadata);
-
-            newPost.setMetadata(metadata);
             newPost.setState(NewPost.State.POSTED);
             newPostService.update(newPost.getId(),newPost);
 

@@ -1,6 +1,6 @@
-package com.epam.lab.spider.model.dao.mysql;
+package com.epam.lab.spider.model.db.dao.mysql;
 
-import com.epam.lab.spider.model.dao.TaskSynchronizedDataDAO;
+import com.epam.lab.spider.model.db.dao.TaskSynchronizedDataDAO;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

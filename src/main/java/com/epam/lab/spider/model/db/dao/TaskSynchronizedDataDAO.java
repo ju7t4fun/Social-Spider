@@ -1,4 +1,4 @@
-package com.epam.lab.spider.model.dao;
+package com.epam.lab.spider.model.db.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;

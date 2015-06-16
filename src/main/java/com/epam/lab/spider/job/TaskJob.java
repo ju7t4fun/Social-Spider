@@ -3,10 +3,10 @@ package com.epam.lab.spider.job;
 import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.model.entity.*;
-import com.epam.lab.spider.model.entity.Post;
-import com.epam.lab.spider.model.service.*;
-import com.epam.lab.spider.model.vk.*;
+import com.epam.lab.spider.model.db.entity.*;
+
+
+import com.epam.lab.spider.model.db.service.*;
 import org.apache.log4j.Logger;
 import org.quartz.*;
 
@@ -94,10 +94,7 @@ public class TaskJob implements Job {
 
                     newPost.setState(NewPost.State.CREATED);
 
-                    PostMetadata metadata = new PostMetadata();
-                    metadata.setLike(0);
-                    metadata.setRepost(0);
-                    newPost.setMetadata(metadata);
+
 
                     newPosts.addFirst(newPost);
                 }

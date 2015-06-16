@@ -20,3 +20,4 @@ hs_err_pid*
 src/main/java/com/epam/lab/spider/Run.java
 src/main/webapp/META-INF/context.xml
 src/main/java/com/epam/lab/spider/model/db/PoolConnection.java
+src/main/resources/quartz_data.xml

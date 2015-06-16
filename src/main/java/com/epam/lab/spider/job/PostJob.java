@@ -1,13 +1,10 @@
 package com.epam.lab.spider.job;
 
 
-import com.epam.lab.spider.controller.vk.Parameters;
-import com.epam.lab.spider.controller.vk.VKException;
-import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.model.entity.*;
-import com.epam.lab.spider.model.service.*;
-import com.epam.lab.spider.model.vk.App;
+;
+import com.epam.lab.spider.model.db.entity.NewPost;
+import com.epam.lab.spider.model.db.service.NewPostService;
+
 import org.apache.log4j.Logger;
 import org.quartz.*;
 

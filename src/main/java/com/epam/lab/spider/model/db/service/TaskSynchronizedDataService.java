@@ -1,10 +1,11 @@
-package com.epam.lab.spider.model.service;
+package com.epam.lab.spider.model.db.service;
 
-import com.epam.lab.spider.model.PoolConnection;
-import com.epam.lab.spider.model.dao.DAOFactory;
-import com.epam.lab.spider.model.dao.TaskSynchronizedDataDAO;
-import com.epam.lab.spider.model.entity.Task;
-import com.epam.lab.spider.model.entity.Wall;
+
+import com.epam.lab.spider.model.db.PoolConnection;
+import com.epam.lab.spider.model.db.dao.TaskSynchronizedDataDAO;
+import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
+import com.epam.lab.spider.model.db.entity.*;
+
 
 import java.sql.Connection;
 import java.sql.SQLException;

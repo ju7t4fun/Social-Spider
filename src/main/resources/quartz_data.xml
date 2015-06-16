@@ -7,7 +7,7 @@
         version="1.8">
 
     <schedule>
-        <!--
+
         <job>
             <name>PostJob</name>
             <job-class>com.epam.lab.spider.job.PostJob</job-class>
@@ -31,7 +31,7 @@
             </simple>
 
         </trigger>
--->
+
     </schedule>
 
 </job-scheduling-data>
