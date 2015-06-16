@@ -20,9 +20,10 @@ public class AttachmentDAOImp extends BaseDAO implements AttachmentDAO {
             "= ?  WHERE id = ?";
     //private static final String SQL_DELETE_QUERY = "DELETE FROM attachment WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE attachment SET deleted = true WHERE id = ?";
-    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM attachment";
-    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM attachment WHERE id = ?";
-    private static final String SQL_GET_BY_POST_ID_QUERY = "SELECT * FROM attachment WHERE post_id = ?";
+    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM attachment WHERE deleted = false";
+    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM attachment WHERE id = ? AND deleted = false";
+    private static final String SQL_GET_BY_POST_ID_QUERY = "SELECT * FROM attachment WHERE post_id = ? AND deleted = " +
+            "false";
     private static final String SQL_DELETE_BY_POST_ID_QUERY = "UPDATE attachment SET deleted = true WHERE post_id = ?";
 
     @Override
