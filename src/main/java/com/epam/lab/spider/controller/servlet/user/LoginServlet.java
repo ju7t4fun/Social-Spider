@@ -27,15 +27,22 @@ public class LoginServlet extends HttpServlet {
             commands.put("signOut", new SignOutCommand());
             commands.put("vkAuth", new VkAuthCommand());
             commands.put("vkAuthResponse", new VkAuthResponseCommand());
+            commands.put("fbAuth", new FbAuthCommand());
+            commands.put("fbAuthResponse", new FbAuthResponseCommand());
 
         }
 
         @Override
         public void action(HttpServletRequest request, HttpServletResponse response) throws
                 ServletException, IOException {
+//            if (request.getParameter("code") != null) {
+//
+//                commands.get("vkAuthResponse").execute(request, response);
+//                return;
+//            }
             if (request.getParameter("code") != null) {
 
-                commands.get("vkAuthResponse").execute(request, response);
+                commands.get("fbAuthResponse").execute(request, response);
                 return;
             }
             super.action(request, response);
