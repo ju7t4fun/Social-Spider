@@ -10,10 +10,10 @@ import java.io.IOException;
 /**
  * Created by Орест on 15.06.2015.
  */
-public class ShowForgotTargetEmailCommand implements ActionCommand {
+public class ShowForgotPasswordCommand implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("jsp/user/restorationTargetEmail.jsp").forward(request, response);
+        request.getRequestDispatcher("jsp/user/pwrestore_email.jsp").forward(request, response);
     }
 
 }

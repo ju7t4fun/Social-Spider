@@ -25,10 +25,11 @@ public class ActivateCommand implements ActionCommand {
         String email = request.getParameter("email");
         String hash = request.getParameter("hash");
         User user = userService.getByEmail(email);
+
         // Перевіряєм чи користувач існує
         if (user != null) {
             HashSHA sha = new HashSHA();
-            // Перевіряє hash (createTime + confirm)
+            // Перевіряє hash (createTime + state)
             if (hash.equals(sha.hash(user.getCreateTime().toString() + user.getState()))) {
                 user.setState(User.State.ACTIVATED);
                 userService.update(user.getId(), user);

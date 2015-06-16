@@ -26,6 +26,7 @@ public class NewPostService implements BaseService<NewPost> {
 
     @Override
     public boolean insert(NewPost nPost) {
+        boolean res = true;
         try {
             Connection connection = PoolConnection.getConnection();
             try {

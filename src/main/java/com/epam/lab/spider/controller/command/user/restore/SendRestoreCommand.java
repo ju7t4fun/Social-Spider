@@ -4,6 +4,8 @@ import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.utils.mail.MailSender;
 import com.epam.lab.spider.controller.utils.mail.MailSenderFactory;
+import com.epam.lab.spider.model.db.entity.User;
+import com.epam.lab.spider.model.db.service.ServiceFactory;
 import com.epam.lab.spider.model.db.service.UserService;
 import org.apache.commons.codec.binary.Base64;
 
@@ -19,42 +21,50 @@ import java.util.ResourceBundle;
  * Created by Orest Dzyuba on 15.06.2015.
  */
 public class SendRestoreCommand implements ActionCommand {
+
+    private static ServiceFactory factory = ServiceFactory.getInstance();
+    private static UserService service = factory.create(UserService.class);
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         String email = request.getParameter("email");
-
-        UserService userService = new UserService();
-        if ( userService.getByEmail(email) != null ) {
-
-            sendMail(request,email);
-            request.setAttribute("restoreMessage","Restoration message was sent to your email!");
-
-        } else {
-            request.setAttribute("restoreMessage","There is no user with this email!");
+        User user = service.getByEmail(email);
+        if (user != null) {
+            switch (user.getState()) {
+                case BANNED:
+                    request.setAttribute("restoreMessage", "Your account is Banned.");
+                    request.getRequestDispatcher("jsp/user/pwrestore_email.jsp").forward(request, response);
+                    return;
+                case CREATED:
+                    request.setAttribute("restoreMessage", "Your account is non-activated. Please activate " +
+                            "your account via email");
+                    request.getRequestDispatcher("jsp/user/pwrestore_email.jsp").forward(request, response);
+                    return;
+                case ACTIVATED:
+                    sendMail(request, user);
+                    response.sendRedirect("/login");
+                    return;
+            }
         }
-
-        request.getRequestDispatcher("/forgotpassword?action=default").forward(request, response);
-        return;
+        request.setAttribute("restoreMessage", "There is no user with this email!");
+        request.getRequestDispatcher("jsp/user/pwrestore_email.jsp").forward(request, response);
     }
 
-    private void sendMail(HttpServletRequest request, String email) {
-
+    private void sendMail(HttpServletRequest request, User user) {
         Date expDate = new Date(new Date().getTime() + 86400000);
 
         byte[] bytesEncoded = Base64.encodeBase64(Long.toString(expDate.getTime()).getBytes());
         String expDateEncoded = new String(bytesEncoded);
 
-        bytesEncoded = Base64.encodeBase64(email.getBytes());
-        String emailEncoded = new String(bytesEncoded);
+        bytesEncoded = Base64.encodeBase64(user.getPassword().getBytes());
+        String passwordEncoded = new String(bytesEncoded);
 
+        String emailPart = "&email=" + user.getEmail();
+        String timePart = "&hash=" + expDateEncoded;
+        String passwordPart = "&code=" + passwordEncoded;
 
-        String timePart = "hash2=" + expDateEncoded;
-        String emailPart = "hash1=" + emailEncoded;
-
-        String restoreUrl = "http://localhost:8080/forgotpassword?action=retrieverestore" +
-                "&" + timePart + "&" + emailPart;
-
+        String restoreUrl = "http://localhost:8080/forgot_password?action=restore" + emailPart + timePart +
+                passwordPart;
 
         ResourceBundle bundle = (ResourceBundle) request.getSession().getAttribute("bundle");
         StringBuilder html = new StringBuilder();
@@ -63,7 +73,7 @@ public class SendRestoreCommand implements ActionCommand {
                 "clickRestoreMessage"))).append("</a>");
 
         MailSender mail = MailSenderFactory.createMailSender(MailSender.ContextType.HTML);
-        mail.send(UTF8.encoding(bundle.getString("restore.restoreMessage")), html.toString(), email);
-
+        mail.send(UTF8.encoding(bundle.getString("restore.restoreMessage")), html.toString(), user.getEmail());
     }
+
 }
