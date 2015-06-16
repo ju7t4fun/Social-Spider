@@ -11,6 +11,8 @@ import java.util.Set;
  */
 public class Category {
 
+    private static final ServiceFactory factory = ServiceFactory.getInstance();
+
     private Integer id;
     private String name;
     private Set<Task> tasks = null;
@@ -35,7 +37,6 @@ public class Category {
         if (tasks == null) {
             if (id == null)
                 return new HashSet<>();
-            ServiceFactory factory = ServiceFactory.getInstance();
             TaskService service = factory.create(TaskService.class);
             tasks = new HashSet<>(service.getByCategoryId(id));
         }

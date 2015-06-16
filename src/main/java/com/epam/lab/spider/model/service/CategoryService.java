@@ -1,6 +1,7 @@
 package com.epam.lab.spider.model.service;
 
 import com.epam.lab.spider.model.PoolConnection;
+import com.epam.lab.spider.model.SQLTransactionException;
 import com.epam.lab.spider.model.dao.CategoryDAO;
 import com.epam.lab.spider.model.dao.CategoryHasTaskDAO;
 import com.epam.lab.spider.model.dao.DAOFactory;
@@ -31,12 +32,12 @@ public class CategoryService implements BaseService<Category> {
                 res = cdao.insert(connection, category);
                 Set<Task> tasks = category.getTasks();
                 for (Task task : tasks) {
+                    if (!res) throw new SQLTransactionException();
                     res = res && chtdao.insert(connection, category.getId(), task.getId());
                 }
                 connection.commit();
-            } catch (SQLException e) {
+            } catch (SQLTransactionException e) {
                 connection.rollback();
-                throw e;
             } finally {
                 if (connection != null) {
                     connection.setAutoCommit(true);
@@ -57,14 +58,15 @@ public class CategoryService implements BaseService<Category> {
             try {
                 connection.setAutoCommit(false);
                 res = cdao.update(connection, id, category);
+                if (!res) throw new SQLTransactionException();
                 res = res && chtdao.deleteByCategoryId(connection, id);
                 for (Task task : category.getTasks()) {
-                    chtdao.insert(connection, id, task.getId());
+                    if (!res) throw new SQLTransactionException();
+                    res = res && chtdao.insert(connection, id, task.getId());
                 }
                 connection.commit();
-            } catch (SQLException e) {
+            } catch (SQLTransactionException e) {
                 connection.rollback();
-                throw e;
             } finally {
                 if (connection != null) {
                     connection.setAutoCommit(true);
@@ -85,11 +87,11 @@ public class CategoryService implements BaseService<Category> {
             try {
                 connection.setAutoCommit(false);
                 res = chtdao.deleteByCategoryId(connection, id);
+                if (!res) throw new SQLTransactionException();
                 res = res && cdao.delete(connection, id);
                 connection.commit();
-            } catch (SQLException e) {
+            } catch (SQLTransactionException e) {
                 connection.rollback();
-                throw e;
             } finally {
                 if (connection != null) {
                     connection.setAutoCommit(true);
