@@ -17,8 +17,19 @@
                 <job-name>PostJob</job-name>
                 <start-time-seconds-in-future>15</start-time-seconds-in-future>
             </simple>
-
         </trigger>
+        <job>
+            <name>TaskJob</name>
+            <job-class>com.epam.lab.spider.job.TaskJob</job-class>
+        </job>
+        <trigger>
+            <simple>
+                <name>TaskJob</name>
+                <job-name>TaskJob</job-name>
+                <start-time-seconds-in-future>5</start-time-seconds-in-future>
+            </simple>
+        </trigger>
+
     </schedule>
 
 </job-scheduling-data>

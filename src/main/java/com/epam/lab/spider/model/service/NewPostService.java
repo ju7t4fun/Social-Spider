@@ -30,7 +30,7 @@ public class NewPostService implements BaseService<NewPost> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                pdao.update(connection, nPost.getPost().getId(), nPost.getPost());
+                pdao.insert(connection, nPost.getPost());
                 if (nPost.getMetadata() != null)
                     pmdao.insert(connection, nPost.getMetadata());
                 res = npdao.insert(connection, nPost);

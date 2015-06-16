@@ -18,3 +18,4 @@ spider.iml
 hs_err_pid*
 
 src/main/java/com/epam/lab/spider/Run.java
+src/main/webapp/META-INF/context.xml
