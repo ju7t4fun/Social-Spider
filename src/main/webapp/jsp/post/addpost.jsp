@@ -5,13 +5,6 @@
   Time: 13:15
   To change this template use File | Settings | File Templates.
 --%>
-<%--
-  Created by IntelliJ IDEA.
-  User: Sasha
-  Date: 13.06.2015
-  Time: 12:15
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,37 +18,26 @@
 
   <title>Add Post</title>
 
-  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="${pageContext.request.contextPath}/js/fileinput.min.js" type="text/javascript"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js" type="text/javascript"></script>
+  <!-- Bootstrap CSS -->
   <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
   <!-- bootstrap theme -->
   <link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">
-  <!--external css-->
   <!-- font icon -->
   <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet" />
   <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet" />
-  <!-- full calendar css-->
-  <link href="${pageContext.request.contextPath}/assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />
-  <link href="${pageContext.request.contextPath}/assets/fullcalendar/fullcalendar/fullcalendar.css" rel="stylesheet" />
-  <!-- easy pie chart-->
-  <link href="${pageContext.request.contextPath}/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen"/>
   <!-- owl carousel -->
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/owl.carousel.css" type="text/css">
   <link href="${pageContext.request.contextPath}/css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
   <!-- Custom styles -->
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/fullcalendar.css">
-  <link href="${pageContext.request.contextPath}/css/widgets.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/css/fileinput.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
-  <link href="${pageContext.request.contextPath}/css/xcharts.min.css" rel=" stylesheet">
   <link href="${pageContext.request.contextPath}/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-  <!--[if lt IE 9]>
-  <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
-  <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
-  <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
-  <![endif]-->
 </head>
 
 <body>
@@ -119,13 +101,18 @@
                       <label class="control-label col-lg-2" for="title">Add file</label>
                       <div class="col-lg-offset-2 col-lg-9">
 
-                        <div class="container kv-main">
+                        <div class="container kv-main" style="width:1080px;">
 
-                          <form enctype="multipart/form-data">
-                            <input id="file-0a" class="file" type="file" multiple data-min-file-count="1">
-                          </form>
-                        </div>
-
+                            <input id="input-dim-1" type="file" multiple class="file-loading" accept="image/*">
+                            <script>
+                              $("#input-dim-1").fileinput({
+                                uploadUrl: "http://localhost/site/file-upload-batch",
+                                allowedFileExtensions: ["jpg", "png", "gif"],
+                                minImageWidth: 50,
+                                minImageHeight: 50
+                              });
+                            </script>
+                          </div>
                       </div>
                     </div>
 
@@ -166,76 +153,14 @@
 
 <!-- javascripts -->
 <script>
-  $('#file-fr').fileinput({
-    language: 'fr',
-    uploadUrl: '#',
-    allowedFileExtensions : ['jpg', 'png','gif'],
-  });
-  $('#file-es').fileinput({
-    language: 'es',
-    uploadUrl: '#',
-    allowedFileExtensions : ['jpg', 'png','gif'],
-  });
-  $("#file-0").fileinput({
-    'allowedFileExtensions' : ['jpg', 'png','gif'],
-  });
-  $("#file-1").fileinput({
-    uploadUrl: '#', // you must set a valid URL here else you will get an error
-    allowedFileExtensions : ['jpg', 'png','gif'],
-    overwriteInitial: false,
-    maxFileSize: 1000,
-    maxFilesNum: 10,
-    //allowedFileTypes: ['image', 'video', 'flash'],
-    slugCallback: function(filename) {
-      return filename.replace('(', '_').replace(']', '_');
-    }
-  });
-  /*
-   $(".file").on('fileselect', function(event, n, l) {
-   alert('File Selected. Name: ' + l + ', Num: ' + n);
-   });
-   */
-  $("#file-3").fileinput({
-    showUpload: false,
-    showCaption: false,
-    browseClass: "btn btn-primary btn-lg",
-    fileType: "any",
-    previewFileIcon: "<i class='glyphicon glyphicon-king'></i>"
-  });
-  $("#file-4").fileinput({
-    uploadExtraData: {kvId: '10'}
-  });
-  $(".btn-warning").on('click', function() {
-    if ($('#file-4').attr('disabled')) {
-      $('#file-4').fileinput('enable');
-    } else {
-      $('#file-4').fileinput('disable');
-    }
-  });
-  $(".btn-info").on('click', function() {
-    $('#file-4').fileinput('refresh', {previewClass:'bg-info'});
-  });
-  /*
-   $('#file-4').on('fileselectnone', function() {
-   alert('Huh! You selected no files.');
-   });
-   $('#file-4').on('filebrowse', function() {
-   alert('File browse clicked for #file-4');
-   });
-   */
-  $(document).ready(function() {
-    $("#test-upload").fileinput({
-      'showPreview' : false,
-      'allowedFileExtensions' : ['jpg', 'png','gif'],
-      'elErrorContainer': '#errorBlock'
-    });
-    /*
-     $("#test-upload").on('fileloaded', function(event, file, previewId, index) {
-     alert('i = ' + index + ', id = ' + previewId + ', file = ' + file.name);
-     });
-     */
+  $("#input-dim-1").fileinput({
+    uploadUrl: "http://localhost/site/file-upload-batch",
+    allowedFileExtensions: ["jpg", "png", "gif"],
+    minImageWidth: 50,
+    minImageHeight: 50
   });
 </script>
+
 <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
 <script src="${pageContext.request.contextPath}/js/jquery-ui-1.10.4.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/jquery-1.8.3.min.js"></script>

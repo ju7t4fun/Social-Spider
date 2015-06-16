@@ -1,6 +1,6 @@
 package com.epam.lab.spider;
 
-import com.epam.lab.spider.controller.hash.HashMD5;
+import com.epam.lab.spider.controller.utils.hash.HashMD5;
 import com.epam.lab.spider.model.entity.Category;
 import com.epam.lab.spider.model.entity.Task;
 import com.epam.lab.spider.model.entity.User;
