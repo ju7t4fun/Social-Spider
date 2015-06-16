@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
  * Created by shell on 6/13/2015.
  */
 public class FrontEndValidatorBrige {
-    private Package aPackage = Package.getPackage("com.epam.lab.spider.model.entity");
+    private Package aPackage = Package.getPackage("com.epam.lab.spider.model.db.entity");
 
     private String firstCharToUpperCase(String string){
         char charAtLowerCase = string.charAt(0);

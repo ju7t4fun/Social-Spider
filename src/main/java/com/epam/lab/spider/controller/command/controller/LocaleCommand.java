@@ -35,9 +35,7 @@ public class LocaleCommand implements ActionCommand {
         Cookie cookie = new Cookie("language", lang);
         cookie.setMaxAge(24 * 60 * 60 * 60);
 
-
         String namesJson = request.getParameter("names");
-
 
         JSONObject resultJson = new JSONObject();
 

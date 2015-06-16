@@ -1,9 +1,10 @@
 package com.epam.lab.spider.controller.command;
 
-import com.epam.lab.spider.controller.utils.Encryptor;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -11,7 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.List;
 
 /**
@@ -19,29 +21,83 @@ import java.util.List;
  */
 public class UploadImageCommand implements ActionCommand {
 
+    enum Type {
+
+        IMAGES("/upload/images", ".jpg", ".bmp", ".gif", ".png", ".jpeg"),
+        VIDEOS("/upload/videos", ".avi", ".mpeg", ".mpg", ".mp4", ".mov", ".mkv", ".flv"),
+        MUSICS("/upload/musics", ".mp3", ".wav");
+
+        private String path;
+        private String[] formats;
+
+        Type(String path, String... format) {
+            this.path = path;
+            this.formats = format;
+        }
+
+        public String[] getFormats() {
+            return formats;
+        }
+
+        public String getPath() {
+            return path;
+        }
+    }
+
+    private static String parseFileFormat(String fileName) {
+        fileName = fileName.toLowerCase();
+        int dotPosition = fileName.lastIndexOf(".");
+        String format = fileName.substring(dotPosition, fileName.length());
+        return format;
+    }
+
+    private Type getType(String fileName) {
+        String format = parseFileFormat(fileName);
+        Type[] values = Type.values();
+        for (int i = 0; i < values.length; i++) {
+            for (int j = 0; j < values[i].getFormats().length; j++) {
+                if (values[i] == Type.IMAGES && values[i].getFormats()[j].equals(format)) {
+                    return Type.IMAGES;
+                } else if (values[i] == Type.VIDEOS && values[i].getFormats()[j].equals(format)) {
+                    return Type.VIDEOS;
+                } else if (values[i] == Type.MUSICS && values[i].getFormats()[j].equals(format)) {
+                    return Type.MUSICS;
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         ServletContext context = request.getSession().getServletContext();
-        String UPLOAD_DIRECTORY = context.getRealPath("/upload/images");
+
         if (ServletFileUpload.isMultipartContent(request)) {
             try {
+                String fileName = null;
+                String filePath;
+                Type type = null;
                 List<FileItem> multiparts = new ServletFileUpload(
                         new DiskFileItemFactory()).parseRequest(request);
                 for (FileItem item : multiparts) {
                     if (!item.isFormField()) {
-                        String name = new File(item.getName()).getName();
-                        if (!(name.toLowerCase().endsWith(".jpg")
-                                || name.toLowerCase().endsWith(".jpeg")
-                                || name.toLowerCase().endsWith(".png")
-                                || name.toLowerCase().endsWith(".gif"))) {
-                            throw new IllegalStateException("Wrong image format!");
+                        fileName = new File(item.getName()).getName();
+                        type = getType(fileName);
+                        filePath = context.getRealPath(type.path);
+                        if (type != null) {
+                            SecureRandom random = new SecureRandom();
+                            fileName = new BigInteger(130, random).toString(32) +
+                                    parseFileFormat(fileName);
+                            item.write(new File(filePath + File.separator + fileName));
+                            // System.out.println("File path: " + context.getRealPath(type.path));
                         } else {
-                            name = Encryptor.encoding(name) + new Date().getTime() + ".jpg";
-                            item.write(new File(UPLOAD_DIRECTORY + File.separator + name));
+                            throw new IllegalStateException("Wrong file format!");
                         }
                     }
                 }
+                // response.getWriter().print(json.toString());
                 System.out.println("File uploaded successfully");
             } catch (Exception e) {
                 e.printStackTrace();

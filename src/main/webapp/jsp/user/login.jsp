@@ -18,11 +18,11 @@
     <link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">
     <!--external css-->
     <!-- font icon -->
-    <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet" />
-    <link href="${pageContext.request.contextPath}/css/font-awesome.css" rel="stylesheet" />
+    <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/css/font-awesome.css" rel="stylesheet"/>
     <!-- Custom styles -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
+    <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -45,22 +45,28 @@
             ${loginMessage}
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
-                <l:resource key="login.email"><input type="email" value="${login}" name="email" id="email" class="form-control" placeholder="" style="border-color:#ffffff;" required /></l:resource>
+                <l:resource key="login.email"><input type="email" value="${login}" name="email" id="email"
+                                                     class="form-control" placeholder="" style="border-color:#ffffff;"
+                                                     required/></l:resource>
             </div>
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                <l:resource key="login.password"><input type="password" name="password" id="password" class="form-control" placeholder="" required /></l:resource>
+                <l:resource key="login.password"><input type="password" name="password" id="password"
+                                                        class="form-control" placeholder="" required/></l:resource>
             </div>
             <label class="checkbox">
                 <input type="checkbox" value="remember-me"> <l:resource key="login.remember"/>
-                <span class="pull-right"> <a href="/forgotpassword"> <l:resource key="login.forgotpw"/> </a></span>
+                <span class="pull-right"> <a href="/forgot_password"> <l:resource key="login.forgotpw"/> </a></span>
             </label>
-            <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-bottom:20px;margin-right:10px;"> <l:resource key="login.signin"/>
+            <button class="btn btn-primary btn-lg btn-block" type="submit"
+                    style="margin-bottom:20px;margin-right:10px;"><l:resource key="login.signin"/>
             </button>
 
             <span class="pull-right"> <a href="/register"> <l:resource key="login.signup"/> </a> </span>
-            <span> <l:resource key="login.signinwith"/> <a href="/login?action=vkAuth"><img src="${pageContext.request.contextPath}/img/vk.png"></a></span>
-            <span> <l:resource key="login.or"/> <a href="/login?action=fbAuth"><img src="${pageContext.request.contextPath}/img/fb.png"></a> </span>
+            <span> <l:resource key="login.signinwith"/> <a href="/login?action=vkAuth"><img
+                    src="${pageContext.request.contextPath}/img/vk.png"></a></span>
+            <span> <l:resource key="login.or"/> <a href="/login?action=fbAuth"><img
+                    src="${pageContext.request.contextPath}/img/fb.png"></a> </span>
 
 
         </div>
@@ -68,7 +74,7 @@
 
 </div>
 
-<jsp:include page="../pagecontent/simple_footer.jsp" />
+<jsp:include page="../pagecontent/simple_footer.jsp"/>
 
 <!-- javascripts -->
 <script src="${pageContext.request.contextPath}/js/jquery.js"></script>

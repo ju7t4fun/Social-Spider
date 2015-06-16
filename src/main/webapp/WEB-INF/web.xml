@@ -60,7 +60,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ForgotPasswordServlet</servlet-name>
-        <url-pattern>/forgotpassword</url-pattern>
+        <url-pattern>/forgot_password</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
