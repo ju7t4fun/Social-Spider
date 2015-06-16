@@ -23,7 +23,6 @@ public class NewPostService implements BaseService<NewPost> {
     private DAOFactory factory = DAOFactory.getInstance();
     private NewPostDAO npdao = factory.create(NewPostDAO.class);
     private PostDAO pdao = factory.create(PostDAO.class);
-    private PostMetadataDAO pmdao = factory.create(PostMetadataDAO.class);
 
     @Override
     public boolean insert(NewPost nPost) {
