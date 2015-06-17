@@ -16,7 +16,7 @@
   <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
   <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-  <title>Elements | Creative - Bootstrap 3 Responsive Admin Template</title>
+  <title>Task | Add New Task</title>
 
   <!-- Bootstrap CSS -->
   <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">

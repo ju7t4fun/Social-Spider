@@ -69,7 +69,7 @@
               <div class="pull-left">Add New Post</div>
               <div class="clearfix"></div>
             </div>
-            <div class="panel-body">
+            <div class="panel-body" style="padding:20px;">
               <div class="padd">
 
                 <div class="form quick-post">
@@ -90,11 +90,11 @@
                       </div>
                     </div>
                     <!-- Tags -->
-                    <div class="form-group">
+                    <div class="form-group" >
                       <label class="control-label col-lg-2" for="tagsinput">Tags</label>
-                      <div class="panel-body">
+
                         <input name="tagsinput" id="tagsinput" class="tagsinput" value="Tag1, Tag2, Tag3, Tag4, Tag5" />
-                      </div>
+
                     </div>
                     <!-- Add file -->
                     <div class="form-group">
@@ -103,13 +103,10 @@
 
                         <div class="container kv-main" style="width:900px;">
 
-                            <input id="input-dim-1" type="file" multiple class="file-loading" accept="image/*">
+                            <input id="input-dim-1" type="file" multiple class="file-loading" accept="image/*, audio/*, video/*">
                             <script>
                               $("#input-dim-1").fileinput({
                                 uploadUrl: "http://localhost/site/file-upload-batch",
-                                allowedFileExtensions: ["jpg", "png", "gif"],
-                                minImageWidth: 50,
-                                minImageHeight: 50
                               });
                             </script>
                           </div>
