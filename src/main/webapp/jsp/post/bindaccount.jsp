@@ -34,9 +34,9 @@
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css" />
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
   <!--[if lt IE 9]>
-  <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
-  <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
-  <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
+  <script src="js/html5shiv.js"></script>
+  <script src="js/respond.min.js"></script>
+  <script src="js/lte-ie7.js"></script>
   <![endif]-->
 </head>
 
@@ -68,38 +68,156 @@
               Account binding
             </header>
             <table class="table table-striped table-advance table-hover">
-              <tr><th>Group</th><th>Account</th></tr>
+              <tr><th>Group ID</th><th>Group Name</th><th>Account</th></tr>
               <tr>
+                <td>111111</td>
                 <td>Group 1</td>
+
                 <td>
-                  <select class="form-control" style="text-align:center;-moz-appearance:none;">
-                    <option value="undef">UNDEFINED</option>
-                    <option value="acc1">Account 1</option>
-                    <option value="acc2">Account 2</option>
-                    <option value="acc3">Account 3</option>
-                  </select>
+                  <a href="javascript:PopUpShow1()">
+                    <button style="border-radius: 4px;border-color:#424D5F;background-color:#424D5F;color:#ffffff;margin:5px;padding:10px;">Bind Accounts...</button>
+                  </a>
+
+                  <div class="b-popup" id="popup1">
+                    <div class="b-popup-content">
+                      <table>
+                        <tr><th style="width:400px;">Read</th><th style="width:400px;">Write</th></tr>
+                        <tr>
+                          <td>
+                            <select id="tokenize_focus11" multiple="multiple" class="tokenize-sample" style="width:350px;">
+                              <option value="1">Account 1</option>
+                              <option value="2">Account 2</option>
+                              <option value="3">Account 3</option>
+                              <option value="4">Account 4</option>
+                              <option value="5">Account 5</option>
+                            </select>
+
+                            <script type="text/javascript">
+                              $('select#tokenize_focus11').tokenize({displayDropdownOnFocus:true});
+                            </script>
+                          </td>
+                          <td>
+                            <select id="tokenize_focus12" multiple="multiple" class="tokenize-sample" style="width:350px;">
+                              <option value="1">Account 1</option>
+                              <option value="2">Account 2</option>
+                              <option value="3">Account 3</option>
+                              <option value="4">Account 4</option>
+                              <option value="5">Account 5</option>
+                            </select>
+
+                            <script type="text/javascript">
+                              $('select#tokenize_focus12').tokenize({displayDropdownOnFocus:true});
+                            </script>
+                          </td>
+                        </tr>
+
+                      </table>
+                      <a href="javascript:PopUpHide1()">
+                        <button style="border-radius: 4px;border-color:#424D5F;background-color:#424D5F;color:#ffffff;margin:15px;padding:10px;width:150px;">Save</button>
+                      </a>
+                    </div>
+                  </div>
+
                 </td>
               </tr>
               <tr>
+                <td>222222</td>
                 <td>Group 2</td>
                 <td>
-                  <select class="form-control" style="text-align:center;-moz-appearance:none;">
-                    <option value="undef">UNDEFINED</option>
-                    <option value="acc1">Account 1</option>
-                    <option value="acc2">Account 2</option>
-                    <option value="acc3">Account 3</option>
-                  </select>
+                  <a href="javascript:PopUpShow2()">
+                    <button style="border-radius: 4px;border-color:#424D5F;background-color:#424D5F;color:#ffffff;margin:5px;padding:10px;">Bind Accounts...</button>
+                  </a>
+
+                  <div class="b-popup" id="popup2">
+                    <div class="b-popup-content">
+                      <table>
+                        <tr><th style="width:400px;">Read</th><th style="width:400px;">Write</th></tr>
+                        <tr>
+                          <td>
+                            <select id="tokenize_focus21" multiple="multiple" class="tokenize-sample" style="width:350px;">
+                              <option value="1">Account 1</option>
+                              <option value="2">Account 2</option>
+                              <option value="3">Account 3</option>
+                              <option value="4">Account 4</option>
+                              <option value="5">Account 5</option>
+                            </select>
+
+                            <script type="text/javascript">
+                              $('select#tokenize_focus21').tokenize({displayDropdownOnFocus:true});
+                            </script>
+                          </td>
+                          <td>
+                            <select id="tokenize_focus22" multiple="multiple" class="tokenize-sample" style="width:350px;">
+                              <option value="1">Account 1</option>
+                              <option value="2">Account 2</option>
+                              <option value="3">Account 3</option>
+                              <option value="4">Account 4</option>
+                              <option value="5">Account 5</option>
+                            </select>
+
+                            <script type="text/javascript">
+                              $('select#tokenize_focus22').tokenize({displayDropdownOnFocus:true});
+                            </script>
+                          </td>
+                        </tr>
+
+                      </table>
+                      <a href="javascript:PopUpHide2()">
+                        <button style="border-radius: 4px;border-color:#424D5F;background-color:#424D5F;color:#ffffff;margin:15px;padding:10px;width:150px;">Save</button>
+                      </a>
+                    </div>
+                  </div>
+
                 </td>
               </tr>
               <tr>
+                <td>333333</td>
                 <td>Group 3</td>
                 <td>
-                  <select class="form-control" style="text-align:center;-moz-appearance:none;">
-                    <option value="undef">UNDEFINED</option>
-                    <option value="acc1">Account 1</option>
-                    <option value="acc2">Account 2</option>
-                    <option value="acc3">Account 3</option>
-                  </select>
+                  <a href="javascript:PopUpShow3()">
+                    <button style="border-radius: 4px;border-color:#424D5F;background-color:#424D5F;color:#ffffff;margin:5px;padding:10px;">Bind Accounts...</button>
+                  </a>
+
+                  <div class="b-popup" id="popup3">
+                    <div class="b-popup-content">
+                      <table>
+                        <tr><th style="width:400px;">Read</th><th style="width:400px;">Write</th></tr>
+                        <tr>
+                          <td>
+                            <select id="tokenize_focus31" multiple="multiple" class="tokenize-sample" style="width:350px;">
+                              <option value="1">Account 1</option>
+                              <option value="2">Account 2</option>
+                              <option value="3">Account 3</option>
+                              <option value="4">Account 4</option>
+                              <option value="5">Account 5</option>
+                            </select>
+
+                            <script type="text/javascript">
+                              $('select#tokenize_focus31').tokenize({displayDropdownOnFocus:true});
+                            </script>
+                          </td>
+                          <td>
+                            <select id="tokenize_focus32" multiple="multiple" class="tokenize-sample" style="width:350px;">
+                              <option value="1">Account 1</option>
+                              <option value="2">Account 2</option>
+                              <option value="3">Account 3</option>
+                              <option value="4">Account 4</option>
+                              <option value="5">Account 5</option>
+                            </select>
+
+                            <script type="text/javascript">
+                              $('select#tokenize_focus32').tokenize({displayDropdownOnFocus:true});
+                            </script>
+                          </td>
+                        </tr>
+
+                      </table>
+                      <a href="javascript:PopUpHide3()">
+                        <button style="border-radius: 4px;border-color:#424D5F;background-color:#424D5F;color:#ffffff;margin:15px;padding:10px;width:150px;">Save</button>
+                      </a>
+                    </div>
+                  </div>
+
                 </td>
               </tr>
             </table>
@@ -114,6 +232,29 @@
 <!-- container section end -->
 
 <!-- javascripts -->
+<script>
+  $(document).ready(function(){
+    PopUpHide1();PopUpHide2();PopUpHide3();
+  });
+  function PopUpShow1(){
+    $("#popup1").show();
+  }
+  function PopUpHide1(){
+    $("#popup1").hide();
+  }
+  function PopUpShow2(){
+    $("#popup2").show();
+  }
+  function PopUpHide2(){
+    $("#popup2").hide();
+  }
+  function PopUpShow3(){
+    $("#popup3").show();
+  }
+  function PopUpHide3(){
+    $("#popup3").hide();
+  }
+</script>
 <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <!-- nice scroll -->
@@ -132,4 +273,5 @@
 
 </body>
 </html>
+
 
