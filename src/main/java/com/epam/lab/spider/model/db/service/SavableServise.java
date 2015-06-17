@@ -1,0 +1,9 @@
+package com.epam.lab.spider.model.db.service;
+
+/**
+ * Created by shell on 6/17/2015.
+ * Like if you understand true value of name this interface.
+ */
+public interface SavableServise<E> {
+    boolean save(E e);
+}

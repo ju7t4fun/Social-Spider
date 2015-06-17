@@ -1,5 +1,6 @@
 package com.epam.lab.spider.controller.vk;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -8,7 +9,11 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 
 public class ResponseXml implements Response {
 
@@ -21,9 +26,21 @@ public class ResponseXml implements Response {
         contentType = entity.getContentType().getValue();
         Document doc = null;
         try {
+            InputStream input = entity.getContent();
+
+            if(false){
+                StringWriter writer = new StringWriter();
+                IOUtils.copy(input, writer, "UTF-8");
+                String out;
+                out = writer.toString();
+                logger.debug(out);
+                InputStream stream = new ByteArrayInputStream(out.getBytes(StandardCharsets.UTF_8));
+                input = stream;
+
+            }
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            doc = builder.parse(entity.getContent());
+            doc = builder.parse(input);
             processingVKException(doc);
             root = new NodeXml(doc);
         } catch (SAXException e) {

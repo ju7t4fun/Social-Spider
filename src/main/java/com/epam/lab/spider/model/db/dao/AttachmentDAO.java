@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Sasha on 12.06.2015.
  */
-public interface AttachmentDAO extends CRUD<Attachment> {
+public interface AttachmentDAO extends CRUD<Attachment>,SavableDAO<Attachment> {
 
     List<Attachment> getByPostId(Connection connection, int id) throws SQLException;
 

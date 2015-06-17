@@ -6,7 +6,10 @@ import com.epam.lab.spider.controller.vk.auth.AccessToken;
 import com.epam.lab.spider.model.db.entity.*;
 
 
+import com.epam.lab.spider.model.db.entity.Attachment;
+import com.epam.lab.spider.model.db.entity.Post;
 import com.epam.lab.spider.model.db.service.*;
+import com.epam.lab.spider.model.vk.*;
 import org.apache.log4j.Logger;
 import org.quartz.*;
 
@@ -81,6 +84,15 @@ public class TaskJob implements Job {
                             if (qualityCondition) {
                                 Post post = new Post();
                                 post.setMessage(vkPost.getText());
+                                for(com.epam.lab.spider.model.vk.Attachment vkAttachment:vkPost.getAttachments()) {
+                                    if (vkAttachment instanceof Photo) {
+                                        Attachment attachment = new Attachment();
+                                        attachment.setType(Attachment.Type.AUDIO);
+                                        attachment.setUrl(((Photo) vkAttachment).getPhoto604().toString());
+                                        post.addAttachment(attachment);
+                                    }
+                                }
+
                                 addedToProcessingPosts.addFirst(post);
                                 addedToProcessingBlocks.addFirst(vkPost.getId());
                                 LOG.debug("Post " + owner.getVk_id() + "_" + vkPost.getId() + " has added to processing.");
@@ -97,7 +109,7 @@ public class TaskJob implements Job {
 
             }
             LinkedList<NewPost> newPosts = new LinkedList<>();
-            long timeToPost = System.currentTimeMillis() + 30 * 1000;
+            long timeToPost = System.currentTimeMillis() + 15 * 1000;
             for (Wall wall : destinationWalls) {
 
                 for (Post post : addedToProcessingPosts) {
@@ -117,19 +129,17 @@ public class TaskJob implements Job {
             }
             NewPostService newPostService = new NewPostService();
             for (NewPost newPost : newPosts) {
+
                 boolean result = newPostService.insert(newPost);
+                if(result)postService.update(newPost.getPost().getId(),newPost.getPost());
                 if (!result) LOG.fatal("ТЕРМІНОВО ФІКСИТЬ БАЗУ, БРУДНА ТВАРИНО!");
             }
             for (Map.Entry<Wall, List<Integer>> entry : blockMap.entrySet()) {
                 synchronizedService.markIdLastProcessedPost(task, entry.getKey(), entry.getValue());
             }
-
-
         }
-
-
         Date nextRunDate = new Date(System.currentTimeMillis() + (2 * 60 * 1000));
-//        nextRunDate = new Date(System.currentTimeMillis() + 10000);
+        nextRunDate = new Date(System.currentTimeMillis() + 10000);
         LOG.info("Next run task job at " + nextRunDate.toString());
 
         SimpleTrigger trigger = (SimpleTrigger) newTrigger()

@@ -21,7 +21,7 @@ public class AddAccountCommand implements ActionCommand {
 
     public AddAccountCommand() {
         vk = new Vkontakte(4949213);
-        vk.conf().setPermissions(Scope.WALL, Scope.GROUPS);
+        vk.conf().setPermissions(Scope.WALL, Scope.GROUPS, Scope.PHOTOS);
         vk.createOAuth(Authorization.Type.CLIENT);
     }
 
