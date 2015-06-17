@@ -81,13 +81,17 @@
                 <span>Add New Post</span>
               </a>
             </li>
-            <li>
-              <a class="" href="chart-chartjs.html">
-                <i class="icon_piechart"></i>
-                <span>Function 2</span>
-
+            <li class="sub-menu">
+              <a href="javascript:;" class="">
+                <i class="icon_document_alt"></i>
+                <span>Task</span>
+                <span class="menu-arrow arrow_carrot-right"></span>
               </a>
-
+              <ul class="sub">
+                <li><a class="" href="${pageContext.request.contextPath}/jsp/post/addtask.jsp">Add New Task</a></li>
+                <li><a class="" href="${pageContext.request.contextPath}/jsp/post/bindaccount.jsp">Bind Accounts</a></li>
+                <li><a class="" href="${pageContext.request.contextPath}/jsp/post/scedule.jsp">Schedule</a></li>
+              </ul>
             </li>
             <li>
               <a class="" href="chart-chartjs.html">

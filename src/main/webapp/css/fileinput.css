@@ -121,7 +121,7 @@
 
 .file-preview-image {
     height: 160px;
-    vertical-align: text-center;
+    vertical-align: central;
 }
 
 .file-preview-text {
@@ -147,8 +147,8 @@
 }
 
 .file-input-new .file-preview, .file-input-new .close, .file-input-new .glyphicon-file,
-.file-input-new .fileinput-remove-button, .file-input-new .fileinput-upload-button,
-.file-input-ajax-new .fileinput-remove-button, .file-input-ajax-new .fileinput-upload-button {
+.file-input-new .fileinput-remove-button,
+.file-input-ajax-new .fileinput-remove-button,{
     display: none;
 }
 
@@ -174,17 +174,6 @@
     padding-top: 4px;
     font-size: 11px;
     color: #777;
-}
-
-.file-upload-indicator {
-    padding-top: 2px;
-    cursor: default;
-}
-
-.file-upload-indicator:hover {
-    font-size: 1.2em;
-    font-weight: bold;
-    padding-top: 0;
 }
 
 .file-drop-zone {

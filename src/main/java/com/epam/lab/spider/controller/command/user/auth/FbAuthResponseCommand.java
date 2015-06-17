@@ -3,8 +3,8 @@ package com.epam.lab.spider.controller.command.user.auth;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.facebookauth.FBConnection;
 import com.epam.lab.spider.controller.utils.facebookauth.FBGraph;
-import com.epam.lab.spider.model.entity.User;
-import com.epam.lab.spider.model.service.UserService;
+import com.epam.lab.spider.model.db.entity.User;
+import com.epam.lab.spider.model.db.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +35,7 @@ public class FbAuthResponseCommand implements ActionCommand {
         User user  =  userService.getByEmail(fbProfileData.get("email"));
         if (user!=null) {
 
-            if (!user.getConfirm()) {
+            if (user.getState() == User.State.ACTIVATED) {
                 // Користувач не активний
                 request.setAttribute("loginMessage", "Your account is non-activated. Please activate " +
                         "your account via email");
