@@ -47,6 +47,20 @@ public class AttachmentDAOImp extends BaseDAO implements AttachmentDAO {
                 id);
     }
 
+
+    @Override
+    public boolean save(com.mysql.jdbc.Connection conn, Attachment attachment) {
+        if(attachment==null)return false;
+        if(VALIDATION_SUPPORT){
+
+        }
+        if(attachment.getId()==null){
+
+        }
+
+        return false;
+    }
+
     @Override
     public boolean delete(Connection connection, int id) throws SQLException {
         return changeQuery(connection, SQL_DELETE_QUERY, id);
