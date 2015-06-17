@@ -71,7 +71,7 @@
             <li class="active">
               <a class="" href="index.html">
                 <i class="icon_house_alt"></i>
-                <span>Dashboard</span>
+                <span>HOME</span>
               </a>
             </li>
 
