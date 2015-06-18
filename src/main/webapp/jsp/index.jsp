@@ -34,6 +34,7 @@
         <div class="main">
             <a href="/" class="logo">Social <span class="lite">Spider</span></a>
             <a href="/login" style=""> <span style="color:#fff;line-height:65px;margin-left:600px;">SIGN IN</span> </a>
+            <a href="/admin" style=""> <span style="color:#fff;line-height:65px;margin-left:600px;">Admin</span> </a>
         </div>
     </header>
 

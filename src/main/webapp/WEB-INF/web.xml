@@ -58,6 +58,22 @@
         <servlet-name>ForgotPasswordServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.user.ForgotPasswordServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.AdminServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StatusChangerServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.ajax.StatusChangerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StatusChangerServlet</servlet-name>
+        <url-pattern>/statuschanger</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ForgotPasswordServlet</servlet-name>
         <url-pattern>/forgot_password</url-pattern>
