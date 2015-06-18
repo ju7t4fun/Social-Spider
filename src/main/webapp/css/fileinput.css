@@ -1,3 +1,14 @@
+/*!
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
+ * @package bootstrap-fileinput
+ * @version 4.2.1
+ *
+ * File input styling for Bootstrap 3.0
+ * Built for Yii Framework 2.0
+ * Author: Kartik Visweswaran
+ * Year: 2015
+ * For more Yii related demos visit http://demos.krajee.com
+ */
 .file-input {
     overflow-x: auto;
 }
@@ -99,7 +110,7 @@
     border-radius: 5px;
     border: 1px solid #ddd;
     padding: 5px;
-    width: 730px;
+    width: 100%;
     margin-bottom: 5px;
 }
 
@@ -147,8 +158,8 @@
 }
 
 .file-input-new .file-preview, .file-input-new .close, .file-input-new .glyphicon-file,
-.file-input-new .fileinput-remove-button,
-.file-input-ajax-new .fileinput-remove-button,{
+.file-input-new .fileinput-remove-button, .file-input-new .fileinput-upload-button,
+.file-input-ajax-new .fileinput-remove-button, .file-input-ajax-new .fileinput-upload-button {
     display: none;
 }
 
@@ -174,6 +185,17 @@
     padding-top: 4px;
     font-size: 11px;
     color: #777;
+}
+
+.file-upload-indicator {
+    padding-top: 2px;
+    cursor: default;
+}
+
+.file-upload-indicator:hover {
+    font-size: 1.2em;
+    font-weight: bold;
+    padding-top: 0;
 }
 
 .file-drop-zone {
