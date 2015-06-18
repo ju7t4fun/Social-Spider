@@ -71,7 +71,7 @@
             <li class="active">
               <a class="" href="index.html">
                 <i class="icon_house_alt"></i>
-                <span>Dashboard</span>
+                <span>HOME</span>
               </a>
             </li>
 
@@ -81,13 +81,18 @@
                 <span>Add New Post</span>
               </a>
             </li>
-            <li>
-              <a class="" href="chart-chartjs.html">
-                <i class="icon_piechart"></i>
-                <span>Function 2</span>
-
+            <li class="sub-menu">
+              <a href="javascript:;" class="">
+                <i class="icon_document_alt"></i>
+                <span>Task</span>
+                <span class="menu-arrow arrow_carrot-right"></span>
               </a>
-
+              <ul class="sub">
+                <li><a class="" href="${pageContext.request.contextPath}/jsp/post/alltasks.jsp">All Tasks</a></li>
+                <li><a class="" href="${pageContext.request.contextPath}/jsp/post/addtask.jsp">Add New Task</a></li>
+                <li><a class="" href="${pageContext.request.contextPath}/jsp/post/bindaccount.jsp">Bind Accounts</a></li>
+                <li><a class="" href="${pageContext.request.contextPath}/jsp/post/schedule.jsp">Schedule</a></li>
+              </ul>
             </li>
             <li>
               <a class="" href="chart-chartjs.html">

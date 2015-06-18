@@ -222,7 +222,7 @@
             indicatorSuccess: '<i class="glyphicon glyphicon-ok-sign file-icon-large text-success"></i>',
             indicatorError: '<i class="glyphicon glyphicon-exclamation-sign text-danger"></i>',
             indicatorLoading: '<i class="glyphicon glyphicon-hand-up text-muted"></i>',
-            indicatorNewTitle: 'Not uploaded yet',
+
             indicatorSuccessTitle: 'Uploaded',
             indicatorErrorTitle: 'Upload Error',
             indicatorLoadingTitle: 'Uploading ...'
@@ -895,8 +895,8 @@
                 footer = template.repl('{actions}', self.renderFileActions(true, true, false, false, false));
                 out = footer.repl('{caption}', caption)
                     .repl('{width}', width)
-                    .repl('{indicator}', config.indicatorNew)
-                    .repl('{indicatorTitle}', config.indicatorNewTitle);
+                    .repl('{indicator}', config.indicatorNew);
+
             } else {
                 out = template.repl('{actions}', '')
                     .repl('{caption}', caption)

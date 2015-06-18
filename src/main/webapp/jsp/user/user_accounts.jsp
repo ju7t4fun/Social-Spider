@@ -117,12 +117,16 @@
 
               </tbody>
             </table>
+
           </section>
+          <button type="submit" class="btn btn-primary">Add Account</button>
         </div>
       </div>
+
       <!-- page end-->
     </section>
   </section>
+
   <!--main content end-->
 </section>
 <!-- container section end -->
