@@ -43,10 +43,13 @@ public class Post {
     }
 
     public boolean addAttachment(Attachment attachment) {
+        attachment.setPost(this);
         return getAttachments().add(attachment);
     }
 
     public boolean removeAttachment(Attachment attachment) {
+        attachment.setPostId(null);
+        attachment.setPost(null);
         return getAttachments().remove(attachment);
     }
 

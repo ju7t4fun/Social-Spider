@@ -1,8 +1,11 @@
 package com.epam.lab.spider.model.db;
 
+import org.apache.log4j.Logger;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.naming.NoInitialContextException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,7 +15,7 @@ import java.sql.SQLException;
  * Created by Boyarsky Vitaliy on 12.06.2015.
  */
 public class PoolConnection {
-
+    public static final Logger LOG = Logger.getLogger(PoolConnection.class);
     private static DataSource dataSource = null;
 
     private PoolConnection() {
@@ -20,11 +23,15 @@ public class PoolConnection {
     }
 
     public static Connection getConnection() throws SQLException {
-//        if (dataSource == null) {
-//            dataSource = init();
-//        }
-//        return dataSource.getConnection();
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/vk_spider", "root", "1111");
+        try{
+            if (dataSource == null) {
+                dataSource = init();
+            }
+            return dataSource.getConnection();
+        }catch (NullPointerException x) {
+            LOG.error("Незнайдено налаштувань пулу. Повернуто нульовий обєкт. Створення одиночного зєднання!");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/vk_spider_rev_2", "root", "uroot");
+        }
     }
 
     private static DataSource init() {

@@ -5,6 +5,7 @@ package com.epam.lab.spider.job;
 import com.epam.lab.spider.model.db.entity.NewPost;
 import com.epam.lab.spider.model.db.service.NewPostService;
 
+import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
 import org.apache.log4j.Logger;
 import org.quartz.*;
 
@@ -27,7 +28,6 @@ public class PostJob implements Job {
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         DateFormat dateFormat = DateFormat.getDateTimeInstance();
 
-//                System.out.println("Executing Job");
         Date date = new Date(System.currentTimeMillis());
         Date nextDate = new Date(System.currentTimeMillis() + 60*1000);
         LOG.info("Post Job start at " + dateFormat.format(date)+" next post job at "+dateFormat.format(nextDate));
@@ -36,7 +36,7 @@ public class PostJob implements Job {
         List<NewPost> newPosts = newPostService.getAllUnpostedByDate(nextDate);
         for(NewPost newPost:newPosts){
             newPost.setState(NewPost.State.POSTING);
-            newPostService.update(newPost.getId(),newPost);
+            SavableServiceUtil.safeSave(newPost);
             JobDetail jobDetail = newJob(OnePostJob.class).usingJobData("new_post_id", newPost.getId()).build();
             SimpleTrigger jobTrigger = (SimpleTrigger) newTrigger()
                     .startAt(newPost.getPostTime())

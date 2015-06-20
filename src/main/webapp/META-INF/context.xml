@@ -3,6 +3,6 @@
 <Resource name="jdbc/vk_spider" auth="Container" type="javax.sql.DataSource"
           maxActive="25" maxIdle="25" maxWait="10000"
           username="root" password="uroot" driverClassName="com.mysql.jdbc.Driver"
-          url="jdbc:mysql://localhost:3306/vk_spider"/>
+          url="jdbc:mysql://localhost:3306/vk_spider_rev_2"/>
 
 </Context>

@@ -9,6 +9,7 @@ import com.epam.lab.spider.model.db.entity.*;
 import com.epam.lab.spider.model.db.entity.Attachment;
 import com.epam.lab.spider.model.db.entity.Post;
 import com.epam.lab.spider.model.db.service.*;
+import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
 import com.epam.lab.spider.model.vk.*;
 import org.apache.log4j.Logger;
 import org.quartz.*;
@@ -65,7 +66,7 @@ public class TaskJob implements Job {
                     Parameters parameters = new Parameters();
                     parameters.add("owner_id", owner.getVk_id());
                     parameters.add("filter", "owner");
-                    parameters.add("count", 5);
+                    parameters.add("count", 10);
 
 
                     List<com.epam.lab.spider.model.vk.Post> posts = vk.wall().get(parameters);
@@ -87,8 +88,17 @@ public class TaskJob implements Job {
                                 for(com.epam.lab.spider.model.vk.Attachment vkAttachment:vkPost.getAttachments()) {
                                     if (vkAttachment instanceof Photo) {
                                         Attachment attachment = new Attachment();
+                                        attachment.setType(Attachment.Type.PHOTO);
+                                        attachment.setPayload(((Photo) vkAttachment).getPhoto604().toString());
+                                        post.addAttachment(attachment);
+                                    }
+                                    if(vkAttachment instanceof Audio){
+                                        Attachment attachment = new Attachment();
+                                        Audio audio = (Audio) vkAttachment;
+                                        String attachString= "audio"+ audio.getOwnerId()+"_"+audio.getId();
+                                        attachment.setPayload(attachString);
+                                        attachment.setMode(Attachment.Mode.CODE);
                                         attachment.setType(Attachment.Type.AUDIO);
-                                        attachment.setUrl(((Photo) vkAttachment).getPhoto604().toString());
                                         post.addAttachment(attachment);
                                     }
                                 }
@@ -129,9 +139,7 @@ public class TaskJob implements Job {
             }
             NewPostService newPostService = new NewPostService();
             for (NewPost newPost : newPosts) {
-
-                boolean result = newPostService.insert(newPost);
-                if(result)postService.update(newPost.getPost().getId(),newPost.getPost());
+                boolean result = SavableServiceUtil.safeSave(newPost);
                 if (!result) LOG.fatal("ТЕРМІНОВО ФІКСИТЬ БАЗУ, БРУДНА ТВАРИНО!");
             }
             for (Map.Entry<Wall, List<Integer>> entry : blockMap.entrySet()) {
