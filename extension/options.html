@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Options Social Spider</title>
+    <script type="text/javascript" src="js/options.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/lib/jquery-2.1.4.min.js"></script>
+</head>
+<body>
+<div class="col-sm-10">
+
+    <br>
+
+    <div class="form-group" align="right">
+        <div class="btn-group btn-group-xs" role="group">
+            <button id="ua" class="btn btn-default" type="submit">ua</button>
+            <button id="en" class="btn btn-default" type="submit">en</button>
+        </div>
+    </div>
+
+    <!-- Повідомлення -->
+    <div id="message" role="alert" hidden></div>
+
+    <!-- Форма авторизації -->
+    <div id="register_form">
+        <div class="form-group">
+            <input type="email" class="form-control" id="email" placeholder="Email">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" id="password" placeholder="Password">
+        </div>
+        <div class="form-group" align="right">
+            <input id="signIn" class="btn btn-default" type="submit" value="Sign In">
+        </div>
+    </div>
+
+    <!-- Кнопка виходу -->
+    <div id="signOut" class="form-group" align="right" hidden>
+        <button id="signOutButton" class="btn btn-default" type="submit">Sign Out</button>
+    </div>
+
+    <!-- Фільт повідомлень -->
+    <div id="notification">
+        <label id="notificationFilter">Notification Filter</label>
+
+        <div class="checkbox">
+            <label> <input id="infoCheckBox" type="checkbox"><span id="info"></span></label>
+        </div>
+        <div class="checkbox">
+            <label> <input id="successCheckBox" type="checkbox"><span id="success"></span></label>
+        </div>
+        <div class="checkbox">
+            <label> <input id="warningCheckBox" type="checkbox"><span id="warning"></span></label>
+        </div>
+        <div class="checkbox">
+            <label> <input id="errorCheckBox" type="checkbox"><span id="error"></span></label>
+        </div>
+    </div>
+</div>
+</body>
+</html>

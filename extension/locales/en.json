@@ -1,0 +1,11 @@
+{
+  "email": "Email",
+  "password": "Password",
+  "signIn": "Sign In",
+  "signOut": "Sign Out",
+  "notificationFilter": "Notification Filter",
+  "info": "Info",
+  "success": "Success",
+  "warning": "Warning",
+  "error": "Error"
+}

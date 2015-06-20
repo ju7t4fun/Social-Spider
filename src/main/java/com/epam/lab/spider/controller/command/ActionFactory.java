@@ -1,5 +1,6 @@
 package com.epam.lab.spider.controller.command;
 
+import com.epam.lab.spider.controller.utils.EventLogger;
 import com.epam.lab.spider.controller.utils.UTF8;
 import org.apache.log4j.Logger;
 
@@ -15,6 +16,7 @@ import java.util.Map;
  */
 public abstract class ActionFactory {
 
+    private static final EventLogger logger = EventLogger.getLogger(5);
     private static final Logger LOG = Logger.getLogger(ActionFactory.class);
 
     protected Map<String, ActionCommand> commands = null;
@@ -37,6 +39,7 @@ public abstract class ActionFactory {
         if (LOG.isInfoEnabled()) {
             LOG.info("Выполнение команды \"" + command.getClass().getCanonicalName().substring(39) + "\"");
         }
+        logger.info(action);
         command.execute(request, response);
     }
 
