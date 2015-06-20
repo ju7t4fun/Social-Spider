@@ -81,17 +81,25 @@ public class UploadImageCommand implements ActionCommand {
                 Type type = null;
                 List<FileItem> multiparts = new ServletFileUpload(
                         new DiskFileItemFactory()).parseRequest(request);
+                if (multiparts!=null) {
+                    System.out.println("ammount of multiparts: " + multiparts.size());
+                } else {
+                    System.out.println("no multyparts(((");
+                }
                 for (FileItem item : multiparts) {
+                    System.out.println("in loop");
                     if (!item.isFormField()) {
                         fileName = new File(item.getName()).getName();
                         type = getType(fileName);
                         filePath = context.getRealPath(type.path);
+                        System.out.println("in first cond");
                         if (type != null) {
+                            System.out.println("in second cond");
                             SecureRandom random = new SecureRandom();
                             fileName = new BigInteger(130, random).toString(32) +
                                     parseFileFormat(fileName);
                             item.write(new File(filePath + File.separator + fileName));
-                            // System.out.println("File path: " + context.getRealPath(type.path));
+                            System.out.println("File path: " + context.getRealPath(type.path));
                         } else {
                             throw new IllegalStateException("Wrong file format!");
                         }
