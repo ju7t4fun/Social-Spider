@@ -4,11 +4,14 @@ package testchat;
  * Created by Орест on 18.06.2015.
  */
 
+import javax.websocket.OnClose;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import javax.websocket.*;
-import javax.websocket.server.ServerEndpoint;
 
 /**
  * @ServerEndpoint gives the relative name for the end point
@@ -21,6 +24,7 @@ import javax.websocket.server.ServerEndpoint;
 public class EchoServer {
 
     public static Set<Session> sessions = new HashSet<Session>();
+
     /**
      * @OnOpen allows us to intercept the creation of a new session.
      * The session class allows us to send data to the user.
@@ -28,7 +32,7 @@ public class EchoServer {
      * successful.
      */
     @OnOpen
-    public void onOpen(Session session){
+    public void onOpen(Session session) {
         System.out.println(session.getId() + " has opened a connection");
         try {
             session.getBasicRemote().sendText("Connection Established");
@@ -43,11 +47,11 @@ public class EchoServer {
      * and allow us to react to it. For now the message is read as a String.
      */
     @OnMessage
-    public void onMessage(String message, Session session){
+    public void onMessage(String message, Session session) {
         System.out.println("Message from " + session.getId() + ": " + message);
         try {
             //session.getBasicRemote().sendText(message);
-            for(Session s : sessions) {
+            for (Session s : sessions) {
                 s.getBasicRemote().sendText(message);
             }
         } catch (IOException ex) {
@@ -57,11 +61,12 @@ public class EchoServer {
 
     /**
      * The user closes the connection.
-     *
+     * <p/>
      * Note: you can't send messages to the client from this method
      */
     @OnClose
-    public void onClose(Session session){
-        System.out.println("Session " +session.getId()+" has ended");
+    public void onClose(Session session) {
+        sessions.remove(session);
+        System.out.println("Session " + session.getId() + " has ended");
     }
 }

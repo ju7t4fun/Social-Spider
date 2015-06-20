@@ -39,6 +39,11 @@ public class AccessToken implements OAuth {
                 + TimeUnit.SECONDS.toMillis(time));
     }
 
+    @Override
+    public void setExpirationMoment(Date date) {
+        expirationMoment = date;
+    }
+
     public int getUserId() {
         return userId;
     }
