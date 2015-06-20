@@ -1,20 +1,3 @@
-/*!
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
- * @version 4.2.1
- *
- * File input styled for Bootstrap 3.0 that utilizes HTML5 File Input's advanced
- * features including the FileReader API.
- *
- * The plugin drastically enhances the HTML file input to preview multiple files on the client before
- * upload. In addition it provides the ability to preview content of images, text, videos, audio, html,
- * flash and other objects. It also offers the ability to upload and delete files using AJAX, and add
- * files in batches (i.e. preview, append, or remove before upload).
- *
- * Author: Kartik Visweswaran
- * Copyright: 2015, Kartik Visweswaran, Krajee.com
- * For more JQuery plugins visit http://plugins.krajee.com
- * For more Yii related demos visit http://demos.krajee.com
- */
 (function ($) {
     "use strict";
 
@@ -222,7 +205,7 @@
             indicatorSuccess: '<i class="glyphicon glyphicon-ok-sign file-icon-large text-success"></i>',
             indicatorError: '<i class="glyphicon glyphicon-exclamation-sign text-danger"></i>',
             indicatorLoading: '<i class="glyphicon glyphicon-hand-up text-muted"></i>',
-
+            indicatorNewTitle: 'Not uploaded yet',
             indicatorSuccessTitle: 'Uploaded',
             indicatorErrorTitle: 'Upload Error',
             indicatorLoadingTitle: 'Uploading ...'
@@ -464,9 +447,9 @@
                 return true;
             }
             $exception = '<div class="help-block alert alert-warning">' +
-            '<h4>Invalid Input Type</h4>' +
-            'You must set an input <code>type = file</code> for <b>bootstrap-fileinput</b> plugin to initialize.' +
-            '</div>';
+                '<h4>Invalid Input Type</h4>' +
+                'You must set an input <code>type = file</code> for <b>bootstrap-fileinput</b> plugin to initialize.' +
+                '</div>';
             self.$element.after($exception);
             return false;
         },
@@ -895,8 +878,8 @@
                 footer = template.repl('{actions}', self.renderFileActions(true, true, false, false, false));
                 out = footer.repl('{caption}', caption)
                     .repl('{width}', width)
-                    .repl('{indicator}', config.indicatorNew);
-
+                    .repl('{indicator}', config.indicatorNew)
+                    .repl('{indicatorTitle}', config.indicatorNewTitle);
             } else {
                 out = template.repl('{actions}', '')
                     .repl('{caption}', caption)
@@ -1672,15 +1655,15 @@
                 footer += '<div class="file-other-error text-danger"><i class="glyphicon glyphicon-exclamation-sign"></i></div>';
             }
             self.$preview.append("\n" + previewOtherTemplate
-                .repl('{previewId}', previewId)
-                .repl('{frameClass}', frameClass)
-                .repl('{fileindex}', ind)
-                .repl('{caption}', self.slug(file.name))
-                .repl('{width}', config.width)
-                .repl('{height}', config.height)
-                .repl('{type}', file.type)
-                .repl('{data}', data)
-                .repl('{footer}', footer));
+                    .repl('{previewId}', previewId)
+                    .repl('{frameClass}', frameClass)
+                    .repl('{fileindex}', ind)
+                    .repl('{caption}', self.slug(file.name))
+                    .repl('{width}', config.width)
+                    .repl('{height}', config.height)
+                    .repl('{type}', file.type)
+                    .repl('{data}', data)
+                    .repl('{footer}', footer));
         },
         previewFile: function (i, file, theFile, previewId, data) {
             if (!this.showPreview) {
@@ -1711,10 +1694,10 @@
                         strText = strText.substring(0, (wrapLen - 1)) + wrapInd;
                     }
                     content = tmplt.repl('{previewId}', previewId).repl('{caption}', caption)
-                        .repl('{frameClass}', '')
-                        .repl('{type}', file.type).repl('{width}', config.width)
-                        .repl('{height}', config.height).repl('{data}', strText)
-                        .repl('{footer}', footer).repl('{fileindex}', ind) + modal;
+                            .repl('{frameClass}', '')
+                            .repl('{type}', file.type).repl('{width}', config.width)
+                            .repl('{height}', config.height).repl('{data}', strText)
+                            .repl('{footer}', footer).repl('{fileindex}', ind) + modal;
                 } else {
                     content = tmplt.repl('{previewId}', previewId).repl('{caption}', caption)
                         .repl('{frameClass}', '')
@@ -2028,7 +2011,7 @@
             if (isError) {
                 title = $('<div>' + self.msgValidationError + '</div>').text();
                 out = '<span class="' + self.msgValidationErrorClass + '">' +
-                self.msgValidationErrorIcon + title + '</span>';
+                    self.msgValidationErrorIcon + title + '</span>';
             } else {
                 if (isEmpty(content) || self.$caption.length === 0) {
                     return;
@@ -2177,13 +2160,13 @@
         previewSettings: defaultPreviewSettings,
         fileTypeSettings: defaultFileTypeSettings,
         previewFileIcon: '<i class="glyphicon glyphicon-file"></i>',
-
+        browseIcon: '<i class="glyphicon glyphicon-folder-open"></i> &nbsp;',
         browseClass: 'btn btn-primary',
-
+        removeIcon: '<i class="glyphicon glyphicon-trash"></i> ',
         removeClass: 'btn btn-default',
-
+        cancelIcon: '<i class="glyphicon glyphicon-ban-circle"></i> ',
         cancelClass: 'btn btn-default',
-
+        uploadIcon: '<i class="glyphicon glyphicon-upload"></i> ',
         uploadClass: 'btn btn-default',
         uploadUrl: null,
         uploadAsync: true,

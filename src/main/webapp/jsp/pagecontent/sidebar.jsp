@@ -75,11 +75,16 @@
               </a>
             </li>
 
-            <li>
-              <a class="" href="${pageContext.request.contextPath}/jsp/post/addpost.jsp">
+            <li class="sub-menu">
+              <a href="javascript:;" class="">
                 <i class="icon_genius"></i>
-                <span>Add New Post</span>
+                <span>Post</span>
+                <span class="menu-arrow arrow_carrot-right"></span>
               </a>
+              <ul class="sub">
+                <li><a class="" href="${pageContext.request.contextPath}/jsp/post/allposts.jsp">All Posts</a></li>
+                <li><a class="" href="${pageContext.request.contextPath}/jsp/post/addpost.jsp">Add New Post</a></li>
+              </ul>
             </li>
             <li class="sub-menu">
               <a href="javascript:;" class="">
