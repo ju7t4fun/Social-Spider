@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.servlet;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.UploadImageCommand;
+import com.epam.lab.spider.controller.command.UploadFileCommand;
 import com.epam.lab.spider.controller.command.user.accounts.AddAccountCommand;
 import com.epam.lab.spider.controller.command.user.accounts.ShowAccountsCommand;
 
@@ -15,15 +15,15 @@ import java.util.HashMap;
 /**
  * Created by Marian Voronovskyi on 13.06.2015.
  */
-public class UploadImageServlet extends HttpServlet {
+public class UploadFileServlet extends HttpServlet {
 
-    private static ActionFactory factory = new UploadImageFactory();
+    private static ActionFactory factory = new UploadFileFactory();
 
-    private static class UploadImageFactory extends ActionFactory {
+    private static class UploadFileFactory extends ActionFactory {
 
-        public UploadImageFactory() {
+        public UploadFileFactory() {
             commands = new HashMap<>();
-            commands.put("upload", new UploadImageCommand());
+            commands.put("upload", new UploadFileCommand());
         }
     }
 
