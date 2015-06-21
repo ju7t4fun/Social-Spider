@@ -136,7 +136,10 @@
                   <div class="col-lg-6">
                     <h4>Start Time: </h4> <input type="radio" name="start_time" value="1"> Interval
                     <input type="radio" name="start_time" value="2" style="margin-left:15px;"> Schedule
-                    <br> [RANGE_SLIDER] <br>
+                    <br>
+                    [RANGE_SLIDER]
+
+                    <br>
                     <h4>Work Time: </h4> <input type="radio" name="work_time" value="1"> Around the Clock
                     <input type="radio" name="work_time" value="2" style="margin-left:15px;"> Select Time
                     <br>[TIME_SELECT]

@@ -54,7 +54,7 @@
       <div class="row">
         <div class="col-lg-12">
           <ol class="breadcrumb">
-            <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+            <li><i class="fa fa-home"></i><a href="#">Home</a></li>
             <li><i class="fa fa-laptop"></i>Add New Post</li>
           </ol>
         </div>
@@ -106,7 +106,7 @@
                             <input id="input-dim-1" type="file" multiple class="file-loading" accept="image/*, audio/*, video/*">
                             <script>
                               $("#input-dim-1").fileinput({
-                                uploadUrl: "http://localhost/site/file-upload-batch",
+                                uploadUrl: "http://localhost:8080/controller?action=upload"
                               });
                             </script>
                           </div>
@@ -149,14 +149,6 @@
 <!-- container section start -->
 
 <!-- javascripts -->
-<script>
-  $("#input-dim-1").fileinput({
-    uploadUrl: "http://localhost/site/file-upload-batch",
-    allowedFileExtensions: ["jpg", "png", "gif"],
-    minImageWidth: 50,
-    minImageHeight: 50
-  });
-</script>
 
 <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
 <script src="${pageContext.request.contextPath}/js/jquery-ui-1.10.4.min.js"></script>

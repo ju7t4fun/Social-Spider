@@ -7,8 +7,10 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="en">
 <head>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
@@ -36,10 +38,75 @@
   <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
   <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
   <![endif]-->
+
+  <!-- javascripts -->
+  <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
+  <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+  <!-- nicescroll -->
+  <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
+  <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
+
+
+  <%--<!--custome script for all page-->--%>
+  <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
+  <!-- jquery ui -->
+  <script src="${pageContext.request.contextPath}/js/jquery-ui-1.9.2.custom.min.js"></script>
+  <!--custom tagsinput-->
+  <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
+  <script src="${pageContext.request.contextPath}/js/form-component.js"></script>
+
+
+<script>
+  <%--var mysrc = "${pageContext.request.contextPath}/img/deleted.png";--%>
+  function changeImage(e) {
+
+    if (e.title.valueOf() == "activated".valueOf()) {
+      e.src = "${pageContext.request.contextPath}/img/banned.jpg";
+      e.title = "banned";
+      dataString = "email=" + e.id + "&status=banned";
+
+      $.ajax({
+        type: "POST",
+        url: "statuschanger",
+        data: dataString
+      });
+      return;
+    }
+
+    if (e.title.valueOf() == "banned".valueOf()) {
+      e.src = "${pageContext.request.contextPath}/img/created.jpg";
+      e.title = "created";
+      dataString = "email=" + e.id + "&status=created";
+
+      $.ajax({
+        type: "POST",
+        url: "statuschanger",
+        data: dataString
+      });
+      return;
+    }
+
+    if (e.title.valueOf() == "created".valueOf()) {
+      e.src = "${pageContext.request.contextPath}/img/activated.jpg";
+      e.title = "activated";
+      dataString = "email=" + e.id + "&status=activated";
+
+      $.ajax({
+        type: "POST",
+        url: "statuschanger",
+        data: dataString
+      });
+      return;
+    }
+
+  }
+</script>
+
 </head>
 
 <body>
 <!-- container section start -->
+<%--<c:set var="mysrc" value="${pageContext.request.contextPath}/img/deleted.png" />--%>
 <section id="container" class="">
   <!--header start-->
   <header class="header dark-bg" style="background: rgba(2, 10, 29, 1)">
@@ -365,25 +432,28 @@
                 <th><i class="icon_mail_alt"></i> Email</th>
                 <th><i class="icon_cogs"></i> Status</th>
               </tr>
-              <tr>
-                <td>2563748</td>
-                <td>Angeline Mcclain</td>
-                <td>dale@chief.info</td>
-                <td><img src="${pageContext.request.contextPath}/img/new_user.png" style="width:37px;height:37px;"></td>
-              </tr>
-              <tr>
-                <td>3216547</td>
-                <td>Sung Carlson</td>
-                <td>ione.gisela@high.org</td>
-                <td><img src="${pageContext.request.contextPath}/img/confirmed.png" style="width:37px;height:37px;"></td>
-              </tr>
-              <tr>
-                <td>1115486</td>
-                <td>Bryon Osborne</td>
-                <td>sol.raleigh@language.edu</td>
-                <td><img src="${pageContext.request.contextPath}/img/deleted.png" style="width:37px;height:37px;"></td>
-              </tr>
-
+              <c:forEach var="user" items="${listUsers}">
+                <tr>
+                  <td>${user.id}</td>
+                  <td>${user.name} ${user.surname}</td>
+                  <td>${user.email}</td>
+                  <c:if test="${user.state == 'CREATED'}">
+                    <td><img  src="${pageContext.request.contextPath}/img/created.jpg" style="width:37px;height:37px;"
+                              id="${user.email}"  onclick="changeImage(this)" title = "created" >
+                    </td>
+                  </c:if>
+                  <c:if test="${user.state == 'ACTIVATED'}">
+                    <td><img src="${pageContext.request.contextPath}/img/activated.jpg" style="width:37px;height:37px;"
+                             id="${user.email}"  onclick="changeImage(this)" title = "activated" >
+                    </td>
+                  </c:if>
+                  <c:if test="${user.state == 'BANNED'}">
+                    <td><img src="${pageContext.request.contextPath}/img/banned.jpg" style="width:37px;height:37px;"
+                             id="${user.email}"  onclick="changeImage(this)" title = "banned"  >
+                    </td>
+                  </c:if>
+                </tr>
+              </c:forEach>
               </tbody>
             </table>
           </section>
@@ -401,21 +471,8 @@
     </section>
   </section>
 </section>
-<!-- container section end -->
-<!-- javascripts -->
-<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-<!-- nicescroll -->
-<script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
-<!--custome script for all page-->
-<script src="${pageContext.request.contextPath}/js/scripts.js"></script>
-<!-- jquery ui -->
-<script src="${pageContext.request.contextPath}/js/jquery-ui-1.9.2.custom.min.js"></script>
-<!--custom tagsinput-->
-<script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
-<script src="${pageContext.request.contextPath}/js/form-component.js"></script>
 
+<!-- container section end -->
 
 </body>
 </html>

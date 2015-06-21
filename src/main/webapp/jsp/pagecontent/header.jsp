@@ -104,60 +104,94 @@
         </a>
         <ul class="dropdown-menu extended inbox">
           <div class="notify-arrow notify-arrow-blue"></div>
-          <li>
-            <p class="blue">You have 5 new messages</p>
+          <li style="width:370px;">
+            <p class="blue">See all messages</p>
           </li>
-          <li>
-            <a href="#">
-              <span class="photo"><img alt="avatar" src="./img/avatar-mini.jpg"></span>
-                                    <span class="subject">
-                                    <span class="from">Greg  Martin</span>
-                                    <span class="time">1 min</span>
-                                    </span>
-                                    <span class="message">
-                                        I really like this admin panel.
-                                    </span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <span class="photo"><img alt="avatar" src="./img/avatar-mini2.jpg"></span>
-                                    <span class="subject">
-                                    <span class="from">Bob   Mckenzie</span>
-                                    <span class="time">5 mins</span>
-                                    </span>
-                                    <span class="message">
-                                     Hi, What is next project plan?
-                                    </span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <span class="photo"><img alt="avatar" src="./img/avatar-mini3.jpg"></span>
-                                    <span class="subject">
-                                    <span class="from">Phillip   Park</span>
-                                    <span class="time">2 hrs</span>
-                                    </span>
-                                    <span class="message">
-                                        I am like to buy this Admin Template.
-                                    </span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <span class="photo"><img alt="avatar" src="./img/avatar-mini4.jpg"></span>
-                                    <span class="subject">
-                                    <span class="from">Ray   Munoz</span>
-                                    <span class="time">1 day</span>
-                                    </span>
-                                    <span class="message">
-                                        Icon fonts are great.
-                                    </span>
-            </a>
-          </li>
-          <li>
-            <a href="#">See all messages</a>
-          </li>
+
+            <div class="col-md-4 portlets" style="width:400px; margin-left:-15px;height:200px;">
+              <!-- Widget -->
+              <div class="panel panel-default">
+
+                <div class="panel-body">
+                  <!-- Widget content -->
+                  <div class="padd sscroll">
+
+                    <ul class="chats">
+
+                      <!-- Chat by us. Use the class "by-me". -->
+                      <li class="by-me">
+                        <!-- Use the class "pull-left" in avatar -->
+                        <div class="avatar pull-left">
+                          <img src="${pageContext.request.contextPath}/img/user.jpg" alt=""/>
+                        </div>
+
+                        <div class="chat-content">
+                          <!-- In meta area, first include "name" and then "time" -->
+                          <div class="chat-meta">John Smith <span class="pull-right">3 hours ago</span></div>
+                          <div class="chat-meta" style="color:#4c4c4c;font-size:14px;">Vivamus diam elit diam, consectetur dapibus adipiscing elit.</div>
+                          <div class="clearfix"></div>
+                        </div>
+                      </li>
+
+                      <!-- Chat by other. Use the class "by-other". -->
+                      <li class="by-other">
+                        <!-- Use the class "pull-right" in avatar -->
+                        <div class="avatar pull-right">
+                          <img src="${pageContext.request.contextPath}/img/user22.png" alt=""/>
+                        </div>
+
+                        <div class="chat-content">
+                          <!-- In the chat meta, first include "time" then "name" -->
+                          <div class="chat-meta">3 hours ago <span class="pull-right">Jenifer Smith</span></div>
+                          <div class="chat-meta" style="color:#4c4c4c;font-size:14px;">Vivamus diam elit diam, consectetur fconsectetur dapibus adipiscing elit.</div>
+                          <div class="clearfix"></div>
+                        </div>
+                      </li>
+
+                      <li class="by-me">
+                        <div class="avatar pull-left">
+                          <img src="${pageContext.request.contextPath}/img/user.jpg" alt=""/>
+                        </div>
+
+                        <div class="chat-content">
+                          <div class="chat-meta">John Smith <span class="pull-right">4 hours ago</span></div>
+                          <div class="chat-meta" style="color:#4c4c4c;font-size:14px;">Vivamus diam elit diam, consectetur fermentum sed dapibus eget, Vivamus consectetur dapibus adipiscing elit.</div>
+                          <div class="clearfix"></div>
+                        </div>
+                      </li>
+
+                      <li class="by-other">
+                        <!-- Use the class "pull-right" in avatar -->
+                        <div class="avatar pull-right">
+                          <img src="${pageContext.request.contextPath}/img/user22.png" alt=""/>
+                        </div>
+
+                        <div class="chat-content">
+                          <!-- In the chat meta, first include "time" then "name" -->
+                          <div class="chat-meta">3 hours ago <span class="pull-right">Jenifer Smith</span></div>
+                          <div class="chat-meta" style="color:#4c4c4c;font-size:14px;">Vivamus diam elit diam, consectetur fermentum sed dapibus eget, Vivamus consectetur dapibus adipiscing elit.</div>
+                          <div class="clearfix"></div>
+                        </div>
+                      </li>
+
+                    </ul>
+
+                  </div>
+                  <!-- Widget footer -->
+                  <div class="widget-foot">
+
+                    <form class="form-inline">
+                      <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Type your message here...">
+                      </div>
+                      <button type="submit" class="btn btn-info" style="margin-left:20px;">Send</button>
+                    </form>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
         </ul>
       </li>
       <!-- inbox notificatoin end -->
@@ -219,10 +253,10 @@
         <ul class="dropdown-menu extended logout">
           <div class="log-arrow-up"></div>
           <li class="eborder-top">
-            <a href="#"><i class="icon_profile"></i> My Accounts</a>
+            <a href="${pageContext.request.contextPath}/jsp/user/user_accounts.jsp"><i class="icon_profile"></i> My Accounts</a>
           </li>
           <li>
-            <a href="#"><i class="icon_mail_alt"></i> My Inbox</a>
+            <a href="${pageContext.request.contextPath}/jsp/user/inbox.jsp"><i class="icon_mail_alt"></i> My Inbox</a>
           </li>
           <li>
             <a href="#"><i class="icon_clock_alt"></i> Timeline</a>
