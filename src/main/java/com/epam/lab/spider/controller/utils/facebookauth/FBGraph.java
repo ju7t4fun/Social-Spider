@@ -13,6 +13,7 @@ import org.json.JSONObject;
  * Created by Орест on 16.06.2015.
  */
 public class FBGraph {
+
     private String accessToken;
 
     public FBGraph(String accessToken) {

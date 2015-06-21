@@ -1,6 +1,6 @@
 package com.epam.lab.spider;
 
-
+import com.epam.lab.spider.controller.vk.VKException;
 
 import java.sql.SQLException;
 
@@ -9,9 +9,7 @@ import java.sql.SQLException;
  */
 public class Run {
 
-    public static void main(String[] args) throws SQLException {
-
-
+    public static void main(String[] args) throws SQLException, VKException {
     }
 
 }

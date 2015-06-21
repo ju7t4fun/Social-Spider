@@ -4,9 +4,7 @@ import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.facebookauth.FBConnection;
 import com.epam.lab.spider.controller.utils.facebookauth.FBGraph;
 import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
 import com.epam.lab.spider.model.db.service.UserService;
-
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -33,11 +31,11 @@ public class FbAuthResponseCommand implements ActionCommand {
         String graph = fbGraph.getFBGraph();
         Map<String, String> fbProfileData = fbGraph.getGraphData(graph);
 
-        UserService userService = ServiceFactory.getInstance().create(UserService.class);
+        UserService userService = new UserService();
         User user  =  userService.getByEmail(fbProfileData.get("email"));
         if (user!=null) {
 
-            if (user.getState() == User.State.ACTIVATED) {
+            if (user.getState() != User.State.ACTIVATED) {
                 // Користувач не активний
                 request.setAttribute("loginMessage", "Your account is non-activated. Please activate " +
                         "your account via email");

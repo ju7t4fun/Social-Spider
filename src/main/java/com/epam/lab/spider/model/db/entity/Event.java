@@ -11,6 +11,7 @@ public class Event {
     private Integer userId;
     private Type type = Type.INFO;
     private Date time;
+    private String title = "Test";
     private String message;
     private Boolean deleted = false;
 
@@ -48,6 +49,14 @@ public class Event {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getMessage() {

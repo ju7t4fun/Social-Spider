@@ -1,8 +1,8 @@
 package com.epam.lab.spider.controller.servlet.user;
 
-import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.command.ActionFactory;
 import com.epam.lab.spider.controller.command.user.accounts.AddAccountCommand;
+import com.epam.lab.spider.controller.command.user.accounts.RefreshAccountCommand;
 import com.epam.lab.spider.controller.command.user.accounts.ShowAccountsCommand;
 
 import javax.servlet.ServletException;
@@ -19,16 +19,6 @@ public class AccountsServlet extends HttpServlet {
 
     private static ActionFactory factory = new AccountsActionFactory();
 
-    private static class AccountsActionFactory extends ActionFactory {
-
-        public AccountsActionFactory() {
-            commands = new HashMap<>();
-            commands.put("default", new ShowAccountsCommand());
-            commands.put("add", new AddAccountCommand());
-        }
-
-    }
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
         factory.action(request, response);
@@ -37,6 +27,17 @@ public class AccountsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
         factory.action(request, response);
+    }
+
+    private static class AccountsActionFactory extends ActionFactory {
+
+        public AccountsActionFactory() {
+            commands = new HashMap<>();
+            commands.put("default", new ShowAccountsCommand());
+            commands.put("add", new AddAccountCommand());
+            commands.put("refresh", new RefreshAccountCommand());
+        }
+
     }
 
 }

@@ -1,5 +1,7 @@
 package com.epam.lab.spider.model.db.entity;
 
+import com.epam.lab.spider.controller.vk.auth.AccessToken;
+
 import java.util.Date;
 import java.util.Set;
 
@@ -17,6 +19,18 @@ public class Profile {
     private Boolean deleted = false;
 
     private Set<Wall> walls = null;
+    private AccessToken vkAccessToken = null;
+
+    public boolean isExpired() {
+        try {
+            System.out.println(extTime);
+            if (new Date().getTime() < extTime.getTime())
+                return true;
+        } catch (Exception e) {
+            return false;
+        }
+        return false;
+    }
 
     public Integer getId() {
         return id;
