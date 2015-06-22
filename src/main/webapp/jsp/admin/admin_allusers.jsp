@@ -584,7 +584,6 @@
 
     .dataTables_filter input {
         height: 22px;
-        margin-top: -40px;
         margin-right: 10px;
         width: 150px
     }

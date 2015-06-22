@@ -27,8 +27,11 @@ public class JqueryDatatablePluginDemoServlet extends HttpServlet {
     private String ID_SEARCH_TERM, NAME_SEARCH_TERM,
             SURNAME_SEARCH_TERM, EMAIL_SEARCH_TERM, STATE_SEARCH_TERM;
 
+    public static int TIMES = 0;
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        System.out.println(++TIMES);
 
         String[] columnNames = {"id", "name", "surname", "email", "state"};
 
@@ -50,9 +53,9 @@ public class JqueryDatatablePluginDemoServlet extends HttpServlet {
         }
         if (pageSize != null) {
             listDisplayAmount = Integer.parseInt(pageSize);
-            if (listDisplayAmount < 10 || listDisplayAmount > 50) {
+            /*if (listDisplayAmount < 10 || listDisplayAmount > 50) {
                 listDisplayAmount = 10;
-            }
+            }*/
         }
         if (colIndex != null) {
             column = Integer.parseInt(colIndex);
