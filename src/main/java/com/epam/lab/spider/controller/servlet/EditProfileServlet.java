@@ -1,10 +1,7 @@
-package com.epam.lab.spider.controller.servlet.admin;
+package com.epam.lab.spider.controller.servlet;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.admin.ShowAdminAllUsers;
-import com.epam.lab.spider.controller.command.controller.LocaleCommand;
-import com.epam.lab.spider.controller.command.user.auth.ShowAuthCommand;
-import com.epam.lab.spider.controller.command.user.auth.SignInCommand;
+import com.epam.lab.spider.controller.command.EditProfileCommand;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,20 +11,17 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Orest Dzyuba on 17.06.2015.
+ * Created by Marian Voronovskyi on 21.06.2015.
  */
-public class AdminServlet extends HttpServlet {
+public class EditProfileServlet extends HttpServlet {
+    private static ActionFactory factory = new EditProfileFactory();
 
-    private static ActionFactory factory = new AdminActionFactory();
-
-    private static class AdminActionFactory extends ActionFactory {
-
-        public AdminActionFactory() {
+    private static class EditProfileFactory extends ActionFactory {
+        public EditProfileFactory() {
             commands = new HashMap<>();
-            commands.put("default", new ShowAdminAllUsers());
+            commands.put("editprofile", new EditProfileCommand());
         }
     }
-
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         factory.action(request, response);

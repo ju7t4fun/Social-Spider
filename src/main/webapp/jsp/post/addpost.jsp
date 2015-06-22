@@ -214,16 +214,13 @@
                                                             setTimeout(function () {
                                                                 $('#sc').hide();
                                                             }, 4000);
-                                                        }
-                                                        else {
+                                                        } else {
                                                             $('#sc').hide();
                                                             $('#fl').show();
                                                             $("#fail").text(data.fail);
                                                             setTimeout(function () {
                                                                 $('#fl').hide();
                                                             }, 4000);
-
-
                                                         }
                                                     }
                                                 });

@@ -16,4 +16,6 @@ public interface UserDAO extends CRUD<User> {
 
     boolean checkPassword(Connection connection, String email, String password) throws SQLException;
 
+    boolean updateByParameter(Connection connection,String name, String value, Integer id) throws SQLException;
+
 }
