@@ -40,6 +40,8 @@ public class UserService implements BaseService<User> {
         return false;
     }
 
+
+
     @Override
     public boolean delete(int id) {
         try {
@@ -64,6 +66,16 @@ public class UserService implements BaseService<User> {
         return true;
     }
 
+
+    public List<User> getWithQuery(String SQL_SOME_QUERY) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return udao.getWithQuery(connection, SQL_SOME_QUERY);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public List<User> getAll() {
         try (Connection connection = PoolConnection.getConnection()) {
@@ -72,6 +84,15 @@ public class UserService implements BaseService<User> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public int getCountWithQuery(String SQL_SOME_QUERY) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return udao.getCountWithQuery(connection, SQL_SOME_QUERY);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     public User getByEmailAndPass(String email, String password) {

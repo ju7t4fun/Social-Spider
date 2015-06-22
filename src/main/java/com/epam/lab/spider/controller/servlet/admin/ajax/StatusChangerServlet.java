@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.servlet.ajax;
+package com.epam.lab.spider.controller.servlet.admin.ajax;
 
 import com.epam.lab.spider.model.db.entity.User;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
