@@ -39,6 +39,11 @@ public class User {
     private Set<Profile> profiles = null;
     private Set<Task> tasks = null;
 
+
+    public User() {
+
+    }
+
     public enum Role {
         ADMIN, USER
     }

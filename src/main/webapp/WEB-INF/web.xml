@@ -64,8 +64,21 @@
     </servlet>
     <servlet>
         <servlet-name>StatusChangerServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.ajax.StatusChangerServlet</servlet-class>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.ajax.StatusChangerServlet</servlet-class>
     </servlet>
+
+
+
+    <servlet>
+        <servlet-name>JqueryDatatablePluginDemoServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.ajax.JqueryDatatablePluginDemoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JqueryDatatablePluginDemoServlet</servlet-name>
+        <url-pattern>/com/studywithdemo/JqueryDatatablePluginDemo.java</url-pattern>
+    </servlet-mapping>
+
+
     <servlet-mapping>
         <servlet-name>StatusChangerServlet</servlet-name>
         <url-pattern>/statuschanger</url-pattern>

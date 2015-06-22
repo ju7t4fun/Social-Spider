@@ -29,6 +29,6 @@ public class ShowAdminAllUsers implements ActionCommand {
         }
         request.getSession().setAttribute("listUsers",list);
 
-        request.getRequestDispatcher("jsp/admin/admin_allusers.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/admin/admin_allusers.jsp").forward(request, response);
     }
 }

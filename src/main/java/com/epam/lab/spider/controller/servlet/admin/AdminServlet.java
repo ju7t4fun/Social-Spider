@@ -1,12 +1,7 @@
 package com.epam.lab.spider.controller.servlet.admin;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.UploadImageCommand;
 import com.epam.lab.spider.controller.command.admin.ShowAdminAllUsers;
-import com.epam.lab.spider.controller.command.controller.LocaleCommand;
-import com.epam.lab.spider.controller.command.user.auth.ShowAuthCommand;
-import com.epam.lab.spider.controller.command.user.auth.SignInCommand;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
