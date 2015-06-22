@@ -503,6 +503,7 @@
                 <div class="form">
                     <table width="100%" border="0" margin="0" padding="0"
                            class="row-border tableHeader" id="personTable">
+                        <tbody>
                         <thead>
                         <tr>
                             <th>Id</th>
@@ -522,7 +523,7 @@
                             <th>State</th>
                         </tr>
                         </tfoot>
-                        <tbody>
+
                         </tbody>
                     </table>
                 </div>
