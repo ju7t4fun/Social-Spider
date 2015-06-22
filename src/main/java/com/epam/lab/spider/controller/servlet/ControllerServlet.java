@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.servlet;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.UploadCommand;
+import com.epam.lab.spider.controller.command.EditProfileCommand;
 import com.epam.lab.spider.controller.command.UploadFileCommand;
 import com.epam.lab.spider.controller.command.UploadFileFromURLCommand;
 import com.epam.lab.spider.controller.command.controller.LocaleCommand;
@@ -27,6 +27,7 @@ public class ControllerServlet extends HttpServlet {
             commands.put("locale", new LocaleCommand());
             commands.put("upload", new UploadFileCommand());
             commands.put("uploadurl", new UploadFileFromURLCommand());
+            commands.put("editprofile", new EditProfileCommand());
         }
     }
 

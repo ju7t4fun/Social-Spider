@@ -131,4 +131,13 @@ public class UserService implements BaseService<User> {
         }
         return false;
     }
+
+    public boolean updateByParameter(String name, String value, Integer id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return udao.updateByParameter(connection, name, value, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
