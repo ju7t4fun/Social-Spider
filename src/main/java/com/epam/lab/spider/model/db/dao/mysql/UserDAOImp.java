@@ -15,9 +15,9 @@ import java.util.List;
 public class UserDAOImp extends BaseDAO implements UserDAO {
 
     private static final String SQL_INSERT_QUERY = "INSERT INTO user (name, surname, email, password, role, state, " +
-            "deleted) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            "deleted, avatar_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE user SET name = ?, surname = ?, email = ?, password = ?, " +
-            "role = ?, state = ?, deleted = ? WHERE id = ?";
+            "role = ?, state = ?, deleted = ?, avatar_url = ? WHERE id = ?";
     //private static final String SQL_DELETE_QUERY = "DELETE FROM user WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE user SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM user WHERE deleted = false";
@@ -38,7 +38,8 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
                 user.getPassword(),
                 user.getRole().toString().toUpperCase(),
                 user.getState().toString().toUpperCase(),
-                user.getDeleted());
+                user.getDeleted(),
+                user.getAvatarURL());
         user.setId(getLastInsertId(connection));
         return res;
     }
@@ -53,6 +54,7 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
                 user.getRole().toString().toUpperCase(),
                 user.getState().toString().toUpperCase(),
                 user.getDeleted(),
+                user.getAvatarURL(),
                 id);
     }
 
@@ -78,6 +80,7 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
             user.setRole(User.Role.valueOf(rs.getString("role").toUpperCase()));
             user.setState(User.State.valueOf(rs.getString("state").toUpperCase()));
             user.setDeleted(rs.getBoolean("deleted"));
+            user.setAvatarURL(rs.getString("avatar_url"));
             users.add(user);
         }
         return users;
@@ -101,6 +104,7 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
             user.setSurname(rs.getString("surname"));
             user.setEmail(rs.getString("email"));
             user.setState(User.State.valueOf(rs.getString("state").toUpperCase()));
+            user.setAvatarURL(rs.getString("avatar_url"));
             users.add(user);
         }
         return users;
@@ -111,8 +115,8 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
     public int getCountWithQuery(Connection connection, String SQL_SOME_QUERY) throws SQLException {
 
         ResultSet rs = selectQuery(connection, SQL_SOME_QUERY);
-        if (rs!=null) {
-            while(rs.next()) {
+        if (rs != null) {
+            while (rs.next()) {
                 System.out.println(rs.getString(1));
                 return Integer.parseInt(rs.getString(1));
             }

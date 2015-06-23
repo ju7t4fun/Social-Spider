@@ -1,132 +1,316 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
-    <meta name="author" content="GeeksLabs">
-    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-    <title>Social Spider</title>
+    <title>Creative - Start Bootstrap Theme</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
-    <!-- bootstrap theme -->
-    <link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">
-    <!--external css-->
-    <!-- font icon -->
-    <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet" />
-    <link href="${pageContext.request.contextPath}/css/font-awesome.css" rel="stylesheet" />
+    <!-- Bootstrap Core CSS -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" type="text/css">
+
     <!-- Custom styles -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
+    <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}js/language.js"></script>
+    <!-- Custom Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+          rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic'
+          rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/font-awesome/css/font-awesome.min.css"
+          type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/creative.css" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
 </head>
-<body>
-<section id="container" class="">
-    <header class="header dark-bg" style="background: rgba(2, 10, 29, 1)">
+
+<body id="page-top">
+
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+    <header class="header dark-bg" style="background: rgb(26, 39, 50)">
         <div class="main">
-            <a href="/" class="logo">Social <span class="lite">Spider</span></a>
-            <a href="/login" style=""> <span style="color:#fff;line-height:65px;margin-left:600px;">SIGN IN</span> </a>
-            <a href="/admin" style=""> <span style="color:#fff;line-height:65px;margin-left:600px;">Admin</span> </a>
+            <a href="#page-top" class="logo">Social <span class="lite">Spider</span></a>
+            <div class="commands">
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="#about">About</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="#services">Services</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="#portfolio">Portfolio</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="#contact">Contact</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/login">Sign in</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
+
     </header>
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <a class="navbar-brand page-scroll" href="#page-top">Start Bootstrap</a>
+        </div>
 
-    <div class="poster" style="padding-top:180px;">
-        <div class="main">
-		        <span>
-		            <h1>SOCIAL-SPIDER </h1>
-                    <h2>make it easy</h2>
-				</span>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+
+<header>
+    <div class="header-content">
+        <div class="header-content-inner">
+            <h1>SOCIAL SPIDER</h1>
+            <hr>
+            <p>make it easy</p>
+            <a href="/login" class="btn btn-primary btn-xl page-scroll">SIGN IN</a>
         </div>
     </div>
+</header>
 
-    <div class="inf">
-        <div class="main">
-            <l:resource key="main.things.about.our.service"><h1>LOKI</h1></l:resource>
-            <table>
-                <tr>
-                    <th style="width:350px;height:170px;"><img src="img/m1.png" width="100" height="100"></th>
-                    <th style="width:350px;"><img src="img/m2.png" width="100" height="100"></th>
-                    <th style="width:350px;"><img src="img/m3.png" width="100" height="100"></th>
-                </tr>
-                <tr>
-                    <td><h2>Easy To Use</h2></td>
-                    <td><h2>Powerful Features</h2></td>
-                    <td><h2>You'll Love It</h2></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <div class="discover">
-        <div class="main">
-            <l:resource key="discover.the.features"><h1></h1></l:resource>
-            <table>
-                <tr> <th class="tableBorder"><h2>Post/Schedule</h2></th> <th class="tableBorder"><h2>Group Lists</h2></th> <th class="tableBorder"><h2>Saved Campaigns</h2></th> <th class="tableBorder"><h2>Posting Statistics</h2></th> </tr>
-                <tr>
-                    <td> <h4>With Autoposter can schedule or post unlimited groups!
-                        You must just follow simple steps for posting
-                        <ul>
-                            <li>1) Choose Groups List</li>
-                            <li>2) Choose Messages & Pictures/Videos</li>
-                            <li>3) Choose Inverval & click POST</li>
-                        </ul> </h4> </td>
-                    <td><h4>With Autoposter all your groups is saved & categorized!
-                        Never no check groups one by one & don't need worry about posting unwanted groups!
-                        Can create unlimited categories & add them unlimited groups. </h4></td>
-                    <td><h4>With Autoposter all your campaign contents is saved.
-                        System save all your campaigns contents to drafts so its easy to use your pictures, messages, videos again.
-                        You can anytime add more pictures, messages, videos & change them. </h4></td>
-                    <td><h4>We collect your campaign clicks & display you statistics.
-                        You can monitoring your campaigns & see how popular your posts are.
-                        So you know how get best results. </h4></td>
-                <tr>
-            </table>
-        </div>
-    </div>
-
-    <div id="testimonials">
-        <div class="main">
-            <p><h1><l:resource key="what.people.say.about.those.our.service"/></h1></p>
-
-            <div id="speech1">Most usually cotton is employed, with varying levels of ply, with the lower numbers meaning finer quality.
-                <div class="corner"><img src="img/corner.png" width="23" height="13"></div>
-            </div>
-
-            <div id="speech2">The new technology of the printing press was widely used to publish many arguments.
-                <div class="corner"><img src="img/corner.png" width="23" height="13"></div>
-            </div>
-
-            <div id="speech3">The mass media face a number of pressures that can prevent them from accurately depicting competing scientific claims.
-                <div class="corner"><img src="img/corner.png" width="23" height="13"></div>
-            </div>
-
-            <div id="person1">
-                <h4>Jim Bianco</h4>
-                <h5>Musician</h5>
-            </div>
-
-            <div id="person2">
-                <h4>Rita MacNeil</h4>
-                <h5>Designer</h5>
-            </div>
-
-            <div id="person3">
-                <h4>Tom Simpson</h4>
-                <h5>Developer</h5>
+<section class="bg-primary" id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 text-center">
+                <h2 class="section-heading">We've got what you need!</h2>
+                <hr class="light">
+                <p class="text-faded">Start Bootstrap has everything you need to get your new website up and running in
+                    no time! All of the templates and themes on Start Bootstrap are open source, free to download, and
+                    easy to use. No strings attached!</p>
+                <a href="#" class="btn btn-default btn-xl">Get Started!</a>
             </div>
         </div>
     </div>
-
-    <jsp:include page="pagecontent/footer.jsp" />
-
 </section>
+
+<section id="services">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">At Your Service</h2>
+                <hr class="primary">
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="service-box">
+                    <i class="fa fa-4x fa-diamond wow bounceIn text-primary"></i>
+
+                    <h3>Sturdy Templates</h3>
+
+                    <p class="text-muted">Our templates are updated regularly so they don't break.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="service-box">
+                    <i class="fa fa-4x fa-paper-plane wow bounceIn text-primary" data-wow-delay=".1s"></i>
+
+                    <h3>Ready to Ship</h3>
+
+                    <p class="text-muted">You can use this theme as is, or you can make changes!</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="service-box">
+                    <i class="fa fa-4x fa-newspaper-o wow bounceIn text-primary" data-wow-delay=".2s"></i>
+
+                    <h3>Up to Date</h3>
+
+                    <p class="text-muted">We update dependencies to keep things fresh.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="service-box">
+                    <i class="fa fa-4x fa-heart wow bounceIn text-primary" data-wow-delay=".3s"></i>
+
+                    <h3>Made with Love</h3>
+
+                    <p class="text-muted">You have to make your websites with love these days!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="no-padding" id="portfolio">
+    <div class="container-fluid">
+        <div class="row no-gutter">
+            <div class="col-lg-4 col-sm-6">
+                <a href="#" class="portfolio-box">
+                    <img src="${pageContext.request.contextPath}/img/portfolio/1.jpg" class="img-responsive" alt="">
+
+                    <div class="portfolio-box-caption">
+                        <div class="portfolio-box-caption-content">
+                            <div class="project-category text-faded">
+                                Category
+                            </div>
+                            <div class="project-name">
+                                Project Name
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <a href="#" class="portfolio-box">
+                    <img src="${pageContext.request.contextPath}/img/portfolio/2.jpg" class="img-responsive" alt="">
+
+                    <div class="portfolio-box-caption">
+                        <div class="portfolio-box-caption-content">
+                            <div class="project-category text-faded">
+                                Category
+                            </div>
+                            <div class="project-name">
+                                Project Name
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <a href="#" class="portfolio-box">
+                    <img src="${pageContext.request.contextPath}/img/portfolio/3.jpg" class="img-responsive" alt="">
+
+                    <div class="portfolio-box-caption">
+                        <div class="portfolio-box-caption-content">
+                            <div class="project-category text-faded">
+                                Category
+                            </div>
+                            <div class="project-name">
+                                Project Name
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <a href="#" class="portfolio-box">
+                    <img src="${pageContext.request.contextPath}/img/portfolio/4.jpg" class="img-responsive" alt="">
+
+                    <div class="portfolio-box-caption">
+                        <div class="portfolio-box-caption-content">
+                            <div class="project-category text-faded">
+                                Category
+                            </div>
+                            <div class="project-name">
+                                Project Name
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <a href="#" class="portfolio-box">
+                    <img src="${pageContext.request.contextPath}/img/portfolio/5.jpg" class="img-responsive" alt="">
+
+                    <div class="portfolio-box-caption">
+                        <div class="portfolio-box-caption-content">
+                            <div class="project-category text-faded">
+                                Category
+                            </div>
+                            <div class="project-name">
+                                Project Name
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <a href="#" class="portfolio-box">
+                    <img src="${pageContext.request.contextPath}/img/portfolio/6.jpg" class="img-responsive" alt="">
+
+                    <div class="portfolio-box-caption">
+                        <div class="portfolio-box-caption-content">
+                            <div class="project-category text-faded">
+                                Category
+                            </div>
+                            <div class="project-name">
+                                Project Name
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<aside class="bg-dark">
+    <div class="container text-center">
+        <div class="call-to-action">
+            <h2>Free Download at Start Bootstrap!</h2>
+            <a href="#" class="btn btn-default btn-xl wow tada">Download Now!</a>
+        </div>
+    </div>
+</aside>
+
+<section id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 text-center">
+                <h2 class="section-heading">Let's Get In Touch!</h2>
+                <hr class="primary">
+                <p>Ready to start your next project with us? That's great! Give us a call or send us an email and we
+                    will get back to you as soon as possible!</p>
+            </div>
+            <div class="col-lg-4 col-lg-offset-2 text-center">
+                <i class="fa fa-phone fa-3x wow bounceIn"></i>
+
+                <p>123-456-6789</p>
+            </div>
+            <div class="col-lg-4 text-center">
+                <i class="fa fa-envelope-o fa-3x wow bounceIn" data-wow-delay=".1s"></i>
+
+                <p><a href="mailto:your-email@your-domain.com">feedback@startbootstrap.com</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="${pageContext.request.contextPath}/js/jquery.easing.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.fittext.js"></script>
+<script src="${pageContext.request.contextPath}/js/wow.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="${pageContext.request.contextPath}/js/creative.js"></script>
+
 </body>
+
 </html>

@@ -1,4 +1,4 @@
-<header class="header dark-bg" style="background: rgba(2, 10, 29, 1)">
+<header class="header dark-bg" style="background: rgb(26, 39, 50)">
   <div class="toggle-nav">
     <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"></div>
   </div>
@@ -122,7 +122,7 @@
                       <li class="by-me">
                         <!-- Use the class "pull-left" in avatar -->
                         <div class="avatar pull-left">
-                          <img src="${pageContext.request.contextPath}/img/user.jpg" alt=""/>
+                          <img class="" src="" alt="">
                         </div>
 
                         <div class="chat-content">
@@ -245,9 +245,9 @@
       <li class="dropdown">
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="profile-ava">
-                                <img alt="" src="${pageContext.request.contextPath}/img/avatar1_small.jpg">
+                                 <img class="avatar" width="40px" height="40px" src="${user.avatarURL}" alt="">
                             </span>
-          <span class="username">User Name</span>
+          <span class="userfname">${user.name}</span>
           <b class="caret"></b>
         </a>
         <ul class="dropdown-menu extended logout">
@@ -257,6 +257,10 @@
           </li>
           <li>
             <a href="${pageContext.request.contextPath}/jsp/user/inbox.jsp"><i class="icon_mail_alt"></i> My Inbox</a>
+          </li>
+          <li>
+            <a href="${pageContext.request.contextPath}/jsp/user/user_profile.jsp"><i class="icon_clock_alt"></i>
+            Profile</a>
           </li>
           <li>
             <a href="#"><i class="icon_clock_alt"></i> Timeline</a>
