@@ -17,11 +17,15 @@
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
     <title>My Profile</title>
+
     <!-- For editable -->
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/bootstrap-editable.css" rel="stylesheet">
     <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+    <%--Conflicted js--%>
+    <%--<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>--%>
+
     <script src="${pageContext.request.contextPath}/js/bootstrap-editable.min.js"></script>
 
     <!-- Bootstrap CSS -->
@@ -40,7 +44,8 @@
     <!-- Custom styles -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
-
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/jquery.tokenize.css"/>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
     <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
@@ -74,21 +79,19 @@
                     <div class="profile-widget profile-widget-info">
                         <div class="panel-body">
                             <div class="col-lg-2 col-sm-2">
-                                <h4>USER NAME</h4>
+                                <h4><span class="userfname">${user.name} </span><span> </span><span
+                                        class="userlname">${user.surname}</span></h4>
 
                                 <div class="follow-ava">
-                                    <img src="${pageContext.request.contextPath}/img/profile-widget-avatar.jpg" alt="">
+                                    <img class="avatar" src="${user.avatarURL}" alt="">
                                 </div>
-                                <h6>USER ROLE (User)</h6>
+                                <h6>${user.role}</h6>
                             </div>
                             <div class="col-lg-4 col-sm-4 follow-info">
-                                <p>Hello I’m User, and this is general information about me.</p>
 
-                                <p><i class="fa fa-twitter">USER_TWITTER_ACCOUNT</i></p>
+                                <p><i>Email: ${user.email}</i></p>
                                 <h6>
-                                    <span><i class="icon_clock_alt"></i>11:05 AM</span>
-                                    <span><i class="icon_calendar"></i>25.10.13</span>
-                                    <span><i class="icon_pin_alt"></i>NY</span>
+                                    <span><i class="icon_calendar"></i>${user.createTime}</span>
                                 </h6>
                             </div>
                         </div>
@@ -236,7 +239,8 @@
 
                                             <div class="row">
                                                 <div class="bio-row">
-                                                    <span>First Name: <span id="name"> USER_FIRST_NAME</span></span>
+                                                    <span>First Name:
+                                                        <span id="name"> ${user.name}</span></span>
                                                 </div>
                                                 <script>
                                                     $.fn.editable.defaults.mode = 'inline';
@@ -251,7 +255,8 @@
                                                     });
                                                 </script>
                                                 <div class="bio-row">
-                                                    <span>Last Name: <span id="surname"> USER_LAST_NAME</span></span>
+                                                    <span>Last Name:
+                                                        <span id="surname"> ${user.surname}</span></span>
                                                 </div>
                                                 <script>
                                                     $.fn.editable.defaults.mode = 'inline';
@@ -266,10 +271,13 @@
                                                     });
                                                 </script>
                                                 <div class="bio-row">
-                                                    <span>Email: <span id="email"> EMAIL</span></span>
+                                                    <span>Email: <span id="email"> ${user.email}</span></span>
                                                 </div>
                                                 <div class="bio-row">
-                                                    <span>Change password: <span id="change_password"> </span>Change password</span>
+                                                    <span>Change password:
+                                                        <span id="change_password"> </span><a
+                                                                href="${pageContext.request.contextPath}/jsp/user/pwrestore_newpw.jsp">Change
+                                                            password</a> </span>
                                                 </div>
                                                 <div class="bio-row">
                                                     <span>Change avatar:
@@ -289,6 +297,22 @@
                                                             }, 1000);
                                                         }
                                                     </script>
+                                                    <script>
+                                                        $(document).ajaxComplete(function (event, xhr, settings) {
+                                                            if (settings.url === "http://localhost:8080/controller?action=changeavatar") {
+                                                                $(".avatar").attr("src",
+                                                                        JSON.parse(xhr.responseText).success);
+                                                            }
+                                                        });
+                                                    </script>
+                                                    <script>
+                                                        $(document).ajaxComplete(function (event, xhr, settings) {
+                                                            if (settings.url === "http://localhost:8080/controller?action=editprofile") {
+                                                                $(".userfname").text(JSON.parse(xhr.responseText).fname);
+                                                                $(".userlname").text(JSON.parse(xhr.responseText).lname);
+                                                            }
+                                                        });
+                                                    </script>
                                                     <div id="compForm" class="container kv-main" style="width:800px;
                                                       margin-top:20px;">
                                                         <input id="input-dim-2" type="file"
@@ -297,8 +321,7 @@
                                                                accept="image/*">
                                                         <script>
                                                             $("#input-dim-2").fileinput({
-                                                                uploadUrl:
-                                                                        "http://localhost:8080/controller?action=editprofile",
+                                                                uploadUrl: "http://localhost:8080/controller?action=changeavatar",
                                                                 allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg'],
                                                                 maxFileCount: 1
                                                             });
@@ -342,10 +365,8 @@
 <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 
 <script>
-
     //knob
     $(".knob").knob();
-
 </script>
 
 
