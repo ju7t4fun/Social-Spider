@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,11 +19,11 @@
     <link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">
     <!--external css-->
     <!-- font icon -->
-    <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet" />
-    <link href="${pageContext.request.contextPath}/css/font-awesome.css" rel="stylesheet" />
+    <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/css/font-awesome.css" rel="stylesheet"/>
     <!-- Custom styles -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
+    <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}js/language.js"></script>
@@ -30,13 +31,24 @@
 </head>
 <body>
 <section id="container" class="">
-    <header class="header dark-bg" style="background: rgba(2, 10, 29, 1)">
-        <div class="main">
-            <a href="/" class="logo">Social <span class="lite">Spider</span></a>
-            <a href="/login" style=""> <span style="color:#fff;line-height:65px;margin-left:600px;">SIGN IN</span> </a>
-            <a href="/admin" style=""> <span style="color:#fff;line-height:65px;margin-left:600px;">Admin</span> </a>
-        </div>
-    </header>
+
+    <c:choose>
+        <c:when test="${user.role == 'ADMIN'}">
+            <jsp:forward page="admin_index.jsp"/>
+        </c:when>
+        <c:when test="${user.role == 'USER'}">
+            <jsp:forward page="user_index.jsp"/>
+        </c:when>
+        <c:otherwise>
+            <header class="header dark-bg" style="background: rgba(2, 10, 29, 1)">
+                <div class="main">
+                    <a href="/" class="logo">Social <span class="lite">Spider</span></a>
+                    <a href="/login" style=""> <span
+                            style="color:#fff;line-height:65px;margin-left:600px;">SIGN IN</span> </a>
+                </div>
+            </header>
+        </c:otherwise>
+    </c:choose>
 
     <div class="poster" style="padding-top:180px;">
         <div class="main">
@@ -69,20 +81,29 @@
         <div class="main">
             <l:resource key="discover.the.features"><h1></h1></l:resource>
             <table>
-                <tr> <th class="tableBorder"><h2>Post/Schedule</h2></th> <th class="tableBorder"><h2>Group Lists</h2></th> <th class="tableBorder"><h2>Saved Campaigns</h2></th> <th class="tableBorder"><h2>Posting Statistics</h2></th> </tr>
                 <tr>
-                    <td> <h4>With Autoposter can schedule or post unlimited groups!
-                        You must just follow simple steps for posting
-                        <ul>
-                            <li>1) Choose Groups List</li>
-                            <li>2) Choose Messages & Pictures/Videos</li>
-                            <li>3) Choose Inverval & click POST</li>
-                        </ul> </h4> </td>
+                    <th class="tableBorder"><h2>Post/Schedule</h2></th>
+                    <th class="tableBorder"><h2>Group Lists</h2></th>
+                    <th class="tableBorder"><h2>Saved Campaigns</h2></th>
+                    <th class="tableBorder"><h2>Posting Statistics</h2></th>
+                </tr>
+                <tr>
+                    <td>
+                        <h4>With Autoposter can schedule or post unlimited groups!
+                            You must just follow simple steps for posting
+                            <ul>
+                                <li>1) Choose Groups List</li>
+                                <li>2) Choose Messages & Pictures/Videos</li>
+                                <li>3) Choose Inverval & click POST</li>
+                            </ul>
+                        </h4>
+                    </td>
                     <td><h4>With Autoposter all your groups is saved & categorized!
                         Never no check groups one by one & don't need worry about posting unwanted groups!
                         Can create unlimited categories & add them unlimited groups. </h4></td>
                     <td><h4>With Autoposter all your campaign contents is saved.
-                        System save all your campaigns contents to drafts so its easy to use your pictures, messages, videos again.
+                        System save all your campaigns contents to drafts so its easy to use your pictures, messages,
+                        videos again.
                         You can anytime add more pictures, messages, videos & change them. </h4></td>
                     <td><h4>We collect your campaign clicks & display you statistics.
                         You can monitoring your campaigns & see how popular your posts are.
@@ -94,9 +115,12 @@
 
     <div id="testimonials">
         <div class="main">
-            <p><h1><l:resource key="what.people.say.about.those.our.service"/></h1></p>
+            <p>
 
-            <div id="speech1">Most usually cotton is employed, with varying levels of ply, with the lower numbers meaning finer quality.
+            <h1><l:resource key="what.people.say.about.those.our.service"/></h1></p>
+
+            <div id="speech1">Most usually cotton is employed, with varying levels of ply, with the lower numbers
+                meaning finer quality.
                 <div class="corner"><img src="img/corner.png" width="23" height="13"></div>
             </div>
 
@@ -104,7 +128,8 @@
                 <div class="corner"><img src="img/corner.png" width="23" height="13"></div>
             </div>
 
-            <div id="speech3">The mass media face a number of pressures that can prevent them from accurately depicting competing scientific claims.
+            <div id="speech3">The mass media face a number of pressures that can prevent them from accurately depicting
+                competing scientific claims.
                 <div class="corner"><img src="img/corner.png" width="23" height="13"></div>
             </div>
 
@@ -125,7 +150,7 @@
         </div>
     </div>
 
-    <jsp:include page="pagecontent/footer.jsp" />
+    <jsp:include page="pagecontent/footer.jsp"/>
 
 </section>
 </body>

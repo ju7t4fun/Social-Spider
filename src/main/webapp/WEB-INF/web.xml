@@ -35,7 +35,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <servlet>
-        <servlet-name>ApiServlet</servlet-name>s
+        <servlet-name>ApiServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.ApiServlet</servlet-class>
     </servlet>
     <servlet>
@@ -68,11 +68,19 @@
     </servlet>
 
 
-
     <servlet>
         <servlet-name>JqueryDatatablePluginDemoServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.admin.ajax.JqueryDatatablePluginDemoServlet</servlet-class>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.ajax.JqueryDatatablePluginDemoServlet
+        </servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>InBoxServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.InBoxServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>InBoxServlet</servlet-name>
+        <url-pattern>/admin/inbox</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>JqueryDatatablePluginDemoServlet</servlet-name>
         <url-pattern>/com/studywithdemo/JqueryDatatablePluginDemo.java</url-pattern>

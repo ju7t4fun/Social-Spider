@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.websocket;
+package com.epam.lab.spider.controller.utils;
 
 /**
  * Created by Boyarsky Vitaliy on 19.06.2015.

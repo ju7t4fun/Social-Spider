@@ -1,4 +1,4 @@
-package testchat;
+package com.epam.lab.spider.controller.websocket;
 
 /**
  * Created by Орест on 18.06.2015.

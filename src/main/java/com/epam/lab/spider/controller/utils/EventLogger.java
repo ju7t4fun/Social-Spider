@@ -1,7 +1,5 @@
 package com.epam.lab.spider.controller.utils;
 
-import com.epam.lab.spider.controller.websocket.Receiver;
-import com.epam.lab.spider.controller.websocket.Sender;
 import com.epam.lab.spider.model.db.entity.Event;
 import com.epam.lab.spider.model.db.service.EventService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
