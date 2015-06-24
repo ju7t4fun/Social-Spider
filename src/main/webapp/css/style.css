@@ -11,13 +11,24 @@ body {
 }
 
 .b-popup{
-    width:200%;
-    min-height:200%;
-    background-color: rgba(0,0,0,0.5);
+    /*width:200%;*/
+    /*min-height:200%;*/
+    /*background-color: rgba(0,0,0,0.5);*/
+    /*overflow:hidden;*/
+    /*position:fixed;*/
+    /*display: none;*/
+    /*top:0px;*/
+    /*/!*margin-left:-1000px;*!/*/
+
     overflow:hidden;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
     position:fixed;
-    top:0px;
-    margin-left:-1000px;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    z-index:99;
 }
 .b-popup .b-popup-content{
     margin:200px auto 0px 400px;

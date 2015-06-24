@@ -20,6 +20,7 @@ public interface UserDAO extends CRUD<User> {
     List<User> getWithQuery(Connection connection, String SQL_SOME_QUERY) throws SQLException;
 
     int getCountWithQuery(Connection connection, String SQL_SOME_QUERY) throws SQLException;
+
     boolean updateByParameter(Connection connection,String name, String value, Integer id) throws SQLException;
 
 }

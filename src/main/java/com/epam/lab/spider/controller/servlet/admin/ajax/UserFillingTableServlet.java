@@ -17,8 +17,7 @@ import com.epam.lab.spider.model.db.service.UserService;
 import org.json.*;
 
 @SuppressWarnings("serial")
-public class JqueryDatatablePluginDemoServlet extends HttpServlet {
-
+public class UserFillingTableServlet extends HttpServlet {
     private String GLOBAL_SEARCH_TERM;
     private String COLUMN_NAME;
     private String DIRECTION;
@@ -211,5 +210,6 @@ public class JqueryDatatablePluginDemoServlet extends HttpServlet {
 //        int totalRecords = serv.getAll().size();
         return totalRecords;
     }
+
 
 }
