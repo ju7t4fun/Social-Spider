@@ -499,35 +499,32 @@
             <%--</table>--%>
             <%--</section>--%>
             <%--</div>--%>
-            <form>
-                <div class="form">
-                    <table width="100%" border="0" margin="0" padding="0"
-                           class="row-border tableHeader" id="personTable">
-                        <tbody>
-                        <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Surname</th>
-                            <th>Email</th>
-                            <th>State</th>
+            <table width="100%" border="0" margin="0" padding="0"
+                   class="row-border tableHeader" id="personTable">
+                <tbody>
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Email</th>
+                    <th>State</th>
 
-                        </tr>
-                        </thead>
-                        <tfoot>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Surname</th>
-                            <th>Email</th>
-                            <th>State</th>
-                        </tr>
-                        </tfoot>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Email</th>
+                    <th>State</th>
+                </tr>
+                </tfoot>
 
-                        </tbody>
-                    </table>
-                </div>
-            </form>
+                </tbody>
+            </table>
+
             <%--Banned Users--%>
             <%--<section class="panel" style="width:400px; margin-left:770px;margin-top:-264px;position:fixed;">--%>
             <%--<header class="panel-heading">--%>

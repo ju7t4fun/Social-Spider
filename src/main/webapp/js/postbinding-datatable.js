@@ -1,14 +1,15 @@
 var table;
 
 jQuery(document).ready(function () {
-    table = $('#personTable').dataTable({
+    table = $('#postBindingTable').dataTable({
+
         "bPaginate": true,
         "order": [0, 'asc'],
         "bInfo": true,
         "iDisplayStart": 0,
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": path + "/UserFillingTableServlet",
+        "sAjaxSource": path + "/PostBindingFillingTableServlet",
         "dom": 'C<"clear">lfrtip',
         colVis: {
             "align": "right",
@@ -16,12 +17,14 @@ jQuery(document).ready(function () {
             showAll: "Show all",
             showNone: "Show none",
             order: 'alpha',
-            "buttonText": "columns <img src=\"/img/caaret.png\"/>"
+            "buttonText": "columns <img src=\"/img/caaret.png\"/>",
         },
+
         "language": {
             "infoFiltered": ""
-        },
-        "dom": 'Cf<"toolbar"">rtip',
+        }
+        ,
+        "dom": 'Cf<"toolbar"">rtip', "columnDefs": [ { "targets": 2,"orderable": false }, { "targets": 3,"orderable": false } ],
 
     })
         .columnFilter({
@@ -35,8 +38,8 @@ jQuery(document).ready(function () {
             ],
             bUseColVis: true
         }).fnSetFilteringDelay();
-    $("#personTable_length").hide();
-    //$(".dataTables_filter").css({ "display" :"none" });
+    $("#postBindingTable_length").hide();
+//$(".dataTables_filter").css({ "display" :"none" });
 
 
     $(".dataTables_filter").css({"position": "auto"});
@@ -52,4 +55,5 @@ jQuery(document).ready(function () {
         table.fnStandingRedraw();
     });
 
-});
+})
+;
