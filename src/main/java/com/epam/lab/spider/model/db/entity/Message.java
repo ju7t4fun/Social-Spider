@@ -1,5 +1,6 @@
 package com.epam.lab.spider.model.db.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -37,6 +38,10 @@ public class Message {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getFormatData() {
+        return new SimpleDateFormat("HH:mm:ss").format(date);
     }
 
     public Date getDate() {

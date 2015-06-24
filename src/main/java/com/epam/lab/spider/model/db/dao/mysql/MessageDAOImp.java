@@ -36,6 +36,8 @@ public class MessageDAOImp extends BaseDAO implements MessageDAO {
             "AND type = 'TO_ADMIN'";
     private static final String SQL_GET_LAST_UN_READ_MESSAGES_BY_ADMIN_QUERY = "SELECT * FROM message WHERE type = " +
             "'TO_ADMIN' AND is_read = 0 ORDER BY date DESC LIMIT ?";
+    private static final String SQL_MARK_AS_READ_ADMIN_BY_USER_ID_QUERY = "UPDATE message SET is_read = 1 WHERE user_id = ?" +
+            " AND type = 'to_admin'";
 
     @Override
     public boolean insert(Connection connection, Message message) throws SQLException {
@@ -133,6 +135,11 @@ public class MessageDAOImp extends BaseDAO implements MessageDAO {
     @Override
     public List<Message> getLastUnReadMessagesByAdmin(Connection connection, int limit) throws SQLException {
         return select(connection, SQL_GET_LAST_UN_READ_MESSAGES_BY_ADMIN_QUERY, limit);
+    }
+
+    @Override
+    public boolean markAsReadAdminByUserId(Connection connection, int id) throws SQLException {
+        return changeQuery(connection, SQL_MARK_AS_READ_ADMIN_BY_USER_ID_QUERY, id);
     }
 
 }

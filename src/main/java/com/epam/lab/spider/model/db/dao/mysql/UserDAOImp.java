@@ -76,7 +76,6 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
             user.setEmail(rs.getString("email"));
             user.setPassword(rs.getString("password"));
             user.setCreateTime(rs.getTimestamp("create_time"));
-            System.out.println(rs.getString("role"));
             user.setRole(User.Role.valueOf(rs.getString("role").toUpperCase()));
             user.setState(User.State.valueOf(rs.getString("state").toUpperCase()));
             user.setDeleted(rs.getBoolean("deleted"));
@@ -117,7 +116,6 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
         ResultSet rs = selectQuery(connection, SQL_SOME_QUERY);
         if (rs != null) {
             while (rs.next()) {
-                System.out.println(rs.getString(1));
                 return Integer.parseInt(rs.getString(1));
             }
         }

@@ -130,4 +130,13 @@ public class MessageService implements BaseService<Message> {
         }
         return null;
     }
+
+    public boolean markAsReadAdminByUserId(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return mdao.markAsReadAdminByUserId(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

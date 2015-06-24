@@ -52,12 +52,16 @@ public class SupportWebSocket {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        LOG.debug("onOpen (clientId=" + id + ")");
+        if (LOG.isDebugEnabled())
+            LOG.debug("onOpen (clientId=" + id + ")");
     }
 
     @OnMessage
     public void onMessage(String message, Session session) {
         String[] args = message.split("\\|");
+        if (LOG.isDebugEnabled())
+            LOG.debug("onMessage. Execute command " + Command.valueOf(args[0].toUpperCase()) + " params " + Arrays
+                    .toString(args));
         try {
             switch (Command.valueOf(args[0].toUpperCase())) {
                 case TO_ADMIN: {
@@ -68,7 +72,7 @@ public class SupportWebSocket {
                     service.insert(msg);
                     session.getBasicRemote().sendText("me|" + msg.getText() + "|" + new SimpleDateFormat("HH:mm:ss")
                             .format(msg.getDate()));
-                    adminNotifyAll(id);
+                    adminNotifyAll(id, msg);
                     break;
                 }
                 case SCROLL: {
@@ -83,6 +87,12 @@ public class SupportWebSocket {
                 }
                 case READ:
                     service.markAsReadByUserId(id);
+                    break;
+                case TO_USER:
+                    Message msg = adminSendUser(args);
+                    session.getBasicRemote().sendText("me|" + msg.getText() + "|" + new SimpleDateFormat("HH:mm:ss")
+                            .format(msg.getDate()));
+                    break;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -92,7 +102,10 @@ public class SupportWebSocket {
     @OnClose
     public void onClose(Session session, CloseReason closeReason) {
         sessions.remove(id);
-        LOG.debug("onClose (clientId=" + id + ") " + closeReason.getCloseCode());
+        if (admins.contains(id))
+            admins.remove(id);
+        if (LOG.isDebugEnabled())
+            LOG.debug("onClose (clientId=" + id + ") " + closeReason.getCloseCode());
     }
 
     @OnError
@@ -147,6 +160,23 @@ public class SupportWebSocket {
         }
     }
 
+    private Message adminSendUser(String[] args) throws IOException {
+        int id = Integer.parseInt(args[1]);
+        Message msg = new Message();
+        msg.setUserId(id);
+        msg.setText(args[2]);
+        msg.setType(Message.Type.TO_USER);
+        service.insert(msg);
+        if (sessions.containsKey(id)) {
+            Session session = sessions.get(id);
+            int count = service.getCountUnReadByUserId(id);
+            session.getBasicRemote().sendText("count|" + count);
+            session.getBasicRemote().sendText("admin|" + msg.getText() + "|" + new SimpleDateFormat
+                    ("HH:mm:ss").format(msg.getDate()));
+        }
+        return msg;
+    }
+
     private User getById(List<User> users, int id) {
         for (User user : users) {
             if (user.getId() == id)
@@ -155,14 +185,15 @@ public class SupportWebSocket {
         return null;
     }
 
-    private void adminNotifyAll(int userId) throws IOException {
+    private void adminNotifyAll(int userId, Message msg) throws IOException {
         User user = userService.getById(userId);
         int count = service.getCountUnReadByAdminId();
         for (Integer adminId : admins) {
             Session session = sessions.get(adminId);
             session.getBasicRemote().sendText("count|" + count);
             session.getBasicRemote().sendText("new|" + user.getId() + "|" + user.getName() + " " + user.getSurname()
-                    + "|" + new SimpleDateFormat("HH:mm:ss").format(new Date()));
+                    + "|" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "|" + msg.getText());
+            session.getBasicRemote().sendText("updateCountList|" + userId);
         }
     }
 

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,7 +15,7 @@
     <title>Creative - Start Bootstrap Theme</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" type="text/css">
 
     <!-- Custom styles -->
@@ -47,33 +48,45 @@
 <body id="page-top">
 
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
-    <header class="header dark-bg" style="background: rgb(26, 39, 50)">
-        <div class="main">
-            <a href="#page-top" class="logo">Social <span class="lite">Spider</span></a>
-            <div class="commands">
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a class="page-scroll" href="#about">About</a>
-                        </li>
-                        <li>
-                            <a class="page-scroll" href="#services">Services</a>
-                        </li>
-                        <li>
-                            <a class="page-scroll" href="#portfolio">Portfolio</a>
-                        </li>
-                        <li>
-                            <a class="page-scroll" href="#contact">Contact</a>
-                        </li>
-                        <li>
-                            <a class="page-scroll" href="/login">Sign in</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
 
-    </header>
+    <c:choose>
+        <c:when test="${user.role == 'ADMIN'}">
+            <jsp:forward page="admin_index.jsp"/>
+        </c:when>
+        <c:when test="${user.role == 'USER'}">
+            <jsp:forward page="user_index.jsp"/>
+        </c:when>
+        <c:otherwise>
+            <header class="header dark-bg" style="background: rgb(26, 39, 50)">
+                <div class="main">
+                    <a href="#page-top" class="logo">Social <span class="lite">Spider</span></a>
+
+                    <div class="commands">
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <a class="page-scroll" href="#about">About</a>
+                                </li>
+                                <li>
+                                    <a class="page-scroll" href="#services">Services</a>
+                                </li>
+                                <li>
+                                    <a class="page-scroll" href="#portfolio">Portfolio</a>
+                                </li>
+                                <li>
+                                    <a class="page-scroll" href="#contact">Contact</a>
+                                </li>
+                                <li>
+                                    <a class="page-scroll" href="/login">Sign in</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </header>
+        </c:otherwise>
+    </c:choose>
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">

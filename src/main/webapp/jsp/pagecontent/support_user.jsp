@@ -108,7 +108,7 @@
     // Повідомлення від користувача
     <li id="me-message" class="by-me">
         <div class="avatar pull-left">
-            <img src="${pageContext.request.contextPath}/img/user.jpg" alt="" width="40" height="40"/>
+            <img src="${user.avatarURL}" alt="" width="40" height="40"/>
         </div>
         <div class="chat-content">
             <div class="chat-meta">${user.name} ${user.surname}<span class="pull-right">{date}</span></div>

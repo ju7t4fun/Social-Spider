@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.servlet.admin;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.admin.ShowAdminInBoxCommand;
+import com.epam.lab.spider.controller.command.admin.ShowAdminSupportCommand;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 /**
  * Created by Boyarsky Vitaliy on 23.06.2015.
  */
-public class InBoxServlet extends HttpServlet {
+public class SupportServlet extends HttpServlet {
 
     private static ActionFactory factory = new InBoxActionFactory();
 
@@ -31,7 +31,7 @@ public class InBoxServlet extends HttpServlet {
 
         public InBoxActionFactory() {
             commands = new HashMap<>();
-            commands.put("default", new ShowAdminInBoxCommand());
+            commands.put("default", new ShowAdminSupportCommand());
         }
     }
 }

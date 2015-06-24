@@ -36,8 +36,43 @@
     <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
     <![endif]-->
+
+    <script type="text/javascript">
+        function selectItem(id) {
+            location.href = "support?id=" + id;
+        }
+    </script>
+
 </head>
 <body>
+
+<div hidden>
+    <input id="current_user_id" type="hidden" value="${current_user.id}">
+    // Повідомлення від користувача
+    <li id="me-message_a" class="by-me">
+        <div class="avatar pull-left">
+            <img src="${current_user.avatarURL}" alt="" width="40" height="40"/>
+        </div>
+        <div class="chat-content">
+            <div class="chat-meta">{user_name}<span class="pull-right">{date}</span></div>
+            <div class="chat-meta" style="color:#4c4c4c;font-size:14px;">{message}</div>
+            <div class="clearfix"></div>
+        </div>
+    </li>
+    // Повідомлення від адміна
+    <li id="admin-message_a" class="by-other">
+        <div class="avatar pull-right">
+            <img src="${pageContext.request.contextPath}/img/admin.jpg" alt="" width="40" height="40"/>
+        </div>
+        <div class="chat-content">
+            <div class="chat-meta">{date}<span class="pull-right"> Admin </span>
+            </div>
+            <div class="chat-meta" style="color:#4c4c4c;font-size:14px;">{message}</div>
+            <div class="clearfix"></div>
+        </div>
+    </li>
+</div>
+
 
 <section id="container" class="">
 
@@ -49,8 +84,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-                        <li><i class="fa fa-list-alt"></i>Inbox</li>
+                        <li><i class="fa fa-home"></i><a href="/">HOME</a></li>
+                        <li><i class="fa fa-user"></i></i><a href="/">ADMIN</a></li>
+                        <li><i class="fa fa-list-alt"></i>INBOX</li>
                     </ol>
                 </div>
             </div>
@@ -61,12 +97,14 @@
                     overflow-x:hidden">
                         <ul class="nav nav-tabs-justified">
                             <c:forEach var="user" items="${users}">
-                                <li class="active">
-                                    <a data-toggle="tab" href="#recent-activity">
+                                <li class="active" onclick="selectItem(${user.key.id})">
+                                    <a data-toggle="tab" href="/admin/support?id=${user.key.id}">
                                             ${user.key.name} ${user.key.surname}
-                                        <c:if test="${user.value>0}">
-                                            <span class="small italic pull-right badge bg-warning">${user.value}</span>
-                                        </c:if>
+                                                <span id="list-${user.key.id}">
+                                                    <c:if test="${user.value>0}">
+                                                        <span class="small italic pull-right badge bg-warning">${user.value}</span>
+                                                    </c:if>
+                                                </span>
                                     </a>
                                 </li>
                             </c:forEach>
@@ -74,83 +112,58 @@
                     </section>
                 </div>
                 <div class="col-lg-8">
-                    <section class="panel" style="padding:15px;">
-                        <ul class="chats">
-                            <li class="by-me">
-                                <div class="avatar pull-left">
-                                    <img src="${pageContext.request.contextPath}/img/user.jpg" alt=""/>
-                                </div>
-
-                                <div class="chat-content">
-                                    <div class="chat-meta">John Smith <span class="pull-right">3 hours ago</span></div>
-                                    <div class="chat-meta" style="color:#4c4c4c;font-size:14px;">Vivamus diam elit diam,
-                                        consectetur dapibus adipiscing elit.
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </li>
-
-                            <li class="by-other">
-                                <div class="avatar pull-right">
-                                    <img src="${pageContext.request.contextPath}/img/user22.png" alt=""/>
-                                </div>
-
-                                <div class="chat-content">
-                                    <div class="chat-meta">3 hours ago <span class="pull-right">Jenifer Smith</span>
-                                    </div>
-                                    <div class="chat-meta" style="color:#4c4c4c;font-size:14px;">Vivamus diam elit diam,
-                                        consectetur fconsectetur dapibus adipiscing elit.
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </li>
-
-                            <li class="by-me">
-                                <div class="avatar pull-left">
-                                    <img src="${pageContext.request.contextPath}/img/user.jpg" alt=""/>
-                                </div>
-
-                                <div class="chat-content">
-                                    <div class="chat-meta">John Smith <span class="pull-right">4 hours ago</span></div>
-                                    <div class="chat-meta" style="color:#4c4c4c;font-size:14px;">Vivamus diam elit diam,
-                                        consectetur fermentum sed dapibus eget, Vivamus consectetur dapibus adipiscing
-                                        elit.
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </li>
-
-                            <li class="by-other">
-                                <!-- Use the class "pull-right" in avatar -->
-                                <div class="avatar pull-right">
-                                    <img src="${pageContext.request.contextPath}/img/user22.png" alt=""/>
-                                </div>
-
-                                <div class="chat-content">
-                                    <!-- In the chat meta, first include "time" then "name" -->
-                                    <div class="chat-meta">3 hours ago <span class="pull-right">Jenifer Smith</span>
-                                    </div>
-                                    <div class="chat-meta" style="color:#4c4c4c;font-size:14px;">Vivamus diam elit diam,
-                                        consectetur fermentum sed dapibus eget, Vivamus consectetur dapibus adipiscing
-                                        elit.
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </li>
-
+                    <section class="panel" style="padding:15px; height: 73%">
+                        <ul id="support_inbox_a" class="chats" style="overflow: scroll; width:100%; height: 88%; padding:
+                        5px; overflow-x:hidden">
+                            <c:forEach var="msg" items="${messages}">
+                                <c:if test="${msg.type == 'TO_ADMIN'}">
+                                    <li id="me-message" class="by-me">
+                                        <div class="avatar pull-left">
+                                            <img src="${current_user.avatarURL}" alt="" width="40" height="40"/>
+                                        </div>
+                                        <div class="chat-content">
+                                            <div class="chat-meta">${current_user.name} ${current_user.surname}
+                                                <span class="pull-right"> ${msg.formatData}</span>
+                                            </div>
+                                            <div class="chat-meta" style="color:#4c4c4c;font-size:14px;">
+                                                    ${msg.text}
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </li>
+                                </c:if>
+                                <c:if test="${msg.type == 'TO_USER'}">
+                                    <li id="admin-message" class="by-other">
+                                        <div class="avatar pull-right">
+                                            <img src="${pageContext.request.contextPath}/img/admin.jpg" alt=""
+                                                 width="40" height="40"/>
+                                        </div>
+                                        <div class="chat-content">
+                                            <div class="chat-meta">${msg.formatData}<span class="pull-right">
+                                                Admin </span>
+                                            </div>
+                                            <div class="chat-meta" style="color:#4c4c4c;font-size:14px;">
+                                                    ${msg.text}
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </li>
+                                </c:if>
+                            </c:forEach>
                         </ul>
+                        <br>
 
                         <div class="widget-foot">
-
                             <form class="form-inline">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Type your message here..."
-                                           style="width:450px;">
+                                <div class="form-group" style="width: 80%">
+                                    <input id="message_text" style="width: 100%" id="message_text" type="text"
+                                           class="form-control" placeholder="Type your message here...">
                                 </div>
-                                <button type="submit" class="btn btn-info" style="margin-left:30px;">Send</button>
+                                <input onclick="send(${current_user.id})" type="button" class="btn btn-info"
+                                       style="margin-left:5%"
+                                       value="Надіслати">
                             </form>
                         </div>
-
                     </section>
                 </div>
             </div>

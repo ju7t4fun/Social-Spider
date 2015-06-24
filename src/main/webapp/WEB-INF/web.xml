@@ -66,27 +66,14 @@
         <servlet-name>StatusChangerServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.admin.ajax.StatusChangerServlet</servlet-class>
     </servlet>
-
-
     <servlet>
-        <servlet-name>JqueryDatatablePluginDemoServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.admin.ajax.JqueryDatatablePluginDemoServlet
-        </servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>InBoxServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.admin.InBoxServlet</servlet-class>
+        <servlet-name>SupportServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.SupportServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>InBoxServlet</servlet-name>
-        <url-pattern>/admin/inbox</url-pattern>
+        <servlet-name>SupportServlet</servlet-name>
+        <url-pattern>/admin/support</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>JqueryDatatablePluginDemoServlet</servlet-name>
-        <url-pattern>/com/studywithdemo/JqueryDatatablePluginDemo.java</url-pattern>
-    </servlet-mapping>
-
-
     <servlet-mapping>
         <servlet-name>StatusChangerServlet</servlet-name>
         <url-pattern>/statuschanger</url-pattern>

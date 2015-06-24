@@ -24,9 +24,6 @@ public class ShowAdminAllUsers implements ActionCommand {
         UserService userService = factory.create(UserService.class);
 
         List<User> list = userService.getAll();
-        for(int i = 0; i < list.size(); ++i) {
-            System.out.println(list.get(i));
-        }
         request.getSession().setAttribute("listUsers",list);
 
         request.getRequestDispatcher("/jsp/admin/admin_allusers.jsp").forward(request, response);

@@ -26,4 +26,5 @@ public interface MessageDAO extends CRUD<Message> {
 
     List<Message> getLastUnReadMessagesByAdmin(Connection connection, int limit) throws SQLException;
 
+    boolean markAsReadAdminByUserId(Connection connection, int id) throws SQLException;
 }

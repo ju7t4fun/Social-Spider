@@ -31,8 +31,6 @@ public class JqueryDatatablePluginDemoServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        System.out.println(++TIMES);
-
         String[] columnNames = {"id", "name", "surname", "email", "state"};
 
         JSONObject jsonResult = new JSONObject();
@@ -138,7 +136,6 @@ public class JqueryDatatablePluginDemoServlet extends HttpServlet {
         sql += searchSQL;
         sql += " order by " + COLUMN_NAME + " " + DIRECTION;
         sql += " limit " + INITIAL + ", " + RECORD_SIZE;
-        System.out.println(sql);
 
 
         //for searching
