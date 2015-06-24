@@ -88,6 +88,10 @@
         <servlet-class>com.epam.lab.spider.controller.servlet.owner.ajax.PostBindingFillingTableServlet</servlet-class>
     </servlet>
     <servlet-mapping>
+        <servlet-name>PostBindingFillingTableServlet</servlet-name>
+        <url-pattern>/PostBindingFillingTableServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>SupportServlet</servlet-name>
         <url-pattern>/admin/support</url-pattern>
     </servlet-mapping>

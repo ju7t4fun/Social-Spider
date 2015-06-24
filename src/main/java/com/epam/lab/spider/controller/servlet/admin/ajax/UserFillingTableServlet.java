@@ -88,6 +88,7 @@ public class UserFillingTableServlet extends HttpServlet {
         }
 
         response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         response.setHeader("Cache-Control", "no-store");
         PrintWriter out = response.getWriter();
         out.print(jsonResult);
