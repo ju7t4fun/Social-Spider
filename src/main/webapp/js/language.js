@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $(".language-button-logic").click(function () {
+    $(".btn").click(function () {
         var lang = $(this).attr("change");
         var names = [];
         i = 0;

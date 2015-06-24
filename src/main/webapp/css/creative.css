@@ -52,7 +52,33 @@ p {
 }
 
 .bg-primary {
-    background-color: rgba(38, 121, 31, 0.3);
+    background-color: rgba(0, 0, 0, 0.73);
+    position: relative;
+}
+
+.services {
+    margin-top: 150px;
+    background-color: rgba(0, 0, 0, 0.73);
+    position: relative;
+}
+
+.devs {
+    margin-top: 0px;
+}
+
+.team-members {
+
+}
+
+.team {
+    margin-top: 150px;
+    background-color: rgba(0, 0, 0, 0.73);
+    position: relative;
+}
+
+#largefont {
+    font-size: 30px;
+    text-align: center;
 }
 
 .bg-dark {
@@ -270,7 +296,7 @@ header .header-content .header-content-inner p {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 100%;
+    height: 30%;
     text-align: center;
     color: #fff;
     opacity: 0;
