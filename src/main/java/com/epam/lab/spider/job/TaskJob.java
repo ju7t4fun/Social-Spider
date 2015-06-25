@@ -70,7 +70,7 @@ public class TaskJob implements Job {
                 continue taskProcessing;
             }
             //random N-posts from begin wall
-            int countOfPosts = 2;
+            int countOfPosts = 1;
             int grabbingSize = 10;
 
             for (Wall wall : sourceWalls) {
@@ -231,7 +231,7 @@ public class TaskJob implements Job {
 //            NewPostService newPostService = new NewPostService();
             for (NewPost newPost : newPosts) {
                 boolean result = SavableServiceUtil.safeSave(newPost);
-                if (!result) LOG.fatal("ТЕРМІНОВО ФІКСИТЬ БАЗУ, БРУДНА ТВАРИНО!");
+                if (!result) LOG.fatal("ТЕРМІНОВО ФІКСИТЬ БАЗУ!");
             }
             for (Map.Entry<Wall, List<Integer>> entry : blockMap.entrySet()) {
                 synchronizedService.markIdLastProcessedPost(task, entry.getKey(), entry.getValue());
@@ -245,7 +245,7 @@ public class TaskJob implements Job {
         LOG.info("TaskJob has finish. Work time " + formatter.format(workTimeInSecond)+"s");
 
         Date nextRunDate = new Date(System.currentTimeMillis() + (2 * 60 * 1000));
-        nextRunDate = new Date(System.currentTimeMillis() + 10000);
+//        nextRunDate = new Date(System.currentTimeMillis() + 10000);
         LOG.info("Next run 'TaskJob' at " + nextRunDate.toString());
 
         SimpleTrigger trigger = (SimpleTrigger) newTrigger()

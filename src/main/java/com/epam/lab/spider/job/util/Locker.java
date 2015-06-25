@@ -62,7 +62,7 @@ public class Locker {
                 lockCache.put(table, currentLockTable);
             }
             modeSet = currentLockTable.get(index);
-            if (mode == null) {
+            if (modeSet == null) {
                 modeSet = new HashSet<>();
                 currentLockTable.put(index, modeSet);
             }
