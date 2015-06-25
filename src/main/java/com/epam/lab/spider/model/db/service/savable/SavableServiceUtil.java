@@ -1,6 +1,7 @@
 package com.epam.lab.spider.model.db.service.savable;
 
 import com.epam.lab.spider.model.db.PoolConnection;
+import com.epam.lab.spider.model.db.SQLTransactionException;
 import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.dao.savable.SavableDAO;
 import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
@@ -75,5 +76,31 @@ public class SavableServiceUtil<E> {
         }
          return true;
     }
+
+    public static boolean saveFromInterface(Object entity, SavableService savableService ) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException
+    {
+        try {
+            Connection connection = PoolConnection.getConnection();
+            try {
+                connection.setAutoCommit(false);
+                return savableService.save(entity, connection);
+            } catch (SQLTransactionException x) {
+                connection.rollback();
+                return false;
+            } finally {
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
+
+
+            }
+        } catch (SQLException x) {
+
+            x.printStackTrace();
+            return false;
+        }
+    }
+
 
 }

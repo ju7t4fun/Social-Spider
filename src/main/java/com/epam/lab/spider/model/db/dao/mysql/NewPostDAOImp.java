@@ -1,6 +1,10 @@
 package com.epam.lab.spider.model.db.dao.mysql;
 
 import com.epam.lab.spider.model.db.dao.NewPostDAO;
+import com.epam.lab.spider.model.db.dao.savable.SavableCRUDUtil;
+import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
+import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
+import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
 import com.epam.lab.spider.model.db.entity.NewPost;
 import com.epam.lab.spider.model.db.entity.Owner;
 
@@ -125,6 +129,11 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
 
     public boolean setErrorStateByProfile(Connection connection, Integer profileId) throws SQLException {
         return changeQuery(connection, SQL_SET_ERROR_STAGE_BY_PROFILE_ID, profileId);
+    }
+
+    @Override
+    public boolean save(Connection conn, NewPost entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException {
+        return SavableCRUDUtil.saveFromInterface(conn, entity);
     }
 //    public boolean setRestoredStateByProfile(Connection connection, Integer profileId) throws SQLException {
 //        return changeQuery(connection, SQL_SET_RESTORED_STAGE_BY_PROFILE_ID, profileId);

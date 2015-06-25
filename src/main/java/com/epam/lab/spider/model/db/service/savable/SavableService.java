@@ -16,29 +16,8 @@ import java.sql.SQLException;
  * Like if you understand true value of name this interface.
  */
 public interface SavableService<E> {
-    default boolean save(E entity) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
-        try {
-            Connection connection = PoolConnection.getConnection();
-            try {
-                connection.setAutoCommit(false);
-                return save(entity, connection);
-            } catch (SQLTransactionException x) {
-                connection.rollback();
-                return false;
-            } finally {
-                if (connection != null) {
-                    connection.setAutoCommit(true);
-                    connection.close();
-                }
+    boolean save(E entity) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException;
 
-
-            }
-        } catch (SQLException x) {
-
-            x.printStackTrace();
-            return false;
-        }
-    }
 
     boolean save(E entity, Connection conn) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException;
 
