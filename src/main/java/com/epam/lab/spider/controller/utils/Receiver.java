@@ -7,6 +7,6 @@ public interface Receiver {
 
     void visit(Sender sender);
 
-    void send(int id, String message);
+    boolean send(int id, String message);
 
 }

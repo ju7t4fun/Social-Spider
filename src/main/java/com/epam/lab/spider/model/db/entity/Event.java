@@ -11,13 +11,9 @@ public class Event {
     private Integer userId;
     private Type type = Type.INFO;
     private Date time;
-    private String title = "Test";
+    private String title;
     private String message;
-    private Boolean deleted = false;
-
-    public enum Type {
-        INFO, WARN, ERROR
-    }
+    private Boolean shown = false;
 
     public Integer getId() {
         return id;
@@ -67,12 +63,12 @@ public class Event {
         this.message = message;
     }
 
-    public Boolean getDeleted() {
-        return deleted;
+    public Boolean getShown() {
+        return shown;
     }
 
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
+    public void setShown(Boolean shown) {
+        this.shown = shown;
     }
 
     @Override
@@ -82,9 +78,14 @@ public class Event {
                 ", userId=" + userId +
                 ", type=" + type +
                 ", time=" + time +
+                ", title='" + title + '\'' +
                 ", message='" + message + '\'' +
-                ", deleted=" + deleted +
+                ", shown=" + shown +
                 '}';
+    }
+
+    public enum Type {
+        INFO, SUCCESS, WARN, ERROR
     }
 
 }

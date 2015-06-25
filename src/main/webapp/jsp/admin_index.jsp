@@ -62,6 +62,12 @@
             </div>
 
             ADMIN
+            <li>
+                <!-- Graph -->
+                <div><span id="todayspark1" class="spark"><canvas width="77" height="30" style="display: inline-block; width: 77px; height: 30px; vertical-align: top;"></canvas></span></div>
+                <!-- Text -->
+                <div class="datas-text">11,500 visitors/day</div>
+            </li>
         </section>
 
     </section>

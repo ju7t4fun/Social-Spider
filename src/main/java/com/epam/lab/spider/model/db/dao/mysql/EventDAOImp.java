@@ -14,22 +14,25 @@ import java.util.List;
  */
 public class EventDAOImp extends BaseDAO implements EventDAO {
 
-    private static final String SQL_INSERT_QUERY = "INSERT INTO event (user_id, type, message, deleted)" +
-            "VALUES (?, ?, ?, ?)";
-    private static final String SQL_UPDATE_QUERY = "UPDATE event SET user_id = ?, type = ?, message = ?, deleted = ? " +
-            "WHERE id = ?";
-    private static final String SQL_DELETE_QUERY = "UPDATE event SET deleted = false WHERE id = ?";
-    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM event WHERE deleted = false";
-    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM event WHERE id = ? AND deleted = false";
-    private static final String SQL_GET_BY_USER_ID = "SELECT * FROM event WHERE user_id = ? AND deleted = false";
+    private static final String SQL_INSERT_QUERY = "INSERT INTO event (user_id, type, title, message, shown)" +
+            "VALUES (?, ?, ?, ?, ?)";
+    private static final String SQL_UPDATE_QUERY = "UPDATE event SET user_id = ?, type = ?, title = ? message = ?, " +
+            "shown = ?, time = ? WHERE id = ?";
+    private static final String SQL_DELETE_QUERY = "DELETE FROM event WHERE id = ?";
+    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM event";
+    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM event WHERE id = ?";
+    private static final String SQL_GET_BY_USER_ID = "SELECT * FROM event WHERE user_id = ?";
+    private static final String SQL_GET_BY_SHOWN_USER_ID_QUERY = "SELECT * FROM event WHERE user_id = ? AND shown = 0";
+    private static final String SQL_MARK_AS_SHOW_BY_USER_ID_QUERY = "UPDATE event SET shown = 1 WHERE user_id = ?";
 
     @Override
     public boolean insert(Connection connection, Event event) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
                 event.getUserId(),
                 event.getType().toString().toUpperCase(),
+                event.getTitle(),
                 event.getMessage(),
-                event.getDeleted());
+                event.getShown());
         event.setId(getLastInsertId(connection));
         return res;
     }
@@ -39,8 +42,10 @@ public class EventDAOImp extends BaseDAO implements EventDAO {
         return changeQuery(connection, SQL_UPDATE_QUERY,
                 event.getUserId(),
                 event.getType().toString().toUpperCase(),
+                event.getTitle(),
                 event.getMessage(),
-                event.getDeleted(),
+                event.getShown(),
+                event.getTitle(),
                 id);
     }
 
@@ -61,7 +66,8 @@ public class EventDAOImp extends BaseDAO implements EventDAO {
             event.setType(Event.Type.valueOf(rs.getString("type").toUpperCase()));
             event.setTime(rs.getTimestamp("time"));
             event.setMessage(rs.getString("message"));
-            event.setDeleted(rs.getBoolean("deleted"));
+            event.setTitle(rs.getString("title"));
+            event.setShown(rs.getBoolean("shown"));
             events.add(event);
         }
         return events;
@@ -80,5 +86,15 @@ public class EventDAOImp extends BaseDAO implements EventDAO {
     @Override
     public List<Event> getByUserId(Connection connection, int userId) throws SQLException {
         return select(connection, SQL_GET_BY_USER_ID, userId);
+    }
+
+    @Override
+    public List<Event> getByShownUserId(Connection connection, int clientId) throws SQLException {
+        return select(connection, SQL_GET_BY_SHOWN_USER_ID_QUERY, clientId);
+    }
+
+    @Override
+    public boolean markAsShowByUserId(Connection connection, int clientId) throws SQLException {
+        return changeQuery(connection, SQL_MARK_AS_SHOW_BY_USER_ID_QUERY, clientId);
     }
 }

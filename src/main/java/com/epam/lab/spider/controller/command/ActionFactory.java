@@ -19,16 +19,10 @@ import java.util.Map;
 public abstract class ActionFactory {
 
     private static final Logger LOG = Logger.getLogger(ActionFactory.class);
-    private static EventLogger logger = null;
     protected Map<String, ActionCommand> commands = null;
 
     public void action(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
-        HttpSession session = request.getSession();
-        if (session.getAttribute("user") != null) {
-            User user = (User) session.getAttribute("user");
-            logger = EventLogger.getLogger(user.getId());
-        }
         String action = request.getParameter("action");
         if (action == null) {
             action = "default";
@@ -45,8 +39,14 @@ public abstract class ActionFactory {
         if (LOG.isInfoEnabled()) {
             LOG.info("Выполнение команды \"" + command.getClass().getCanonicalName().substring(39) + "\"");
         }
-        if (logger != null)
-            logger.info(action);
+
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            EventLogger logger = EventLogger.getLogger(user.getId());
+            logger.info("Выполнение команды", command.getClass().getCanonicalName().substring(39));
+        }
+
         command.execute(request, response);
     }
 
