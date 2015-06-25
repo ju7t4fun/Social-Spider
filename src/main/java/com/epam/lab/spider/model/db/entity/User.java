@@ -35,9 +35,15 @@ public class User {
     private Role role = Role.USER;
     private State state = State.CREATED;
     private Boolean deleted = false;
+    private String avatarURL;
 
     private Set<Profile> profiles = null;
     private Set<Task> tasks = null;
+
+
+    public User() {
+
+    }
 
     public enum Role {
         ADMIN, USER
@@ -164,6 +170,15 @@ public class User {
         this.tasks = tasks;
     }
 
+    public String getAvatarURL() {
+        return avatarURL;
+    }
+
+    public void setAvatarURL(String avatarURL) {
+        this.avatarURL = avatarURL;
+    }
+
+
     @Override
     public String toString() {
         return "User{" +
@@ -178,6 +193,7 @@ public class User {
                 ", deleted=" + deleted +
                 ", profiles=" + profiles +
                 ", tasks=" + tasks +
+                ", avatarURL=" + avatarURL +
                 '}';
     }
 

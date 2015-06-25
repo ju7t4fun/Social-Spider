@@ -28,6 +28,7 @@ public class TaskSynchronizedDataDAOImpl extends BaseDAO implements TaskSynchron
         }
         else  return null;
     }
+
     @Override
     public Set<Integer> getProcessedPost(Connection connection, Integer taskId, Integer wallId, int limit) throws SQLException {
         Set<Integer> set = new HashSet<>();

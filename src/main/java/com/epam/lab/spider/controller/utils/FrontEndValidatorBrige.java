@@ -42,7 +42,6 @@ public class FrontEndValidatorBrige {
         try {
             Class clazz = Class.forName(aPackage.getName() +"."+ resolveClassName(pathParts[0]));
             String fieldName = resolveUnjavaStyle(pathParts[1]);
-            System.out.println(fieldName);
             Field field = clazz.getDeclaredField(fieldName);
             StringBuilder sb = new StringBuilder();
             Size size= field.getAnnotation(Size.class);

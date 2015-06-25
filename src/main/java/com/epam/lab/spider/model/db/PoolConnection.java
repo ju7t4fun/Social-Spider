@@ -2,10 +2,8 @@ package com.epam.lab.spider.model.db;
 
 import org.apache.log4j.Logger;
 
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.naming.NoInitialContextException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;

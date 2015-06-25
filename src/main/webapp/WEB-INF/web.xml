@@ -6,7 +6,7 @@
          xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
-    <display-name>Archetype Created Web Application</display-name>
+    <display-name>Archetype Created Web Application</display-name>/
     <context-param>
         <param-name>quartz:shutdown-on-unload</param-name>
         <param-value>true</param-value>
@@ -64,8 +64,49 @@
     </servlet>
     <servlet>
         <servlet-name>StatusChangerServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.ajax.StatusChangerServlet</servlet-class>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.ajax.StatusChangerServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PostServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.post.PostServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>SupportServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.SupportServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserFillingTableServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.ajax.UserFillingTableServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OwnerServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.owner.OwnerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostBindingFillingTableServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.owner.ajax.PostBindingFillingTableServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PostBindingFillingTableServlet</servlet-name>
+        <url-pattern>/PostBindingFillingTableServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SupportServlet</servlet-name>
+        <url-pattern>/admin/support</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OwnerServlet</servlet-name>
+        <url-pattern>/owner</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserFillingTableServlet</servlet-name>
+        <url-pattern>/UserFillingTableServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostServlet</servlet-name>
+        <url-pattern>/post</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>StatusChangerServlet</servlet-name>
         <url-pattern>/statuschanger</url-pattern>

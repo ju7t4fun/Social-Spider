@@ -1,8 +1,6 @@
 package com.epam.lab.spider.controller.servlet;
 
-import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.UploadCommand;
-import com.epam.lab.spider.controller.command.UploadImageCommand;
+import com.epam.lab.spider.controller.command.*;
 import com.epam.lab.spider.controller.command.controller.LocaleCommand;
 
 import javax.servlet.ServletException;
@@ -24,7 +22,10 @@ public class ControllerServlet extends HttpServlet {
         public ApiActionFactory() {
             commands = new HashMap<>();
             commands.put("locale", new LocaleCommand());
-            commands.put("upload", new UploadImageCommand());
+            commands.put("upload", new UploadFileCommand());
+            commands.put("uploadurl", new UploadFileFromURLCommand());
+            commands.put("editprofile", new EditProfileCommand());
+            commands.put("changeavatar", new ChangeAvatarCommand());
         }
     }
 

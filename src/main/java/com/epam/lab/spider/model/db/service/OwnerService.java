@@ -4,6 +4,7 @@ import com.epam.lab.spider.model.db.PoolConnection;
 import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.dao.OwnerDAO;
 import com.epam.lab.spider.model.db.entity.Owner;
+import com.epam.lab.spider.model.db.entity.User;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -66,4 +67,25 @@ public class OwnerService implements BaseService<Owner> {
         }
         return null;
     }
+
+    public List<Owner> getWithQuery(String SQL_SOME_QUERY) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.getWithQuery(connection, SQL_SOME_QUERY);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getCountWithQuery(String SQL_SOME_QUERY) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.getCountWithQuery(connection, SQL_SOME_QUERY);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
+
 }

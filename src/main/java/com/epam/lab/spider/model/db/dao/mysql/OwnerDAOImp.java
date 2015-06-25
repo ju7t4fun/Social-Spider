@@ -2,6 +2,7 @@ package com.epam.lab.spider.model.db.dao.mysql;
 
 import com.epam.lab.spider.model.db.dao.OwnerDAO;
 import com.epam.lab.spider.model.db.entity.Owner;
+import com.epam.lab.spider.model.db.entity.User;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -75,5 +76,37 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
     public Owner getById(Connection connection, int id) throws SQLException {
         return first(select(connection, SQL_GET_BY_ID_QUERY, id));
     }
+
+    //should remake later
+    @Override
+    public List<Owner> getWithQuery(Connection connection, String SQL_SOME_QUERY) throws SQLException {
+        List<Owner> ownerList= new ArrayList<>();
+        ResultSet rs = selectQuery(connection, SQL_SOME_QUERY);
+        Owner owner;
+        while (rs.next()) {
+            owner = new Owner();
+            owner.setVk_id(rs.getInt("vk_id"));
+            owner.setName(rs.getString("name"));
+            ownerList.add(owner);
+        }
+        return ownerList;
+    }
+
+    //should remake later
+    @Override
+    public int getCountWithQuery(Connection connection, String SQL_SOME_QUERY) throws SQLException {
+
+        ResultSet rs = selectQuery(connection, SQL_SOME_QUERY);
+        if (rs!=null) {
+            while(rs.next()) {
+                System.out.println(rs.getString(1));
+                return Integer.parseInt(rs.getString(1));
+            }
+        }
+        return -322;
+    }
+
+
+
 
 }

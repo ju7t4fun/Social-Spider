@@ -13,6 +13,7 @@ import org.json.JSONObject;
  * Created by Орест on 16.06.2015.
  */
 public class FBGraph {
+
     private String accessToken;
 
     public FBGraph(String accessToken) {
@@ -34,7 +35,6 @@ public class FBGraph {
                 b.append(inputLine + "\n");
             in.close();
             graph = b.toString();
-            System.out.println(graph);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("ERROR in getting FB graph data. " + e);

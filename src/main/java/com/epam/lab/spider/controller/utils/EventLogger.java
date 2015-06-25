@@ -15,6 +15,8 @@ public class EventLogger {
     private static final ServiceFactory factory = ServiceFactory.getInstance();
     private static final EventService service = factory.create(EventService.class);
     private static Map<Integer, EventLogger> instances = new HashMap<>();
+    private static Receiver receiver;
+    private static Notification notification = new Notification();
     private final int userId;
 
     private EventLogger(int userId) {
@@ -45,7 +47,24 @@ public class EventLogger {
         event.setType(type);
         event.setUserId(userId);
         event.setMessage(message);
-        return service.insert(event);
+        sendEvent(event);
+//        return service.insert(event);
+        return false;
+    }
+
+    private void sendEvent(Event event) {
+        if (receiver != null) {
+            receiver.send(userId, notification.basic(event).toString());
+        }
+    }
+
+    public static class EventSender implements Sender {
+
+        @Override
+        public void accept(Receiver receiver) {
+            EventLogger.receiver = receiver;
+        }
+
     }
 
 }

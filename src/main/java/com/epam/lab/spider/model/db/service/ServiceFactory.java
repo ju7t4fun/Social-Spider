@@ -37,6 +37,7 @@ public class ServiceFactory {
         servicesByClass.put(Profile.class, new ProfileService());
         services.put(WallService.class, new WallService());
         servicesByClass.put(Wall.class, new WallService());
+        services.put(MessageService.class, new MessageService());
     }
 
     public static synchronized ServiceFactory getInstance() {

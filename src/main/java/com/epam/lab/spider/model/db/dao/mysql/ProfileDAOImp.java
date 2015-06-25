@@ -67,7 +67,7 @@ public class ProfileDAOImp extends BaseDAO implements ProfileDAO {
             profile.setUserId(rs.getInt("user_id"));
             profile.setVkId(rs.getInt("vk_id"));
             profile.setAccessToken(rs.getString("access_token"));
-            profile.setExtTime(rs.getDate("ext_time"));
+            profile.setExtTime(rs.getTimestamp("ext_time"));
             profile.setAppId(rs.getInt("app_id"));
             profile.setDeleted(rs.getBoolean("deleted"));
             profiles.add(profile);
