@@ -93,4 +93,17 @@ public class EventService implements BaseService<Event> {
         }
         return false;
     }
+
+    public int getCountUnShownNotificationByUserId(int id) {
+        return getByShownUserId(id).size();
+    }
+
+    public List<Event> getLastUnShownByUserId(int id, int limit) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return edao.getLastUnShownByUserId(connection, id, limit);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

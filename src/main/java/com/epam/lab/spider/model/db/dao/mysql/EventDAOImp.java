@@ -24,6 +24,8 @@ public class EventDAOImp extends BaseDAO implements EventDAO {
     private static final String SQL_GET_BY_USER_ID = "SELECT * FROM event WHERE user_id = ?";
     private static final String SQL_GET_BY_SHOWN_USER_ID_QUERY = "SELECT * FROM event WHERE user_id = ? AND shown = 0";
     private static final String SQL_MARK_AS_SHOW_BY_USER_ID_QUERY = "UPDATE event SET shown = 1 WHERE user_id = ?";
+    private static final String SQL_GET_LAST_UN_SHOWN_BY_USER_ID_QUERY = "SELECT * FROM event WHERE user_id = ? " +
+            "AND shown = 0 ORDER BY time DESC LIMIT ?";
 
     @Override
     public boolean insert(Connection connection, Event event) throws SQLException {
@@ -96,5 +98,10 @@ public class EventDAOImp extends BaseDAO implements EventDAO {
     @Override
     public boolean markAsShowByUserId(Connection connection, int clientId) throws SQLException {
         return changeQuery(connection, SQL_MARK_AS_SHOW_BY_USER_ID_QUERY, clientId);
+    }
+
+    @Override
+    public List<Event> getLastUnShownByUserId(Connection connection, int id, int limit) throws SQLException {
+        return select(connection, SQL_GET_LAST_UN_SHOWN_BY_USER_ID_QUERY, id, limit);
     }
 }

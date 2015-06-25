@@ -4,10 +4,8 @@ import com.epam.lab.spider.model.db.entity.Event;
 import com.epam.lab.spider.model.db.service.EventService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by Boyarsky Vitaliy on 16.06.2015.
@@ -17,7 +15,8 @@ public class EventLogger {
     private static final ServiceFactory factory = ServiceFactory.getInstance();
     private static final EventService service = factory.create(EventService.class);
     private static Map<Integer, EventLogger> instances = new HashMap<>();
-    private static Receiver receiver;
+    private static Receiver receiverEx;
+    private static Receiver receiverNotf;
     private final int userId;
 
     private EventLogger(int userId) {
@@ -53,21 +52,31 @@ public class EventLogger {
         event.setUserId(userId);
         event.setTitle(title);
         event.setMessage(message);
+        event.setTime(new Date());
         if (sendEvent(event)) {
             event.setShown(true);
         }
+        sendNotification(event);
         return service.insert(event);
     }
 
     private boolean sendEvent(Event event) {
-        return receiver != null && receiver.send(userId, Notification.basic(event).toString());
+        if (receiverEx != null) {
+            return receiverEx.send(userId, Notification.basic(event).toString());
+        }
+        return false;
+    }
+
+    private boolean sendNotification(Event event) {
+        return receiverNotf != null && receiverNotf.send(userId, "notf|" + event.getType().toString() + "|" + event
+                .getTitle() + "|" + new SimpleDateFormat("HH:mm").format(event.getTime()));
     }
 
     public static class EventSender implements Sender {
 
         @Override
         public void accept(Receiver receiver) {
-            EventLogger.receiver = receiver;
+            EventLogger.receiverEx = receiver;
         }
 
         @Override
@@ -88,15 +97,29 @@ public class EventLogger {
                 List<Event> list = new ArrayList<>();
                 for (Event event : allEvent) {
                     if (list.size() == 5) {
-                        receiver.send(clientId, Notification.list(list).toString());
+                        receiverEx.send(clientId, Notification.list(list).toString());
                         list = new ArrayList<>();
                     }
                     list.add(event);
                 }
                 if (list.size() > 0)
-                    receiver.send(clientId, Notification.list(list).toString());
+                    receiverEx.send(clientId, Notification.list(list).toString());
             }
             service.markAsShowByUserId(clientId);
+        }
+
+    }
+
+    public static class NotififcationSender implements Sender {
+
+        @Override
+        public void accept(Receiver receiver) {
+            EventLogger.receiverNotf = receiver;
+        }
+
+        @Override
+        public void history(int clientId) {
+
         }
 
     }
