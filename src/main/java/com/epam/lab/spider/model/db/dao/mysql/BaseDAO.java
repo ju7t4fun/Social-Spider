@@ -103,7 +103,7 @@ public abstract class BaseDAO {
                 // КОД ВИЩЕ - НЕ ПОТРІБНИЙ
                 // ДОСТАТНЬО ФРАГМЕТА НИЖЧЕ
                 // НЕ ЗАКОМЕНТОВУВАТИ НАХ !!!
-                statement.setObject(i, arg);
+                statement.setObject(i, arg.toString());
                 LOG.error("Объект класса \"" + arg.getClass().getName() + "\" не установлен в PreparedStatement");
                 continue;
             }

@@ -1,5 +1,6 @@
 package com.epam.lab.spider.job.util;
 
+import com.epam.lab.spider.controller.utils.EventLogger;
 import com.epam.lab.spider.model.db.entity.*;
 import com.epam.lab.spider.model.db.service.*;
 import org.apache.log4j.Logger;
@@ -16,7 +17,6 @@ public class Locker {
     private static DataLockService dataLockService = new DataLockService();
 
     private static NewPostService newPostService = serviceFactory.create(NewPostService.class);
-    private static EventService eventService = serviceFactory.create(EventService.class);
     private static ProfileService profileService = serviceFactory.create(ProfileService.class);
     private static WallService wallService = serviceFactory.create(WallService.class);
 
@@ -69,18 +69,14 @@ public class Locker {
 
             if (!modeSet.contains(mode)) {
                 modeSet.add(mode);
-
-                Event event = new Event();
-                event.setUserId(wall.getProfile().getUserId());
+                EventLogger eventLogger = EventLogger.getLogger(wall.getProfile().getUserId());
                 if (mode == DataLock.Mode.ACCESS_DENY) {
-                    event.setMessage("Доступ до групи заборонено");
+
+                    eventLogger.error("Доступ до групи заборонено");
                 } else if (mode == DataLock.Mode.DEFAULT || mode == DataLock.Mode.POST_LIMIT) {
-                    event.setMessage("Ліміт постів на групу вичерпано");
+                    eventLogger.error("Ліміт постів на групу вичерпано");
                 }
-                event.setTime(new Date(System.currentTimeMillis()));
-                event.setType(Event.Type.ERROR);
-                eventService.insert(event);
-                dataLockService.createLock(table, index, mode, event);
+                dataLockService.createLock(table, index, mode, wall.getProfile().getUserId());
             }
         }
     }
@@ -118,17 +114,15 @@ public class Locker {
             if (!modeSet.contains(mode)) {
                 modeSet.add(mode);
 
-                Event event = new Event();
-                event.setUserId(profile.getUserId());
+                EventLogger eventLogger = EventLogger.getLogger(profile.getUserId());
                 if (mode == DataLock.Mode.DEFAULT || mode == DataLock.Mode.AUTH_KEY) {
-                    event.setMessage("Ключ доступу застарів");
+                    eventLogger.error("Ключ доступу застарів");
                 } else if (mode == DataLock.Mode.CAPTCHA) {
-                    event.setMessage("Потрібен ввід каптчі");
+                    eventLogger.error("Потрібен ввід каптчі");
                 }
-                event.setTime(new Date(System.currentTimeMillis()));
-                event.setType(Event.Type.ERROR);
-                eventService.insert(event);
-                dataLockService.createLock(table, index, mode, event);
+
+                EventLogger.getLogger(profile.getUserId());
+                dataLockService.createLock(table, index, mode, profile.getUserId());
             }
         }
     }
@@ -137,7 +131,7 @@ public class Locker {
         try {
             return lockCache.get(table).containsKey(index);
         } catch (NullPointerException x) {
-            LOG.debug("Object never used by here");
+//            LOG.debug("Object never used by here");
             return false;
         }
     }

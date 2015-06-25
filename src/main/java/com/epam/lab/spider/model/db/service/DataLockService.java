@@ -9,9 +9,7 @@ import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by shell on 6/21/2015.
@@ -23,13 +21,13 @@ public class DataLockService {
 
 
 
-    public DataLock dataLockByEvent(Event event){
+    public List<DataLock> dataLockByUser(Integer userId){
         try (Connection connection = PoolConnection.getConnection()) {
-            return dataLockDAO.dataLockByEventId(connection,event.getId());
+            return dataLockDAO.dataLockByUserId(connection,userId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return new ArrayList<>();
     }
     public Map<String, Map<Integer, Set<DataLock.Mode>>> restore() {
         try (Connection connection = PoolConnection.getConnection()) {
@@ -43,9 +41,9 @@ public class DataLockService {
         return new HashMap<>();
     }
 
-    public boolean createLock(String table, Integer index, DataLock.Mode mode, Event event) {
+    public boolean createLock(String table, Integer index, DataLock.Mode mode, Integer userId) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return dataLockDAO.createLock(connection,table,index,mode,event.getId());
+            return dataLockDAO.createLock(connection,table,index,mode,userId);
         } catch (SQLException e) {
             e.printStackTrace();
         }

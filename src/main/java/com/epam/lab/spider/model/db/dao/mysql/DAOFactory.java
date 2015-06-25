@@ -37,8 +37,9 @@ public class DAOFactory {
         dao.put(ProfileDAO.class, new ProfileDAOImp());
         daoByEntity.put(Profile.class, new ProfileDAOImp());
         dao.put(WallDAO.class, new WallDAOImp());
-        dao.put(MessageDAO.class, new MessageDAOImp());
         daoByEntity.put(Wall.class, new WallDAOImp());
+        dao.put(MessageDAO.class, new MessageDAOImp());
+
 
         dao.put(CategoryHasTaskDAO.class, new CategoryHasTaskDAOImp());
         dao.put(TaskSourceDAO.class, new TaskSourceDAOImp());

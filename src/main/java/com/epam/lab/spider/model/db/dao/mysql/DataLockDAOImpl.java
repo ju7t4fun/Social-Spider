@@ -6,31 +6,22 @@ import com.epam.lab.spider.model.db.entity.DataLock;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by shell on 6/20/2015.
  */
 public class DataLockDAOImpl extends BaseDAO implements DataLockDAO {
-    private static final boolean SAFE_CREATE = true;
-    private static final String CREATE_SAFE_FRAGMENT = SAFE_CREATE?"IF NOT EXISTS":"";
-    private static final String CREATE_DATA_LOCK_TABLE = "CREATE TABLE "+CREATE_SAFE_FRAGMENT+" data_lock (  'id' INT NOT NULL AUTO_INCREMENT, " +
-            "'key_table' ENUM('task', 'wall', 'profile') NOT NULL, " +
-            "'key_index' INT NOT NULL' " +
-            "'value' ENUM('DEFAULT') NOT NULL DEFAULT 'DEFAULT', " +
-            "  PRIMARY KEY ('id'))";
+
     private static final String SQL_RESTORE_LOCK_QUERY = "SELECT key_index,key_table,value FROM data_lock";
-    private static final String SQL_CREATE_LOCK_QUERY = "INSERT INTO data_lock (key_table, key_index, value, event_id) VALUES (?, ?, ?, ?)";
+    private static final String SQL_CREATE_LOCK_QUERY = "INSERT INTO data_lock (key_table, key_index, value, user_id) VALUES (?, ?, ?, ?)";
     private static final String SQL_DELETE_LOCK_QUERY = "DELETE FROM data_lock WHERE key_table=? AND key_index = ? AND value = ?";
-    private static final String SQL_SELECT_DATA_LOCK_QUERY_BY_EVENT_ID = "SELECT key_index,key_table,value FROM data_lock WHERE event_id = ?";
+    private static final String SQL_SELECT_DATA_LOCK_QUERY_BY_EVENT_ID = "SELECT key_index,key_table,value FROM data_lock WHERE user_id = ?";
 
 
 
-    public DataLock dataLockByEventId(Connection conn, Integer eventID) throws SQLException {
-        DataLock dataLock = null;
+    public List<DataLock> dataLockByUserId(Connection conn, Integer eventID) throws SQLException {
+        List<DataLock> dataLocks = new ArrayList<>();
         ResultSet rs = selectQuery(conn, SQL_SELECT_DATA_LOCK_QUERY_BY_EVENT_ID, eventID);
         int colTable, colIndex, colMode;
         String table;
@@ -39,13 +30,15 @@ public class DataLockDAOImpl extends BaseDAO implements DataLockDAO {
         colTable = rs.findColumn("key_table");
         colIndex = rs.findColumn("key_index");
         colMode = rs.findColumn("value");
-        if (rs.next()){
+        while (rs.next()){
+            DataLock dataLock;
             table = rs.getString(colTable);
             index = rs.getInt(colIndex);
             mode =  DataLock.Mode.valueOf(rs.getString(colMode));
             dataLock = new DataLock(table,index,mode);
+            dataLocks.add(dataLock);
         }
-        return dataLock;
+        return dataLocks;
     }
 
     public Map<String, Map<Integer, Set<DataLock.Mode>>> restore(Connection conn) throws SQLException {
@@ -76,9 +69,9 @@ public class DataLockDAOImpl extends BaseDAO implements DataLockDAO {
         }
         return globalMap;
     }
-    public boolean createLock(Connection conn, String table, Integer index, DataLock.Mode mode, Integer eventId)
+    public boolean createLock(Connection conn, String table, Integer index, DataLock.Mode mode, Integer userId)
             throws SQLException {
-        return this.changeQuery(conn,SQL_CREATE_LOCK_QUERY,table,index,mode, eventId);
+        return this.changeQuery(conn,SQL_CREATE_LOCK_QUERY,table,index,mode, userId);
     }
     public boolean deleteLock(Connection conn, String table, Integer index, DataLock.Mode mode) throws SQLException {
         return this.changeQuery(conn,SQL_DELETE_LOCK_QUERY,table,index,mode);
