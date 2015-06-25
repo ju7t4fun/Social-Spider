@@ -100,7 +100,7 @@ public class TaskJob implements Job {
                     List<com.epam.lab.spider.model.vk.Post> postsPrepareToPosting = new ArrayList<>();
 
                     postGrabbingAndFiltering:
-                    for(int loopsCount = 0,currentPostCount = 0;true;) {
+                    for(int loopsCount = 0,currentPostCount = 0;true;loopsCount++) {
 
                         parameters = new Parameters();
                         parameters.add("owner_id", owner.getVk_id());
@@ -120,8 +120,6 @@ public class TaskJob implements Job {
                             } catch (VKException x) {
                                 if(x.getExceptionCode()==VKException.VK_MANY_REQUESTS)manyRequest=true;
                                 else throw x;
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
                             }
                         }while (manyRequest);
                             for (com.epam.lab.spider.model.vk.Post vkPost : postsOnTargetWall) {
@@ -197,6 +195,8 @@ public class TaskJob implements Job {
                     if(e.getExceptionCode() == VKException.VK_AUTHORIZATION_FAILED){
                         Locker.getInstance().lock(profile, DataLock.Mode.AUTH_KEY);
                     }
+                    e.printStackTrace();
+                }catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
