@@ -16,4 +16,13 @@ public interface NewPostDAO extends CRUD<NewPost>,SavableDAO<NewPost> {
 
     List<NewPost> getAllUnpostedByDate(Connection connection, Date date) throws SQLException;
 
+    public boolean setErrorStateByWall(Connection connection, Integer wallId) throws SQLException ;
+    public boolean setRestoredStateByWall(Connection connection, Integer wallId) throws SQLException ;
+
+    public boolean setErrorStateByOwner(Connection connection, Integer ownerId) throws SQLException ;
+//    public boolean setRestoredStateByOwner(Connection connection, Integer ownerId) throws SQLException ;
+
+    public boolean setErrorStateByProfile(Connection connection, Integer profileId) throws SQLException ;
+//    public boolean setRestoredStateByProfile(Connection connection, Integer profileId) throws SQLException ;
+
 }

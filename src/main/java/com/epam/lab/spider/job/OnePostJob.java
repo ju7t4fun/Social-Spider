@@ -39,53 +39,63 @@ import java.util.List;
 public class OnePostJob implements Job {
 
     public static String uploadPhoto(Vkontakte vk,String file, Integer wall){
-        try {
-            Parameters parameters;
-            parameters = new Parameters();
-            if(wall<0)parameters.add("group_id", -wall);
-            URL uri = vk.photos().getWallUploadServer(parameters);
-            LOG.debug("SERVER URL to upload photo :" + uri);
+        boolean manyRequest = false;
+        do {
+            try {
+                if(manyRequest) {
+                    Thread.sleep(400);
+                    manyRequest = false;
+                }
+                Parameters parameters;
+                parameters = new Parameters();
+                if (wall < 0) parameters.add("group_id", -wall);
+                URL uri = vk.photos().getWallUploadServer(parameters);
+                LOG.debug("SERVER URL to upload photo :" + uri);
 
-            LOG.debug("Begin upload photo with url: "+file);
-            CloseableHttpClient client = HttpClients.createDefault();
-            HttpPost httpPost = new HttpPost(uri.toString());
-            HttpEntity entity = MultipartEntityBuilder.create()
-                    .addBinaryBody("photo", new URL(file).openStream(), ContentType.create("image/jpeg"), "image.jpg").build();
-            httpPost.setEntity(entity);
+                LOG.debug("Begin upload photo with url: " + file);
+                CloseableHttpClient client = HttpClients.createDefault();
+                HttpPost httpPost = new HttpPost(uri.toString());
+                HttpEntity entity = MultipartEntityBuilder.create()
+                        .addBinaryBody("photo", new URL(file).openStream(), ContentType.create("image/jpeg"), "image.jpg").build();
+                httpPost.setEntity(entity);
 
-            String response = EntityUtils.toString(client.execute(httpPost).getEntity(), "UTF-8");
-            client.close();
-            LOG.debug("RESPONSE FROM FILE SERVER: " + response);
+                String response = EntityUtils.toString(client.execute(httpPost).getEntity(), "UTF-8");
+                client.close();
+                LOG.debug("RESPONSE FROM FILE SERVER: " + response);
 
-            JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) parser.parse(response);
+                JSONParser parser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) parser.parse(response);
 
-            parameters = new Parameters();
-            parameters.add("server", jsonObject.get("server").toString());
-            parameters.add("photo", jsonObject.get("photo").toString());
-            parameters.add("hash", jsonObject.get("hash").toString());
-            if(wall>0)
-            parameters.add("user_id", wall);
-            else
-            parameters.add("group_id",-wall);
+                parameters = new Parameters();
+                parameters.add("server", jsonObject.get("server").toString());
+                parameters.add("photo", jsonObject.get("photo").toString());
+                parameters.add("hash", jsonObject.get("hash").toString());
+                if (wall > 0)
+                    parameters.add("user_id", wall);
+                else
+                    parameters.add("group_id", -wall);
 
-            List<Photo> photos = vk.photos().saveWallPhoto(parameters);
-            for (Photo photo : photos) {
-                String photoInVk = "photo" + photo.getOwnerId() + "_" + photo.getId();
-                return photoInVk;
+                List<Photo> photos = vk.photos().saveWallPhoto(parameters);
+                for (Photo photo : photos) {
+                    String photoInVk = "photo" + photo.getOwnerId() + "_" + photo.getId();
+                    return photoInVk;
+                }
+
+            } catch (VKException x) {
+                if(x.getExceptionCode() == VKException.VK_MANY_REQUESTS)manyRequest = true;
+                x.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-
-        } catch (VKException x) {
-            x.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }while (manyRequest);
         return null;
     }
 
@@ -119,11 +129,20 @@ public class OnePostJob implements Job {
         }
 
         try {
-            newPost.setPost(postService.getById(newPost.getPost().getId()));
             Wall wall = wallService.getById(newPost.getWallId());
+            // Додаткова перевірка чи немає локу для цільвого обєкту
+            // Якщо виконуєть вивід фатал повідомлення - існують проблеми
+            // З архітектурою сервісу
+            if(Locker.getInstance().isLock(wall)){
+                LOG.fatal("На заблоковану стіну зафіксована спроба виконати пост. Пост буде заблоковано! Проблема в архітектурі сервісу!");
+                newPost.setState(NewPost.State.ERROR);
+                SavableServiceUtil.safeSave(newPost);
+                return;
+            }
             Owner owner = ownerService.getById(wall.getOwner_id());
             Profile profile = profileService.getById(wall.getProfile_id());
 
+            newPost.setPost(postService.getById(newPost.getPost().getId()));
             try {
                 Integer appId = profile.getAppId();
                 if (appId == null) {
@@ -145,7 +164,15 @@ public class OnePostJob implements Job {
                         String att = uploadPhoto(vk, attachment.getPayload().toString(), owner.getVk_id());
                         if(att!=null)attachmentsList.add(att);
                     }
-                    if(attachment.getType() == Attachment.Type.AUDIO) {
+                    if(attachment.getType() == Attachment.Type.AUDIO && attachment.getMode() == Attachment.Mode.CODE) {
+                        String att =  attachment.getPayload();
+                        if(att!=null)attachmentsList.add(att);
+                    }
+                    if(attachment.getType() == Attachment.Type.VIDEO && attachment.getMode() == Attachment.Mode.CODE) {
+                        String att =  attachment.getPayload();
+                        if(att!=null)attachmentsList.add(att);
+                    }
+                    if(attachment.getType() == Attachment.Type.DOC && attachment.getMode() == Attachment.Mode.CODE) {
                         String att =  attachment.getPayload();
                         if(att!=null)attachmentsList.add(att);
                     }
@@ -171,7 +198,22 @@ public class OnePostJob implements Job {
 
                 long response = 0;
                 if (true) {
-                    response = vk.wall().post(parameters);
+                    boolean manyRequest = false;
+
+                    do {
+                        try {
+                            if (manyRequest) {
+                                Thread.sleep(400);
+                                manyRequest = false;
+                            }
+                            response = vk.wall().post(parameters);
+                        }catch (VKException x){
+                            if(x.getExceptionCode()==VKException.VK_MANY_REQUESTS)manyRequest=true;
+                            else throw x;
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }while (manyRequest);
                 }
 
                 newPost.setState(NewPost.State.POSTED);
@@ -181,23 +223,28 @@ public class OnePostJob implements Job {
             } catch (VKException x) {
                 switch (x.getExceptionCode()) {
                     case VKException.VK_CAPTCHA_NEEDED: {
-                        Locker.getInstance().lock(profile);
-                        LOG.error("Posting has failed. Profile is locked.");
+                        Locker.getInstance().lock(profile, DataLock.Mode.CAPTCHA);
+                        LOG.error("Posting has failed. Profile is locked. Captcha input need!");
+                    }
+                    break;
+                    case VKException.VK_AUTHORIZATION_FAILED: {
+                        Locker.getInstance().lock(profile, DataLock.Mode.AUTH_KEY);
+                        LOG.error("Posting has failed. Profile is locked. Authorized to vk needed! ");
                     }
                     break;
                     case VKException.VK_ACCESS_DENIED: {
-                        Locker.getInstance().lock(wall);
+                        Locker.getInstance().lock(wall, DataLock.Mode.ACCESS_DENY);
                         LOG.error("Posting has failed. Wall is locked.");
                     }
                     break;
                     default: {
-                        LOG.error("Posting has failed. Corrupted new_post #" + newPost.getId());
+                        LOG.error("Posting has failed. Corrupted new_post #" + newPost.getId(),x);
                         x.printStackTrace();
                     }
                 }
             }
         } catch (NullPointerException x) {
-            LOG.error("Posting has failed. Corrupted new_post #" + newPost.getId());
+            LOG.error("Posting has failed. Nullable object has founded. Corrupted new_post #" + newPost.getId());
             x.printStackTrace();
         }
     }

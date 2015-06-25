@@ -44,6 +44,7 @@ public class DAOFactory {
         dao.put(TaskDestinationDAO.class, new TaskDestinationDAOImp());
 
         dao.put(TaskSynchronizedDataDAO.class, new TaskSynchronizedDataDAOImpl());
+        dao.put(DataLockDAO.class, new DataLockDAOImpl());
     }
 
     public static synchronized DAOFactory getInstance() {
