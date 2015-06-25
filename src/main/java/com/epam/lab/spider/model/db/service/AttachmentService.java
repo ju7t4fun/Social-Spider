@@ -27,6 +27,11 @@ public class AttachmentService implements BaseService<Attachment>,SavableService
 
 
     @Override
+    public boolean save(Attachment entity) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
+        return SavableServiceUtil.saveFromInterface(entity,this);
+    }
+
+    @Override
     public boolean save(Attachment entity, Connection conn) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
         return SavableServiceUtil.customSave(conn, entity, new Object[]{}, new Object[]{});
     }

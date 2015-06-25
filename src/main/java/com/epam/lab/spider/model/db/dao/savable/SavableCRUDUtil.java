@@ -4,6 +4,7 @@ import com.epam.lab.spider.controller.utils.validation.ValidateResult;
 import com.epam.lab.spider.controller.utils.validation.Validator;
 import com.epam.lab.spider.model.db.dao.CRUD;
 import com.epam.lab.spider.model.db.dao.mysql.BaseDAO;
+import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
 import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
 import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
@@ -94,5 +95,11 @@ public class SavableCRUDUtil {
         return false;
     }
 
+
+
+    public static boolean saveFromInterface(java.sql.Connection conn,Object entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException{
+        BaseDAO dao = (BaseDAO) DAOFactory.getInstance().getCrudDAOByEntity(entity.getClass());
+        return SavableCRUDUtil.save(conn,entity, dao);
+    }
 
 }

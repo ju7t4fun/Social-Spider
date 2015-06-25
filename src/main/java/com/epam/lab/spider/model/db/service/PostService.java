@@ -31,6 +31,11 @@ public class PostService implements BaseService<Post>,SavableService<Post> {
     private AttachmentDAO adao = factory.create(AttachmentDAO.class);
 
     @Override
+    public boolean save(Post entity) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
+        return SavableServiceUtil.saveFromInterface(entity,this);
+    }
+
+    @Override
     public boolean save(Post entity, Connection conn) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
         return SavableServiceUtil.customSave(conn, entity, new Object[]{}, new Object[]{entity.getAttachments()});
     }

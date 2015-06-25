@@ -98,6 +98,66 @@ public class OnePostJob implements Job {
         }while (manyRequest);
         return null;
     }
+    public static String uploadAudio(Vkontakte vk,String file, Integer wall){
+        boolean manyRequest = false;
+        do {
+            try {
+                if(manyRequest) {
+                    Thread.sleep(400);
+                    manyRequest = false;
+                }
+                Parameters parameters;
+                parameters = new Parameters();
+                if (wall < 0) parameters.add("group_id", -wall);
+                URL uri = null;//vk.audio();
+                LOG.debug("SERVER URL to upload photo :" + uri);
+
+                LOG.debug("Begin upload photo with url: " + file);
+                CloseableHttpClient client = HttpClients.createDefault();
+                HttpPost httpPost = new HttpPost(uri.toString());
+                HttpEntity entity = MultipartEntityBuilder.create()
+                        .addBinaryBody("photo", new URL(file).openStream(), ContentType.create("image/jpeg"), "image.jpg").build();
+                httpPost.setEntity(entity);
+
+                String response = EntityUtils.toString(client.execute(httpPost).getEntity(), "UTF-8");
+                client.close();
+                LOG.debug("RESPONSE FROM FILE SERVER: " + response);
+
+                JSONParser parser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) parser.parse(response);
+
+                parameters = new Parameters();
+                parameters.add("server", jsonObject.get("server").toString());
+                parameters.add("photo", jsonObject.get("photo").toString());
+                parameters.add("hash", jsonObject.get("hash").toString());
+                if (wall > 0)
+                    parameters.add("user_id", wall);
+                else
+                    parameters.add("group_id", -wall);
+
+                List<Photo> photos = vk.photos().saveWallPhoto(parameters);
+                for (Photo photo : photos) {
+                    String photoInVk = "photo" + photo.getOwnerId() + "_" + photo.getId();
+                    return photoInVk;
+                }
+
+            } catch (VKException x) {
+                if(x.getExceptionCode() == VKException.VK_MANY_REQUESTS)manyRequest = true;
+                x.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }while (manyRequest);
+        return null;
+    }
 
 
     public static final Logger LOG = Logger.getLogger(OnePostJob.class);

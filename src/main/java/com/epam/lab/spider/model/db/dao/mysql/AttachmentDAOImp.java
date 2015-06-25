@@ -1,6 +1,10 @@
 package com.epam.lab.spider.model.db.dao.mysql;
 
 import com.epam.lab.spider.model.db.dao.AttachmentDAO;
+import com.epam.lab.spider.model.db.dao.savable.SavableCRUDUtil;
+import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
+import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
+import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
 import com.epam.lab.spider.model.db.entity.Attachment;
 
 import java.sql.Connection;
@@ -93,5 +97,10 @@ public class AttachmentDAOImp extends BaseDAO implements AttachmentDAO {
     @Override
     public boolean deleteByPostId(Connection connection, int id) throws SQLException {
         return changeQuery(connection, SQL_DELETE_BY_POST_ID_QUERY, id);
+    }
+
+    @Override
+    public boolean save(Connection conn, Attachment entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException {
+        return SavableCRUDUtil.saveFromInterface(conn,entity);
     }
 }

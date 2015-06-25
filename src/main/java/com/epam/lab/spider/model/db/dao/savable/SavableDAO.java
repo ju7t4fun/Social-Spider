@@ -16,8 +16,5 @@ import java.sql.Connection;
  */
 
 public interface SavableDAO<E> {
-    default public boolean save(java.sql.Connection conn,E entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException{
-        BaseDAO dao = (BaseDAO) DAOFactory.getInstance().getCrudDAOByEntity(entity.getClass());
-        return SavableCRUDUtil.save(conn,entity, dao);
-    }
+    public boolean save(java.sql.Connection conn,E entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException;
 }

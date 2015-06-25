@@ -32,15 +32,10 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
     private NewPostDAO npdao = factory.create(NewPostDAO.class);
     private PostDAO pdao = factory.create(PostDAO.class);
 
-/*    @Override
+    @Override
     public boolean save(NewPost entity) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
-        try (Connection connection = PoolConnection.getConnection()) {
-            return save(entity, connection);
-        } catch (SQLException x) {
-            x.printStackTrace();
-            return false;
-        }
-    }*/
+        return SavableServiceUtil.saveFromInterface(entity,this);
+    }
 
     @Override
     public boolean save(NewPost entity, Connection conn) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
