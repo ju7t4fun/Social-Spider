@@ -23,7 +23,6 @@ public class Profile {
 
     public boolean isExpired() {
         try {
-            System.out.println(extTime);
             if (new Date().getTime() < extTime.getTime())
                 return true;
         } catch (Exception e) {

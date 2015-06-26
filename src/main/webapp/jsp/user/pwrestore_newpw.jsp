@@ -24,6 +24,11 @@
     <!-- bootstrap theme -->
     <link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">
     <!--external css-->
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/creative.css" type="text/css">
     <!-- font icon -->
     <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/css/font-awesome.css" rel="stylesheet"/>
@@ -43,37 +48,80 @@
 </head>
 
 <body class="login-img3-body">
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
 
-<div class="container">
+    <c:choose>
+        <c:when test="${user.role == 'ADMIN'}">
+            <jsp:forward page="admin_index.jsp"/>
+        </c:when>
+        <c:when test="${user.role == 'USER'}">
+            <jsp:forward page="user_index.jsp"/>
+        </c:when>
+        <c:otherwise>
+            <header class="header dark-bg" style="background: rgb(26, 39, 50)">
+                <div class="main">
+                    <a href="/" class="logo">Social <span class="lite">Spider</span></a>
+                </div>
 
-    <form class="login-form" action="/forgot_password" method="post" id="register_form">
-        <input type="hidden" name="action" value="changePassword">
-        <input type="hidden" name="email" value="${email}">
-
-        <div class="login-wrap">
-            <p class="login-img"><i class="icon_lock_alt"></i></p>
-            ${loginMessage}
-            <div class="input-group">
-                <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                <l:resource key="login.password"><input type="password" name="password" id="password"
-                                                        class="form-control" placeholder=""
-                                                        style="border-color:#ffffff;" required/></l:resource>
-            </div>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                <l:resource key="restore.confirmpassword"><input type="password" name="confirm_password"
-                                                                 id="confirm_password"
-                                                                 class="form-control" placeholder=""
-                                                                 style="border-color:#ffffff;" required/></l:resource>
-            </div>
-            <button class="btn btn-primary btn-lg btn-block" type="submit"
-                    style="margin-bottom:20px;margin-right:10px;"><l:resource key="button.send"/>
-            </button>
+            </header>
+        </c:otherwise>
+    </c:choose>
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <a class="navbar-brand page-scroll" href="/">Socail spider</a>
         </div>
-    </form>
 
-</div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
 
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+<header class="back-header">
+
+    <div class="container">
+
+        <form class="login-form" action="/forgot_password" method="post" id="register_form">
+            <input type="hidden" name="action" value="changePassword">
+            <input type="hidden" name="email" value="${email}">
+
+            <div class="login-wrap">
+                <p class="login-img"><i class="icon_lock_alt"></i></p>
+                ${loginMessage}
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                    <l:resource key="login.password"><input type="password" name="password" id="password"
+                                                            class="form-control" placeholder=""
+                                                            style="border-color:#ffffff;" required/></l:resource>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                    <l:resource key="restore.confirmpassword"><input type="password" name="confirm_password"
+                                                                     id="confirm_password"
+                                                                     class="form-control" placeholder=""
+                                                                     style="border-color:#ffffff;"
+                                                                     required/></l:resource>
+                </div>
+                <button class="btn btn-primary btn-lg btn-block" type="submit"
+                        style="margin-bottom:20px;margin-right:10px;"><l:resource key="button.send"/>
+                </button>
+            </div>
+        </form>
+
+    </div>
+</header>
+<script>
+    $(document).ready(function () {
+        $.vegas('slideshow', {
+            backgrounds: [
+                {src: '../img/header.jpg', fade: 2000, delay: 9000},
+                {src: '../img/2.jpg', fade: 2000, delay: 9000},
+                {src: '../img/4.jpg', fade: 2000, delay: 9000},
+            ]
+        });
+    });
+</script>
 <jsp:include page="../pagecontent/simple_footer.jsp"/>
 
 <!-- javascripts -->
@@ -89,6 +137,10 @@
 <script src="${pageContext.request.contextPath}/js/form-validation-script.js"></script>
 <!--custome script for all page-->
 <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
+<!-- EASING SCROLL SCRIPTS PLUGIN -->
+<script src="${pageContext.request.contextPath}/js/jquery.vegas.min.js"></script>
+<!-- VEGAS SLIDESHOW SCRIPTS -->
+<script src="${pageContext.request.contextPath}/js/jquery.easing.min.js"></script>
 
 </body>
 </html>

@@ -1,6 +1,8 @@
 package com.epam.lab.spider.controller.websocket;
 
 import com.epam.lab.spider.controller.utils.EventLogger;
+import com.epam.lab.spider.controller.utils.Receiver;
+import com.epam.lab.spider.controller.utils.Sender;
 import org.apache.log4j.Logger;
 
 import javax.websocket.*;

@@ -23,6 +23,7 @@ public class ServiceFactory {
         services.put(UserService.class, new UserService());
         services.put(ProfileService.class, new ProfileService());
         services.put(WallService.class, new WallService());
+        services.put(MessageService.class, new MessageService());
     }
 
     public static ServiceFactory getInstance() {

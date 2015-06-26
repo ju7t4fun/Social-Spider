@@ -35,9 +35,6 @@ public class SendEmail {
             message.setSubject(title);
             message.setContent(html, "text/html; charset=utf-8");
             Transport.send(message);
-
-            System.out.println("Done");
-
         } catch (MessagingException e) {
             e.printStackTrace();
         }

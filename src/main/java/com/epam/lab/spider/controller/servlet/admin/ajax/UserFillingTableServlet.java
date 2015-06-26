@@ -30,8 +30,6 @@ public class UserFillingTableServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        System.out.println(++TIMES);
-
         String[] columnNames = {"id", "name", "surname", "email", "state"};
 
         JSONObject jsonResult = new JSONObject();
@@ -90,6 +88,7 @@ public class UserFillingTableServlet extends HttpServlet {
         }
 
         response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         response.setHeader("Cache-Control", "no-store");
         PrintWriter out = response.getWriter();
         out.print(jsonResult);
@@ -137,7 +136,6 @@ public class UserFillingTableServlet extends HttpServlet {
         sql += searchSQL;
         sql += " order by " + COLUMN_NAME + " " + DIRECTION;
         sql += " limit " + INITIAL + ", " + RECORD_SIZE;
-        System.out.println(sql);
 
 
         //for searching

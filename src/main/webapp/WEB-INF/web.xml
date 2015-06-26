@@ -35,7 +35,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <servlet>
-        <servlet-name>ApiServlet</servlet-name>s
+        <servlet-name>ApiServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.ApiServlet</servlet-class>
     </servlet>
     <servlet>
@@ -72,6 +72,10 @@
     </servlet>
 
     <servlet>
+        <servlet-name>SupportServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.SupportServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>UserFillingTableServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.admin.ajax.UserFillingTableServlet</servlet-class>
     </servlet>
@@ -95,6 +99,10 @@
     <servlet-mapping>
         <servlet-name>PostBindingFillingTableServlet</servlet-name>
         <url-pattern>/PostBindingFillingTableServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SupportServlet</servlet-name>
+        <url-pattern>/admin/support</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>OwnerServlet</servlet-name>

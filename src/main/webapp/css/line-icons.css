@@ -85,19 +85,19 @@
 
 /*Hover*/
 .icon-envelope-l:hover,.icon-envelope-l.active{
-	background: url('../../../../../../../Downloads/Nice-admin/Nice-admin/img/icons/line-icon-hover.png') no-repeat -727px  -62px;
+	background: url('../img/icons/line-icon-hover.png') no-repeat -727px  -62px;
 	width: 24px;
 	height: 16px;
 	display: inline-block !important;
 }
 .icon-bell-l:hover{
-	background: url('../../../../../../../Downloads/Nice-admin/Nice-admin/img/icons/line-icon-hover.png') no-repeat -217px -18px;
+	background: url('../img/icons/line-icon-hover.png') no-repeat -217px -18px;
 	width: 23px;
 	height: 25px;
 	display: inline-block !important;
 }
 .icon-task-l:hover{
-	background: url('../../../../../../../Downloads/Nice-admin/Nice-admin/img/icons/line-icon-hover.png') no-repeat -517px -102px;
+	background: url('../img/icons/line-icon-hover.png') no-repeat -517px -102px;
 	width: 23px;
 	height: 16px;
 	display: inline-block !important;	
