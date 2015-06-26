@@ -54,7 +54,8 @@ public class ChangeAvatarCommand implements ActionCommand {
                             user = userService.getById(user.getId());
                             session.setAttribute("user", user);
                             response.getWriter().print(new JSONObject().put("success",
-                                    "http://localhost:8080/upload/images/" + fileName));
+                                    "http://localhost:8080/upload/images/" + fileName).put("status", "success").put
+                                    ("msg", "Change avatar"));
                         } else {
                             jsonError = "Wrong file format!";
                         }
@@ -68,7 +69,8 @@ public class ChangeAvatarCommand implements ActionCommand {
             jsonError = "Upload error! Please try again!";
         } finally {
             if (jsonError != "") {
-                response.getWriter().print(new JSONObject().put("error", jsonError));
+                response.getWriter().print(new JSONObject().put("error", jsonError).put("status", "error").put("msg",
+                        jsonError));
             }
         }
     }
