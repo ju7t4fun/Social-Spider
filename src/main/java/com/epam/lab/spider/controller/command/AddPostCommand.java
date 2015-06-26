@@ -28,7 +28,7 @@ public class AddPostCommand implements ActionCommand {
 
         for (Map.Entry<String, String> entry : urlType.entrySet()) {
             attachment = new Attachment();
-            attachment.setUrl(entry.getKey());
+            attachment.setPayload(entry.getKey());
             attachment.setType(Attachment.Type.valueOf(entry.getValue()));
             attachment.setDeleted(false);
             attachments.add(attachment);
