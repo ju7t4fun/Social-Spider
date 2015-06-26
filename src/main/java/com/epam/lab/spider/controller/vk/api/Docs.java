@@ -51,7 +51,7 @@ public class Docs extends Methods {
      * Сохраняет документ после его успешной загрузки на сервер.
      */
     public List<Doc> save(Parameters param) throws VKException {
-        Response response = request("docs.save", param).execute();
+        Response response = request("docs.safeSave", param).execute();
         return Doc.parseDoc(response.root().child("items").get(0));
     }
 

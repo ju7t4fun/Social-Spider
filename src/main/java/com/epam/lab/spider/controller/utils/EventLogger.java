@@ -23,7 +23,7 @@ public class EventLogger {
         this.userId = userId;
     }
 
-    public static EventLogger getLogger(int userId) {
+    public static synchronized EventLogger getLogger(int userId) {
         if (!instances.containsKey(userId)) {
             instances.put(userId, new EventLogger(userId));
         }

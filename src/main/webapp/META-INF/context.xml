@@ -2,7 +2,7 @@
 <Context>
 <Resource name="jdbc/vk_spider" auth="Container" type="javax.sql.DataSource"
           maxActive="25" maxIdle="25" maxWait="10000"
-          username="root" password="1111" driverClassName="com.mysql.jdbc.Driver"
+          username="root" password="uroot" driverClassName="com.mysql.jdbc.Driver"
           url="jdbc:mysql://localhost:3306/vk_spider"/>
 
 </Context>

@@ -26,7 +26,7 @@ public class Pages extends Methods {
      * Сохраняет текст вики-страницы.
      */
     public int save(Parameters param) throws VKException {
-        Response response = request("pages.save", param).execute();
+        Response response = request("pages.safeSave", param).execute();
         return response.root().value().toInt();
     }
 

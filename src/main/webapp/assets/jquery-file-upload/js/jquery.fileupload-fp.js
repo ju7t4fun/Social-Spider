@@ -53,7 +53,7 @@
                     minHeight: 600
                 },
                 {
-                    action: 'save'
+                    action: 'safeSave'
                 }
             */
             ],
