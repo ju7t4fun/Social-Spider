@@ -1,6 +1,10 @@
 package com.epam.lab.spider.model.db.dao.mysql;
 
 import com.epam.lab.spider.model.db.dao.FilterDAO;
+import com.epam.lab.spider.model.db.dao.savable.SavableCRUDUtil;
+import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
+import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
+import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
 import com.epam.lab.spider.model.db.entity.Filter;
 
 import java.sql.Connection;
@@ -82,4 +86,8 @@ public class FilterDAOImp extends BaseDAO implements FilterDAO {
         return first(select(connection, SQL_GET_BY_ID_QUERY, id));
     }
 
+    @Override
+    public boolean save(Connection conn, Filter entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException {
+        return SavableCRUDUtil.save(conn,entity,this);
+    }
 }

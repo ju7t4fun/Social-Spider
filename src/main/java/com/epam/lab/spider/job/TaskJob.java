@@ -34,7 +34,6 @@ public class TaskJob implements Job {
     TaskService taskService = new TaskService();
 
     FilterService filterService = new FilterService();
-    PostService postService = new PostService();
 
     TaskSynchronizedDataService synchronizedService = new TaskSynchronizedDataService();
 
@@ -45,6 +44,8 @@ public class TaskJob implements Job {
         List<Task> tasks = taskService.getAll();
         taskProcessing:
         for (Task task : tasks) {
+            // якщо таск не активний то не запускаємо
+            if(task.getState() != Task.State.RUNNING)continue taskProcessing;
             LOG.info("Task#"+task.getId()+" start to work.");
             // кількість активних(незаблокованих) джерел для таску
             // якщо кількість нульова на момент опрацювання стін призначення

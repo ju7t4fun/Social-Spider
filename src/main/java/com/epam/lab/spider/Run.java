@@ -7,6 +7,9 @@ import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
 import com.epam.lab.spider.job.OnePostJob;
+import com.epam.lab.spider.model.db.PoolConnection;
+import com.epam.lab.spider.model.db.dao.TaskSourceDAO;
+import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
 import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
 import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
@@ -25,6 +28,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Date;
@@ -102,9 +106,7 @@ public class Run {
 
 
 
-
-    public static void main(String[] args) throws SQLException, ResolvableDAOException, InvalidEntityException, UnsupportedDAOException, UnsupportedServiseException {
-
+    public static void someTest(){
         String token = "21cd2db88ca0c45e1a133671c343ca6fc85cadf62cbbba87f402f07bb0e2e19cad328d638a10a7bbb69a2";
 
         Attachment attachment = new Attachment();
@@ -127,36 +129,23 @@ public class Run {
 
 //        -55431976
         postWithImage(token,21119920,-55431976,attachment.getPayload(),post.getMessage());
+    }
 
 
+    public static void main(String[] args) throws SQLException, ResolvableDAOException, InvalidEntityException, UnsupportedDAOException, UnsupportedServiseException {
 
-        long start, finish;
-        {
-            start = System.nanoTime();
-            RunClass test = new RunClass();
-            System.out.println("getInjectedMethod = " + test.getInjectedMethod());
-            finish = System.nanoTime();
-            System.out.println(finish - start);
-        }
-        {
-            start = System.nanoTime();
-            RunClass test = new RunClass();
-            System.out.println("getInjectedMethod = " + test.getInjectedMethod());
-            finish = System.nanoTime();
-            System.out.println(finish - start);
-        }
+        DAOFactory factory = DAOFactory.getInstance();
+        TaskSourceDAO tsdao = factory.create(TaskSourceDAO.class);
+        Connection connection = PoolConnection.getConnection();
+        System.out.println(tsdao.deleteByWallId(connection, 1));
+        System.out.println(tsdao.deleteByWallId(connection, 1));
+        System.out.println(tsdao.deleteByWallId(connection, 1));
+        connection.close();
+
+
 
 
 
 
     }
 }
-interface RunInterface {
-
-
-}
-
-class RunClass implements RunInterface {
-
-}
-

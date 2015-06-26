@@ -123,12 +123,13 @@
             <version>2.4</version>
         </dependency>
         <!-- Забудь надію всяк сюди входячий -->
+        <!--
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
             <version>1.8.5</version>
         </dependency>
-        <!--
+
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
@@ -151,7 +152,7 @@
                 <target>${maven.compiler.target}</target>
             </configuration>
         </plugin>
-
+<!--
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
@@ -169,6 +170,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
         </plugins>
     </build>
 </project>
