@@ -28,7 +28,6 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
             "task_source.wall_id = wall.id WHERE task_id = ?";
     private static final String SQL_DELETED_BY_PROFILE_ID_QUERY = "UPDATE wall SET delete = true WHERE profile_id = ?" +
             " deleted = false";
-    private static final String SQL_GET_ALL_BY_PROFILE_ID_QUERY = "SELECT * FROM wall WHERE deleted = false AND profile_id = ?";
     private static final String SQL_GET_ALL_BY_PROFILE_ID_QUERY = "SELECT * FROM wall WHERE profile_id = ? AND deleted = false";
 
 
