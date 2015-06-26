@@ -72,62 +72,52 @@
                     <table class="table table-striped table-advance table-hover">
                       <tr><th>Post</th><th>Time</th><th>Statistics</th></tr>
                       <tr>
-                        <td style="width:700px;text-align:left;"> <img src="${pageContext.request.contextPath}/img/post.png" width="50" height="45" style="margin:0 20px;"> POST_TITLE</td>
+                        <td style="width:600px;text-align:left;"> <img src="${pageContext.request.contextPath}/img/post.png" width="50" height="45" style="margin:0 20px;"> POST_TITLE</td>
                         <td>15.06.2015 18:33</td>
                         <td>
-                          <ul>
-                            <li>
-                              <img src="${pageContext.request.contextPath}/img/like.png" width="23" height="23" style="margin-right:15px;">
-                              213
-                            </li>
-                            <li>
-                              <img src="${pageContext.request.contextPath}/img/speaker.png" width="23" height="23" style="margin-right:15px;">
-                              56
-                            </li>
-                            <li>
-                              <img src="${pageContext.request.contextPath}/img/comment.png" width="23" height="23" style="margin-right:15px;">
-                              41
-                            </li>
-                          </ul>
+                          <table>
+                            <tr>
+                              <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/like.png" width="23" height="23"></td>
+                              <td style="border:none;">68</td>
+                              <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/speaker.png" width="23" height="23"></td>
+                              <td style="border:none;">21</td>
+                              <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/comment.png" width="23" height="23"></td>
+                              <td style="border:none;">4</td>
+                            </tr>
+                          </table>
                         </td>
                       </tr>
                       <tr>
-                        <td style="width:700px;text-align:left;"> <img src="${pageContext.request.contextPath}/img/post.png" width="50" height="45" style="margin:0 20px;"> POST_TITLE</td>
+                        <td style="width:600px;text-align:left;"> <img src="${pageContext.request.contextPath}/img/post.png" width="50" height="45" style="margin:0 20px;"> POST_TITLE</td>
                         <td>14.06.2015 08:11</td>
                         <td>
-                          <ul>
-                            <li>
-                              <img src="${pageContext.request.contextPath}/img/like.png" width="23" height="23" style="margin-right:15px;">
-                              213
-                            </li>
-                            <li>
-                              <img src="${pageContext.request.contextPath}/img/speaker.png" width="23" height="23" style="margin-right:15px;">
-                              56
-                            </li>
-                            <li>
-                              <img src="${pageContext.request.contextPath}/img/comment.png" width="23" height="23" style="margin-right:15px;">
-                              41
-                            </li>
-                          </ul>
+                          <table>
+                            <tr>
+                            <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/like.png" width="23" height="23"></td>
+                            <td style="border:none;">213</td>
+                            <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/speaker.png" width="23" height="23"></td>
+                            <td style="border:none;">56</td>
+                            <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/comment.png" width="23" height="23"></td>
+                            <td style="border:none;">41</td>
+                            </tr>
+                          </table>
+                        </td>
                       </tr>
                       <tr>
-                        <td style="width:700px;text-align:left;"> <img src="${pageContext.request.contextPath}/img/post.png" width="50" height="45" style="margin:0 20px;"> POST_TITLE</td>
+                        <td style="width:600px;text-align:left;"> <img src="${pageContext.request.contextPath}/img/post.png" width="50" height="45" style="margin:0 20px;"> POST_TITLE</td>
                         <td>14.06.2015 07:59</td>
                         <td>
-                          <ul>
-                            <li>
-                              <img src="${pageContext.request.contextPath}/img/like.png" width="23" height="23" style="margin-right:15px;">
-                              213
-                            </li>
-                            <li>
-                              <img src="${pageContext.request.contextPath}/img/speaker.png" width="23" height="23" style="margin-right:15px;">
-                              56
-                            </li>
-                            <li>
-                              <img src="${pageContext.request.contextPath}/img/comment.png" width="23" height="23" style="margin-right:15px;">
-                              41
-                            </li>
-                          </ul>
+                          <table>
+                            <tr>
+                              <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/like.png" width="23" height="23"></td>
+                              <td style="border:none;">566</td>
+                              <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/speaker.png" width="23" height="23"></td>
+                              <td style="border:none;">347</td>
+                              <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/comment.png" width="23" height="23"></td>
+                              <td style="border:none;">114</td>
+                            </tr>
+                          </table>
+                        </td>
                       </tr>
                     </table>
                   </div>
