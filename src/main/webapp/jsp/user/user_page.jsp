@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Sasha
-  Date: 13.06.2015
-  Time: 12:15
+  Date: 16.06.2015
+  Time: 15:15
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -26,30 +26,22 @@
   <!-- font icon -->
   <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet" />
   <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet" />
-  <!-- full calendar css-->
-  <link href="${pageContext.request.contextPath}/assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />
-  <link href="${pageContext.request.contextPath}/assets/fullcalendar/fullcalendar/fullcalendar.css" rel="stylesheet" />
-  <!-- easy pie chart-->
-  <link href="${pageContext.request.contextPath}/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen"/>
-  <!-- owl carousel -->
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/owl.carousel.css" type="text/css">
-  <link href="${pageContext.request.contextPath}/css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
   <!-- Custom styles -->
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/fullcalendar.css">
-  <link href="${pageContext.request.contextPath}/css/widgets.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
-  <link href="${pageContext.request.contextPath}/css/xcharts.min.css" rel=" stylesheet">
-  <link href="${pageContext.request.contextPath}/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
+  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css" />
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
   <!--[if lt IE 9]>
   <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
-  <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
+  <!--<script src="${pageContext.request.contextPath}/js/respond.min.js"></script>-->
   <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
   <![endif]-->
 </head>
 
 <body>
+
 <!-- container section start -->
 <section id="container" class="">
 
@@ -59,214 +51,113 @@
   <!--main content start-->
   <section id="main-content">
     <section class="wrapper">
-      <!--overview start-->
       <div class="row">
         <div class="col-lg-12">
-          <h3 class="page-header"><i class="fa fa-laptop"></i> Dashboard</h3>
-          <ol class="breadcrumb">
-            <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-            <li><i class="fa fa-laptop"></i>Dashboard</li>
-          </ol>
+          <h3 class="page-header"><i class="fa fa-home"></i> Home</h3>
         </div>
       </div>
 
-      <!-- project team & activity start -->
       <div class="row">
-        <div class="col-md-6 portlets">
+        <div class="col-md-8 portlets">
           <div class="panel panel-default">
-            <div class="panel-heading">
-              <h2><strong>Calendar</strong></h2>
-              <div class="panel-actions">
-                <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
-                <a href="#" class="wclose"><i class="fa fa-times"></i></a>
-              </div>
-
-            </div><br><br><br>
             <div class="panel-body">
-              <!-- Widget content -->
-
-              <!-- Below line produces calendar. I am using FullCalendar plugin. -->
-              <div id="calendar"></div>
-
+              <ul style="margin-left:-30px;">
+                <li>
+                  <table width="100%" style="padding:0 50px;">
+                    <tr><td style="text-align:left;padding-left:20px;"><img src="${pageContext.request.contextPath}/img/post.png" style="margin:15px;"><strong>GROUP NAME</strong></td></tr>
+                    <tr><td style="text-align:justify;">
+                      Vivamus tincidunt eleifend congue. Sed lacinia ullamcorper fringilla. Suspendisse mi nisi, molestie eget varius quis, cursus nec felis. Quisque mi tortor, accumsan vitae tempus a, placerat et est. Mauris eu mauris urna. Quisque ipsum purus, iaculis nec libero vel, euismod lacinia est. Proin quis mi et velit scelerisque feugiat. Nunc porttitor, nunc et ultricies scelerisque, velit est sollicitudin tortor, ut condimentum dolor nulla id sem. In suscipit urna a nibh bibendum cursus. Sed ex orci, rhoncus at convallis quis, bibendum ac ex. Proin vulputate lacus tellus, nec sollicitudin nisl congue eget.
+                    </td></tr>
+                    <tr><td style="text-align:left;padding-left:20px;">
+                      <br>
+                      <div style="color:blue;">#lorem #ipsum #dolor</div>
+                    </td></tr>
+                    <tr><td>
+                      <img src="${pageContext.request.contextPath}/img/bg-1.jpg" width="600" style="margin:20px;">
+                    </td></tr>
+                  </table>
+                </li>
+                <hr>
+                <li>
+                  <table width="100%" style="padding:0 50px;">
+                    <tr><td style="text-align:left;padding-left:20px;"><img src="${pageContext.request.contextPath}/img/post.png" style="margin:15px;"><strong>GROUP NAME</strong></td></tr>
+                    <tr><td style="text-align:justify;">
+                      Vivamus tincidunt eleifend congue. Sed lacinia ullamcorper fringilla. Suspendisse mi nisi, molestie eget varius quis, cursus nec felis. Quisque mi tortor, accumsan vitae tempus a, placerat et est. Mauris eu mauris urna. Quisque ipsum purus, iaculis nec libero vel, euismod lacinia est. Proin quis mi et velit scelerisque feugiat. Nunc porttitor, nunc et ultricies scelerisque, velit est sollicitudin tortor, ut condimentum dolor nulla id sem. In suscipit urna a nibh bibendum cursus. Sed ex orci, rhoncus at convallis quis, bibendum ac ex. Proin vulputate lacus tellus, nec sollicitudin nisl congue eget.
+                    </td></tr>
+                    <tr><td style="text-align:left;padding-left:20px;">
+                      <br>
+                      <div style="color:blue;">#lorem #ipsum #dolor</div>
+                    </td></tr>
+                    <tr><td>
+                      <img src="${pageContext.request.contextPath}/img/sample-img-1.jpg" style="margin:20px;">
+                      <img src="${pageContext.request.contextPath}/img/sample-img-2.png" style="margin:20px;">
+                      <img src="${pageContext.request.contextPath}/img/sample-img-3.png" style="margin:20px;">
+                    </td></tr>
+                  </table>
+                </li>
+              </ul>
             </div>
           </div>
 
         </div>
 
-        <div class="col-md-6 portlets">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <div class="pull-left">Quick Post</div>
-              <div class="widget-icons pull-right">
-                <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
-                <a href="#" class="wclose"><i class="fa fa-times"></i></a>
-              </div>
-              <div class="clearfix"></div>
-            </div>
+        <div class="col-md-4 portlets" >
+          <div class="panel panel-default" style="position:fixed;">
             <div class="panel-body">
-              <div class="padd">
+              <h3>FILTER BY</h3>
+              <ul>
+                <li>
+                  <h4>Groups:</h4>
+                  <select id="tokenize_focus" multiple="multiple" class="tokenize-sample" style="width:200px;">
+                    <option value="1">Group 1</option>
+                    <option value="2">Group 2</option>
+                    <option value="3">Group 3</option>
+                    <option value="4">Group 4</option>
+                    <option value="5">Group 5</option>
+                  </select>
 
-                <div class="form quick-post">
-                  <!-- Edit profile form (not working)-->
-                  <form class="form-horizontal">
-                    <!-- Title -->
-                    <div class="form-group">
-                      <label class="control-label col-lg-2" for="title">Title</label>
-                      <div class="col-lg-10">
-                        <input type="text" class="form-control" id="title">
-                      </div>
-                    </div>
-                    <!-- Content -->
-                    <div class="form-group">
-                      <label class="control-label col-lg-2" for="content">Content</label>
-                      <div class="col-lg-10">
-                        <textarea class="form-control" id="content"></textarea>
-                      </div>
-                    </div>
-                    <!-- Cateogry -->
-                    <div class="form-group">
-                      <label class="control-label col-lg-2">Category</label>
-                      <div class="col-lg-10">
-                        <select class="form-control">
-                          <option value="">- Choose Cateogry -</option>
-                          <option value="1">General</option>
-                          <option value="2">News</option>
-                          <option value="3">Media</option>
-                          <option value="4">Funny</option>
-                        </select>
-                      </div>
-                    </div>
-                    <!-- Tags -->
-                    <div class="form-group">
-                      <label class="control-label col-lg-2" for="tags">Tags</label>
-                      <div class="col-lg-10">
-                        <input type="text" class="form-control" id="tags">
-                      </div>
-                    </div>
-
-                    <!-- Buttons -->
-                    <div class="form-group">
-                      <!-- Buttons -->
-                      <div class="col-lg-offset-2 col-lg-9">
-                        <button type="submit" class="btn btn-primary">Publish</button>
-                        <button type="submit" class="btn btn-danger">Save Draft</button>
-                        <button type="reset" class="btn btn-default">Reset</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-
-
-              </div>
-              <div class="widget-foot">
-                <!-- Footer goes here -->
-              </div>
+                  <script type="text/javascript">
+                    $('select#tokenize_focus').tokenize({displayDropdownOnFocus:true});
+                  </script>
+                </li>
+                <li style="width:300px;">
+                  <h4>Tags: </h4>
+                  <input name="tagsinput" id="tagsinput" class="tagsinput"
+                         value="Tag1, Tag2, Tag3, Tag4, Tag5"/>
+                </li>
+                <li>
+                  <div class="col-lg-offset-2 col-lg-9" style="margin:20px auto;">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <button type="reset" class="btn btn-danger">Clear</button>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
-
         </div>
-
       </div>
-      <!-- project team & activity end -->
-
     </section>
   </section>
   <!--main content end-->
-
-
 </section>
-
-<!-- container section start -->
+<!-- container section end -->
 
 <!-- javascripts -->
 <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery-ui-1.10.4.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-ui-1.9.2.custom.min.js"></script>
-<!-- bootstrap -->
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <!-- nice scroll -->
 <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
-<!-- charts scripts -->
-<script src="${pageContext.request.contextPath}/assets/jquery-knob/js/jquery.knob.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.sparkline.js" type="text/javascript"></script>
-<script src="${pageContext.request.contextPath}/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
-<script src="${pageContext.request.contextPath}/js/owl.carousel.js" ></script>
-<!-- jQuery full calendar -->
-<<script src="${pageContext.request.contextPath}/js/fullcalendar.min.js"></script> <!-- Full Google Calendar - Calendar -->
-<script src="${pageContext.request.contextPath}/assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
-<!--script for this page only-->
-<script src="${pageContext.request.contextPath}/js/calendar-custom.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.rateit.min.js"></script>
-<!-- custom select -->
-<script src="${pageContext.request.contextPath}/js/jquery.customSelect.min.js" ></script>
-<script src="${pageContext.request.contextPath}/assets/chart-master/Chart.js"></script>
+<!-- gritter -->
 
+<!-- custom gritter script for this page only-->
+<script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>
 <!--custome script for all page-->
 <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
-<!-- custom script for this page-->
-<script src="${pageContext.request.contextPath}/js/sparkline-chart.js"></script>
-<script src="${pageContext.request.contextPath}/js/easy-pie-chart.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery-jvectormap-1.2.2.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery-jvectormap-world-mill-en.js"></script>
-<script src="${pageContext.request.contextPath}/js/xcharts.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.autosize.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.placeholder.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/gdp-data.js"></script>
-<script src="${pageContext.request.contextPath}/js/morris.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/sparklines.js"></script>
-<script src="${pageContext.request.contextPath}/js/charts.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.slimscroll.min.js"></script>
-<script>
-
-  //knob
-  $(function() {
-    $(".knob").knob({
-      'draw' : function () {
-        $(this.i).val(this.cv + '%')
-      }
-    })
-  });
-
-  //carousel
-  $(document).ready(function() {
-    $("#owl-slider").owlCarousel({
-      navigation : true,
-      slideSpeed : 300,
-      paginationSpeed : 400,
-      singleItem : true
-
-    });
-  });
-
-  //custom select box
-
-  $(function(){
-    $('select.styled').customSelect();
-  });
-
-  /* ---------- Map ---------- */
-  $(function(){
-    $('#map').vectorMap({
-      map: 'world_mill_en',
-      series: {
-        regions: [{
-          values: gdpData,
-          scale: ['#000', '#000'],
-          normalizeFunction: 'polynomial'
-        }]
-      },
-      backgroundColor: '#eef3f7',
-      onLabelShow: function(e, el, code){
-        el.html(el.html()+' (GDP - '+gdpData[code]+')');
-      }
-    });
-  });
-
-
-
-</script>
+<script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
+<!--custom tagsinput-->
+<script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
+<script src="${pageContext.request.contextPath}/js/form-component.js"></script>
 
 </body>
 </html>

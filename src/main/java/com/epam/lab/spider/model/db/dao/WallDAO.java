@@ -19,4 +19,6 @@ public interface WallDAO extends CRUD<Wall> {
 
     List<Wall> getByProfileId(Connection connection, int id) throws SQLException;
 
+    public List<Wall> getAllByProfileID(Connection connection, int profile_id) throws SQLException;
+
 }
