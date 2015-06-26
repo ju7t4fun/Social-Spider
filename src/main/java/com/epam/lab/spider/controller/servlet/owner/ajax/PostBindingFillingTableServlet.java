@@ -144,44 +144,10 @@ public class PostBindingFillingTableServlet extends HttpServlet {
                         "</button> </a>";
 
 
-               /* " <div class=\"b-popup\" id=\"popup\" >" +
-                        "<div class=\"b-popup-content\" >" +
-
-                        "<table> <tr>" +
-                        "<th style=\"width:400px;\" >Read</th>"+
-                        "<th style=\"width:400px;\" >Write</th>" +
-                        "</tr> <tr> <td>" +
-                        "<select id=\"tokenize_focus11\" multiple=\"multiple\" " +
-                        "class=\"tokenize-sample\" style=\"width:350px;\" >" +
-                        " <option value=\"1\" >Account 1</option>" +
-                        "<option value=\"2\" >Account 2</option>" +
-                        "<option value=\"3\" >Account 3</option>" +
-                        "</select>" +
-
-                        "<script type=\"text/javascript\" > " +
-                        "$( \'select#tokenize_focus11\' ).tokenize({displayDropdownOnFocus: true});" +
-                        "</script> </td> <td>" +
-                        "<select id=\"tokenize_focus12\" multiple=\"multiple\" " +
-                        "class=\"tokenize-sample\" style=\"width:350px;\" >" +
-                        " <option value=\"1\" >Account 1</option>" +
-                        "<option value=\"2\" >Account 2</option> "+
-                        "<option value=\"3\" >Account 3</option> "+
-                        "<option value=\"4\" >Account 4</option> "+
-                        "<option value=\"5\" >Account 5</option> "+
-                        "</select>"+
-
-                        "<script type=\"text/javascript\" > "+
-                        "$( \'select#tokenize_focus12\' ).tokenize({displayDropdownOnFocus: true}); "+
-                        "</script> </td> </tr> </table>" +
-                        "<a href=\"javascript:PopUpHide(i)\" >" +
-                        "<button style=\"border-radius: 4px;border-color:#424D5F;background-color:#424D5F;color:#ffffff;margin:15px;padding:10px;width:150px;\" >" +
-                        "Save" +
-                        " </button> </a> </div> </div>";*/
-
-
                 ja.put(col3);
 
-                String col4 = "<button style=\"border-radius: 4px;border-color:#424D5F;background-color:#424D5F;color:#ffffff;margin:5px;padding:10px;\">" +
+                String col4 = "<button style=\"border-radius: 4px;border-color:#424D5F;background-color:#424D5F;" +
+                        "color:#ffffff;margin:5px;padding:10px;\">" +
                         "Show Statistic" +
                         "</button>";
                 ja.put(col4);

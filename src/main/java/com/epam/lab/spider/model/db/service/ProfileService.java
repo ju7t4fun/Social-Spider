@@ -96,6 +96,24 @@ public class ProfileService implements BaseService<Profile> {
         }
     }
 
+    public List<Profile> getProfilesNotInWall(int owner_id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getNotInWall(connection, owner_id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Profile> getProfilesInWall(int owner_id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getInWall(connection, owner_id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public List<Profile> getByUserId(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
             return pdao.getByUserId(connection, id);
