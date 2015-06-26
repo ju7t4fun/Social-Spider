@@ -87,6 +87,14 @@
         <servlet-name>PostBindingFillingTableServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.owner.ajax.PostBindingFillingTableServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddPostSevlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.AddPostServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddPostSevlet</servlet-name>
+        <url-pattern>/addpost</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PostBindingFillingTableServlet</servlet-name>
         <url-pattern>/PostBindingFillingTableServlet</url-pattern>

@@ -16,13 +16,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Marian Voronovskyi on 13.06.2015.
  */
 public class UploadFileCommand implements ActionCommand {
-
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -30,6 +31,8 @@ public class UploadFileCommand implements ActionCommand {
         String jsonError = "";
         ServletContext context = request.getSession().getServletContext();
         response.setContentType("application/json");
+        Map<String, String> urlType = (Map<String, String>) request.getSession().getAttribute("files_url");
+
         try {
             if (ServletFileUpload.isMultipartContent(request)) {
                 String fileName;
@@ -47,10 +50,11 @@ public class UploadFileCommand implements ActionCommand {
                             fileName = new BigInteger(130, random).toString(32) +
                                     FileType.parseFileFormat(fileName);
                             item.write(new File(filePath + File.separator + fileName));
+                            urlType.put(type.getPath() + "/" + fileName, type.toString());
+                            //filesUrl.add(type.getPath() + "/" + fileName);
                             System.out.println("File uploaded successfully");
                             response.getWriter().print(new JSONObject().put("success", "File uploaded " +
                                     "successfully"));
-                            // System.out.println("File path: " + context.getRealPath(type.path));
                         } else {
                             jsonError = "Wrong file format!";
                         }
@@ -63,6 +67,10 @@ public class UploadFileCommand implements ActionCommand {
             e.printStackTrace();
             jsonError = "Upload error! Please try again!";
         } finally {
+            if (!urlType.isEmpty()) {
+                System.out.println(urlType);
+                request.getSession().setAttribute("files_url", urlType);
+            }
             if (jsonError != "") {
                 response.getWriter().print(new JSONObject().put("error", jsonError));
             }

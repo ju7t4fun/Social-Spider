@@ -31,6 +31,7 @@ public class PostService implements BaseService<Post> {
                 connection.setAutoCommit(false);
                 assertTransaction(pdao.insert(connection, post));
                 for (Attachment attachment : post.getAttachments()) {
+                    attachment.setPostId(post.getId());
                     assertTransaction(adao.insert(connection, attachment));
                 }
                 connection.commit();

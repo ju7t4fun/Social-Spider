@@ -33,7 +33,7 @@
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}js/language.js"></script>
+    <script src="${pageContext.request.contextPath}/js/language.js"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
@@ -121,6 +121,7 @@
         });
     });
 </script>
+
 <jsp:include page="../pagecontent/simple_footer.jsp"/>
 
 <!-- javascripts -->

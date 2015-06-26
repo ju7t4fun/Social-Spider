@@ -6,9 +6,9 @@ package com.epam.lab.spider.controller.utils;
 public class FileType {
 
     public enum Type {
-        IMAGES("/upload/images", ".jpg", ".bmp", ".gif", ".png", ".jpeg"),
-        VIDEOS("/upload/videos", ".avi", ".mpeg", ".mpg", ".mp4", ".mov", ".mkv", ".flv"),
-        MUSICS("/upload/musics", ".mp3", ".wav");
+        PHOTO("/upload/images", ".jpg", ".bmp", ".gif", ".png", ".jpeg"),
+        VIDEO("/upload/videos", ".avi", ".mpeg", ".mpg", ".mp4", ".mov", ".mkv", ".flv"),
+        AUDIO("/upload/musics", ".mp3", ".wav");
 
         private String path;
         private String[] formats;
@@ -39,12 +39,12 @@ public class FileType {
         Type[] values = Type.values();
         for (int i = 0; i < values.length; i++) {
             for (int j = 0; j < values[i].getFormats().length; j++) {
-                if (values[i] == Type.IMAGES && values[i].getFormats()[j].equals(format)) {
-                    return Type.IMAGES;
-                } else if (values[i] == Type.VIDEOS && values[i].getFormats()[j].equals(format)) {
-                    return Type.VIDEOS;
-                } else if (values[i] == Type.MUSICS && values[i].getFormats()[j].equals(format)) {
-                    return Type.MUSICS;
+                if (values[i] == Type.PHOTO && values[i].getFormats()[j].equals(format)) {
+                    return Type.PHOTO;
+                } else if (values[i] == Type.VIDEO && values[i].getFormats()[j].equals(format)) {
+                    return Type.VIDEO;
+                } else if (values[i] == Type.AUDIO && values[i].getFormats()[j].equals(format)) {
+                    return Type.AUDIO;
                 }
             }
         }
