@@ -124,6 +124,14 @@
         <servlet-name>UpdateWallServlet</servlet-name>
         <url-pattern>/jsonhandler</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>NotificationServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.NotificationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NotificationServlet</servlet-name>
+        <url-pattern>/user/notification</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>OptionFillingServlet</servlet-name>
         <url-pattern>/OptionFillingServlet</url-pattern>
