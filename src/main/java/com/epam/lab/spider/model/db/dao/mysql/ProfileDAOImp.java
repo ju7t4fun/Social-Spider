@@ -25,7 +25,18 @@ public class ProfileDAOImp extends BaseDAO implements ProfileDAO {
     private static final String SQL_GET_BY_VK_ID_QUERY = "SELECT * FROM profile WHERE vk_id = ? AND deleted = false";
     private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT * FROM profile WHERE user_id = ? AND deleted = " +
             "false";
-
+    private static final String SQL_GET_ALL_NOT_IN_WALL_QUERY =
+            "SELECT * FROM profile WHERE profile.id NOT IN (SELECT profile_id FROM " +
+                    " (SELECT wall.profile_id AS profile_id, owner.vk_id FROM" +
+                    " (wall JOIN owner " +
+                    "ON wall.owner_id=owner.id)" +
+                    " WHERE owner.vk_id=?) AS T)";
+    private static final String SQL_GET_ALL_IN_WALL_QUERY =
+            "SELECT * FROM profile WHERE profile.id IN (SELECT profile_id FROM " +
+                    " (SELECT wall.profile_id AS profile_id, owner.vk_id FROM" +
+                    " (wall JOIN owner " +
+                    "ON wall.owner_id=owner.id)" +
+                    " WHERE owner.vk_id=?) AS T)";
     @Override
     public boolean insert(Connection connection, Profile profile) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
@@ -74,6 +85,18 @@ public class ProfileDAOImp extends BaseDAO implements ProfileDAO {
         }
         return profiles;
     }
+
+    @Override
+    public List<Profile> getNotInWall(Connection connection, int owner_id) throws SQLException {
+        return select(connection, SQL_GET_ALL_NOT_IN_WALL_QUERY, owner_id);
+    }
+
+    @Override
+    public List<Profile> getInWall(Connection connection, int owner_id) throws SQLException {
+        return select(connection, SQL_GET_ALL_IN_WALL_QUERY, owner_id);
+    }
+
+
 
     @Override
     public List<Profile> getAll(Connection connection) throws SQLException {
