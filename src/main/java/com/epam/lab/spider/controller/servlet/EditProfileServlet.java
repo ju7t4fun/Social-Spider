@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.servlet;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.EditProfileCommand;
+import com.epam.lab.spider.controller.command.user.profile.EditProfileCommand;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

@@ -1,7 +1,10 @@
 package com.epam.lab.spider.job.util;
 
 import com.epam.lab.spider.controller.utils.EventLogger;
-import com.epam.lab.spider.model.db.entity.*;
+import com.epam.lab.spider.model.db.entity.DataLock;
+import com.epam.lab.spider.model.db.entity.NewPost;
+import com.epam.lab.spider.model.db.entity.Profile;
+import com.epam.lab.spider.model.db.entity.Wall;
 import com.epam.lab.spider.model.db.service.*;
 import org.apache.log4j.Logger;
 
@@ -21,19 +24,18 @@ public class Locker {
     private static WallService wallService = serviceFactory.create(WallService.class);
 
     private static Locker ourInstance = null;
-
-    public static synchronized Locker getInstance() {
-        if(ourInstance == null){
-            ourInstance =  new Locker();
-        }
-        return ourInstance;
-    }
+    private Map<String, Map<Integer, Set<DataLock.Mode>>> lockCache = new HashMap<>();
 
     private Locker() {
         lockCache = dataLockService.restore();
     }
 
-    private Map<String, Map<Integer, Set<DataLock.Mode>>> lockCache = new HashMap<>();
+    public static synchronized Locker getInstance() {
+        if (ourInstance == null) {
+            ourInstance = new Locker();
+        }
+        return ourInstance;
+    }
 
     public synchronized boolean isLock(Wall wall) {
         return isLockOrNull("owner", wall.getOwner_id())
@@ -72,9 +74,9 @@ public class Locker {
                 EventLogger eventLogger = EventLogger.getLogger(wall.getProfile().getUserId());
                 if (mode == DataLock.Mode.ACCESS_DENY) {
 
-                    eventLogger.error("Доступ до групи заборонено");
+                    eventLogger.error("Error", "Доступ до групи заборонено");
                 } else if (mode == DataLock.Mode.DEFAULT || mode == DataLock.Mode.POST_LIMIT) {
-                    eventLogger.error("Ліміт постів на групу вичерпано");
+                    eventLogger.error("Error", "Ліміт постів на групу вичерпано");
                 }
                 dataLockService.createLock(table, index, mode, wall.getProfile().getUserId());
             }
@@ -116,9 +118,9 @@ public class Locker {
 
                 EventLogger eventLogger = EventLogger.getLogger(profile.getUserId());
                 if (mode == DataLock.Mode.DEFAULT || mode == DataLock.Mode.AUTH_KEY) {
-                    eventLogger.error("Ключ доступу застарів");
+                    eventLogger.error("Error", "Ключ доступу застарів");
                 } else if (mode == DataLock.Mode.CAPTCHA) {
-                    eventLogger.error("Потрібен ввід каптчі");
+                    eventLogger.error("Error", "Потрібен ввід каптчі");
                 }
 
                 EventLogger.getLogger(profile.getUserId());

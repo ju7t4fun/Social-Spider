@@ -79,8 +79,7 @@
                     <div class="profile-widget profile-widget-info">
                         <div class="panel-body">
                             <div class="col-lg-2 col-sm-2">
-                                <h4><span class="userfname">${user.name} </span><span> </span><span
-                                        class="userlname">${user.surname}</span></h4>
+                                <h4><span class="userfname">${user.name} </span><span> </span><span class="userlname">${user.surname}</span></h4>
 
                                 <div class="follow-ava">
                                     <img class="avatar" src="${user.avatarURL}" alt="">
@@ -225,7 +224,6 @@
                                                     </div>
                                                 </div>
 
-
                                             </div>
                                         </div>
 
@@ -247,7 +245,7 @@
                                                     $('#name').editable({
                                                         type: 'text',
                                                         pk: 1,
-                                                        url: 'http://localhost:8080/controller?action=editprofile',
+                                                        url: 'http://localhost:8080/profile?action=edit',
                                                         title: 'Enter your First name',
                                                         success: function (response) {
                                                             if (response.status == 'error') return response.msg; //msg will be shown in editable form
@@ -263,7 +261,7 @@
                                                     $('#surname').editable({
                                                         type: 'text',
                                                         pk: 1,
-                                                        url: 'http://localhost:8080/controller?action=editprofile',
+                                                        url: 'http://localhost:8080/profile?action=edit',
                                                         title: 'Enter your Last name',
                                                         success: function (response) {
                                                             if (response.status == 'error') return response.msg; //msg will be shown in editable form
@@ -276,7 +274,7 @@
                                                 <div class="bio-row">
                                                     <span>Change password:
                                                         <span id="change_password"> </span><a
-                                                                href="${pageContext.request.contextPath}/jsp/user/pwrestore_newpw.jsp">Change
+                                                                href="/profile?action=change&email=${user.email}">Change
                                                             password</a> </span>
                                                 </div>
                                                 <div class="bio-row">
@@ -299,7 +297,8 @@
                                                     </script>
                                                     <script>
                                                         $(document).ajaxComplete(function (event, xhr, settings) {
-                                                            if (settings.url === "http://localhost:8080/controller?action=changeavatar") {
+                                                            if (settings.url ===
+                                                                    "http://localhost:8080/profile?action=changeAvatar") {
                                                                 $(".avatar").attr("src",
                                                                         JSON.parse(xhr.responseText).success);
                                                             }
@@ -307,7 +306,7 @@
                                                     </script>
                                                     <script>
                                                         $(document).ajaxComplete(function (event, xhr, settings) {
-                                                            if (settings.url === "http://localhost:8080/controller?action=editprofile") {
+                                                            if (settings.url === "http://localhost:8080/profile?action=edit") {
                                                                 $(".userfname").text(JSON.parse(xhr.responseText).fname);
                                                                 $(".userlname").text(JSON.parse(xhr.responseText).lname);
                                                             }
@@ -321,7 +320,7 @@
                                                                accept="image/*">
                                                         <script>
                                                             $("#input-dim-2").fileinput({
-                                                                uploadUrl: "http://localhost:8080/controller?action=changeavatar",
+                                                                uploadUrl: "http://localhost:8080/profile?action=changeAvatar",
                                                                 allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg'],
                                                                 maxFileCount: 1
                                                             });
@@ -368,7 +367,6 @@
     //knob
     $(".knob").knob();
 </script>
-
 
 </body>
 </html>

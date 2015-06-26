@@ -6,13 +6,12 @@ import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
 import com.epam.lab.spider.job.util.Locker;
 import com.epam.lab.spider.model.db.entity.*;
-
-
-import com.epam.lab.spider.model.db.entity.Attachment;
-import com.epam.lab.spider.model.db.entity.Post;
 import com.epam.lab.spider.model.db.service.*;
 import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
-import com.epam.lab.spider.model.vk.*;
+import com.epam.lab.spider.model.vk.Audio;
+import com.epam.lab.spider.model.vk.Doc;
+import com.epam.lab.spider.model.vk.Photo;
+import com.epam.lab.spider.model.vk.Video;
 import org.apache.log4j.Logger;
 import org.quartz.*;
 
@@ -45,7 +44,7 @@ public class TaskJob implements Job {
         List<Task> tasks = taskService.getAll();
         taskProcessing:
         for (Task task : tasks) {
-            LOG.info("Task#"+task.getId()+" start to work.");
+            LOG.info("Task#" + task.getId() + " start to work.");
             // кількість активних(незаблокованих) джерел для таску
             // якщо кількість нульова на момент опрацювання стін призначення
             // то опрацювання таску на цьому завершується
@@ -61,12 +60,12 @@ public class TaskJob implements Job {
             for (Wall wall : destinationWalls) {
                 // перевірка чи стіна заблокована
                 boolean writeBlocked = Locker.getInstance().isLock(wall);
-                if(!writeBlocked)activeDestinationInTask++;
+                if (!writeBlocked) activeDestinationInTask++;
             }
             // якщо кількість стін призначення нульова
             // то принипини працювання завдання
-            if(activeDestinationInTask == 0){
-                LOG.info("TASK#"+task.getId()+" has hot active destination wall!");
+            if (activeDestinationInTask == 0) {
+                LOG.info("TASK#" + task.getId() + " has hot active destination wall!");
                 continue taskProcessing;
             }
             //random N-posts from begin wall
@@ -78,13 +77,13 @@ public class TaskJob implements Job {
                 Profile profile = profileService.getById(wall.getProfile_id());
                 // перевірка чи профіль заблокований на читання
                 boolean readBlocked = Locker.getInstance().isProfileReadableLock(profile.getId());
-                if(readBlocked){
+                if (readBlocked) {
                     break;
-                }else activeSourceInTask++;
+                } else activeSourceInTask++;
                 Set<Integer> alreadyAddSet = synchronizedService.getProcessedPost(task, wall, 10000);
                 try {
                     Integer appId = profile.getAppId();
-                    if(appId==null){
+                    if (appId == null) {
                         appId = 4949213;
                     }
                     Vkontakte vk = new Vkontakte(appId);
@@ -100,13 +99,13 @@ public class TaskJob implements Job {
                     List<com.epam.lab.spider.model.vk.Post> postsPrepareToPosting = new ArrayList<>();
 
                     postGrabbingAndFiltering:
-                    for(int loopsCount = 0,currentPostCount = 0;true;loopsCount++) {
+                    for (int loopsCount = 0, currentPostCount = 0; true; loopsCount++) {
 
                         parameters = new Parameters();
                         parameters.add("owner_id", owner.getVk_id());
                         parameters.add("filter", "owner");
                         parameters.add("count", grabbingSize);
-                        parameters.add("offset", loopsCount*grabbingSize);
+                        parameters.add("offset", loopsCount * grabbingSize);
 
                         List<com.epam.lab.spider.model.vk.Post> postsOnTargetWall = null;
                         boolean manyRequest = false;
@@ -118,26 +117,31 @@ public class TaskJob implements Job {
                                 }
                                 postsOnTargetWall = vk.wall().get(parameters);
                             } catch (VKException x) {
-                                if(x.getExceptionCode()==VKException.VK_MANY_REQUESTS)manyRequest=true;
+                                if (x.getExceptionCode() == VKException.VK_MANY_REQUESTS) manyRequest = true;
                                 else throw x;
                             }
-                        }while (manyRequest);
-                            for (com.epam.lab.spider.model.vk.Post vkPost : postsOnTargetWall) {
+                        } while (manyRequest);
+                        for (com.epam.lab.spider.model.vk.Post vkPost : postsOnTargetWall) {
                             boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));
 
                             if (alreadyProceededPost) {
                                 LOG.debug("Post " + owner.getVk_id() + "_" + vkPost.getId() + " already processed.");
                             } else {
                                 boolean qualityCondition = true;
-                                if(filter.getLikes()!=null)     qualityCondition &= vkPost.getLikes().getCount() >= filter.getLikes().intValue();
-                                if(filter.getReposts()!=null)   qualityCondition &= vkPost.getReposts().getCount() >= filter.getLikes().intValue();
-                                if(filter.getComments()!=null)  qualityCondition &= vkPost.getComments().getCount() >= filter.getComments().intValue();
+                                if (filter.getLikes() != null)
+                                    qualityCondition &= vkPost.getLikes().getCount() >= filter.getLikes().intValue();
+                                if (filter.getReposts() != null)
+                                    qualityCondition &= vkPost.getReposts().getCount() >= filter.getLikes().intValue();
+                                if (filter.getComments() != null)
+                                    qualityCondition &= vkPost.getComments().getCount() >= filter.getComments()
+                                            .intValue();
                                 if (qualityCondition) {
                                     postsPrepareToPosting.add(vkPost);
                                     currentPostCount++;
-                                    if(!(currentPostCount<countOfPosts))break postGrabbingAndFiltering;
-                                }else {
-                                    LOG.debug("Post " + owner.getVk_id() + "_" + vkPost.getId() + " has failed filter.");
+                                    if (!(currentPostCount < countOfPosts)) break postGrabbingAndFiltering;
+                                } else {
+                                    LOG.debug("Post " + owner.getVk_id() + "_" + vkPost.getId() + " has failed filter" +
+                                            ".");
 
                                 }
                             }
@@ -148,35 +152,35 @@ public class TaskJob implements Job {
                     for (com.epam.lab.spider.model.vk.Post vkPost : postsPrepareToPosting) {
                         Post post = new Post();
                         post.setMessage(vkPost.getText());
-                        for(com.epam.lab.spider.model.vk.Attachment vkAttachment:vkPost.getAttachments()) {
+                        for (com.epam.lab.spider.model.vk.Attachment vkAttachment : vkPost.getAttachments()) {
                             if (vkAttachment instanceof Photo) {
                                 Attachment attachment = new Attachment();
                                 attachment.setType(Attachment.Type.PHOTO);
                                 attachment.setPayload(((Photo) vkAttachment).getPhoto604().toString());
                                 post.addAttachment(attachment);
                             }
-                            if(vkAttachment instanceof Audio){
+                            if (vkAttachment instanceof Audio) {
                                 Attachment attachment = new Attachment();
                                 Audio audio = (Audio) vkAttachment;
-                                String attachString= "audio"+ audio.getOwnerId()+"_"+audio.getId();
+                                String attachString = "audio" + audio.getOwnerId() + "_" + audio.getId();
                                 attachment.setPayload(attachString);
                                 attachment.setMode(Attachment.Mode.CODE);
                                 attachment.setType(Attachment.Type.AUDIO);
                                 post.addAttachment(attachment);
                             }
-                            if(vkAttachment instanceof Doc){
+                            if (vkAttachment instanceof Doc) {
                                 Attachment attachment = new Attachment();
                                 Doc doc = (Doc) vkAttachment;
-                                String attachString= "doc"+ doc.getOwnerId()+"_"+doc.getId();
+                                String attachString = "doc" + doc.getOwnerId() + "_" + doc.getId();
                                 attachment.setPayload(attachString);
                                 attachment.setMode(Attachment.Mode.CODE);
                                 attachment.setType(Attachment.Type.DOC);
                                 post.addAttachment(attachment);
                             }
-                            if(vkAttachment instanceof Video){
+                            if (vkAttachment instanceof Video) {
                                 Attachment attachment = new Attachment();
                                 Video video = (Video) vkAttachment;
-                                String attachString= "video"+ video.getOwnerId()+"_"+video.getId();
+                                String attachString = "video" + video.getOwnerId() + "_" + video.getId();
                                 attachment.setPayload(attachString);
                                 attachment.setMode(Attachment.Mode.CODE);
                                 attachment.setType(Attachment.Type.DOC);
@@ -189,22 +193,22 @@ public class TaskJob implements Job {
                     }
                     blockMap.put(wall, addedToProcessingBlocks);
                     LOG.info("TaskJob has succesed grab.");
-                } catch ( RuntimeException x) {
+                } catch (RuntimeException x) {
                     x.printStackTrace();
                 } catch (VKException e) {
-                    if(e.getExceptionCode() == VKException.VK_AUTHORIZATION_FAILED){
+                    if (e.getExceptionCode() == VKException.VK_AUTHORIZATION_FAILED) {
                         Locker.getInstance().lock(profile, DataLock.Mode.AUTH_KEY);
                     }
                     e.printStackTrace();
-                }catch (InterruptedException e) {
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
             }
             // якщо кількість стін-джерел нульова
             // то принипини працювання завдання
-            if(activeSourceInTask==0){
-                LOG.info("TASK#"+task.getId()+" has hot active source wall!");
+            if (activeSourceInTask == 0) {
+                LOG.info("TASK#" + task.getId() + " has hot active source wall!");
                 break taskProcessing;
             }
 
@@ -213,7 +217,7 @@ public class TaskJob implements Job {
             for (Wall wall : destinationWalls) {
                 // якщо профіль заблокований для припинити опрацювання стіни для нього
                 boolean writeBlocked = Locker.getInstance().isLock(wall);
-                if(writeBlocked)break;
+                if (writeBlocked) break;
 
                 for (Post post : addedToProcessingPosts) {
                     NewPost newPost = new NewPost();
@@ -239,10 +243,10 @@ public class TaskJob implements Job {
         }
 
         long finishTime = System.currentTimeMillis();
-        float workTimeInSecond = (finishTime - startTime)/1000.f;
+        float workTimeInSecond = (finishTime - startTime) / 1000.f;
 
         NumberFormat formatter = new DecimalFormat("#0.000");
-        LOG.info("TaskJob has finish. Work time " + formatter.format(workTimeInSecond)+"s");
+        LOG.info("TaskJob has finish. Work time " + formatter.format(workTimeInSecond) + "s");
 
         Date nextRunDate = new Date(System.currentTimeMillis() + (2 * 60 * 1000));
         nextRunDate = new Date(System.currentTimeMillis() + 10000);

@@ -3,13 +3,13 @@ package com.epam.lab.spider.model.tag;
 import com.epam.lab.spider.controller.utils.UTF8;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.*;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyTagSupport;
-
 import java.io.IOException;
 import java.util.ResourceBundle;
 
@@ -27,7 +27,7 @@ public class LocaleTag extends BodyTagSupport {
 
     @Override
     public int doStartTag() throws JspException {
-        return  EVAL_BODY_BUFFERED ;
+        return EVAL_BODY_BUFFERED;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class LocaleTag extends BodyTagSupport {
     }
 
 
-    private String simpleFormat(String key, String value){
+    private String simpleFormat(String key, String value) {
         StringBuilder sb = new StringBuilder();
         sb.append("<span class=\"loc-t\" locres=\"");
         sb.append(key);
@@ -45,7 +45,8 @@ public class LocaleTag extends BodyTagSupport {
         sb.append("</span>");
         return sb.toString();
     }
-    private void safeWrite(String code) throws JspException{
+
+    private void safeWrite(String code) throws JspException {
         try {
             JspWriter out = pageContext.getOut();
             out.write(code);
@@ -62,36 +63,36 @@ public class LocaleTag extends BodyTagSupport {
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         String value = UTF8.encoding(bundle.getString(key));
 
-        if(getBodyContent()!=null){
+        if (getBodyContent() != null) {
             String body = this.getBodyContent().getString();
             try {
                 Document doc = Jsoup.parse(body);
                 Element root = doc.body().child(0);
 
                 boolean placeholder = root.tagName().equals("input");
-                if(placeholder){
-                    root.attr("placeholder",value);
-                }else root.text(value);
+                if (placeholder) {
+                    root.attr("placeholder", value);
+                } else root.text(value);
 
-                String localeClass = placeholder?"loc-p":"loc-t";
+                String localeClass = placeholder ? "loc-p" : "loc-t";
                 root.attr("locres", key);
                 root.addClass(localeClass);
 
-                String output =       doc.outerHtml();
+                String output = doc.outerHtml();
                 safeWrite(output);
 
             } catch (NullPointerException e) {
                 e.printStackTrace();
-                safeWrite(simpleFormat(key,value));
+                safeWrite(simpleFormat(key, value));
             }
-        }else{
-            safeWrite(simpleFormat(key,value));
+        } else {
+            safeWrite(simpleFormat(key, value));
         }
 
 
         Long end = System.nanoTime();
-        Long d = (end - begin)/1000;
-        LOG.debug("Tag creating time:" + d+ " microsecond");
+        Long d = (end - begin) / 1000;
+        LOG.trace("Tag creating time:" + d + " microsecond");
         return EVAL_PAGE;
     }
 

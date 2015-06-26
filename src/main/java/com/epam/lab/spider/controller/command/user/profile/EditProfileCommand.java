@@ -1,5 +1,6 @@
-package com.epam.lab.spider.controller.command;
+package com.epam.lab.spider.controller.command.user.profile;
 
+import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.model.db.entity.User;
 import com.epam.lab.spider.model.db.service.UserService;
 import org.json.JSONObject;

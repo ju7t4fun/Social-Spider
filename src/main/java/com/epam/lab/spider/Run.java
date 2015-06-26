@@ -45,17 +45,12 @@ public class Run {
         IOUtils.copy(response2.getEntity().getContent(), writer, "UTF-8");
         String theString = writer.toString();
 
-
-
         System.out.println("CODE !!!!\n" + theString);
 
     }
 
     public static void postWithImage(String token, Integer user, Integer wall, String photoURL, String message){
         try {
-
-
-
 
             Profile profile = new Profile();
             profile.setAppId(4949213);
@@ -75,13 +70,9 @@ public class Run {
 
             Parameters parameters;
 
-
-
-
             {
                 String file = photoURL;
                 String attacment = ""+OnePostJob.uploadPhoto(vk, file, wall);
-
 
                 LOG.debug("Attachments: "+attacment);
 
@@ -94,14 +85,10 @@ public class Run {
 
             }
 
-
         } catch (VKException e) {
             e.printStackTrace();
         }
     }
-
-
-
 
     public static void main(String[] args) throws SQLException, ResolvableDAOException, InvalidEntityException, UnsupportedDAOException, UnsupportedServiseException {
 

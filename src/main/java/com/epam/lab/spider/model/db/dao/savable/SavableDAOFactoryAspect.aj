@@ -1,11 +1,7 @@
 package com.epam.lab.spider.model.db.dao.savable;
 
+import com.epam.lab.spider.model.db.dao.CRUD;
 import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
-import com.epam.lab.spider.model.db.dao.*;
-import org.apache.log4j.Logger;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by shell on 6/18/2015.
@@ -13,7 +9,7 @@ import java.util.Map;
 public aspect SavableDAOFactoryAspect {
     public <E> SavableDAO<E> DAOFactory.getSavableDAO(Class<E> clazz) {
         CRUD localDAO = this.getCrudDAOByEntity(clazz);
-        if(localDAO instanceof SavableDAO){
+        if (localDAO instanceof SavableDAO) {
             return (SavableDAO<E>) localDAO;
         }
         return null;

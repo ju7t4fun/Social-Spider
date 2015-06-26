@@ -16,7 +16,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-    <title>Task | All Tasks</title>
+    <title>Social Spider</title>
 
     <!-- Bootstrap CSS -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -38,40 +38,21 @@
     <script src="js/respond.min.js"></script>
     <script src="js/lte-ie7.js"></script>
     <![endif]-->
-    <link href="${pageContext.request.contextPath}/css/toastr.css"/>
-    <script src="${pageContext.request.contextPath}/js/toastr.js" type="text/javascript"></script>
 
 </head>
-
 <body>
 
-<!-- container section start -->
 <section id="container" class="">
 
-    <jsp:include page="pagecontent/header.jsp"/>
-    <jsp:include page="pagecontent/sidebar.jsp"/>
-
+    <jsp:include page="../pagecontent/header.jsp"/>
+    <jsp:include page="../pagecontent/sidebar.jsp"/>
 
     <!--main content start-->
-    <section id="main-content">
-        <section class="wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-desktop"></i>Task</li>
-                        <li><i class="fa fa-list-alt"></i>All Tasks</li>
-                    </ol>
-                </div>
-            </div>
 
-            USER
-        </section>
-
-    </section>
     <!--main content end-->
 </section>
 <!-- container section end -->
+
 
 <!-- javascripts -->
 <script src="${pageContext.request.contextPath}/js/jquery.js"></script>

@@ -38,6 +38,7 @@ public class RetrieveRestoreCommand implements ActionCommand {
                 return;
             }
             request.setAttribute("email", email);
+            System.out.println("---------" );
             request.getRequestDispatcher("jsp/user/pwrestore_newpw.jsp").forward(request, response);
         } else
             response.sendError(HttpServletResponse.SC_NOT_FOUND);

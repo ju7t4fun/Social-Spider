@@ -20,6 +20,16 @@ public class RegisterServlet extends HttpServlet {
 
     private static ActionFactory factory = new RegisterActionFactory();
 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+            IOException {
+        factory.action(request, response);
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+            IOException {
+        factory.action(request, response);
+    }
+
     private static class RegisterActionFactory extends ActionFactory {
 
         public RegisterActionFactory() {
@@ -30,16 +40,6 @@ public class RegisterServlet extends HttpServlet {
             commands.put("activate", new ActivateCommand());
         }
 
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-            IOException {
-        factory.action(request, response);
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-            IOException {
-        factory.action(request, response);
     }
 
 }

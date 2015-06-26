@@ -1,5 +1,6 @@
-package com.epam.lab.spider.controller.command;
+package com.epam.lab.spider.controller.command.user.profile;
 
+import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.FileType;
 import com.epam.lab.spider.model.db.entity.User;
 import com.epam.lab.spider.model.db.service.UserService;
@@ -23,28 +24,6 @@ import java.util.List;
  * Created by Marian Voronovskyi on 22.06.2015.
  */
 public class ChangeAvatarCommand implements ActionCommand {
-
-    enum AvatarExtension {
-        IMAGES(".jpg", ".gif", ".jpeg", ".png");
-        private String[] extensions;
-
-        AvatarExtension(String... extensions) {
-            this.extensions = extensions;
-        }
-
-        public String[] getExtensions() {
-            return extensions;
-        }
-
-        public boolean checkExtension(String extesion) {
-            for (String e : extensions) {
-                if (e.equals(extesion)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -91,6 +70,28 @@ public class ChangeAvatarCommand implements ActionCommand {
             if (jsonError != "") {
                 response.getWriter().print(new JSONObject().put("error", jsonError));
             }
+        }
+    }
+
+    enum AvatarExtension {
+        IMAGES(".jpg", ".gif", ".jpeg", ".png");
+        private String[] extensions;
+
+        AvatarExtension(String... extensions) {
+            this.extensions = extensions;
+        }
+
+        public String[] getExtensions() {
+            return extensions;
+        }
+
+        public boolean checkExtension(String extesion) {
+            for (String e : extensions) {
+                if (e.equals(extesion)) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
