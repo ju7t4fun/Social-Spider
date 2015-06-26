@@ -150,7 +150,7 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
 
     @Override
     public List<Wall> getByProfileId(Connection connection, int id) throws SQLException {
-        return select(connection, SQL_GET_ALL_BY_PROFILE_ID_QUERY,id);
+        return select(connection, SQL_GET_ALL_BY_PROFILE_ID_QUERY, id);
     }
 
 }

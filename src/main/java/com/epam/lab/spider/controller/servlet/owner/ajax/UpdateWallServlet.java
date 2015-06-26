@@ -5,7 +5,6 @@ import com.epam.lab.spider.model.db.entity.Wall;
 import com.epam.lab.spider.model.db.service.OwnerService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
 import com.epam.lab.spider.model.db.service.WallService;
-import jdk.nashorn.internal.parser.JSONParser;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -16,15 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by Орест on 6/26/2015.
  */
 public class UpdateWallServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+            IOException {
 
         StringBuffer jb = new StringBuffer();
         String line = null;
@@ -32,7 +30,8 @@ public class UpdateWallServlet extends HttpServlet {
             BufferedReader reader = request.getReader();
             while ((line = reader.readLine()) != null)
                 jb.append(line);
-        } catch(Exception ex) {  }
+        } catch (Exception ex) {
+        }
 
         String s = jb.toString();
         JSONObject obj = new JSONObject(s);
@@ -44,7 +43,6 @@ public class UpdateWallServlet extends HttpServlet {
         OwnerService oServ = ServiceFactory.getInstance().create(OwnerService.class);
         Owner ow = oServ.getByVkId(ownerVkId);
         int owner_id = ow.getId();
-
 
 
         System.out.println("res : " + obj.getInt("ownerVkId"));
@@ -62,16 +60,16 @@ public class UpdateWallServlet extends HttpServlet {
         }
 
 
-        JSONArray arr = (JSONArray)obj.get("Read");
-        if (arr!=null) {
-            for(int i = 0; i < arr.length(); ++i) {
+        JSONArray arr = (JSONArray) obj.get("Read");
+        if (arr != null) {
+            for (int i = 0; i < arr.length(); ++i) {
                 newSelectedRead.add(Integer.parseInt(arr.getString(i)));
             }
 
         }
-        arr = (JSONArray)obj.get("Write");
-        if (arr!=null) {
-            for(int i = 0; i < arr.length(); ++i) {
+        arr = (JSONArray) obj.get("Write");
+        if (arr != null) {
+            for (int i = 0; i < arr.length(); ++i) {
                 newSelectedWrite.add(Integer.parseInt(arr.getString(i)));
             }
 
@@ -79,9 +77,9 @@ public class UpdateWallServlet extends HttpServlet {
 
 
         //for read
-        for(int i = 0; i < newSelectedRead.size(); ++i) {
+        for (int i = 0; i < newSelectedRead.size(); ++i) {
 
-            if (! containsProfileId(oldSelectedRead, newSelectedRead.get(i) ) ) {
+            if (!containsProfileId(oldSelectedRead, newSelectedRead.get(i))) {
                 Wall wall = new Wall();
                 wall.setId(243);
                 wall.setDeleted(false);
@@ -97,17 +95,18 @@ public class UpdateWallServlet extends HttpServlet {
             }
         }
         for (int i = 0; i < oldSelectedRead.size(); ++i) {
-            if (! newSelectedRead.contains(oldSelectedRead.get(i).getProfile_id()) ) {
+            if (!newSelectedRead.contains(oldSelectedRead.get(i).getProfile_id())) {
                 wallService.deleteByOwnerAndProfileIDAndPermission(owner_id,
-                        oldSelectedRead.get(i).getProfile_id(), oldSelectedRead.get(i).getId(), oldSelectedRead.get(i).getPermission());
+                        oldSelectedRead.get(i).getProfile_id(), oldSelectedRead.get(i).getId(), oldSelectedRead.get
+                                (i).getPermission());
             }
         }
 
         //for write
 
-        for(int i = 0; i < newSelectedWrite.size(); ++i) {
+        for (int i = 0; i < newSelectedWrite.size(); ++i) {
 
-            if (! containsProfileId(oldSelectedWrite, newSelectedWrite.get(i) ) ) {
+            if (!containsProfileId(oldSelectedWrite, newSelectedWrite.get(i))) {
                 Wall wall = new Wall();
                 wall.setId(243);
                 wall.setDeleted(false);
@@ -123,24 +122,25 @@ public class UpdateWallServlet extends HttpServlet {
         }
         for (int i = 0; i < oldSelectedWrite.size(); ++i) {
 
-            if (! newSelectedWrite.contains(oldSelectedWrite.get(i).getProfile_id()) ) {
+            if (!newSelectedWrite.contains(oldSelectedWrite.get(i).getProfile_id())) {
 
                 wallService.deleteByOwnerAndProfileIDAndPermission(owner_id,
-                        oldSelectedWrite.get(i).getProfile_id(), oldSelectedWrite.get(i).getId(), oldSelectedWrite.get(i).getPermission());
+                        oldSelectedWrite.get(i).getProfile_id(), oldSelectedWrite.get(i).getId(), oldSelectedWrite
+                                .get(i).getPermission());
             }
         }
 
 
-
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+            IOException {
 
     }
 
     private boolean containsProfileId(List<Wall> walls, int profileID) {
 
-        for(int i = 0; i < walls.size(); ++i) {
+        for (int i = 0; i < walls.size(); ++i) {
             if (walls.get(i).getProfile_id() == profileID) {
                 return true;
             }

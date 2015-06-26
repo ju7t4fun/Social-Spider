@@ -282,7 +282,7 @@
         }
 
         if (profilesRead != undefined) {
-            for (var i = 0; i < profilesRead.length - 1; i++) {
+            for (var i = 0; i < profilesRead.length; i++) {
                 $('#tokenize_read').multiSelect('addOption', {
                     value: ''.concat(profilesRead[i]),
                     text: 'Profile ID : '.concat(profilesRead[i]), index: 0

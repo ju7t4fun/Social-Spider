@@ -34,15 +34,6 @@ public class WallService implements BaseService<Wall> {
         return false;
     }
 
-    public boolean insertNoId(Wall wall) {
-        try (Connection connection = PoolConnection.getConnection()) {
-            return wdao.insertNoId(connection, wall);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
     @Override
     public boolean update(int id, Wall wall) {
         try (Connection connection = PoolConnection.getConnection()) {
