@@ -34,6 +34,15 @@ public class WallService implements BaseService<Wall> {
         return false;
     }
 
+    public boolean insertNoId(Wall wall) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.insertNoId(connection, wall);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     @Override
     public boolean update(int id, Wall wall) {
         try (Connection connection = PoolConnection.getConnection()) {
@@ -44,15 +53,66 @@ public class WallService implements BaseService<Wall> {
         return false;
     }
 
+    public boolean updateOnActive(int owner_id, int profile_id, Wall.Permission permission) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.updateOnActive(connection, owner_id, profile_id, permission);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean checkExist(Wall wall) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.checkedExist(connection, wall);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<Wall> getAllByOwnerIdAndPermission(int owner_id, Wall.Permission permission) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getAllByOwnerIdAndPermission(connection,owner_id,permission);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public boolean delete(int id) {
         try {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                assertTransaction(tsdao.deleteByWallId(connection, id));
-                assertTransaction(tddao.deleteByWallId(connection, id));
-                assertTransaction(wdao.delete(connection, id));
+                tsdao.deleteByWallId(connection, id);
+                tddao.deleteByWallId(connection, id);
+                wdao.delete(connection, id);
+                connection.commit();
+            } catch (SQLTransactionException e) {
+                connection.rollback();
+                return false;
+            } finally {
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean deleteByOwnerAndProfileIDAndPermission(int owner_id,int profile_id, int wallid, Wall.Permission permission) {
+        try {
+            Connection connection = PoolConnection.getConnection();
+            try {
+                connection.setAutoCommit(false);
+//                tsdao.deleteByWallId(connection, wallid);
+//                tddao.deleteByWallId(connection, wallid);
+               wdao.deleteByOwnerId(connection, owner_id, profile_id, permission);
                 connection.commit();
             } catch (SQLTransactionException e) {
                 connection.rollback();

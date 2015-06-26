@@ -17,6 +17,16 @@ public interface WallDAO extends CRUD<Wall> {
 
     boolean deleteByProfileId(Connection connection, int id) throws SQLException;
 
-    public List<Wall> getAllByProfileID(Connection connection, int profile_id) throws SQLException;
+    List<Wall> getAllByProfileID(Connection connection, int profile_id) throws SQLException;
+
+    boolean insertNoId(Connection connection, Wall wall) throws SQLException;
+
+     boolean checkedExist(Connection connection, Wall wall) throws SQLException;
+
+   List<Wall> getAllByOwnerIdAndPermission(Connection connection, int owner_id, Wall.Permission permission) throws SQLException;
+
+    boolean deleteByOwnerId(Connection connection, int owner_id, int profile_id, Wall.Permission permission) throws SQLException;
+
+    boolean updateOnActive(Connection connection, int owner_id, int profile_id, Wall.Permission permission) throws SQLException;
 
 }

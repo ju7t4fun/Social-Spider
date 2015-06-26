@@ -68,6 +68,15 @@ public class OwnerService implements BaseService<Owner> {
         return null;
     }
 
+    public Owner getByVkId(int vk_id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.getByVkId(connection, vk_id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Owner> getWithQuery(String SQL_SOME_QUERY) {
         try (Connection connection = PoolConnection.getConnection()) {
             return odao.getWithQuery(connection, SQL_SOME_QUERY);

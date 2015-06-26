@@ -91,7 +91,15 @@
         <servlet-name>OptionFillingServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.owner.ajax.OptionFillingServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateWallServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.owner.ajax.UpdateWallServlet</servlet-class>
+    </servlet>
 
+    <servlet-mapping>
+        <servlet-name>UpdateWallServlet</servlet-name>
+        <url-pattern>/jsonhandler</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>OptionFillingServlet</servlet-name>
         <url-pattern>/OptionFillingServlet</url-pattern>

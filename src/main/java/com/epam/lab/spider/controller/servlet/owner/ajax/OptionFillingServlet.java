@@ -73,7 +73,6 @@ public class OptionFillingServlet extends HttpServlet {
                  profilesWrite.add(selectedProfiles.get(i));
              }
         }
-        System.out.println("selected profiles: " + selectedProfiles.size());
         for(int i = 0; i < selectedProfiles.size(); ++i) {
             if ( !profilesRead.contains(selectedProfiles.get(i))) {
                 selectedProfilesRead.add(selectedProfiles.get(i));

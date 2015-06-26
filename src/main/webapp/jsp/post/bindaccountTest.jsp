@@ -195,49 +195,24 @@
     var profilesWrite;
     var profilesRead;
 
-    var  selectedWriteResult;
-    var  selectedReadResult;
 
 
     $(document).ready(function () {
 
-          selectedWriteResult = [];
-          selectedReadResult = [];
-        $('#tokenize_read').multiSelect({
-            afterSelect: function(values){
-                for(var i = selectedReadResult.length - 1; i >= 0; i--) {
-                    if(selectedReadResult[i] == values) {
-                        selectedReadResult.splice(i, 1);
-                    }
-                }
-                selectedReadResult.push(values);
-            },
-            afterDeselect: function(values){
-                for(var i = selectedReadResult.length - 1; i >= 0; i--) {
-                    if(selectedReadResult[i] == values) {
-                        selectedReadResult.splice(i, 1);
-                    }
-                }
-            }
-        });
 
-        $('#tokenize_write').multiSelect({
-            afterSelect: function(values){
-                for(var i = selectedWriteResult.length - 1; i >= 0; i--) {
-                    if(selectedWriteResult[i] === values) {
-                        selectedWriteResult.splice(i, 1);
-                    }
+        $('#tokenize_read').multiSelect(
+                {
+                    selectableHeader: "<div class='custom-header'>Non Selected Profiles</div>",
+                    selectionHeader: "<div class='custom-header'>Selected Profiles</div>"
                 }
-                selectedWriteResult.push(values);
-            },
-            afterDeselect: function(values){
-                for(var i = selectedWriteResult.length - 1; i >= 0; i--) {
-                    if(selectedWriteResult[i] === values) {
-                        selectedWriteResult.splice(i, 1);
-                    }
+        );
+
+        $('#tokenize_write').multiSelect(
+                {
+                    selectableHeader: "<div class='custom-header'>Non Selected Profiles</div>",
+                    selectionHeader: "<div class='custom-header'>Selected Profiles</div>"
                 }
-            }
-        });
+        );
 
 
         $("#popup1").hide();
@@ -285,8 +260,6 @@
         profilesWrite = [];
         profilesRead = [];
 
-        selectedWriteResult = [];
-        selectedReadResult = [];
 
         $('#tokenize_read').multiSelect('refresh');
         $('#tokenize_write').multiSelect('refresh');
@@ -304,7 +277,7 @@
             for (i = 0; i < selectedProfilesWrite.length; i++) {
                 $('#tokenize_write').multiSelect('addOption', { value: ''.concat(selectedProfilesWrite[i]),
                     text: 'Profile ID : '.concat(selectedProfilesWrite[i]), index: 0 });
-                $('#tokenize_read').multiSelect('select', ''.concat(selectedProfilesWrite[i]));
+                $('#tokenize_write').multiSelect('select', ''.concat(selectedProfilesWrite[i]));
             }
         }
 
@@ -346,24 +319,35 @@
         $("#popup1").show();
     }
     function PopUpHide() {
-        searchFlights();
-        alert(rowID + " was saved");
+        sendRequest(rowID);
         $("#popup1").hide();
 
     }
 
-    function searchFlights() {
+    function sendRequest(index) {
 
         var afterSelectionRead = document.getElementById("tokenize_read").options;
         var afterSelectionWrite = document.getElementById("tokenize_write").options;
+         var readResult = [];
+        var writeResult = [];
         for (var i = 0; i < afterSelectionRead.length; i++) {
             if (afterSelectionRead[i].selected)
-            alert(afterSelectionRead[i].text);
+                    readResult.push(afterSelectionRead[i].value);
         }
         for (var i = 0; i < afterSelectionWrite.length; i++) {
             if (afterSelectionWrite[i].selected)
-                alert( "Write :  " + afterSelectionWrite[i].text);
+                writeResult.push(afterSelectionWrite[i].value);
         }
+
+        var jsonRes = {"ownerVkId" : index,
+                        "Read" :  readResult ,
+                        "Write" : writeResult
+                                            };
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("POST", "/jsonhandler");
+        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xmlhttp.send(JSON.stringify(jsonRes));
     }
 
 
