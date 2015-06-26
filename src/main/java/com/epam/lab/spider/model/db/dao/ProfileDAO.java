@@ -15,4 +15,8 @@ public interface ProfileDAO extends CRUD<Profile> {
 
     Profile getByVkId(Connection connection, int vkId) throws SQLException;
 
+    List<Profile> getNotInWall(Connection connection, int owner_id) throws SQLException;
+
+    List<Profile> getInWall(Connection connection, int owner_id) throws SQLException;
+
 }

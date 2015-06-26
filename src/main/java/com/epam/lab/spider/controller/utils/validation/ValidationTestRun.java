@@ -17,7 +17,7 @@ public class ValidationTestRun {
         User user = new User();
         user.setEmail("str number 4");
         ValidateResult rs = validator.valideteWithResult(user);
-        for(Map.Entry e:rs.getInvalideMessage().entrySet()){
+        for(Map.Entry e:rs.getInvalidMessage().entrySet()){
             System.out.println(""+e);
         }
         System.out.println(validator.isValid(user));

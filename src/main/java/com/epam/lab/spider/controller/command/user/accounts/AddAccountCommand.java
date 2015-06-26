@@ -12,6 +12,7 @@ import com.epam.lab.spider.model.db.service.ServiceFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -27,7 +28,7 @@ public class AddAccountCommand implements ActionCommand {
 
     public AddAccountCommand() {
         vk = new Vkontakte(APP_ID);
-        vk.conf().setPermissions(Scope.WALL, Scope.GROUPS);
+        vk.conf().setPermissions(Scope.WALL, Scope.GROUPS, Scope.PHOTOS);
         vk.createOAuth(Authorization.Type.CLIENT);
     }
 

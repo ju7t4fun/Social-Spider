@@ -98,9 +98,27 @@ public class WallService implements BaseService<Wall> {
         return null;
     }
 
+    public  List<Wall> getAllByProfileID(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getAllByProfileID(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     public List<Wall> getSourceByTaskId(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
             return wdao.getSourceByTaskId(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public List<Wall> getWallsByProfileId(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getByProfileId(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -41,10 +41,13 @@ public class RegisterCommand implements ActionCommand {
         session.removeAttribute("vkId");
         session.removeAttribute("email");
 
+        ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
+
         User user = userService.getByEmail(email);
         if (user != null && !user.getDeleted()) {
             // Користувач з таким email-ом існує
-            request.setAttribute("registerMessage", "User with email :" + user.getEmail() + " already exists!");
+            request.setAttribute("toastr_notification", "error|" + UTF8.encoding(bundle.getString("reg.notification" +
+                    ".exist").replace("{email}", user.getEmail())));
             request.setAttribute("name", name);
             request.setAttribute("surname", surname);
             request.getRequestDispatcher("jsp/user/registration.jsp").forward(request, response);
@@ -69,10 +72,9 @@ public class RegisterCommand implements ActionCommand {
 
             // Надсилання повідомлення активації
             sendActivationEmail(userService.getById(user.getId()), request);
-
-            request.setAttribute("activationMessage", "You have been Successfully registered. " +
-                    "Please activate your account");
-            request.getRequestDispatcher("/register?action=activateResult").forward(request, response);
+            session.setAttribute("toastr_notification", "success|" + UTF8.encoding(bundle.getString("reg.notification" +
+                    ".success")));
+            response.sendRedirect("/login");
         }
     }
 

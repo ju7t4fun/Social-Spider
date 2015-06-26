@@ -12,6 +12,7 @@ import org.apache.commons.codec.binary.Base64;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -29,24 +30,30 @@ public class SendRestoreCommand implements ActionCommand {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         User user = service.getByEmail(email);
+        HttpSession session = request.getSession();
+        ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         if (user != null) {
             switch (user.getState()) {
                 case BANNED:
-                    request.setAttribute("restoreMessage", "Your account is Banned.");
+                    request.setAttribute("toastr_notification", "warning|" + UTF8.encoding(bundle.getString("login" +
+                            ".notification.banned")));
                     request.getRequestDispatcher("jsp/user/pwrestore_email.jsp").forward(request, response);
                     return;
                 case CREATED:
-                    request.setAttribute("restoreMessage", "Your account is non-activated. Please activate " +
-                            "your account via email");
+                    request.setAttribute("toastr_notification", "warning|" + UTF8.encoding(bundle.getString("login" +
+                            ".notification.created")));
                     request.getRequestDispatcher("jsp/user/pwrestore_email.jsp").forward(request, response);
                     return;
                 case ACTIVATED:
+                    session.setAttribute("toastr_notification", "success|" + UTF8.encoding(bundle.getString("restore" +
+                            ".notification.send")));
                     sendMail(request, user);
                     response.sendRedirect("/login");
                     return;
             }
         }
-        request.setAttribute("restoreMessage", "There is no user with this email!");
+        request.setAttribute("toastr_notification", "error|" + UTF8.encoding(bundle.getString("restore.notification" +
+                ".error")));
         request.getRequestDispatcher("jsp/user/pwrestore_email.jsp").forward(request, response);
     }
 

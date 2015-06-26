@@ -62,7 +62,7 @@ public class FilterDAOImp extends BaseDAO implements FilterDAO {
             filter = new Filter();
             filter.setId(rs.getInt("id"));
             filter.setLikes(rs.getInt("likes"));
-            filter.setReposts(rs.getInt("reports"));
+            filter.setReposts(rs.getInt("reposts"));
             filter.setComments(rs.getInt("comments"));
             filter.setMinTime(rs.getLong("min_time"));
             filter.setMaxTime(rs.getLong("max_time"));

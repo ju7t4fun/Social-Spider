@@ -159,7 +159,7 @@ public class Validator {
         Map<String, String> errors = new HashMap<>();
         boolean valid = true;
         @Override
-        public boolean isValide() {
+        public boolean isValid() {
             return valid;
         }
 
@@ -169,7 +169,7 @@ public class Validator {
         }
 
         @Override
-        public Map<String, String> getInvalideMessage() {
+        public Map<String, String> getInvalidMessage() {
             return errors;
         }
     }

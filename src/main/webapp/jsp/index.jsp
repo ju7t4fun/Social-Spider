@@ -44,6 +44,7 @@
 
     <![endif]-->
 
+    <script src="${pageContext.request.contextPath}js/language.js"></script>
 </head>
 
 <body id="page-top">
@@ -55,7 +56,7 @@
             <jsp:forward page="admin_index.jsp"/>
         </c:when>
         <c:when test="${user.role == 'USER'}">
-            <jsp:forward page="user_index.jsp"/>
+            <jsp:forward page="user/index.jsp"/>
         </c:when>
         <c:otherwise>
             <header class="header dark-bg" style="background: rgb(26, 39, 50)">

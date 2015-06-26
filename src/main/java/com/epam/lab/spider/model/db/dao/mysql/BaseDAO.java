@@ -97,11 +97,16 @@ public abstract class BaseDAO {
                 statement.setTimestamp(i, (Timestamp) arg);
                 continue;
             }
-//            else{
-//                statement.setObject(i, arg);
-//                continue;
-//            }
-            LOG.error("Объект класса \"" + arg.getClass().getName() + "\" не установлен в PreparedStatement");
+            else{
+                // ТА КОЛИ Ж ВИ НАВЧИТЕСЬ
+                // ТЕ ЩО СЕТТАЄМ УЖЕ ПЕРЕВІРЕНО В ВАЛІДАТОРІ
+                // КОД ВИЩЕ - НЕ ПОТРІБНИЙ
+                // ДОСТАТНЬО ФРАГМЕТА НИЖЧЕ
+                // НЕ ЗАКОМЕНТОВУВАТИ НАХ !!!
+                statement.setObject(i, arg.toString());
+                LOG.error("Объект класса \"" + arg.getClass().getName() + "\" не установлен в PreparedStatement");
+                continue;
+            }
         }
         return statement;
     }
