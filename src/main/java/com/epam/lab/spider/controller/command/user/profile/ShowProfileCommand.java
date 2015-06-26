@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.command.api;
+package com.epam.lab.spider.controller.command.user.profile;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 
@@ -8,12 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Boyarsky Vitaliy on 08.06.2015.
+ * Created by Boyarsky Vitaliy on 26.06.2015.
  */
-public class AddAccountCommand implements ActionCommand {
-
+public class ShowProfileCommand implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("jsp/user/user_profile.jsp").forward(request, response);
     }
-
 }

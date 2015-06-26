@@ -70,7 +70,7 @@ function onSignIn() {
                 if (response.response === "error")
                     message.attr("class", "alert alert-danger");
                 message.html(response.message);
-                message.attr("hidden")
+                message.removeAttr("hidden")
             }
         };
         request.send();
@@ -84,7 +84,7 @@ function onSignOut() {
         $("#signOut").attr("hidden", "");
         $("#message").attr("hidden", "");
         $("#notification").attr("hidden", "");
-
+        config.user_id = 0;
         chrome.runtime.sendMessage({'action': 'signOut'});
         chrome.storage.local.remove(['config']);
     });

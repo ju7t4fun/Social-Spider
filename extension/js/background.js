@@ -1,22 +1,6 @@
 var apps = ["4949213"];
 var host = "http://localhost:8080/";
 
-// Повідомлення про успішнку авторизації
-var authSuccessNotification = {
-    "type": "basic",
-    "typeNotification": "SUCCESS",
-    "title": "Social Spider",
-    "message": "Authorization successful.",
-};
-
-// Повідомлення про скасування авторизації
-var authErrorNotification = {
-    "type": "basic",
-    "typeNotification": "ERROR",
-    "title": "Social Spider",
-    "message": "Authorization failure.",
-};
-
 // Файл конфігурації default
 var config = {
     user_id: '0',
@@ -105,10 +89,6 @@ function onAuth(tabId, from_url) {
                 url: host + "user/accounts?action=add&user_id=" + param.user_id + "&access_token=" + param.access_token
                 + "&expires_in=" + param.expires_in
             });
-            if (param.user_id === undefined)
-                createNotification(authErrorNotification, 3000);
-            else
-                createNotification(authSuccessNotification, 3000);
             chrome.tabs.onUpdated.removeListener(parseAccessToken);
         }
     }

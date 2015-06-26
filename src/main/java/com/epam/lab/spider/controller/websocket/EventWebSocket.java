@@ -22,8 +22,8 @@ public class EventWebSocket implements Receiver {
 
     private static final Logger LOG = Logger.getLogger(EventWebSocket.class);
 
-    private final Map<Integer, Session> sessions = new HashMap<>();
-    private List<Sender> senders = new ArrayList<Sender>() {
+    private static final Map<Integer, Session> sessions = new HashMap<>();
+    private static final List<Sender> senders = new ArrayList<Sender>() {
         {
             add(new EventLogger.EventSender());
         }
@@ -39,6 +39,9 @@ public class EventWebSocket implements Receiver {
     @OnOpen
     public void onOpen(@PathParam("clientId") String clientId, Session session) {
         sessions.put(Integer.parseInt(clientId), session);
+        for (Sender sender : senders) {
+            sender.history(Integer.parseInt(clientId));
+        }
         LOG.debug("onOpen (clientId=" + clientId + ")");
     }
 
@@ -64,13 +67,16 @@ public class EventWebSocket implements Receiver {
     }
 
     @Override
-    public void send(int id, String message) {
+    public boolean send(int id, String message) {
         try {
-            if (sessions.containsKey(id))
+            if (sessions.containsKey(id)) {
                 sessions.get(id).getBasicRemote().sendText(message);
+                return true;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
 }

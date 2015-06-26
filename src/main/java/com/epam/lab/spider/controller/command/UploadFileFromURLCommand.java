@@ -15,6 +15,7 @@ import java.math.BigInteger;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by Marian Voronovskyi on 20.06.2015.
@@ -26,6 +27,8 @@ public class UploadFileFromURLCommand implements ActionCommand {
 
         ServletContext context = request.getSession().getServletContext();
         response.setContentType("application/json");
+        Map<String, String> urlType = (Map<String, String>) request.getSession().getAttribute("files_url");
+
         String filePath;
         String message ;
         String status;
@@ -40,12 +43,17 @@ public class UploadFileFromURLCommand implements ActionCommand {
             fileName = new BigInteger(130, random).toString(32) +
                     extension;
             FileUtils.copyURLToFile(url, new File(filePath + File.separator + fileName));
+            urlType.put(type.getPath() + "/" + fileName, type.toString());
             status = "success";
             message = "File has been successfully uploaded to server!";
         } catch (Exception e) {
             e.printStackTrace();
             status = "fail";
             message = "Wrong URL, please try again!";
+        }
+        if (!urlType.isEmpty()) {
+            System.out.println(urlType);
+            request.getSession().setAttribute("files_url", urlType);
         }
         response.getWriter().print(new JSONObject().put(status, message));
     }

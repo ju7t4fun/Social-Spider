@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.user.signup;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.utils.hash.HashSHA;
 import com.epam.lab.spider.model.db.entity.User;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
@@ -9,7 +10,9 @@ import com.epam.lab.spider.model.db.service.UserService;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 /**
  * Created by Dmytro on 12.06.2015.
@@ -33,7 +36,11 @@ public class ActivateCommand implements ActionCommand {
             if (hash.equals(sha.hash(user.getCreateTime().toString() + user.getState()))) {
                 user.setState(User.State.ACTIVATED);
                 userService.update(user.getId(), user);
-                response.sendRedirect("/");
+                HttpSession session = request.getSession();
+                ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
+                session.setAttribute("toastr_notification", "success|" + UTF8.encoding(bundle.getString("reg.activate" +
+                        ".success")));
+                response.sendRedirect("/login");
                 return;
             }
         }

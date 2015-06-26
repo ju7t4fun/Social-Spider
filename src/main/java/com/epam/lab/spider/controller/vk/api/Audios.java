@@ -69,7 +69,7 @@ public class Audios extends Methods {
      * Сохраняет аудиозаписи после успешной загрузки.
      */
     public List<Audio> save(Parameters param) throws VKException {
-        Response response = request("audio.save", param).execute();
+        Response response = request("audio.safeSave", param).execute();
         return Audio.parseAudio(response.root());
     }
 

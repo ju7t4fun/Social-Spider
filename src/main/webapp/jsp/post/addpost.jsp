@@ -24,14 +24,14 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/fileinput.css" media="all" rel="stylesheet"
           type="text/css"/>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <%--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>--%>
     <script src="${pageContext.request.contextPath}/js/fileinput.min.js" type="text/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"
             type="text/javascript"></script>
     <!-- Bootstrap CSS -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
     <!-- bootstrap theme -->
-    <link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">
+    <%--<link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">--%>
     <!-- font icon -->
     <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet"/>
@@ -43,6 +43,9 @@
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
 
 
 </head>
@@ -82,13 +85,14 @@
 
                                 <div class="form quick-post">
                                     <!-- Edit profile form (not working)-->
-                                    <form class="form-horizontal">
+                                    <form id="post_form" class="form-horizontal"
+                                          action="/controller?action=addpost" method="POST">
                                         <!-- Title -->
                                         <div class="form-group">
                                             <label class="control-label col-lg-2" for="title">Title</label>
 
                                             <div class="col-lg-10">
-                                                <input type="text" class="form-control" id="title">
+                                                <input type="text" name="title" class="form-control" id="title">
                                             </div>
                                         </div>
                                         <!-- Content -->
@@ -97,7 +101,7 @@
                                                    for="content">Content</label>
 
                                             <div class="col-lg-10">
-                                                <textarea class="form-control" id="content"
+                                                <textarea class="form-control" name="message" id="content"
                                                           style="height:250px;"></textarea>
                                             </div>
                                         </div>
@@ -106,11 +110,10 @@
                                             <label class="control-label col-lg-2" for="tagsinput">Tags</label>
 
                                             <div class="panel-body">
-                                                <input name="tagsinput" id="tagsinput" class="tagsinput"
-                                                       value="Tag1, Tag2, Tag3, Tag4, Tag5"/>
+                                                <input name="tags" id="tagsinput" class="tagsinput"
+                                                        />
                                             </div>
                                         </div>
-
                                         <!-- Add file -->
 
 
@@ -142,7 +145,7 @@
                                                         $('#uriForm').hide();
                                                         $('#compForm').show();
                                                         $('html, body').animate({
-                                                            scrollTop: $(".widget-foot").offset().top
+                                                            scrollTop: $("#scrl").offset().top
                                                         }, 1000);
                                                     }
                                                     function uploadFromURL() {
@@ -151,7 +154,7 @@
                                                         $('#fl').hide();
                                                         $('#sc').hide();
                                                         $('html, body').animate({
-                                                            scrollTop: $(".widget-foot").offset().top
+                                                            scrollTop: $("#scrl").offset().top
                                                         }, 1000);
                                                     }
                                                 </script>
@@ -163,7 +166,8 @@
                                                            accept="audio/*,video/*,image/*" value="">
                                                     <script>
                                                         $("#input-dim-2").fileinput({
-                                                            uploadUrl: "http://localhost:8080/controller?action=upload"
+                                                            uploadUrl: "http://localhost:8080/controller?action=upload",
+                                                            maxFileCount: 10
                                                         });
                                                     </script>
                                                 </div>
@@ -236,17 +240,22 @@
                                         <div class="form-group">
                                             <br>
                                             <!-- Buttons -->
-                                            <div class="col-lg-offset-2 col-lg-9">
-                                                <button type="submit" class="btn btn-primary">Publish</button>
-                                                <button type="submit" class="btn btn-danger">Save Draft
+                                            <div id="scrl" class="col-lg-offset-2 col-lg-9">
+                                                <button id="publish" class="btn btn-primary">Publish</button>
+                                                <button class="btn btn-info" data-toggle="modal"
+                                                        data-target="#myModal">Save
+                                                    Draft
                                                 </button>
                                                 <button type="reset" class="btn btn-default">Reset</button>
                                             </div>
                                         </div>
+                                        <script>
+                                            $("#publish").click(function () {
+                                                $("#post_form").submit();
+                                            });
+                                        </script>
                                     </form>
                                 </div>
-
-
                             </div>
                             <div class="widget-foot">
                                 <!-- Footer goes here -->
@@ -262,44 +271,124 @@
         </section>
     </section>
     <!--main content end-->
-
-
 </section>
 
-<!-- container section start -->
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
+                <h4 class="modal-title">Post date and time</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form class="form-horizontal">
+                            <div style="position: relative; left: -130px; top:30px;">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="date">Date</label>
 
-<!-- javascripts -->
+                                    <div class="col-md-4">
+                                        <input id="date" name="name" type="date" min="${date}" placeholder="Post date"
+                                               class="form-control input-md">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="time">Time</label>
 
-<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery-ui-1.10.4.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/jquery-ui-1.9.2.custom.min.js"></script>
-<!-- bootstrap -->
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-<!-- nice scroll -->
-<script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
-<!--script for this page only-->
-<script src="${pageContext.request.contextPath}/js/calendar-custom.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.rateit.min.js"></script>
-<!-- custom select -->
-<script src="${pageContext.request.contextPath}/js/jquery.customSelect.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/chart-master/Chart.js"></script>
+                                    <div class="col-md-4">
+                                        <input id="time" name="name" type="time" min="${time}" placeholder="Post time"
+                                               class="form-control input-md">
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="position: relative; left: 250px; top:-109px;">
+                                <div class="form-group" style="">
+                                    <div class="col-lg-6">
+                                        <h4>Select group:</h4>
+                                        <select id="tokenize_focus" multiple="multiple" class="tokenize-sample">
+                                            <option value="1">GrabGroup 1</option>
+                                            <option value="2">GrabGroup 2</option>
+                                            <option value="3">GrabGroup 3</option>
+                                            <option value="4">GrabGroup 4</option>
+                                            <option value="5">GrabGroup 5</option>
+                                        </select>
 
-<!--custome script for all page-->
-<script src="${pageContext.request.contextPath}/js/scripts.js"></script>
-<!-- custom script for this page-->
-<script src="${pageContext.request.contextPath}/js/jquery.autosize.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.placeholder.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/gdp-data.js"></script>
-<script src="${pageContext.request.contextPath}/js/morris.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/sparklines.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.slimscroll.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/fileinput.min.js" type="text/javascript"></script>
-<!--custom tagsinput-->
-<script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
-<script src="${pageContext.request.contextPath}/js/form-component.js"></script>
+                                        <script type="text/javascript">
+                                            $('select#tokenize_focus').tokenize({displayDropdownOnFocus: true});
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="position: relative; left:-78px; top:-100px;">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="check">Remove after</label>
+                                    <input id="check" type="checkbox">
+                                </div>
+                            </div>
+                            <div style="position: relative; left:54px; top:-90px; width: 600px;">
+                                <div id="time3" class="col-md-4">
+                                    <input id="time1" name="name" type="number" placeholder="minutes"
+                                           class="form-control input-md">
+                                </div>
+                            </div>
+                            <button type="button" style="margin-left: 495px;margin-top: -80px;" class="btn btn-primary"
+                                    data-dismiss="modal">
+                                Save
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('#time3').hide();
+        $('#check').click(function () {
+            $("#time3").toggle(this.checked);
+        });
+    </script>
+    <!-- container section start -->
+
+    <!-- javascripts -->
+
+    <%--<script src="${pageContext.request.contextPath}/js/jquery.js"></script>--%>
+    <script src="${pageContext.request.contextPath}/js/jquery-ui-1.10.4.min.js"></script>
+    <%--<script src="${pageContext.request.contextPath}/js/jquery-1.8.3.min.js"></script>--%>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/js/jquery-ui-1.9.2.custom.min.js"></script>
+    <!-- bootstrap -->
+    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+    <!-- nice scroll -->
+    <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js"
+            type="text/javascript"></script>
+    <!--script for this page only-->
+    <script src="${pageContext.request.contextPath}/js/calendar-custom.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.rateit.min.js"></script>
+    <!-- custom select -->
+    <script src="${pageContext.request.contextPath}/js/jquery.customSelect.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/chart-master/Chart.js"></script>
+    <script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>
+
+
+    <!--custome script for all page-->
+    <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
+    <!-- custom script for this page-->
+    <script src="${pageContext.request.contextPath}/js/jquery.autosize.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.placeholder.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/gdp-data.js"></script>
+    <script src="${pageContext.request.contextPath}/js/morris.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/sparklines.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.slimscroll.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/fileinput.min.js"
+            type="text/javascript"></script>
+    <!--custom tagsinput-->
+    <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
+    <script src="${pageContext.request.contextPath}/js/form-component.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
+
 
 </body>
 </html>

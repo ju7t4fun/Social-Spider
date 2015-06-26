@@ -1,6 +1,10 @@
 package com.epam.lab.spider.model.db.dao.mysql;
 
 import com.epam.lab.spider.model.db.dao.PostDAO;
+import com.epam.lab.spider.model.db.dao.savable.SavableCRUDUtil;
+import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
+import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
+import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
 import com.epam.lab.spider.model.db.entity.Post;
 
 import java.sql.Connection;
@@ -66,5 +70,10 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
     @Override
     public Post getById(Connection connection, int id) throws SQLException {
         return first(select(connection, SQL_GET_BY_ID_QUERY, id));
+    }
+
+    @Override
+    public boolean save(Connection conn, Post entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException {
+        return SavableCRUDUtil.saveFromInterface(conn, entity);
     }
 }

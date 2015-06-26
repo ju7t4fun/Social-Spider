@@ -16,10 +16,8 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
 
     private static final String SQL_INSERT_QUERY = "INSERT INTO wall (owner_id, profile_id, permission, deleted) " +
             " VALUES (?, ?, ?, ?)";
-
-    private static final String SQL_INSERT__NO_IDQUERY = "INSERT INTO wall (owner_id, profile_id, permission" +
-            " VALUES (?, ?, ?)";
-
+                                                                                                                                                                                                                    
+ 
     private static final String SQL_UPDATE_QUERY = "UPDATE wall SET owner_id = ?, profile_id = ?, permission = ?, " +
             "deleted = ? WHERE id = ?";
     //private static final String SQL_DELETE_QUERY = "DELETE FROM wall WHERE id = ?";
@@ -39,6 +37,7 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     private static final String SQL_CHECK_EXIST_QUERY = "SELECT * FROM wall WHERE profile_id = ? AND owner_id=? AND permission=? AND deleted=true";
     private static final String SQL_UPDATE_ON_ACTIVE_QUERY = "UPDATE wall SET deleted = false WHERE owner_id = ? AND profile_id = ? AND permission = ? AND deleted=true";
 
+
     @Override
     public boolean insert(Connection connection, Wall wall) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
@@ -50,16 +49,11 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
         return res;
     }
 
-    @Override
-    public boolean insertNoId(Connection connection, Wall wall) throws SQLException {
-        boolean res = changeQuery(connection, SQL_INSERT__NO_IDQUERY,
-                wall.getOwner_id(),
-                wall.getProfile_id(),
-                wall.getPermission().toString().toUpperCase());
-        wall.setId(getLastInsertId(connection));
-        return res;
-    }
-
+  
+  
+  
+  
+  
     @Override
     public boolean update(Connection connection, int id, Wall wall) throws SQLException {
         return changeQuery(connection, SQL_UPDATE_QUERY,
@@ -152,6 +146,11 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     @Override
     public boolean deleteByProfileId(Connection connection, int id) throws SQLException {
         return changeQuery(connection, SQL_DELETED_BY_PROFILE_ID_QUERY, id);
+    }
+
+    @Override
+    public List<Wall> getByProfileId(Connection connection, int id) throws SQLException {
+        return select(connection, SQL_GET_ALL_BY_PROFILE_ID_QUERY,id);
     }
 
 }

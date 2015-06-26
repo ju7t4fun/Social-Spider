@@ -164,7 +164,7 @@ public class Photos extends Methods {
      * Сохраняет фотографии после успешной загрузки.
      */
     public List<Photo> save(Parameters param) throws VKException {
-        Response response = request("photos.save", param).execute();
+        Response response = request("photos.safeSave", param).execute();
         return Photo.parsePhoto(response.root());
     }
 

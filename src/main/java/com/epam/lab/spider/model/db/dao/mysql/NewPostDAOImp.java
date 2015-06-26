@@ -1,7 +1,12 @@
 package com.epam.lab.spider.model.db.dao.mysql;
 
 import com.epam.lab.spider.model.db.dao.NewPostDAO;
+import com.epam.lab.spider.model.db.dao.savable.SavableCRUDUtil;
+import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
+import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
+import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
 import com.epam.lab.spider.model.db.entity.NewPost;
+import com.epam.lab.spider.model.db.entity.Owner;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -24,8 +29,26 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     private static final String SQL_DELETE_QUERY = "UPDATE new_post SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM new_post WHERE deleted = false";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM new_post WHERE id = ? AND deleted = false";
-    private static final String SQL_SELECT_CREATED_BY_DATE_LE = "SELECT * FROM new_post WHERE state = '"+NewPost.State.CREATED+"' AND " +
+    private static final String SQL_SELECT_CREATED_BY_DATE_LE = "SELECT * FROM new_post WHERE state in " +
+            "('"+NewPost.State.CREATED+"', 'RESTORED') AND " +
             "post_time < ? AND deleted = false";
+
+
+    private static final String SQL_SET_ERROR_STATE_BASE = "UPDATE new_post SET state = 'ERROR' WHERE state IN ('CREATED', 'POSTING','RESTORED') AND wall_id IN ";
+    private static final String SQL_SET_RESTORED_STATE_BASE = "UPDATE new_post SET state = 'RESTORED' WHERE state IN ('ERROR') AND wall_id IN ";
+
+    private static final String SQL_WALL_PREDICATE = " ? ";
+    private static final String SQL_OWNER_PREDICATE = " SELECT id FROM wall WHERE owner_id = ? ";
+    private static final String SQL_PROFILE_PREDICATE = " SELECT id FROM wall WHERE profile_id = ? ";
+
+    private static final String SQL_SET_ERROR_STAGE_BY_WALL_ID = SQL_SET_ERROR_STATE_BASE +"("+SQL_WALL_PREDICATE+")";
+    private static final String SQL_SET_RESTORED_STAGE_BY_WALL_ID = SQL_SET_RESTORED_STATE_BASE + "("+SQL_WALL_PREDICATE+")";
+
+    private static final String SQL_SET_ERROR_STAGE_BY_OWNER_ID = SQL_SET_ERROR_STATE_BASE +"("+SQL_OWNER_PREDICATE+")";
+//    private static final String SQL_SET_RESTORED_STAGE_BY_OWNER_ID = SQL_SET_RESTORED_STATE_BASE + "("+SQL_OWNER_PREDICATE+")";
+
+    private static final String SQL_SET_ERROR_STAGE_BY_PROFILE_ID = SQL_SET_ERROR_STATE_BASE +"("+SQL_PROFILE_PREDICATE+")";
+//    private static final String SQL_SET_RESTORED_STAGE_BY_PROFILE_ID = SQL_SET_RESTORED_STATE_BASE + "("+SQL_PROFILE_PREDICATE+")";
 
     @Override
     public boolean insert(Connection connection, NewPost post) throws SQLException {
@@ -89,5 +112,31 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     public List<NewPost> getAllUnpostedByDate(Connection connection, Date date) throws SQLException {
         return select(connection, SQL_SELECT_CREATED_BY_DATE_LE, date);
     }
+
+    public boolean setErrorStateByWall(Connection connection, Integer wallId) throws SQLException {
+        return changeQuery(connection, SQL_SET_ERROR_STAGE_BY_WALL_ID, wallId);
+    }
+    public boolean setRestoredStateByWall(Connection connection, Integer wallId) throws SQLException {
+        return changeQuery(connection, SQL_SET_RESTORED_STAGE_BY_WALL_ID, wallId);
+    }
+
+    public boolean setErrorStateByOwner(Connection connection, Integer ownerId) throws SQLException {
+        return changeQuery(connection, SQL_SET_ERROR_STAGE_BY_OWNER_ID, ownerId);
+    }
+//    public boolean setRestoredStateByOwner(Connection connection, Integer ownerId) throws SQLException {
+//        return changeQuery(connection, SQL_SET_RESTORED_STAGE_BY_OWNER_ID, ownerId);
+//    }
+
+    public boolean setErrorStateByProfile(Connection connection, Integer profileId) throws SQLException {
+        return changeQuery(connection, SQL_SET_ERROR_STAGE_BY_PROFILE_ID, profileId);
+    }
+
+    @Override
+    public boolean save(Connection conn, NewPost entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException {
+        return SavableCRUDUtil.saveFromInterface(conn, entity);
+    }
+//    public boolean setRestoredStateByProfile(Connection connection, Integer profileId) throws SQLException {
+//        return changeQuery(connection, SQL_SET_RESTORED_STAGE_BY_PROFILE_ID, profileId);
+//    }
 
 }

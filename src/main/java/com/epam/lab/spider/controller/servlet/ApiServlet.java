@@ -1,7 +1,6 @@
 package com.epam.lab.spider.controller.servlet;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.api.AddAccountCommand;
 import com.epam.lab.spider.controller.command.api.AuthCommand;
 
 import javax.servlet.ServletException;
@@ -34,7 +33,6 @@ public class ApiServlet extends HttpServlet {
 
         public ApiActionFactory() {
             commands = new HashMap<>();
-            commands.put("add", new AddAccountCommand());
             commands.put("auth", new AuthCommand());
         }
 

@@ -52,6 +52,21 @@
     <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
     <![endif]-->
+
+    <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
+    <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
+    <script type="text/javascript">
+
+        // При завантаженні сторінки
+        setTimeout(function () {
+            if (${toastr_notification!=null}) {
+                var args = "${toastr_notification}".split("|");
+                toastrNotification(args[0], args[1]);
+            }
+        }, 500);
+
+    </script>
+
 </head>
 
 <body>
@@ -66,10 +81,10 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-user-md"></i> Profile</h3>
+                    <h3 class="page-header"><i class="fa fa-user-md"></i> PROFILE</h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-                        <li><i class="fa fa-user-md"></i>Profile</li>
+                        <li><i class="fa fa-home"></i><a href="/">HOME</a></li>
+                        <li><i class="fa fa-user-md"></i>PROFILE</li>
                     </ol>
                 </div>
             </div>
@@ -99,276 +114,129 @@
                 </div>
             </div>
             <!-- page start-->
-            <div class="row">
-                <div class="col-lg-12">
-                    <section class="panel">
-                        <header class="panel-heading tab-bg-info">
-                            <ul class="nav nav-tabs" style="margin-left:700px;">
-                                <li class="active">
-                                    <a data-toggle="tab" href="#recent-activity">
-                                        <i class="icon-home"></i>
-                                        Chat
-                                    </a>
-                                </li>
-                                <li>
-                                    <a data-toggle="tab" href="#profile">
-                                        <i class="icon-user"></i>
-                                        Profile
-                                    </a>
-                                </li>
-                            </ul>
-                        </header>
-                        <div class="panel-body">
-                            <div class="tab-content">
-                                <div id="recent-activity" class="tab-pane active">
-                                    <div class="profile-activity">
-                                        <div class="col-md-4 portlets">
-                                            <!-- Widget -->
-                                            <div class="panel panel-default" style="width:1100px;">
-                                                <div class="panel-heading">
-                                                    <div class="pull-left">Message</div>
-                                                    <div class="clearfix"></div>
-                                                </div>
+            <section class="panel">
+                <div class="panel-body bio-graph-info">
+                    <h1>Bio Graph</h1>
 
-                                                <div class="panel-body">
-                                                    <!-- Widget content -->
-                                                    <div class="padd sscroll">
-
-                                                        <ul class="chats">
-
-                                                            <!-- Chat by us. Use the class "by-me". -->
-                                                            <li class="by-me">
-                                                                <!-- Use the class "pull-left" in avatar -->
-                                                                <div class="avatar pull-left">
-                                                                    <img src="${pageContext.request.contextPath}/img/user.jpg"
-                                                                         alt=""/>
-                                                                </div>
-
-                                                                <div class="chat-content">
-                                                                    <!-- In meta area, first include "name" and then "time" -->
-                                                                    <div class="chat-meta">John Smith <span
-                                                                            class="pull-right">3 hours ago</span></div>
-                                                                    Vivamus diam elit diam, consectetur dapibus
-                                                                    adipiscing elit.
-                                                                    <div class="clearfix"></div>
-                                                                </div>
-                                                            </li>
-
-                                                            <!-- Chat by other. Use the class "by-other". -->
-                                                            <li class="by-me">
-                                                                <!-- Use the class "pull-right" in avatar -->
-                                                                <div class="avatar pull-left">
-                                                                    <img src="${pageContext.request.contextPath}/img/user22.png"
-                                                                         alt=""/>
-                                                                </div>
-
-                                                                <div class="chat-content">
-                                                                    <!-- In the chat meta, first include "time" then "name" -->
-                                                                    <div class="chat-meta">Jenifer Smith <span
-                                                                            class="pull-right">3 hours ago</span></div>
-                                                                    Vivamus diam elit diam, consectetur fconsectetur
-                                                                    dapibus adipiscing elit.
-                                                                    <div class="clearfix"></div>
-                                                                </div>
-                                                            </li>
-
-                                                            <li class="by-me">
-                                                                <div class="avatar pull-left">
-                                                                    <img src="${pageContext.request.contextPath}/img/user.jpg"
-                                                                         alt=""/>
-                                                                </div>
-
-                                                                <div class="chat-content">
-                                                                    <div class="chat-meta">John Smith <span
-                                                                            class="pull-right">4 hours ago</span></div>
-                                                                    Vivamus diam elit diam, consectetur fermentum sed
-                                                                    dapibus eget, Vivamus consectetur dapibus adipiscing
-                                                                    elit.
-                                                                    <div class="clearfix"></div>
-                                                                </div>
-                                                            </li>
-
-                                                            <li class="by-me">
-                                                                <!-- Use the class "pull-right" in avatar -->
-                                                                <div class="avatar pull-left">
-                                                                    <img src="${pageContext.request.contextPath}/img/user22.png"
-                                                                         alt=""/>
-                                                                </div>
-
-                                                                <div class="chat-content">
-                                                                    <!-- In the chat meta, first include "time" then "name" -->
-                                                                    <div class="chat-meta">Jenifer Smith<span
-                                                                            class="pull-right">3 hours ago </span></div>
-                                                                    Vivamus diam elit diam, consectetur fermentum sed
-                                                                    dapibus eget, Vivamus consectetur dapibus adipiscing
-                                                                    elit.
-                                                                    <div class="clearfix"></div>
-                                                                </div>
-                                                            </li>
-
-                                                        </ul>
-
-                                                    </div>
-                                                    <!-- Widget footer -->
-                                                    <div class="widget-foot">
-
-                                                        <form class="form-inline">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control"
-                                                                       placeholder="Type your message here..."
-                                                                       style="width:700px;">
-                                                            </div>
-                                                            <button type="submit" class="btn btn-info">Send</button>
-                                                        </form>
-
-
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <!-- profile -->
-                                <div id="profile" class="tab-pane">
-                                    <section class="panel">
-                                        <div class="panel-body bio-graph-info">
-                                            <h1>Bio Graph</h1>
-
-                                            <div class="row">
-                                                <div class="bio-row">
-                                                    <span>First Name:
-                                                        <span id="name"> ${user.name}</span></span>
-                                                </div>
-                                                <script>
-                                                    $.fn.editable.defaults.mode = 'inline';
-                                                    $('#name').editable({
-                                                        type: 'text',
-                                                        pk: 1,
-                                                        url: 'http://localhost:8080/controller?action=editprofile',
-                                                        title: 'Enter your First name',
-                                                        success: function (response) {
-                                                            if (response.status == 'error') return response.msg; //msg will be shown in editable form
-                                                        }
-                                                    });
-                                                </script>
-                                                <div class="bio-row">
-                                                    <span>Last Name:
-                                                        <span id="surname"> ${user.surname}</span></span>
-                                                </div>
-                                                <script>
-                                                    $.fn.editable.defaults.mode = 'inline';
-                                                    $('#surname').editable({
-                                                        type: 'text',
-                                                        pk: 1,
-                                                        url: 'http://localhost:8080/controller?action=editprofile',
-                                                        title: 'Enter your Last name',
-                                                        success: function (response) {
-                                                            if (response.status == 'error') return response.msg; //msg will be shown in editable form
-                                                        }
-                                                    });
-                                                </script>
-                                                <div class="bio-row">
-                                                    <span>Email: <span id="email"> ${user.email}</span></span>
-                                                </div>
-                                                <div class="bio-row">
-                                                    <span>Change password:
-                                                        <span id="change_password"> </span><a
-                                                                href="${pageContext.request.contextPath}/jsp/user/pwrestore_newpw.jsp">Change
-                                                            password</a> </span>
-                                                </div>
-                                                <div class="bio-row">
-                                                    <span>Change avatar:
-                                                        <a href="#" onclick="showUpload();">Select
-                                                            avatar</a></span>
-                                                    <script>
-                                                        function showUpload() {
-                                                            if ($('#compForm').is(":visible")) {
-                                                                $('#compForm').hide();
-                                                            } else {
-                                                                $('#compForm').show();
-                                                            }
-                                                        }
-                                                        function uploadFromURL() {
-                                                            $('html, body').animate({
-                                                                scrollTop: $(".widget-foot").offset().top
-                                                            }, 1000);
-                                                        }
-                                                    </script>
-                                                    <script>
-                                                        $(document).ajaxComplete(function (event, xhr, settings) {
-                                                            if (settings.url === "http://localhost:8080/controller?action=changeavatar") {
-                                                                $(".avatar").attr("src",
-                                                                        JSON.parse(xhr.responseText).success);
-                                                            }
-                                                        });
-                                                    </script>
-                                                    <script>
-                                                        $(document).ajaxComplete(function (event, xhr, settings) {
-                                                            if (settings.url === "http://localhost:8080/controller?action=editprofile") {
-                                                                $(".userfname").text(JSON.parse(xhr.responseText).fname);
-                                                                $(".userlname").text(JSON.parse(xhr.responseText).lname);
-                                                            }
-                                                        });
-                                                    </script>
-                                                    <div id="compForm" class="container kv-main" style="width:800px;
-                                                      margin-top:20px;">
-                                                        <input id="input-dim-2" type="file"
-                                                               multiple="true" method="post"
-                                                               enctype="multipart/form-data"
-                                                               accept="image/*">
-                                                        <script>
-                                                            $("#input-dim-2").fileinput({
-                                                                uploadUrl: "http://localhost:8080/controller?action=changeavatar",
-                                                                allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg'],
-                                                                maxFileCount: 1
-                                                            });
-                                                        </script>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </section>
-                                    <section>
-                                        <div class="row">
-                                        </div>
-                                    </section>
-                                </div>
+                    <div class="row">
+                        <div class="bio-row">
+                            <span>First Name: <span id="name"> ${user.name}</span></span>
+                        </div>
+                        <script>
+                            $.fn.editable.defaults.mode = 'inline';
+                            $('#name').editable({
+                                type: 'text',
+                                pk: 1,
+                                url: 'http://localhost:8080/profile?action=edit',
+                                title: 'Enter your First name',
+                                success: function (response) {
+                                    if (response.status == 'error') return response.msg;
+                                }
+                            });
+                        </script>
+                        <div class="bio-row">
+                            <span>Last Name: <span id="surname"> ${user.surname} </span></span>
+                        </div>
+                        <script>
+                            $.fn.editable.defaults.mode = 'inline';
+                            $('#surname').editable({
+                                type: 'text',
+                                pk: 1,
+                                url: 'http://localhost:8080/profile?action=edit',
+                                title: 'Enter your Last name',
+                                success: function (response) {
+                                    if (response.status == 'error') return response.msg;
+                                }
+                            });
+                        </script>
+                        <div class="bio-row">
+                            <span>Email: <span id="email"> ${user.email}</span></span>
+                        </div>
+                        <div class="bio-row">
+                            <span>Change password: <span id="change_password"> </span>
+                                <a href="/profile?action=change&email=${user.email}">Change password</a> </span>
+                        </div>
+                        <div class="bio-row">
+                            <span>Change avatar:
+                                <a href="#" onclick="showUpload();">Select avatar</a></span>
+                            <script>
+                                function showUpload() {
+                                    if ($('#compForm').is(":visible")) {
+                                        $('#compForm').hide();
+                                    } else {
+                                        $('#compForm').show();
+                                    }
+                                }
+                                function uploadFromURL() {
+                                    $('html, body').animate({
+                                        scrollTop: $(".widget-foot").offset().top
+                                    }, 1000);
+                                }
+                            </script>
+                            <script>
+                                $(document).ajaxComplete(function (event, xhr, settings) {
+                                    if (settings.url === "http://localhost:8080/profile?action=changeAvatar") {
+                                        var response = JSON.parse(xhr.responseText);
+                                        $(".avatar").attr("src", response.success);
+                                        toastrNotification(response.status, response.msg);
+                                    }
+                                });
+                            </script>
+                            <script>
+                                $(document).ajaxComplete(function (event, xhr, settings) {
+                                    if (settings.url === "http://localhost:8080/profile?action=edit") {
+                                        var response = JSON.parse(xhr.responseText);
+                                        $(".userfname").text(response.fname);
+                                        $(".userlname").text(response.lname);
+                                        toastrNotification(response.status, response.msg);
+                                    }
+                                });
+                            </script>
+                            <div id="compForm" class="container kv-main" style="width:800px; margin-top:20px;">
+                                <input id="input-dim-2" type="file"
+                                       multiple="true" method="post"
+                                       enctype="multipart/form-data"
+                                       accept="image/*">
+                                <script>
+                                    $("#input-dim-2").fileinput({
+                                        uploadUrl: "http://localhost:8080/profile?action=changeAvatar",
+                                        allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg'],
+                                        maxFileCount: 1
+                                    });
+                                </script>
                             </div>
                         </div>
-                    </section>
+                    </div>
                 </div>
-            </div>
-            <script>
-                $('#compForm').hide();
-            </script>
-            <!-- page end-->
+            </section>
+            <section>
+                <script>
+                    $('#compForm').hide();
+                </script>
+                <!-- page end-->
+            </section>
         </section>
+        <!--main content end-->
     </section>
-    <!--main content end-->
-</section>
-<!-- container section end -->
+    <!-- container section end -->
 
-<!-- javascripts -->
-<script src="${pageContext.request.contextPath}/js/bootstrap-editable.min.js"></script>
+    <!-- javascripts -->
+    <script src="${pageContext.request.contextPath}/js/bootstrap-editable.min.js"></script>
 
-<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-<!-- nice scroll -->
-<script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
-<!-- jquery knob -->
-<script src="${pageContext.request.contextPath}/assets/jquery-knob/js/jquery.knob.js"></script>
-<!--custome script for all page-->
-<script src="${pageContext.request.contextPath}/js/scripts.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
+    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+    <!-- nice scroll -->
+    <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <!-- jquery knob -->
+    <script src="${pageContext.request.contextPath}/assets/jquery-knob/js/jquery.knob.js"></script>
+    <!--custome script for all page-->
+    <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 
-<script>
-    //knob
-    $(".knob").knob();
-</script>
-
+    <script>
+        //knob
+        $(".knob").knob();
+    </script>
 
 </body>
 </html>

@@ -5,8 +5,15 @@ import com.epam.lab.spider.model.db.SQLTransactionException;
 import com.epam.lab.spider.model.db.dao.AttachmentDAO;
 import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.dao.PostDAO;
+import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
+import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
+import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
 import com.epam.lab.spider.model.db.entity.Attachment;
 import com.epam.lab.spider.model.db.entity.Post;
+import com.epam.lab.spider.model.db.service.savable.SavableService;
+import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
+import com.epam.lab.spider.model.db.service.savable.exception.UnsupportedServiseException;
+import com.sun.xml.internal.fastinfoset.stax.events.StAXEventAllocatorBase;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -17,12 +24,22 @@ import static com.epam.lab.spider.model.db.SQLTransactionException.assertTransac
 /**
  * Created by Sasha on 12.06.2015.
  */
-public class PostService implements BaseService<Post> {
+public class PostService implements BaseService<Post>,SavableService<Post> {
 
     private DAOFactory factory = DAOFactory.getInstance();
     private PostDAO pdao = factory.create(PostDAO.class);
     private AttachmentDAO adao = factory.create(AttachmentDAO.class);
 
+    @Override
+    public boolean save(Post entity) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
+        return SavableServiceUtil.saveFromInterface(entity,this);
+    }
+
+    @Override
+    public boolean save(Post entity, Connection conn) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
+        return SavableServiceUtil.customSave(conn, entity, new Object[]{}, new Object[]{entity.getAttachments()});
+    }
+    @Deprecated
     @Override
     public boolean insert(Post post) {
         try {
@@ -31,6 +48,7 @@ public class PostService implements BaseService<Post> {
                 connection.setAutoCommit(false);
                 assertTransaction(pdao.insert(connection, post));
                 for (Attachment attachment : post.getAttachments()) {
+                    attachment.setPostId(post.getId());
                     assertTransaction(adao.insert(connection, attachment));
                 }
                 connection.commit();
@@ -48,7 +66,7 @@ public class PostService implements BaseService<Post> {
         }
         return true;
     }
-
+    @Deprecated
     @Override
     public boolean update(int id, Post post) {
         try {

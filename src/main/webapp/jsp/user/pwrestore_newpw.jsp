@@ -45,50 +45,48 @@
     <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
     <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
     <![endif]-->
+
+    <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
+    <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
+    <script type="text/javascript">
+
+        // При завантаженні сторінки
+        setTimeout(function () {
+            if (${toastr_notification!=null}) {
+                var args = "${toastr_notification}".split("|");
+                toastrNotification(args[0], args[1]);
+            }
+        }, 500);
+
+    </script>
+
 </head>
 
 <body class="login-img3-body">
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
-
-    <c:choose>
-        <c:when test="${user.role == 'ADMIN'}">
-            <jsp:forward page="admin_index.jsp"/>
-        </c:when>
-        <c:when test="${user.role == 'USER'}">
-            <jsp:forward page="user_index.jsp"/>
-        </c:when>
-        <c:otherwise>
-            <header class="header dark-bg" style="background: rgb(26, 39, 50)">
-                <div class="main">
-                    <a href="/" class="logo">Social <span class="lite">Spider</span></a>
-                </div>
-
-            </header>
-        </c:otherwise>
-    </c:choose>
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <a class="navbar-brand page-scroll" href="/">Socail spider</a>
+    <header class="header dark-bg" style="background: rgb(26, 39, 50)">
+        <div class="main">
+            <a href="/" class="logo">Social <span class="lite">Spider</span></a>
         </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-
-        <!-- /.navbar-collapse -->
+    </header>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand page-scroll" href="/">Social spider</a>
+        </div>
     </div>
-    <!-- /.container-fluid -->
 </nav>
 <header class="back-header">
 
     <div class="container">
 
         <form class="login-form" action="/forgot_password" method="post" id="register_form">
-            <input type="hidden" name="action" value="changePassword">
+            <input type="hidden" name="action" value="change">
             <input type="hidden" name="email" value="${email}">
 
             <div class="login-wrap">
                 <p class="login-img"><i class="icon_lock_alt"></i></p>
-                ${loginMessage}
+
                 <div class="input-group">
                     <span class="input-group-addon"><i class="icon_key_alt"></i></span>
                     <l:resource key="login.password"><input type="password" name="password" id="password"

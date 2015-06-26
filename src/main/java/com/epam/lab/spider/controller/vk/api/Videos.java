@@ -46,7 +46,7 @@ public class Videos extends Methods {
      * Возвращает адрес сервера (необходимый для загрузки) и данные видеозаписи.
      */
     public URL save(Parameters param) throws VKException {
-        final Response response = request("video.save", param).execute();
+        final Response response = request("video.safeSave", param).execute();
         return response.root().child("upload_url").get(0).value().toURL();
     }
 
