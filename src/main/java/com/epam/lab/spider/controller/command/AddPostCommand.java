@@ -37,7 +37,6 @@ public class AddPostCommand implements ActionCommand {
         post.setDeleted(false);
         post.setAttachments(attachments);
         postService.insert(post);
-
         request.getSession().removeAttribute("files_url");
         request.getRequestDispatcher("jsp/post/addpost.jsp").forward(request, response);
     }

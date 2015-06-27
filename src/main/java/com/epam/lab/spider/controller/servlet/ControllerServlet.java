@@ -29,6 +29,7 @@ public class ControllerServlet extends HttpServlet {
             commands.put("editprofile", new EditProfileCommand());
             commands.put("changeavatar", new ChangeAvatarCommand());
             commands.put("addpost", new AddPostCommand());
+            commands.put("addnewpost", new AddNewPostCommand());
         }
     }
 

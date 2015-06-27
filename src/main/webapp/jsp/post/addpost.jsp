@@ -283,13 +283,14 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form class="form-horizontal">
+                        <form id="modal_form" method="POST" action="/controller?action=addnewpost"
+                              class="form-horizontal">
                             <div style="position: relative; left: -130px; top:30px;">
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="date">Date</label>
 
                                     <div class="col-md-4">
-                                        <input id="date" name="name" type="date" min="${date}" placeholder="Post date"
+                                        <input id="date" name="date" type="date" min="${date}" placeholder="Post date"
                                                class="form-control input-md">
                                     </div>
                                 </div>
@@ -297,7 +298,7 @@
                                     <label class="col-md-4 control-label" for="time">Time</label>
 
                                     <div class="col-md-4">
-                                        <input id="time" name="name" type="time" min="${time}" placeholder="Post time"
+                                        <input id="time" name="time" type="time" min="${time}" placeholder="Post time"
                                                class="form-control input-md">
                                     </div>
                                 </div>
@@ -306,7 +307,8 @@
                                 <div class="form-group" style="">
                                     <div class="col-lg-6">
                                         <h4>Select group:</h4>
-                                        <select id="tokenize_focus" multiple="multiple" class="tokenize-sample">
+                                        <select name="groups" id="tokenize_focus" multiple="multiple"
+                                                class="tokenize-sample">
                                             <option value="1">GrabGroup 1</option>
                                             <option value="2">GrabGroup 2</option>
                                             <option value="3">GrabGroup 3</option>
@@ -322,17 +324,25 @@
                             </div>
                             <div style="position: relative; left:-78px; top:-100px;">
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="check">Remove after</label>
+                                    <label class="col-md-4 control-label" for="check">Removing date</label>
                                     <input id="check" type="checkbox">
                                 </div>
                             </div>
                             <div style="position: relative; left:54px; top:-90px; width: 600px;">
                                 <div id="time3" class="col-md-4">
-                                    <input id="time1" name="name" type="number" placeholder="minutes"
+                                    <input id="time1" name="date_delete" min="${date}" type="date" placeholder="Date"
+                                           class="form-control input-md">
+                                </div>
+
+                            </div>
+                            <div style="position: relative; left:-146px; top:-50px; width: 600px;">
+                                <div id="time4" class="col-md-4">
+                                    <input id="time5" name="time_delete" type="time" placeholder="Time"
                                            class="form-control input-md">
                                 </div>
                             </div>
-                            <button type="button" style="margin-left: 495px;margin-top: -80px;" class="btn btn-primary"
+                            <button id="submit_modal" type="button" style="margin-left: 495px;margin-top: -80px;"
+                                    class="btn btn-primary"
                                     data-dismiss="modal">
                                 Save
                             </button>
@@ -344,10 +354,21 @@
     </div>
 
     <script>
-        $('#time3').hide();
+        $("#time3, #time4").hide();
         $('#check').click(function () {
-            $("#time3").toggle(this.checked);
+            $("#time3, #time4").toggle(this.checked);
         });
+        $(document).ready(function () {
+            $("#submit_modal").click(function () {
+                $.post($("#modal_form").attr("action"), $("#modal_form").serialize());
+                $.post($("#post_form").attr("action"), $("#post_form").serialize());
+                location.reload();
+            });
+        });
+        //        $("#submit_modal").click(function () {
+        //            $("#modal_form, #post_form").ajaxSubmit();
+        //            $("#post_form ").submit();
+        //        });
     </script>
     <!-- container section start -->
 
