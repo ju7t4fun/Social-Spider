@@ -56,7 +56,7 @@
     <script type="text/javascript">
         function removeNotification(id) {
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/user/notification?action=remove&id=' + id, true);
+            xmlhttp.open('GET', '/notification?action=remove&id=' + id, true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
