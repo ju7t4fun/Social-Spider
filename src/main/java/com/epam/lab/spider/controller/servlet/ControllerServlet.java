@@ -1,10 +1,10 @@
 package com.epam.lab.spider.controller.servlet;
 
-import com.epam.lab.spider.controller.command.*;
+import com.epam.lab.spider.controller.command.ActionFactory;
+import com.epam.lab.spider.controller.command.controller.UploadFileCommand;
+import com.epam.lab.spider.controller.command.controller.UploadFileFromURLCommand;
 import com.epam.lab.spider.controller.command.controller.LocaleCommand;
-import com.epam.lab.spider.controller.command.user.profile.ChangeAvatarCommand;
-import com.epam.lab.spider.controller.command.user.profile.EditProfileCommand;
-
+import com.epam.lab.spider.controller.command.controller.CategoriesCommand;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,21 +19,6 @@ public class ControllerServlet extends HttpServlet {
 
     private static ActionFactory factory = new ApiActionFactory();
 
-    private static class ApiActionFactory extends ActionFactory {
-
-        public ApiActionFactory() {
-            commands = new HashMap<>();
-            commands.put("locale", new LocaleCommand());
-            commands.put("upload", new UploadFileCommand());
-            commands.put("uploadurl", new UploadFileFromURLCommand());
-            commands.put("editprofile", new EditProfileCommand());
-            commands.put("changeavatar", new ChangeAvatarCommand());
-            commands.put("addpost", new AddPostCommand());
-            commands.put("addnewpost", new AddNewPostCommand());
-            commands.put("categories", new CategoriesCommand());
-        }
-    }
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
         factory.action(request, response);
@@ -42,6 +27,17 @@ public class ControllerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
         factory.action(request, response);
+    }
+
+    private static class ApiActionFactory extends ActionFactory {
+
+        public ApiActionFactory() {
+            commands = new HashMap<>();
+            commands.put("locale", new LocaleCommand());
+            commands.put("upload", new UploadFileCommand());
+            commands.put("uploadurl", new UploadFileFromURLCommand());
+            commands.put("categories", new CategoriesCommand());
+        }
     }
 
 }

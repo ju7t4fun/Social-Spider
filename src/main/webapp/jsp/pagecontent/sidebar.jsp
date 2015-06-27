@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <script src="${pageContext.request.contextPath}/js/language.js"></script>
@@ -14,10 +15,8 @@
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="${pageContext.request.contextPath}/jsp/post/allposts.jsp">All
-                                Posts</a></li>
-                            <li><a class="" href="${pageContext.request.contextPath}/jsp/post/addpost.jsp">Add New
-                                Post</a></li>
+                            <li><a class="" href="/post">All Posts</a></li>
+                            <li><a class="" href="/post?action=add">Add New Post</a></li>
                         </ul>
                     </li>
                     <li class="sub-menu">
