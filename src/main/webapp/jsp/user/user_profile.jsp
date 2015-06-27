@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,6 +56,10 @@
 
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/language.js"></script>
+
     <script type="text/javascript">
 
         // При завантаженні сторінки
@@ -81,10 +86,10 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-user-md"></i> PROFILE</h3>
+                    <h3 class="page-header"><i class="fa fa-user-md"></i> <l:resource key="profile" /></h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">HOME</a></li>
-                        <li><i class="fa fa-user-md"></i>PROFILE</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home" /></a></li>
+                        <li><i class="fa fa-user-md"></i><l:resource key="profile" /></li>
                     </ol>
                 </div>
             </div>
@@ -104,7 +109,7 @@
                             </div>
                             <div class="col-lg-4 col-sm-4 follow-info">
 
-                                <p><i>Email: ${user.email}</i></p>
+                                <p><i><l:resource key="login.email" />: ${user.email}</i></p>
                                 <h6>
                                     <span><i class="icon_calendar"></i>${user.createTime}</span>
                                 </h6>
@@ -116,11 +121,11 @@
             <!-- page start-->
             <section class="panel">
                 <div class="panel-body bio-graph-info">
-                    <h1>Bio Graph</h1>
+                    <h1><l:resource key="profile.biograph"/></h1>
 
                     <div class="row">
                         <div class="bio-row">
-                            <span>First Name: <span id="name"> ${user.name}</span></span>
+                            <span><l:resource key="reg.name" />: <span id="name"> ${user.name}</span></span>
                         </div>
                         <script>
                             $.fn.editable.defaults.mode = 'inline';
@@ -135,7 +140,7 @@
                             });
                         </script>
                         <div class="bio-row">
-                            <span>Last Name: <span id="surname"> ${user.surname} </span></span>
+                            <span><l:resource key="reg.surname" />: <span id="surname"> ${user.surname} </span></span>
                         </div>
                         <script>
                             $.fn.editable.defaults.mode = 'inline';
@@ -150,15 +155,15 @@
                             });
                         </script>
                         <div class="bio-row">
-                            <span>Email: <span id="email"> ${user.email}</span></span>
+                            <span><l:resource key="login.email" />: <span id="email"> ${user.email}</span></span>
                         </div>
                         <div class="bio-row">
-                            <span>Change password: <span id="change_password"> </span>
-                                <a href="/profile?action=change&email=${user.email}">Change password</a> </span>
+                            <span><l:resource key="profile.changepw"/>: <span id="change_password"> </span>
+                                <a href="/profile?action=change&email=${user.email}"><l:resource key="profile.changepw"/></a> </span>
                         </div>
                         <div class="bio-row">
-                            <span>Change avatar:
-                                <a href="#" onclick="showUpload();">Select avatar</a></span>
+                            <span><l:resource key="profile.changeav"/>:
+                                <a href="#" onclick="showUpload();"><l:resource key="profile.selectav"/></a></span>
                             <script>
                                 function showUpload() {
                                     if ($('#compForm').is(":visible")) {
