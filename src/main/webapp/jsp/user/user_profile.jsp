@@ -233,15 +233,9 @@
     <!-- nice scroll -->
     <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
-    <!-- jquery knob -->
-    <script src="${pageContext.request.contextPath}/assets/jquery-knob/js/jquery.knob.js"></script>
     <!--custome script for all page-->
     <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 
-    <script>
-        //knob
-        $(".knob").knob();
-    </script>
 
 </body>
 </html>
