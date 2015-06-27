@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <script type="text/javascript">
 
-    var webSocket = new WebSocket("ws://localhost:8080/support");
+    var webSocket = new WebSocket("ws://localhost:8080/websocket/support");
 
     webSocket.onopen = function (event) {
     };
@@ -22,6 +22,10 @@
             case "previous":
                 previousMessage(args);
                 break;
+            case "new":
+                var audio = new Audio();
+                audio.src = '../../sound/message.mp3';
+                audio.autoplay = true;
         }
     };
 

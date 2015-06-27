@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <script type="text/javascript">
 
-    var webSocketN = new WebSocket("ws://localhost:8080/notification");
+    var webSocketN = new WebSocket("ws://localhost:8080/websocket/notification");
 
     webSocketN.onopen = function (event) {
     };

@@ -17,20 +17,16 @@ import java.util.Map;
 /**
  * Created by Boyarsky Vitaliy on 19.06.2015.
  */
-@ServerEndpoint("/event/{clientId}")
+@ServerEndpoint("/websocket/event/{clientId}")
 public class EventWebSocket implements Receiver {
 
     private static final Logger LOG = Logger.getLogger(EventWebSocket.class);
 
     private static final Map<Integer, Session> sessions = new HashMap<>();
-    private static final List<Sender> senders = new ArrayList<Sender>() {
-        {
-            add(new EventLogger.EventSender());
-        }
-    };
+    private static final List<Sender> senders = new ArrayList<>();
 
     public EventWebSocket() {
-        super();
+        senders.add(new EventLogger.EventSender());
         for (Sender sender : senders) {
             sender.accept(this);
         }
@@ -70,6 +66,7 @@ public class EventWebSocket implements Receiver {
     public boolean send(int id, String message) {
         try {
             if (sessions.containsKey(id)) {
+                System.out.println("Session " + sessions.get(id) + " id " + id + " - " + message);
                 sessions.get(id).getBasicRemote().sendText(message);
                 return true;
             }

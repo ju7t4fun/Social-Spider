@@ -45,8 +45,8 @@
 <!-- container section start -->
 <section id="container" class="">
 
-    <jsp:include page="pagecontent/header.jsp"/>
-    <jsp:include page="pagecontent/sidebar.jsp"/>
+    <jsp:include page="../pagecontent/header.jsp"/>
+    <jsp:include page="../pagecontent/sidebar.jsp"/>
 
     <!--main content start-->
     <section id="main-content">

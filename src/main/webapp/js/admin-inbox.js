@@ -1,4 +1,4 @@
-var webSocket = new WebSocket("ws://localhost:8080/support");
+var webSocket = new WebSocket("ws://localhost:8080/websocket/support");
 
 webSocket.onopen = function (event) {
 };

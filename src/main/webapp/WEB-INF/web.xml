@@ -178,7 +178,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AccountsServlet</servlet-name>
-        <url-pattern>/user/accounts</url-pattern>
+        <url-pattern>/accounts</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ControllerServlet</servlet-name>

@@ -42,17 +42,19 @@ var webSocket;
 // Створення нового WebSocket-у
 function createSocket() {
     if (config.user_id > 0) {
-        webSocket = new WebSocket("ws://localhost:8080/event/" + config.user_id);
+        webSocket = new WebSocket("ws://localhost:8080/websocket/event/" + config.user_id);
 
         webSocket.onopen = function (event) {
-
+            //alert("onOpen " + config.user_id);
         };
 
         webSocket.onmessage = function (event) {
+            //alert("onMessage "  + config.user_id);
             createNotification(JSON.parse(event.data), -1);
         };
 
         webSocket.onclose = function (event) {
+            //alert("onClose " + config.user_id)
             setTimeout(createSocket(), 25000);
         };
     }
@@ -86,7 +88,7 @@ function onAuth(tabId, from_url) {
         if (hangeInfo.status === 'complete') {
             var param = getSearchParameters(tab.url, '#');
             chrome.tabs.update(tabId, {
-                url: host + "user/accounts?action=add&user_id=" + param.user_id + "&access_token=" + param.access_token
+                url: host + "accounts?action=add&user_id=" + param.user_id + "&access_token=" + param.access_token
                 + "&expires_in=" + param.expires_in
             });
             chrome.tabs.onUpdated.removeListener(parseAccessToken);

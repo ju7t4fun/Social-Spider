@@ -40,7 +40,7 @@ public class AddAccountCommand implements ActionCommand {
 
             // Користувач не підтвердив прав доступу
             if (request.getParameter("user_id").equals("undefined")) {
-                response.sendRedirect("/user/accounts");
+                response.sendRedirect("/accounts");
                 return;
             }
 
@@ -58,7 +58,7 @@ public class AddAccountCommand implements ActionCommand {
                 service.insert(profile);
             else
                 service.update(oldProfile.getId(), profile);
-            response.sendRedirect("/user/accounts");
+            response.sendRedirect("/accounts");
         }
     }
 
