@@ -57,7 +57,7 @@
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>--%>
     <script src="${pageContext.request.contextPath}/js/language.js"></script>
 
     <script type="text/javascript">
@@ -86,10 +86,10 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-user-md"></i> <l:resource key="profile" /></h3>
+                    <h3 class="page-header"><i class="fa fa-user-md"></i> <l:resource key="profile"/></h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home" /></a></li>
-                        <li><i class="fa fa-user-md"></i><l:resource key="profile" /></li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-user-md"></i><l:resource key="profile"/></li>
                     </ol>
                 </div>
             </div>
@@ -109,7 +109,7 @@
                             </div>
                             <div class="col-lg-4 col-sm-4 follow-info">
 
-                                <p><i><l:resource key="login.email" />: ${user.email}</i></p>
+                                <p><i><l:resource key="login.email"/>: ${user.email}</i></p>
                                 <h6>
                                     <span><i class="icon_calendar"></i>${user.createTime}</span>
                                 </h6>
@@ -125,7 +125,7 @@
 
                     <div class="row">
                         <div class="bio-row">
-                            <span><l:resource key="reg.name" />: <span id="name"> ${user.name}</span></span>
+                            <span><l:resource key="reg.name"/>: <span id="name"> ${user.name}</span></span>
                         </div>
                         <script>
                             $.fn.editable.defaults.mode = 'inline';
@@ -140,7 +140,7 @@
                             });
                         </script>
                         <div class="bio-row">
-                            <span><l:resource key="reg.surname" />: <span id="surname"> ${user.surname} </span></span>
+                            <span><l:resource key="reg.surname"/>: <span id="surname"> ${user.surname} </span></span>
                         </div>
                         <script>
                             $.fn.editable.defaults.mode = 'inline';
@@ -155,21 +155,29 @@
                             });
                         </script>
                         <div class="bio-row">
-                            <span><l:resource key="login.email" />: <span id="email"> ${user.email}</span></span>
+                            <span><l:resource key="login.email"/>: <span id="email"> ${user.email}</span></span>
                         </div>
                         <div class="bio-row">
                             <span><l:resource key="profile.changepw"/>: <span id="change_password"> </span>
-                                <a href="/profile?action=change&email=${user.email}"><l:resource key="profile.changepw"/></a> </span>
+                                <a href="/profile?action=change&email=${user.email}"><l:resource
+                                        key="profile.changepw"/></a> </span>
                         </div>
                         <div class="bio-row">
                             <span><l:resource key="profile.changeav"/>:
-                                <a href="#" onclick="showUpload();"><l:resource key="profile.selectav"/></a></span>
+                                <a href="#" id="chav"
+                                   onclick="showUpload();"><l:resource key="profile.selectav"/></a></span>
                             <script>
                                 function showUpload() {
                                     if ($('#compForm').is(":visible")) {
                                         $('#compForm').hide();
+                                        $('html, body').animate({
+                                            scrollTop: $("#end").offset().top
+                                        }, 1000);
                                     } else {
                                         $('#compForm').show();
+                                        $('html, body').animate({
+                                            scrollTop: $("#end").offset().top
+                                        }, 1000);
                                     }
                                 }
                                 function uploadFromURL() {
@@ -210,6 +218,7 @@
                                     });
                                 </script>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -217,6 +226,9 @@
             <section>
                 <script>
                     $('#compForm').hide();
+                    $("#chav").click(function(){
+                        $("#compForm").niceScroll();
+                    });
                 </script>
                 <!-- page end-->
             </section>
@@ -224,7 +236,7 @@
         <!--main content end-->
     </section>
     <!-- container section end -->
-
+    <div id="end"></div>
     <!-- javascripts -->
     <script src="${pageContext.request.contextPath}/js/bootstrap-editable.min.js"></script>
 

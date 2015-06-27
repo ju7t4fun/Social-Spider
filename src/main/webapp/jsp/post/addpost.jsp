@@ -347,7 +347,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div style="position: relative; left:-78px; top:-100px;">
+                            <div style="position: relative; left:-68px; top:-100px;">
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="check">Removing date</label>
                                     <input id="check" type="checkbox">
