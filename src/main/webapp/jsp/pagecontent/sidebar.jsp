@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <script src="${pageContext.request.contextPath}/js/language.js"></script>
