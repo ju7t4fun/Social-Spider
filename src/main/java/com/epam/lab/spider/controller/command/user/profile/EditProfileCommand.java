@@ -1,5 +1,6 @@
-package com.epam.lab.spider.controller.command;
+package com.epam.lab.spider.controller.command.user.profile;
 
+import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.model.db.entity.User;
 import com.epam.lab.spider.model.db.service.UserService;
 import org.json.JSONObject;
@@ -38,7 +39,8 @@ public class EditProfileCommand implements ActionCommand {
                 userService.updateByParameter(name, value, user.getId());
                 user = userService.getById(user.getId());
                 session.setAttribute("user", user);
-                JSONObject json = new JSONObject().put("fname", user.getName()).put("lname", user.getSurname());
+                JSONObject json = new JSONObject().put("status", "success").put("fname", user.getName()).put("lname",
+                        user.getSurname()).put("msg", "Change name to " + user.getName() + " " + user.getSurname());
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().print(json.toString());
             } catch (Exception e) {
@@ -49,7 +51,5 @@ public class EditProfileCommand implements ActionCommand {
                 response.getWriter().print(jsonObject.toString());
             }
         }
-
-
     }
 }

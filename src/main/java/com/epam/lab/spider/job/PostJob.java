@@ -1,11 +1,8 @@
 package com.epam.lab.spider.job;
 
 
-
-import com.epam.lab.spider.job.util.Locker;
 import com.epam.lab.spider.model.db.entity.NewPost;
 import com.epam.lab.spider.model.db.service.NewPostService;
-
 import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
 import org.apache.log4j.Logger;
 import org.quartz.*;
@@ -30,11 +27,11 @@ public class PostJob implements Job {
         DateFormat dateFormat = DateFormat.getDateTimeInstance();
 
         Date date = new Date(System.currentTimeMillis());
-        Date nextDate = new Date(System.currentTimeMillis() + 60*1000);
-        LOG.info("'PostJob' start at " + dateFormat.format(date)+" next 'PostJob' at "+dateFormat.format(nextDate));
+        Date nextDate = new Date(System.currentTimeMillis() + 60 * 1000);
+        LOG.info("'PostJob' start at " + dateFormat.format(date) + " next 'PostJob' at " + dateFormat.format(nextDate));
 
         List<NewPost> newPosts = newPostService.getAllUnpostedByDate(nextDate);
-        for(NewPost newPost:newPosts){
+        for (NewPost newPost : newPosts) {
 //            Locker.getInstance().isLock(newPost.get)
             newPost.setState(NewPost.State.POSTING);
             SavableServiceUtil.safeSave(newPost);
@@ -44,7 +41,7 @@ public class PostJob implements Job {
                     .forJob(jobDetail)
                     .build();
             try {
-                jobExecutionContext.getScheduler().scheduleJob(jobDetail,jobTrigger);
+                jobExecutionContext.getScheduler().scheduleJob(jobDetail, jobTrigger);
             } catch (SchedulerException e) {
                 e.printStackTrace();
             }

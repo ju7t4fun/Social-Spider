@@ -420,8 +420,8 @@ table tr th {
 
 /*Modal Content*/
 .modal-content {
-    border-radius: 0px;
-    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 1);
 }
 
 .modal-header .close {
@@ -1843,11 +1843,11 @@ div[data-role="editor-toolbar"] {
     background: -ms-linear-gradient(top, #f8f8f8, #f2f2f2);
     background: -o-linear-gradient(top, #f8f8f8, #f2f2f2);
     background: linear-gradient(top, #f8f8f8, #f2f2f2);
-    border-top-right-radius: 3px;
-    border-top-left-radius: 3px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
     text-shadow: 0px 1px #fff;
-    border-bottom: 1px solid #ccc;
-    border-top: 1px solid #fff;
+    border-bottom: 0px solid #ccc;
+    border-top: 0px solid #fff;
     color: #666;
     font-size: 14px;
     font-weight: bold;
@@ -4138,8 +4138,8 @@ ul.amounts li {
 
 /*panel heading color*/
 .panel-heading, .modal-header {
-    background: #F7F7F7;
-    color: #688a7e;
+    background: #FFFFFF;
+    color: #000000;
 
 }
 
@@ -4426,7 +4426,7 @@ ul.amounts li {
 }
 
 .form-horizontal .form-group {
-    border-bottom: 1px solid #eff2f7;
+    /*border-bottom: 1px solid #eff2f7;*/
     padding-bottom: 15px;
     margin-bottom: 15px;
 }

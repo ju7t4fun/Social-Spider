@@ -34,6 +34,7 @@ public class TaskJob implements Job {
     TaskService taskService = new TaskService();
 
     FilterService filterService = new FilterService();
+    PostService postService = new PostService();
 
     TaskSynchronizedDataService synchronizedService = new TaskSynchronizedDataService();
 

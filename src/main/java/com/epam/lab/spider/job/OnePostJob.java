@@ -7,7 +7,6 @@ import com.epam.lab.spider.controller.vk.auth.AccessToken;
 import com.epam.lab.spider.job.util.Locker;
 import com.epam.lab.spider.model.db.entity.*;
 import com.epam.lab.spider.model.db.service.*;
-
 import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
 import com.epam.lab.spider.model.vk.Photo;
 import org.apache.http.HttpEntity;
@@ -38,11 +37,19 @@ import java.util.List;
  */
 public class OnePostJob implements Job {
 
-    public static String uploadPhoto(Vkontakte vk,String file, Integer wall){
+    public static final Logger LOG = Logger.getLogger(OnePostJob.class);
+    NewPostService newPostService = new NewPostService();
+    PostService postService = new PostService();
+    WallService wallService = new WallService();
+    OwnerService ownerService = new OwnerService();
+    ProfileService profileService = new ProfileService();
+    AttachmentService attachmentService = new AttachmentService();
+
+    public static String uploadPhoto(Vkontakte vk, String file, Integer wall) {
         boolean manyRequest = false;
         do {
             try {
-                if(manyRequest) {
+                if (manyRequest) {
                     Thread.sleep(400);
                     manyRequest = false;
                 }
@@ -56,7 +63,8 @@ public class OnePostJob implements Job {
                 CloseableHttpClient client = HttpClients.createDefault();
                 HttpPost httpPost = new HttpPost(uri.toString());
                 HttpEntity entity = MultipartEntityBuilder.create()
-                        .addBinaryBody("photo", new URL(file).openStream(), ContentType.create("image/jpeg"), "image.jpg").build();
+                        .addBinaryBody("photo", new URL(file).openStream(), ContentType.create("image/jpeg"), "image" +
+                                ".jpg").build();
                 httpPost.setEntity(entity);
 
                 String response = EntityUtils.toString(client.execute(httpPost).getEntity(), "UTF-8");
@@ -82,27 +90,20 @@ public class OnePostJob implements Job {
                 }
 
             } catch (VKException x) {
-                if(x.getExceptionCode() == VKException.VK_MANY_REQUESTS)manyRequest = true;
+                if (x.getExceptionCode() == VKException.VK_MANY_REQUESTS) manyRequest = true;
                 x.printStackTrace();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (InterruptedException | IOException | ParseException e) {
                 e.printStackTrace();
             }
-        }while (manyRequest);
+        } while (manyRequest);
         return null;
     }
-    public static String uploadAudio(Vkontakte vk,String file, Integer wall){
+
+    public static String uploadAudio(Vkontakte vk, String file, Integer wall) {
         boolean manyRequest = false;
         do {
             try {
-                if(manyRequest) {
+                if (manyRequest) {
                     Thread.sleep(400);
                     manyRequest = false;
                 }
@@ -116,7 +117,8 @@ public class OnePostJob implements Job {
                 CloseableHttpClient client = HttpClients.createDefault();
                 HttpPost httpPost = new HttpPost(uri.toString());
                 HttpEntity entity = MultipartEntityBuilder.create()
-                        .addBinaryBody("photo", new URL(file).openStream(), ContentType.create("image/jpeg"), "image.jpg").build();
+                        .addBinaryBody("photo", new URL(file).openStream(), ContentType.create("image/jpeg"), "image" +
+                                ".jpg").build();
                 httpPost.setEntity(entity);
 
                 String response = EntityUtils.toString(client.execute(httpPost).getEntity(), "UTF-8");
@@ -142,7 +144,7 @@ public class OnePostJob implements Job {
                 }
 
             } catch (VKException x) {
-                if(x.getExceptionCode() == VKException.VK_MANY_REQUESTS)manyRequest = true;
+                if (x.getExceptionCode() == VKException.VK_MANY_REQUESTS) manyRequest = true;
                 x.printStackTrace();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -155,21 +157,9 @@ public class OnePostJob implements Job {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }while (manyRequest);
+        } while (manyRequest);
         return null;
     }
-
-
-    public static final Logger LOG = Logger.getLogger(OnePostJob.class);
-
-    NewPostService newPostService = new NewPostService();
-    PostService postService = new PostService();
-    WallService wallService = new WallService();
-    OwnerService ownerService = new OwnerService();
-    ProfileService profileService = new ProfileService();
-
-    AttachmentService attachmentService = new AttachmentService();
-
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
@@ -193,8 +183,9 @@ public class OnePostJob implements Job {
             // Додаткова перевірка чи немає локу для цільвого обєкту
             // Якщо виконуєть вивід фатал повідомлення - існують проблеми
             // З архітектурою сервісу
-            if(Locker.getInstance().isLock(wall)){
-                LOG.fatal("На заблоковану стіну зафіксована спроба виконати пост. Пост буде заблоковано! Проблема в архітектурі сервісу!");
+            if (Locker.getInstance().isLock(wall)) {
+                LOG.fatal("На заблоковану стіну зафіксована спроба виконати пост. Пост буде заблоковано! Проблема в " +
+                        "архітектурі сервісу!");
                 newPost.setState(NewPost.State.ERROR);
                 SavableServiceUtil.safeSave(newPost);
                 return;
@@ -220,23 +211,22 @@ public class OnePostJob implements Job {
                 // !Initialization auth_token
                 List<String> attachmentsList = new ArrayList<>();
                 for (Attachment attachment : newPost.getPost().getAttachments()) {
-                    if(attachment.getType() == Attachment.Type.PHOTO && attachment.getMode() == Attachment.Mode.URL) {
+                    if (attachment.getType() == Attachment.Type.PHOTO && attachment.getMode() == Attachment.Mode.URL) {
                         String att = uploadPhoto(vk, attachment.getPayload().toString(), owner.getVk_id());
-                        if(att!=null)attachmentsList.add(att);
+                        if (att != null) attachmentsList.add(att);
                     }
-                    if(attachment.getType() == Attachment.Type.AUDIO && attachment.getMode() == Attachment.Mode.CODE) {
-                        String att =  attachment.getPayload();
-                        if(att!=null)attachmentsList.add(att);
+                    if (attachment.getType() == Attachment.Type.AUDIO && attachment.getMode() == Attachment.Mode.CODE) {
+                        String att = attachment.getPayload();
+                        if (att != null) attachmentsList.add(att);
                     }
-                    if(attachment.getType() == Attachment.Type.VIDEO && attachment.getMode() == Attachment.Mode.CODE) {
-                        String att =  attachment.getPayload();
-                        if(att!=null)attachmentsList.add(att);
+                    if (attachment.getType() == Attachment.Type.VIDEO && attachment.getMode() == Attachment.Mode.CODE) {
+                        String att = attachment.getPayload();
+                        if (att != null) attachmentsList.add(att);
                     }
-                    if(attachment.getType() == Attachment.Type.DOC && attachment.getMode() == Attachment.Mode.CODE) {
-                        String att =  attachment.getPayload();
-                        if(att!=null)attachmentsList.add(att);
+                    if (attachment.getType() == Attachment.Type.DOC && attachment.getMode() == Attachment.Mode.CODE) {
+                        String att = attachment.getPayload();
+                        if (att != null) attachmentsList.add(att);
                     }
-
 
 
                 }
@@ -251,8 +241,8 @@ public class OnePostJob implements Job {
                 parameters.add("owner_id", owner.getVk_id());
                 parameters.add("attachments", attachmetsStringBuilder.toString());
                 parameters.add("message", newPost.getPost().getMessage());
-                if(owner.getVk_id()<0){
-                    parameters.add("from_group",1);
+                if (owner.getVk_id() < 0) {
+                    parameters.add("from_group", 1);
                 }
 
 
@@ -267,13 +257,13 @@ public class OnePostJob implements Job {
                                 manyRequest = false;
                             }
                             response = vk.wall().post(parameters);
-                        }catch (VKException x){
-                            if(x.getExceptionCode()==VKException.VK_MANY_REQUESTS)manyRequest=true;
+                        } catch (VKException x) {
+                            if (x.getExceptionCode() == VKException.VK_MANY_REQUESTS) manyRequest = true;
                             else throw x;
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                    }while (manyRequest);
+                    } while (manyRequest);
                 }
 
                 newPost.setState(NewPost.State.POSTED);
@@ -298,7 +288,7 @@ public class OnePostJob implements Job {
                     }
                     break;
                     default: {
-                        LOG.error("Posting has failed. Corrupted new_post #" + newPost.getId(),x);
+                        LOG.error("Posting has failed. Corrupted new_post #" + newPost.getId(), x);
                         x.printStackTrace();
                     }
                 }

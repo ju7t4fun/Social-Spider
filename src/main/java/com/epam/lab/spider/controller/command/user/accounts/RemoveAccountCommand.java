@@ -3,6 +3,7 @@ package com.epam.lab.spider.controller.command.user.accounts;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.model.db.service.ProfileService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,17 @@ public class RemoveAccountCommand implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        service.delete(id);
+        JSONObject json = new JSONObject();
+        if (service.delete(id)) {
+            json.put("status", "success");
+            json.put("msg", "Delete successful");
+        } else {
+            json.put("status", "error");
+            json.put("msg", "Error");
+        }
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json.toString());
     }
 
 }

@@ -37,6 +37,36 @@
     <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
     <![endif]-->
+
+    <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
+    <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
+    <script type="text/javascript">
+
+        // При завантаженні сторінки
+        setTimeout(function () {
+            if (${toastr_notification!=null}) {
+                var args = "${toastr_notification}".split("|");
+                toastrNotification(args[0], args[1]);
+            }
+        }, 500);
+
+    </script>
+
+    <script type="text/javascript">
+        function removeAccount(id) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('GET', '/accounts?action=remove&id=' + id, true);
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    if (xmlhttp.status == 200) {
+                        var response = JSON.parse(xmlhttp.responseText);
+                        toastrNotification(response.status, response.msg);
+                    }
+                }
+            };
+            xmlhttp.send();
+        }
+    </script>
 </head>
 
 <body>
@@ -54,7 +84,6 @@
                     <h3 class="page-header"><i class="fa fa-list"></i> VK_ACCOUNTS</h3>
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="/">HOME</a></li>
-                        <li><i class="fa fa-user"></i><a href="/user">PROFILE</a></li>
                         <li><i class="fa fa-th-list"></i>VK_ACCOUNTS</li>
                     </ol>
                 </div>
@@ -63,9 +92,6 @@
             <div class="row">
                 <div class="col-lg-12">
                     <section class="panel">
-                        <header class="panel-heading">
-                            Accounts
-                        </header>
 
                         <table class="table table-striped table-advance table-hover">
                             <tbody>
@@ -89,14 +115,15 @@
                                         <div class="btn-group">
                                                 <%--<a class="btn btn-primary" href="#"><i class="icon_plus_alt2"></i></a>--%>
                                             <c:if test="${profile.isExpired()}">
-                                                <a class="btn btn-success" href="/user/accounts?action=refresh"><i
+                                                <a class="btn btn-success" href="/accounts?action=refresh"><i
                                                         class="icon_refresh"></i></a>
                                             </c:if>
                                             <c:if test="${!profile.isExpired()}">
-                                                <a class="btn btn-warning" href="/user/accounts?action=refresh"><i
+                                                <a class="btn btn-warning" href="/accounts?action=refresh"><i
                                                         class="icon_refresh"></i></a>
                                             </c:if>
-                                            <a class="btn btn-danger" href="#"><i class="icon_close_alt2"></i></a>
+                                            <span class="btn btn-danger" onclick="removeAccount(${profile.id})">
+                                                <i class="icon_close_alt2"></i></span>
                                         </div>
                                     </td>
                                 </tr>
@@ -105,7 +132,7 @@
                             </tbody>
                         </table>
                     </section>
-                    <a href="/user/accounts?action=add" class="btn btn-primary">Add Account</a>
+                    <a href="/accounts?action=add" class="btn btn-primary">Add Account</a>
                 </div>
             </div>
             <!-- page end-->

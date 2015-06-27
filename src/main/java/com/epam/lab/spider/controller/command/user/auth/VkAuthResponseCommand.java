@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.user.auth;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created by Boyarsky Vitaliy on 10.06.2015.
@@ -52,16 +54,18 @@ public class VkAuthResponseCommand implements ActionCommand {
         if (vkProfile != null) {
             // Авторизація
             com.epam.lab.spider.model.db.entity.User user = userService.getById(vkProfile.getUserId());
+            ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
             switch (user.getState()) {
                 case CREATED:
                     // Користувач не активний
-                    request.setAttribute("loginMessage", "Your account is non-activated. Please activate " +
-                            "your account via email");
+                    request.setAttribute("toastr_notification", "warning|" + UTF8.encoding(bundle.getString("login" +
+                            ".notification.created")));
                     request.getRequestDispatcher("jsp/user/login.jsp").forward(request, response);
                     return;
                 case BANNED:
                     // Користувач забанений
-                    request.setAttribute("loginMessage", "Your account is Banned");
+                    request.setAttribute("toastr_notification", "warning|" + UTF8.encoding(bundle.getString("login" +
+                            ".notification.banned")));
                     request.getRequestDispatcher("jsp/user/login.jsp").forward(request, response);
                     return;
                 case ACTIVATED:

@@ -14,14 +14,20 @@ import java.util.List;
  */
 public class WallDAOImp extends BaseDAO implements WallDAO {
 
-    private static final String SQL_INSERT_QUERY = "INSERT INTO wall (id, owner_id, profile_id, permission, deleted" +
-            " VALUES (?, ?, ?, ?, ?)";
+    private static final String SQL_INSERT_QUERY = "INSERT INTO wall (owner_id, profile_id, permission, deleted) " +
+            " VALUES (?, ?, ?, ?)";
+
+
     private static final String SQL_UPDATE_QUERY = "UPDATE wall SET owner_id = ?, profile_id = ?, permission = ?, " +
             "deleted = ? WHERE id = ?";
     //private static final String SQL_DELETE_QUERY = "DELETE FROM wall WHERE id = ?";
-    private static final String SQL_DELETE_QUERY = "UPDATE wall SET deleted = true WHERE id = ?";
-    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM wall WHERE deleted = false";
-    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM wall WHERE id = ? AND deleted = false";
+    private static final String SQL_DELETE_QUERY = "UPDATE wall SET deleted = 1 WHERE id = ?";
+    private static final String SQL_DELETE_BY_OWNERID_AND_PERMISSION_QUERY = "UPDATE wall SET deleted = 1 WHERE " +
+            "owner_id = ? AND profile_id=? AND permission=?";
+    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM wall WHERE deleted = 0";
+    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM wall WHERE id = ? AND deleted = 0";
+    private static final String SQL_GET_BY_OWNERID_AND_PERMISSION_QUERY = "SELECT * FROM wall WHERE owner_id = ? AND " +
+            "permission=? AND deleted = false";
     private static final String SQL_GET_DESTINATION_BY_TASK_ID_QUERY = "SELECT * FROM wall JOIN task_destination ON " +
             "task_destination.wall_id = wall.id WHERE task_id = ?";
     private static final String SQL_GET_SOURCE_BY_TASK_ID_QUERY = "SELECT * FROM wall JOIN task_source ON " +
@@ -29,6 +35,14 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     private static final String SQL_DELETED_BY_PROFILE_ID_QUERY = "UPDATE wall SET delete = true WHERE profile_id = ?" +
             " deleted = false";
     private static final String SQL_GET_ALL_BY_PROFILE_ID_QUERY = "SELECT * FROM wall WHERE profile_id = ? AND deleted = false";
+    private static final String SQL_DELETED_BY_PROFILE_ID_QUERY = "UPDATE wall SET deleted = 1 WHERE profile_id = ? " +
+            "AND deleted = 0";
+    private static final String SQL_GET_ALL_BY_PROFILE_ID_QUERY = "SELECT * FROM wall WHERE profile_id = ? AND deleted = 0";
+
+    private static final String SQL_CHECK_EXIST_QUERY = "SELECT * FROM wall WHERE profile_id = ? AND owner_id=? AND " +
+            "permission=? AND deleted=true";
+    private static final String SQL_UPDATE_ON_ACTIVE_QUERY = "UPDATE wall SET deleted = false WHERE owner_id = ? AND " +
+            "profile_id = ? AND permission = ? AND deleted=true";
 
     private static final String SQL_SELECT_PROFILE_ID_BY_USER_ID_QUERY = "SELECT id FROM profile WHERE user_id = ? AND deleted = false";
     private static final String SQL_GET_ALL_BY_USER_ID_QUERY = "SELECT * FROM wall WHERE profile_id IN ("+
@@ -37,10 +51,9 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     @Override
     public boolean insert(Connection connection, Wall wall) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
-                wall.getId(),
                 wall.getOwner_id(),
                 wall.getProfile_id(),
-                wall.getPermission(),
+                wall.getPermission().toString().toUpperCase(),
                 wall.getDeleted());
         wall.setId(getLastInsertId(connection));
         return res;
@@ -56,9 +69,28 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
                 id);
     }
 
+    public boolean checkedExist(Connection connection, Wall wall) throws SQLException {
+        return select(connection, SQL_CHECK_EXIST_QUERY, wall.getProfile_id(), wall.getOwner_id(), wall.getPermission
+                ().toString().toUpperCase()).size() > 0;
+    }
+
     @Override
     public boolean delete(Connection connection, int id) throws SQLException {
         return changeQuery(connection, SQL_DELETE_QUERY, id);
+    }
+
+    @Override
+    public boolean updateOnActive(Connection connection, int owner_id, int profile_id, Wall.Permission permission)
+            throws SQLException {
+        return changeQuery(connection, SQL_UPDATE_ON_ACTIVE_QUERY, owner_id, profile_id, permission.toString()
+                .toUpperCase());
+    }
+
+    @Override
+    public boolean deleteByOwnerId(Connection connection, int owner_id, int profile_id, Wall.Permission permission)
+            throws SQLException {
+        return changeQuery(connection, SQL_DELETE_BY_OWNERID_AND_PERMISSION_QUERY, owner_id, profile_id, permission
+                .toString().toUpperCase());
     }
 
     @Override
@@ -81,6 +113,13 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     @Override
     public List<Wall> getAll(Connection connection) throws SQLException {
         return select(connection, SQL_GET_ALL_QUERY);
+    }
+
+    @Override
+    public List<Wall> getAllByOwnerIdAndPermission(Connection connection, int owner_id, Wall.Permission permission)
+            throws SQLException {
+        return select(connection, SQL_GET_BY_OWNERID_AND_PERMISSION_QUERY, owner_id, permission.toString()
+                .toUpperCase());
     }
 
     @Override
@@ -128,6 +167,9 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
         return changeQuery(connection, SQL_DELETED_BY_PROFILE_ID_QUERY, id);
     }
 
-
+    @Override
+    public List<Wall> getByProfileId(Connection connection, int id) throws SQLException {
+        return select(connection, SQL_GET_ALL_BY_PROFILE_ID_QUERY, id);
+    }
 
 }

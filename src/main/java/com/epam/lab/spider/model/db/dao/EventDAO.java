@@ -13,4 +13,12 @@ public interface EventDAO extends CRUD<Event> {
 
     List<Event> getByUserId(Connection connection, int userId) throws SQLException;
 
+    List<Event> getByShownUserId(Connection connection, int clientId) throws SQLException;
+
+    boolean markAsShowByUserId(Connection connection, int clientId) throws SQLException;
+
+    List<Event> getLastUnShownByUserId(Connection connection, int id, int limit) throws SQLException;
+
+    List<Event> getByUserId(Connection connection, Integer id, int page, int limit) throws SQLException;
+
 }

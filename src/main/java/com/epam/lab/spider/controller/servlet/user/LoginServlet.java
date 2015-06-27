@@ -17,10 +17,19 @@ public class LoginServlet extends HttpServlet {
 
     private static ActionFactory factory = new LoginActionFactory();
 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+            IOException {
+        factory.action(request, response);
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+            IOException {
+        factory.action(request, response);
+    }
+
     private static class LoginActionFactory extends ActionFactory {
 
         public LoginActionFactory() {
-
             commands = new HashMap<>();
             commands.put("default", new ShowAuthCommand());
             commands.put("signIn", new SignInCommand());
@@ -35,14 +44,11 @@ public class LoginServlet extends HttpServlet {
         @Override
         public void action(HttpServletRequest request, HttpServletResponse response) throws
                 ServletException, IOException {
-//            if (request.getParameter("code") != null) {
-//
-//                commands.get("vkAuthResponse").execute(request, response);
-//                return;
-//            }
             if (request.getParameter("code") != null) {
-
-                commands.get("fbAuthResponse").execute(request, response);
+                if (request.getParameter("code").length() < 80)
+                    commands.get("vkAuthResponse").execute(request, response);
+                else
+                    commands.get("fbAuthResponse").execute(request, response);
                 return;
             }
             super.action(request, response);
@@ -50,13 +56,4 @@ public class LoginServlet extends HttpServlet {
 
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-            IOException {
-        factory.action(request, response);
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-            IOException {
-        factory.action(request, response);
-    }
 }

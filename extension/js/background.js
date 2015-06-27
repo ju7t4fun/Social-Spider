@@ -1,22 +1,6 @@
 var apps = ["4949213"];
 var host = "http://localhost:8080/";
 
-// Повідомлення про успішнку авторизації
-var authSuccessNotification = {
-    "type": "basic",
-    "typeNotification": "SUCCESS",
-    "title": "Social Spider",
-    "message": "Authorization successful.",
-};
-
-// Повідомлення про скасування авторизації
-var authErrorNotification = {
-    "type": "basic",
-    "typeNotification": "ERROR",
-    "title": "Social Spider",
-    "message": "Authorization failure.",
-};
-
 // Файл конфігурації default
 var config = {
     user_id: '0',
@@ -58,17 +42,19 @@ var webSocket;
 // Створення нового WebSocket-у
 function createSocket() {
     if (config.user_id > 0) {
-        webSocket = new WebSocket("ws://localhost:8080/event/" + config.user_id);
+        webSocket = new WebSocket("ws://localhost:8080/websocket/event/" + config.user_id);
 
         webSocket.onopen = function (event) {
-
+            //alert("onOpen " + config.user_id);
         };
 
         webSocket.onmessage = function (event) {
+            //alert("onMessage "  + config.user_id);
             createNotification(JSON.parse(event.data), -1);
         };
 
         webSocket.onclose = function (event) {
+            //alert("onClose " + config.user_id)
             setTimeout(createSocket(), 25000);
         };
     }
@@ -102,13 +88,9 @@ function onAuth(tabId, from_url) {
         if (hangeInfo.status === 'complete') {
             var param = getSearchParameters(tab.url, '#');
             chrome.tabs.update(tabId, {
-                url: host + "user/accounts?action=add&user_id=" + param.user_id + "&access_token=" + param.access_token
+                url: host + "accounts?action=add&user_id=" + param.user_id + "&access_token=" + param.access_token
                 + "&expires_in=" + param.expires_in
             });
-            if (param.user_id === undefined)
-                createNotification(authErrorNotification, 3000);
-            else
-                createNotification(authSuccessNotification, 3000);
             chrome.tabs.onUpdated.removeListener(parseAccessToken);
         }
     }

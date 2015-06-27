@@ -24,6 +24,7 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM owner WHERE deleted = false";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM owner WHERE id = ? AND deleted = false";
     private static final String SQL_GET_LIMITED_QUERY = "SELECT * FROM owner WHERE deleted = false LIMIT ?, ?";
+    private static final String SQL_GET_BY_VK_ID_QUERY = "SELECT * FROM owner WHERE vk_id = ? AND deleted = false";
 
     @Override
     public boolean insert(Connection connection, Owner owner) throws SQLException {
@@ -74,13 +75,17 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
     }
 
     @Override
-    public Owner getById(Connection connection, int id) throws SQLException {
+       public Owner getById(Connection connection, int id) throws SQLException {
         return first(select(connection, SQL_GET_BY_ID_QUERY, id));
     }
 
     @Override
     public List<Owner> getLimited(Connection connection, Integer begin, Integer end) throws SQLException {
         return select(connection, SQL_GET_LIMITED_QUERY, begin, end);
+    }
+    @Override
+    public Owner getByVkId(Connection connection, int vk_id) throws SQLException {
+        return first(select(connection,  SQL_GET_BY_VK_ID_QUERY, vk_id));
     }
 
     //should remake later

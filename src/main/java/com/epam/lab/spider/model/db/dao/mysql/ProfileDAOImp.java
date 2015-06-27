@@ -29,14 +29,14 @@ public class ProfileDAOImp extends BaseDAO implements ProfileDAO {
             "SELECT * FROM profile WHERE profile.id NOT IN (SELECT profile_id FROM " +
                     " (SELECT wall.profile_id AS profile_id, owner.vk_id FROM" +
                     " (wall JOIN owner " +
-                    "ON wall.owner_id=owner.id)" +
-                    " WHERE owner.vk_id=?) AS T)";
+                    "ON wall.owner_id=owner.id AND wall.deleted=false )" +
+                    " WHERE owner.vk_id=? ) AS T)";
     private static final String SQL_GET_ALL_IN_WALL_QUERY =
             "SELECT * FROM profile WHERE profile.id IN (SELECT profile_id FROM " +
                     " (SELECT wall.profile_id AS profile_id, owner.vk_id FROM" +
                     " (wall JOIN owner " +
-                    "ON wall.owner_id=owner.id)" +
-                    " WHERE owner.vk_id=?) AS T)";
+                    "ON wall.owner_id=owner.id AND wall.deleted=false )" +
+                    " WHERE owner.vk_id=? ) AS T)";
     @Override
     public boolean insert(Connection connection, Profile profile) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
