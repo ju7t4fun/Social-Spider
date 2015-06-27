@@ -19,7 +19,7 @@ import java.util.List;
 public class FilterDAOImp extends BaseDAO implements FilterDAO {
 
     private static final String SQL_INSERT_QUERY = "INSERT INTO filter (likes, reposts, comments, min_time, max_time," +
-            " deleted) VALUES (?, ?, ?, ?, ?)";
+            " deleted) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE filter SET likes = ?, reposts = ?, comments = ?, min_time " +
             "= ?, max_time = ?, deleted = ? WHERE id = ?";
     //private static final String SQL_DELETE_QUERY = "DELETE * FROM filter WHERE id = ?";

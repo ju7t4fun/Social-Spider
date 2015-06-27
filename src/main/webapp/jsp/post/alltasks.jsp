@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,10 +67,10 @@
                     <section class="panel">
                         <header class="panel-heading tab-bg-primary ">
                             <ul class="nav nav-tabs">
-                                <li class="active">
+                                <li class="">
                                     <a data-toggle="tab" href="#active">Active Tasks</a>
                                 </li>
-                                <li class="">
+                                <li class="active">
                                     <a data-toggle="tab" href="#all">All Tasks</a>
                                 </li>
 
@@ -77,7 +78,7 @@
                         </header>
                         <div class="panel-body">
                             <div class="tab-content">
-                                <div id="active" class="tab-pane active">
+                                <div id="active" class="tab-pane">
                                     <div class="col-lg-12">
                                         <table class="table table-striped table-advance table-hover">
                                             <tr>
@@ -95,38 +96,6 @@
                                                 <td>testest</td>
                                                 <td>testtest</td>
                                                 <td>acc1</td>
-                                                <td>typetype</td>
-                                                <td>text, photo, links</td>
-                                                <td>interval</td>
-                                                <td>
-                                                    <div class="switch switch-square"
-                                                         data-on-label="<i class=' icon-ok'></i>"
-                                                         data-off-label="<i class='icon-remove'></i>">
-                                                        <input type="checkbox" checked="" />
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>999658</td>
-                                                <td>testest</td>
-                                                <td>testtest</td>
-                                                <td>acc5</td>
-                                                <td>typetype</td>
-                                                <td>video, hashtags</td>
-                                                <td>interval</td>
-                                                <td>
-                                                    <div class="switch switch-square"
-                                                         data-on-label="<i class=' icon-ok'></i>"
-                                                         data-off-label="<i class='icon-remove'></i>">
-                                                        <input type="checkbox" checked="" />
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>330001</td>
-                                                <td>testest</td>
-                                                <td>testtest</td>
-                                                <td>acc3</td>
                                                 <td>typetype</td>
                                                 <td>text, photo, links</td>
                                                 <td>interval</td>
@@ -141,99 +110,37 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div id="all" class="tab-pane">
+                                <div id="all" class="tab-pane active">
                                     <div class="col-lg-12">
                                         <table class="table table-striped table-advance table-hover">
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Grabbing</th>
                                                 <th>Posting</th>
-                                                <th>Account</th>
                                                 <th>Type</th>
                                                 <th>Content</th>
-                                                <th>Interval</th>
+                                                <th>Run Time</th>
+                                                <th>Limited</th>
                                                 <th>On/Off</th>
                                             </tr>
+                                            <c:forEach items="${tasks}" var="task">
                                             <tr>
-                                                <td>456423</td>
-                                                <td>testest</td>
-                                                <td>testtest</td>
-                                                <td>acc1</td>
-                                                <td>typetype</td>
-                                                <td>text, photo, links</td>
-                                                <td>interval</td>
+                                                <td><c:out value="${task.id}"/></td>
+                                                <td><c:out value="${task.source}"/></td>
+                                                <td><c:out value="${task.destination}"/></td>
+                                                <td><c:out value="${task.type}"/></td>
+                                                <td><c:out value="${task.contenttype}"/></td>
+                                                <td><c:out value="${task.time}"/></td>
+                                                <td><c:out value="${task.workLimit}"/></td>
                                                 <td>
                                                     <div class="switch switch-square"
                                                          data-on-label="<i class=' icon-ok'></i>"
                                                          data-off-label="<i class='icon-remove'></i>">
-                                                        <input type="checkbox" checked="" />
+                                                        <input type="checkbox" ${task.active!=null?'checked':''} />
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>505012</td>
-                                                <td>tesagain</td>
-                                                <td>testagain</td>
-                                                <td>acc5</td>
-                                                <td>typetype</td>
-                                                <td>video, hashtags</td>
-                                                <td>interval</td>
-                                                <td>
-                                                    <div class="switch switch-square"
-                                                         data-on-label="<i class=' icon-ok'></i>"
-                                                         data-off-label="<i class='icon-remove'></i>">
-                                                        <input type="checkbox" checked="" />
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>999658</td>
-                                                <td>testest</td>
-                                                <td>testtest</td>
-                                                <td>acc5</td>
-                                                <td>typetype</td>
-                                                <td>video, hashtags</td>
-                                                <td>interval</td>
-                                                <td>
-                                                    <div class="switch switch-square"
-                                                         data-on-label="<i class=' icon-ok'></i>"
-                                                         data-off-label="<i class='icon-remove'></i>">
-                                                        <input type="checkbox" checked="" />
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>123456</td>
-                                                <td>teeeest</td>
-                                                <td>teeeest</td>
-                                                <td>acc5</td>
-                                                <td>typetype</td>
-                                                <td>photo, documents</td>
-                                                <td>interval</td>
-                                                <td>
-                                                    <div class="switch switch-square"
-                                                         data-on-label="<i class=' icon-ok'></i>"
-                                                         data-off-label="<i class='icon-remove'></i>">
-                                                        <input type="checkbox" checked="" />
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>330001</td>
-                                                <td>testest</td>
-                                                <td>testtest</td>
-                                                <td>acc3</td>
-                                                <td>typetype</td>
-                                                <td>text, photo, links</td>
-                                                <td>interval</td>
-                                                <td>
-                                                    <div class="switch switch-square"
-                                                         data-on-label="<i class=' icon-ok'></i>"
-                                                         data-off-label="<i class='icon-remove'></i>">
-                                                        <input type="checkbox" checked="" />
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            </c:forEach>
                                         </table>
                                     </div>
                                 </div>

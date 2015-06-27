@@ -123,6 +123,23 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
             task.setType(Task.Type.valueOf(rs.getString("type").toUpperCase()));
             task.setState(Task.State.valueOf(rs.getString("state").toUpperCase()));
             task.setDeleted(rs.getBoolean("deleted"));
+
+            task.setSignature(rs.getString("signature"));
+            task.setHashTags(rs.getString("hashtags"));
+            task.setContentType(new Task.ContentType(rs.getInt("content_type")));
+            task.setActionAfterPosting(Task.ActionAfterPosting.valueOf(rs.getString("actions_after_posting")));
+            task.setStartTimeType(Task.StartTimeType.valueOf(rs.getString("start_time_type")));
+            task.setWorkTimeLimit(Task.WorkTimeLimit.valueOf(rs.getString("work_time_limit")));
+            task.setNextTaskRunDate(rs.getTime("next_task_run"));
+            //set field at #3
+            task.setIntervalMin( rs.getInt("interval_min"));
+            task.setIntervalMax( rs.getInt("interval_max"));
+            task.setGrabbingSize(rs.getInt("grabbing_size"));
+            task.setPostCount(   rs.getInt("post_count"));
+            task.setPostDelayMin(rs.getInt("post_delay_min"));
+            task.setPostDelayMax(rs.getInt("post_delay_max"));
+            task.setGrabbingMode( Task.GrabbingMode.valueOf(rs.getString("grabbing_mode")));
+
             taskList.add(task);
         }
         return taskList;

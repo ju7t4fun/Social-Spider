@@ -86,11 +86,19 @@
     </servlet>
     <servlet>
         <servlet-name>TaskServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.task.Servlet</servlet-class>
+        <servlet-class>com.epam.lab.spider.controller.servlet.task.TaskServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TaskServlet</servlet-name>
         <url-pattern>/task</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>WallServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.wall.WallServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WallServlet</servlet-name>
+        <url-pattern>/wall</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>OptionFillingServlet</servlet-name>

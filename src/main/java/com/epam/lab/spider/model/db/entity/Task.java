@@ -33,7 +33,7 @@ public class Task {
      * Field added by shell at 25.06.2015
      */
     private Date nextTaskRunDate;
-    private ContentType contentType = new ContentType(ContentType.TEXT|ContentType.Audio);
+    private ContentType contentType = new ContentType(ContentType.TEXT|ContentType.AUDIO);
     private StartTimeType startTimeType = StartTimeType.INTERVAL;
     private WorkTimeLimit workTimeLimit = WorkTimeLimit.ROUND_DAILY;
     private GrabbingMode grabbingMode = GrabbingMode.PER_GROUP;
@@ -80,41 +80,64 @@ public class Task {
     }
     public static class ContentType{
         public static final int TEXT    = 1<<0;
-        public static final int Photo   = 1<<1;
-        public static final int Audio   = 1<<2;
-        public static final int Video   = 1<<3;
-        public static final int Documents=1<<4;
-        public static final int Hashtags =1<<5;
-        public static final int Links   = 1<<6;
-        public static final int Pages   = 1<<7;
-        public static final int Reposts = 1<<8;
+        public static final int PHOTO = 1<<1;
+        public static final int AUDIO = 1<<2;
+        public static final int VIDEO = 1<<3;
+        public static final int DOCUMENTS =1<<4;
+        public static final int HASHTAGS =1<<5;
+        public static final int LINKS = 1<<6;
+        public static final int PAGES = 1<<7;
+        public static final int REPOSTS = 1<<8;
 
         public boolean hasText(){
             return (type & TEXT)!=0 ;
         }
         public boolean hasPhoto(){
-            return (type & Photo)!=0 ;
+            return (type & PHOTO)!=0 ;
         }
         public boolean hasAudio(){
-            return (type & Audio)!=0 ;
+            return (type & AUDIO)!=0 ;
         }
         public boolean hasVideo(){
-            return (type & Video)!=0 ;
+            return (type & VIDEO)!=0 ;
+        }
+        public boolean hasDoc(){
+            return (type & DOCUMENTS)!=0 ;
         }
         public boolean hasHashtags(){
-            return (type & Hashtags)!=0 ;
+            return (type & HASHTAGS)!=0 ;
         }
         public boolean hasLinks(){
-            return (type & Links)!=0 ;
+            return (type & LINKS)!=0 ;
         }
         public boolean hasPages(){
-            return (type & Pages)!=0 ;
+            return (type & PAGES)!=0 ;
         }
         public boolean hasReposts(){
-            return (type & Reposts)!=0 ;
+            return (type & REPOSTS)!=0 ;
         }
 
         public ContentType() {
+        }
+
+        @Override
+        public String toString() {
+
+            StringBuilder contentTypeStringBuilder = new StringBuilder();
+            Task.ContentType contentType = this;
+            if(contentType.hasText())contentTypeStringBuilder.append("text").append(", ");
+            if(contentType.hasPhoto())contentTypeStringBuilder.append("photo").append(", ");
+            if(contentType.hasAudio())contentTypeStringBuilder.append("audio").append(", ");
+            if(contentType.hasVideo())contentTypeStringBuilder.append("video").append(", ");
+            if(contentType.hasDoc())contentTypeStringBuilder.append("doc").append(", ");
+            if(contentType.hasHashtags())contentTypeStringBuilder.append("hash tag").append(", ");
+            if(contentType.hasLinks())contentTypeStringBuilder.append("links").append(", ");
+            if(contentType.hasPages())contentTypeStringBuilder.append("pages").append(", ");
+            if(contentType.hasReposts())contentTypeStringBuilder.append("repost").append(", ");
+            String result;
+            if(contentTypeStringBuilder.length()>2)result = contentTypeStringBuilder.substring(0,contentTypeStringBuilder.length()-2);
+            else result = "";
+            return result;
         }
 
         public ContentType(Integer type) {
@@ -124,11 +147,13 @@ public class Task {
         public Integer getType() {
             return type;
         }
-
+        public void addType(Integer type) {
+            this.type |= type;
+        }
         public void setType(Integer type) {
             this.type = type;
         }
-        int type;
+        int type = 0;
 
     }
     public static class ScheduleRecord{
@@ -248,6 +273,9 @@ public class Task {
     }
 
     public Integer getFilterId() {
+        if(filter!=null){
+            return filter.getId();
+        }
         return filterId;
     }
 

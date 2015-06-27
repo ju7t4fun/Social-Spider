@@ -25,9 +25,9 @@
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="${pageContext.request.contextPath}/jsp/post/alltasks.jsp">All
+                            <li><a class="" href="${pageContext.request.contextPath}/task">All
                                 Tasks</a></li>
-                            <li><a class="" href="${pageContext.request.contextPath}/jsp/post/addtask.jsp">Add New
+                            <li><a class="" href="${pageContext.request.contextPath}/task?action=create">Add New
                                 Task</a></li>
                             <li><a class="" href="${pageContext.request.contextPath}/jsp/post/bindaccount.jsp">Bind
                                 Accounts</a>

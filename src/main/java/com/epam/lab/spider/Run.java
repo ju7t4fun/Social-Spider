@@ -19,6 +19,7 @@ import com.epam.lab.spider.model.db.entity.Post;
 import com.epam.lab.spider.model.db.entity.Profile;
 import com.epam.lab.spider.model.db.service.savable.exception.UnsupportedServiseException;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -28,6 +29,8 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -133,7 +136,7 @@ public class Run {
 
 
     public static void main(String[] args) throws SQLException, ResolvableDAOException, InvalidEntityException, UnsupportedDAOException, UnsupportedServiseException {
-
+/*
         DAOFactory factory = DAOFactory.getInstance();
         TaskSourceDAO tsdao = factory.create(TaskSourceDAO.class);
         Connection connection = PoolConnection.getConnection();
@@ -141,7 +144,32 @@ public class Run {
         System.out.println(tsdao.deleteByWallId(connection, 1));
         System.out.println(tsdao.deleteByWallId(connection, 1));
         connection.close();
+*/
 
+        String search = "https://vk.com/melomoment";
+        UrlValidator defaultValidator = new UrlValidator();
+        if(defaultValidator.isValid(search)){
+            try {
+                URL url = new URL(search);
+
+                if(url.getHost().toLowerCase().equals("vk.com")) {
+                    String path = url.getPath().substring(1);
+                    System.out.println(path);
+                    Vkontakte vkontakte = new Vkontakte();
+
+                    Parameters parameters = new Parameters();
+                    parameters.add("screen_name", path);
+                    try {
+                        Integer id = vkontakte.utils().resolveScreenName(parameters);
+                        System.out.println(id);
+                    } catch (VKException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
 
 
 
