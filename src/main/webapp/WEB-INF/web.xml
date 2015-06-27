@@ -131,7 +131,7 @@
 
     <servlet-mapping>
         <servlet-name>NotificationServlet</servlet-name>
-        <url-pattern>/user/notification</url-pattern>
+        <url-pattern>/notification</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>OptionFillingServlet</servlet-name>

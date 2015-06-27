@@ -19,4 +19,6 @@ public interface EventDAO extends CRUD<Event> {
 
     List<Event> getLastUnShownByUserId(Connection connection, int id, int limit) throws SQLException;
 
+    List<Event> getByUserId(Connection connection, Integer id, int page, int limit) throws SQLException;
+
 }

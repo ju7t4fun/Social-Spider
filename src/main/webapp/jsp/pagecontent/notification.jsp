@@ -94,7 +94,7 @@
         </div>
 
         <li>
-            <a href="#">See all notifications</a>
+            <a href="/notification">See all notifications</a>
         </li>
     </ul>
 </li>

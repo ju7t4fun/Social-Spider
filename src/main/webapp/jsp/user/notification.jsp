@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,6 +29,7 @@
     <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- Custom styles -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
 
@@ -38,19 +40,34 @@
     <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
     <![endif]-->
 
-    <script>
-        $.ajax({
-            type: "POST",
-            url: "${pageContext.request.contextPath}/updateUser",
-            data: $("#updateForm").serialize(),
-            success: function(response) {
-                $("#alert").show();
-                $("#users_table").load("${pageContext.request.contextPath}/users #users_table");
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("Status: " + textStatus); alert("Error: " + errorThrown);
+    <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
+    <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
+    <script type="text/javascript">
+
+        // При завантаженні сторінки
+        setTimeout(function () {
+            if (${toastr_notification!=null}) {
+                var args = "${toastr_notification}".split("|");
+                toastrNotification(args[0], args[1]);
             }
-        });
+        }, 500);
+    </script>
+
+    <script type="text/javascript">
+        function removeNotification(id) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('GET', '/user/notification?action=remove&id=' + id, true);
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    var response = JSON.parse(xmlhttp.responseText);
+                    toastrNotification(response.status, response.msg);
+                    if (response.status === 'success') {
+                        $("#tr" + id).remove();
+                    }
+                }
+            };
+            xmlhttp.send(null);
+        }
     </script>
 </head>
 
@@ -58,8 +75,8 @@
 <!-- container section start -->
 <section id="container" class="">
 
-    <jsp:include page="../pagecontent/header.jsp" />
-    <jsp:include page="../pagecontent/sidebar.jsp" />
+    <jsp:include page="../pagecontent/header.jsp"/>
+    <jsp:include page="../pagecontent/sidebar.jsp"/>
 
     <!--main content start-->
     <section id="main-content">
@@ -76,11 +93,9 @@
                         <header class="panel-heading">
                             Notifications
                         </header>
-
                         <table class="table table-striped table-advance table-hover">
                             <tbody>
                             <tr>
-                                <th>ID</th>
                                 <th>Type</th>
                                 <th>Title</th>
                                 <th>Message</th>
@@ -88,18 +103,36 @@
                                 <th></th>
                             </tr>
                             <c:forEach var="event" items="${events}">
-                            <tr>
-                                <c:if test="${event.shown}">
-                                <td>${event.id}</td>
-                                <td>${event.type}</td>
-                                <td>${event.title}</td>
-                                <td>${event.message}</td>
-                                <td>${event.time}</td>
-                                <td>
-                                    <button type="reset" class="btn btn-danger">Delete</button>
-                                </td>
-                                </c:if>
-                            </tr>
+                                <tr id="tr${event.id}">
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${event.type == 'INFO'}">
+                                                <img src="${pageContext.request.contextPath}/img/icons/info.png"
+                                                     style="width: 25px; height: 25px;">
+                                            </c:when>
+                                            <c:when test="${event.type == 'SUCCESS'}">
+                                                <img src="${pageContext.request.contextPath}/img/icons/success.png"
+                                                     style="width: 25px; height: 25px;">
+                                            </c:when>
+                                            <c:when test="${event.type == 'WARN'}">
+                                                <img src="${pageContext.request.contextPath}/img/icons/warrning.png"
+                                                     style="width: 25px; height: 25px;">
+                                            </c:when>
+                                            <c:when test="${event.type == 'ERROR'}">
+                                                <img src="${pageContext.request.contextPath}/img/icons/error.png"
+                                                     style="width: 25px; height: 25px;">
+                                            </c:when>
+                                        </c:choose>
+                                    </td>
+                                    <td>${event.title}</td>
+                                    <td>${event.message}</td>
+                                    <td>${event.time}</td>
+                                    <td>
+                                        <button type="reset" onclick="removeNotification(${event.id})"
+                                                class="btn btn-danger"><i class="icon_close_alt2"></i>
+                                        </button>
+                                    </td>
+                                </tr>
                             </c:forEach>
                             </tbody>
                         </table>

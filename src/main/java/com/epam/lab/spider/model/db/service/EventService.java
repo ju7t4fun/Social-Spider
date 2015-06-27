@@ -106,4 +106,13 @@ public class EventService implements BaseService<Event> {
         }
         return null;
     }
+
+    public List<Event> getByUserId(Integer id, int page, int limit) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return edao.getByUserId(connection, id, page, limit);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

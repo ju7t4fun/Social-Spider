@@ -2,8 +2,8 @@ package com.epam.lab.spider.controller.command.notf;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.model.db.entity.Event;
+import com.epam.lab.spider.model.db.entity.User;
 import com.epam.lab.spider.model.db.service.EventService;
-import com.epam.lab.spider.model.db.service.MessageService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
 
 import javax.servlet.ServletException;
@@ -24,9 +24,11 @@ public class ShowNotificationCommand implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-       // Integer id = (Integer) session.getAttribute("user_id");
-        List<Event> events = service.getByUserId(1);
+        User user = (User) session.getAttribute("user");
+        List<Event> events = service.getByUserId(user.getId());
+        service.markAsShowByUserId(user.getId());
         request.setAttribute("events", events);
-        request.getRequestDispatcher("../jsp/user/notification.jsp").forward(request, response);
+        request.getRequestDispatcher("jsp/user/notification.jsp").forward(request, response);
     }
+
 }
