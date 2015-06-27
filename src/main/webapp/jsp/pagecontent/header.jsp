@@ -132,9 +132,6 @@
                         <a href="/accounts"><i class="icon_profile"></i> My Accounts</a>
                     </li>
                     <li>
-                        //////////////
-                    </li>
-                    <li>
                         <a href="/login?action=signOut"><i class="icon_key_alt"></i> Log Out</a>
                     </li>
                 </ul>
