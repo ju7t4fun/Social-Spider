@@ -42,7 +42,7 @@
             }
 
             this.dropdown = $('<ul />')
-                .addClass('Dropdown');
+                .addClass('Dropdown').css({"overflow-y": "scroll", "max-height": "166px"});
 
             this.tokensContainer = $('<ul />')
                 .addClass('TokensContainer');
