@@ -91,7 +91,6 @@
                 .insertAfter(this.select);
 
             this.tokensContainer.on('click', function(e){
-                alert("dddd");
                 e.stopImmediatePropagation();
                 $this.searchInput.get(0).focus();
                 $this.updatePlaceholder();

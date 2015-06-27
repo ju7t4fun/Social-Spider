@@ -50,13 +50,13 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                if (nPost.getPost().getId() == null) {
-                    assertTransaction(pdao.insert(connection, nPost.getPost()));
-                } else {
-                    if (!pdao.getById(connection, nPost.getPostId()).equals(nPost.getPost())) {
-                        assertTransaction(pdao.insert(connection, nPost.getPost()));
-                    }
-                }
+//                if (nPost.getPost() == null) {
+//                    assertTransaction(pdao.insert(connection, nPost.getPost()));
+//                } else {
+//                    if (!pdao.getById(connection, nPost.getPostId()).equals(nPost.getPost())) {
+//                        assertTransaction(pdao.insert(connection, nPost.getPost()));
+//                    }
+//                }
                 assertTransaction(npdao.insert(connection, nPost));
                 connection.commit();
             } catch (SQLTransactionException e) {

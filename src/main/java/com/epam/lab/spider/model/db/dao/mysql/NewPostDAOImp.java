@@ -53,7 +53,8 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     @Override
     public boolean insert(Connection connection, NewPost post) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
-                post.getPost().getId(),
+  //              post.getPost().getId(),
+                post.getPostId(),
                 post.getWallId(),
                 post.getPostTime(),
                 post.getDeleteTime(),
