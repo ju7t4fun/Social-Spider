@@ -65,9 +65,7 @@
                 <li>
                   <table width="100%" style="padding:0 50px;">
                     <tr><td style="text-align:left;padding-left:20px;"><img src="${pageContext.request.contextPath}/img/post.png" style="margin:15px;"><strong>GROUP NAME</strong></td></tr>
-                    <tr><td style="text-align:justify;">
-                      Vivamus tincidunt eleifend congue. Sed lacinia ullamcorper fringilla. Suspendisse mi nisi, molestie eget varius quis, cursus nec felis. Quisque mi tortor, accumsan vitae tempus a, placerat et est. Mauris eu mauris urna. Quisque ipsum purus, iaculis nec libero vel, euismod lacinia est. Proin quis mi et velit scelerisque feugiat. Nunc porttitor, nunc et ultricies scelerisque, velit est sollicitudin tortor, ut condimentum dolor nulla id sem. In suscipit urna a nibh bibendum cursus. Sed ex orci, rhoncus at convallis quis, bibendum ac ex. Proin vulputate lacus tellus, nec sollicitudin nisl congue eget.
-                    </td></tr>
+                    <tr><td style="text-align:justify;">Vivamus tincidunt eleifend congue. Sed lacinia ullamcorper fringilla. Suspendisse mi nisi, molestie eget varius quis, cursus nec felis. Quisque mi tortor, accumsan vitae tempus a, placerat et est. Mauris eu mauris urna. Quisque ipsum purus, iaculis nec libero vel, euismod lacinia est. Proin quis mi et velit scelerisque feugiat. Nunc porttitor, nunc et ultricies scelerisque, velit est sollicitudin tortor, ut condimentum dolor nulla id sem. In suscipit urna a nibh bibendum cursus. Sed ex orci, rhoncus at convallis quis, bibendum ac ex. Proin vulputate lacus tellus, nec sollicitudin nisl congue eget.</td></tr>
                     <tr><td style="text-align:left;padding-left:20px;">
                       <br>
                       <div style="color:blue;">#lorem #ipsum #dolor</div>
@@ -75,15 +73,19 @@
                     <tr><td>
                       <img src="${pageContext.request.contextPath}/img/bg-1.jpg" width="600" style="margin:20px;">
                     </td></tr>
+                    <tr><td style="text-align:right;">
+                      <input type="image" src="${pageContext.request.contextPath}/img/like.png" style="margin:0 10px;" alt="Like">
+                      45
+                      <input type="image" src="${pageContext.request.contextPath}/img/speaker.png" style="margin:0 10px;" alt="Share">
+                      14
+                    </td></tr>
                   </table>
                 </li>
                 <hr>
                 <li>
                   <table width="100%" style="padding:0 50px;">
                     <tr><td style="text-align:left;padding-left:20px;"><img src="${pageContext.request.contextPath}/img/post.png" style="margin:15px;"><strong>GROUP NAME</strong></td></tr>
-                    <tr><td style="text-align:justify;">
-                      Vivamus tincidunt eleifend congue. Sed lacinia ullamcorper fringilla. Suspendisse mi nisi, molestie eget varius quis, cursus nec felis. Quisque mi tortor, accumsan vitae tempus a, placerat et est. Mauris eu mauris urna. Quisque ipsum purus, iaculis nec libero vel, euismod lacinia est. Proin quis mi et velit scelerisque feugiat. Nunc porttitor, nunc et ultricies scelerisque, velit est sollicitudin tortor, ut condimentum dolor nulla id sem. In suscipit urna a nibh bibendum cursus. Sed ex orci, rhoncus at convallis quis, bibendum ac ex. Proin vulputate lacus tellus, nec sollicitudin nisl congue eget.
-                    </td></tr>
+                    <tr><td style="text-align:justify;">Vivamus tincidunt eleifend congue. Sed lacinia ullamcorper fringilla. Suspendisse mi nisi, molestie eget varius quis, cursus nec felis. Quisque mi tortor, accumsan vitae tempus a, placerat et est. Mauris eu mauris urna. Quisque ipsum purus, iaculis nec libero vel, euismod lacinia est. Proin quis mi et velit scelerisque feugiat. Nunc porttitor, nunc et ultricies scelerisque, velit est sollicitudin tortor, ut condimentum dolor nulla id sem. In suscipit urna a nibh bibendum cursus. Sed ex orci, rhoncus at convallis quis, bibendum ac ex. Proin vulputate lacus tellus, nec sollicitudin nisl congue eget.</td></tr>
                     <tr><td style="text-align:left;padding-left:20px;">
                       <br>
                       <div style="color:blue;">#lorem #ipsum #dolor</div>
@@ -92,6 +94,12 @@
                       <img src="${pageContext.request.contextPath}/img/sample-img-1.jpg" style="margin:20px;">
                       <img src="${pageContext.request.contextPath}/img/sample-img-2.png" style="margin:20px;">
                       <img src="${pageContext.request.contextPath}/img/sample-img-3.png" style="margin:20px;">
+                    </td></tr>
+                    <tr><td style="text-align:right;">
+                      <input type="image" src="${pageContext.request.contextPath}/img/like.png" style="margin:0 10px;" alt="Like">
+                      217
+                      <input type="image" src="${pageContext.request.contextPath}/img/speaker.png" style="margin:0 10px;" alt="Share">
+                      55
                     </td></tr>
                   </table>
                 </li>
@@ -102,7 +110,7 @@
         </div>
 
         <div class="col-md-4 portlets" >
-          <div class="panel panel-default" style="position:fixed;">
+          <div class="panel panel-default" style="position:fixed;margin-left:-10px;">
             <div class="panel-body">
               <h3>FILTER BY</h3>
               <ul>
