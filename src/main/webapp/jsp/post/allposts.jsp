@@ -9,35 +9,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
-  <meta name="author" content="GeeksLabs">
-  <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
-  <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-  <title>All Posts</title>
+    <title>All Posts</title>
 
-  <!-- Bootstrap CSS -->
-  <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
-  <!-- bootstrap theme -->
-  <link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">
-  <!--external css-->
-  <!-- font icon -->
-  <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet" />
-  <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet" />
-  <!-- Custom styles -->
-  <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
-  <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
-  <link rel="stylesheet" type="text/css" href="css/jquery.tokenize.css" />
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-  <!--[if lt IE 9]>
-  <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
-  <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
-  <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
-  <![endif]-->
+    <!-- Bootstrap CSS -->
+    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles -->
+    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/jquery.tokenize.css"/>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
+    <!--[if lt IE 9]>
+    <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
+    <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
+    <![endif]-->
+
+    <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
+    <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
+    <script type="text/javascript">
+
+        // При завантаженні сторінки
+        setTimeout(function () {
+            if (${toastr_notification!=null}) {
+                var args = "${toastr_notification}".split("|");
+                toastrNotification(args[0], args[1]);
+            }
+        }, 500);
+    </script>
+
 </head>
 
 <body>
@@ -45,93 +59,124 @@
 <!-- container section start -->
 <section id="container" class="">
 
-  <jsp:include page="../pagecontent/header.jsp"/>
-  <jsp:include page="../pagecontent/sidebar.jsp"/>
+    <jsp:include page="../pagecontent/header.jsp"/>
+    <jsp:include page="../pagecontent/sidebar.jsp"/>
 
-  <!--main content start-->
-  <section id="main-content">
-    <section class="wrapper">
-      <div class="row">
-        <div class="col-lg-12">
-          <ol class="breadcrumb">
-            <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-            <li><i class="fa fa-desktop"></i>Post</li>
-            <li><i class="fa fa-list-alt"></i>All Posts</li>
-          </ol>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-lg-12">
-
-          <div class="panel">
-            <div class="panel-body">
-              <div class="tab-content">
-                <div id="active" class="tab-pane active">
-                  <div class="col-lg-12">
-                    <table class="table table-striped table-advance table-hover">
-                      <tr><th>Post</th><th>Time</th><th>Statistics</th></tr>
-                      <tr>
-                        <td style="width:600px;text-align:left;"> <img src="${pageContext.request.contextPath}/img/post.png" width="50" height="45" style="margin:0 20px;"> POST_TITLE</td>
-                        <td>15.06.2015 18:33</td>
-                        <td>
-                          <table>
-                            <tr>
-                              <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/like.png" width="23" height="23"></td>
-                              <td style="border:none;">68</td>
-                              <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/speaker.png" width="23" height="23"></td>
-                              <td style="border:none;">21</td>
-                              <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/comment.png" width="23" height="23"></td>
-                              <td style="border:none;">4</td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="width:600px;text-align:left;"> <img src="${pageContext.request.contextPath}/img/post.png" width="50" height="45" style="margin:0 20px;"> POST_TITLE</td>
-                        <td>14.06.2015 08:11</td>
-                        <td>
-                          <table>
-                            <tr>
-                            <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/like.png" width="23" height="23"></td>
-                            <td style="border:none;">213</td>
-                            <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/speaker.png" width="23" height="23"></td>
-                            <td style="border:none;">56</td>
-                            <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/comment.png" width="23" height="23"></td>
-                            <td style="border:none;">41</td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="width:600px;text-align:left;"> <img src="${pageContext.request.contextPath}/img/post.png" width="50" height="45" style="margin:0 20px;"> POST_TITLE</td>
-                        <td>14.06.2015 07:59</td>
-                        <td>
-                          <table>
-                            <tr>
-                              <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/like.png" width="23" height="23"></td>
-                              <td style="border:none;">566</td>
-                              <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/speaker.png" width="23" height="23"></td>
-                              <td style="border:none;">347</td>
-                              <td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/comment.png" width="23" height="23"></td>
-                              <td style="border:none;">114</td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
+    <!--main content start-->
+    <section id="main-content">
+        <section class="wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ol class="breadcrumb">
+                        <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+                        <li><i class="fa fa-desktop"></i>Post</li>
+                        <li><i class="fa fa-list-alt"></i>All Posts</li>
+                    </ol>
                 </div>
-              </div>
             </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="panel">
+                        <div class="panel-body">
+                            <div class="tab-content">
+                                <div id="active" class="tab-pane active">
+                                    <div class="col-lg-12">
+                                        <table class="table table-striped table-advance table-hover">
+                                            <tr>
+                                                <th>Post</th>
+                                                <th>Time</th>
+                                                <th>Statistics</th>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:600px;text-align:left;"><img
+                                                        src="${pageContext.request.contextPath}/img/post.png" width="50"
+                                                        height="45" style="margin:0 20px;"> POST_TITLE
+                                                </td>
+                                                <td>15.06.2015 18:33</td>
+                                                <td>
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align:left;border:none;"><img
+                                                                    src="${pageContext.request.contextPath}/img/like.png"
+                                                                    width="23" height="23"></td>
+                                                            <td style="border:none;">68</td>
+                                                            <td style="text-align:left;border:none;"><img
+                                                                    src="${pageContext.request.contextPath}/img/speaker.png"
+                                                                    width="23" height="23"></td>
+                                                            <td style="border:none;">21</td>
+                                                            <td style="text-align:left;border:none;"><img
+                                                                    src="${pageContext.request.contextPath}/img/comment.png"
+                                                                    width="23" height="23"></td>
+                                                            <td style="border:none;">4</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:600px;text-align:left;"><img
+                                                        src="${pageContext.request.contextPath}/img/post.png" width="50"
+                                                        height="45" style="margin:0 20px;"> POST_TITLE
+                                                </td>
+                                                <td>14.06.2015 08:11</td>
+                                                <td>
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align:left;border:none;"><img
+                                                                    src="${pageContext.request.contextPath}/img/like.png"
+                                                                    width="23" height="23"></td>
+                                                            <td style="border:none;">213</td>
+                                                            <td style="text-align:left;border:none;"><img
+                                                                    src="${pageContext.request.contextPath}/img/speaker.png"
+                                                                    width="23" height="23"></td>
+                                                            <td style="border:none;">56</td>
+                                                            <td style="text-align:left;border:none;"><img
+                                                                    src="${pageContext.request.contextPath}/img/comment.png"
+                                                                    width="23" height="23"></td>
+                                                            <td style="border:none;">41</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:600px;text-align:left;"><img
+                                                        src="${pageContext.request.contextPath}/img/post.png" width="50"
+                                                        height="45" style="margin:0 20px;"> POST_TITLE
+                                                </td>
+                                                <td>14.06.2015 07:59</td>
+                                                <td>
+                                                    <table>
+                                                        <tr>
+                                                            <td style="text-align:left;border:none;"><img
+                                                                    src="${pageContext.request.contextPath}/img/like.png"
+                                                                    width="23" height="23"></td>
+                                                            <td style="border:none;">566</td>
+                                                            <td style="text-align:left;border:none;"><img
+                                                                    src="${pageContext.request.contextPath}/img/speaker.png"
+                                                                    width="23" height="23"></td>
+                                                            <td style="border:none;">347</td>
+                                                            <td style="text-align:left;border:none;"><img
+                                                                    src="${pageContext.request.contextPath}/img/comment.png"
+                                                                    width="23" height="23"></td>
+                                                            <td style="border:none;">114</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+        </section>
+        </div>
+
         </div>
     </section>
-    </div>
-
-    </div>
-  </section>
 </section>
 <!--main content end-->
 </section>

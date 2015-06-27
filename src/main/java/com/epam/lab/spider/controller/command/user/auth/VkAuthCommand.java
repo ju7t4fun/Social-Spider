@@ -2,6 +2,7 @@ package com.epam.lab.spider.controller.command.user.auth;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.vk.Authorization;
+import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.Scope;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 
@@ -29,6 +30,8 @@ public class VkAuthCommand implements ActionCommand {
         HttpSession session = request.getSession();
         session.setAttribute("siteVk", vk);
         vk.OAuth().open(response, true);
+        Parameters param = new Parameters();
+
     }
 
 }

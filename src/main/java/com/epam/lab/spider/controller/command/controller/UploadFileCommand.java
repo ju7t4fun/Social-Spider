@@ -1,5 +1,6 @@
-package com.epam.lab.spider.controller.command;
+package com.epam.lab.spider.controller.command.controller;
 
+import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.FileType;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
