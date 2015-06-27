@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -177,44 +178,28 @@
             <div class="modal-body" style="position: relative; left: 70px; top: -21px;">
                 <div class="row">
                     <div class="col-md-12">
-                            <div class="panel-body">
-                                <h3 style="margin-left: 125px;">Categories:</h3>
-                                <ul>
-                                    <li>
-                                        <select id="tokenize_focus" multiple="multiple" class="tokenize-sample"
-                                                style="width:250px; height: 250px;">
-                                            <option value="1">Category 1</option>
-                                            <option value="2">Category 2</option>
-                                            <option value="3">Category 3</option>
-                                            <option value="4">Category 4</option>
-                                            <option value="5">Category 5</option>
-                                            <option value="12">Category 2</option>
-                                            <option value="13">Category 3</option>
-                                            <option value="14">Category 4</option>
-                                            <option value="15">Category 5</option>
-                                            <option value="21">Category 1</option>
-                                            <option value="22">Category 2</option>
-                                            <option value="23">Category 3</option>
-                                            <option value="24">Category 4</option>
-                                            <option value="25">Category 5</option>
-                                            <option value="212">Category 2</option>
-                                            <option value="213">Category 3</option>
-                                            <option value="214">Category 4</option>
-                                            <option value="215">Category 5</option>
-                                        </select>
+                        <div class="panel-body">
+                            <h3 style="margin-left: 125px;">Categories:</h3>
+                            <ul>
+                                <li>
+                                    <select id="tokenize_focus" name="filter_select" multiple="multiple"
+                                            class="tokenize-sample"
+                                            style="width:250px; height: 250px;">
+                                    </select>
 
-                                        <script type="text/javascript">
-                                            $('select#tokenize_focus').tokenize({displayDropdownOnFocus: true});
-                                        </script>
-                                    </li>
-                                    <li>
-                                        <div class="col-lg-offset-2 col-lg-9" style="margin:20px auto;">
-                                            <button type="submit" style="margin-left: 330px; margin-bottom: -50px;"
-                                                    class="btn btn-primary">
-                                                Filter</button>
-                                        </div>
-                                    </li>
-                                </ul>
+                                    <script type="text/javascript">
+                                        $('select#tokenize_focus').tokenize({displayDropdownOnFocus: true});
+                                    </script>
+                                </li>
+                                <li>
+                                    <div class="col-lg-offset-2 col-lg-9" style="margin:20px auto;">
+                                        <button type="submit" style="margin-left: 330px; margin-bottom: -50px;"
+                                                class="btn btn-primary">
+                                            Filter
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -222,6 +207,16 @@
         </div>
     </div>
 </div>
+<script>
+    $.getJSON( "/controller?action=categories", function( data ) {
+        $.each( data, function( key, val ) {
+            $('#tokenize_focus').append($('<option>', {
+                value: val.id,
+                text: val.name
+            }));
+        });
+    });
+</script>
 <!-- javascripts -->
 <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>

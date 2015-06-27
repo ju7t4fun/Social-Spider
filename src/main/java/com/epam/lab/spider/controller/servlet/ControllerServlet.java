@@ -30,6 +30,7 @@ public class ControllerServlet extends HttpServlet {
             commands.put("changeavatar", new ChangeAvatarCommand());
             commands.put("addpost", new AddPostCommand());
             commands.put("addnewpost", new AddNewPostCommand());
+            commands.put("categories", new CategoriesCommand());
         }
     }
 
