@@ -120,6 +120,14 @@
         <servlet-name>NotificationServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.NotificationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FeedsServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.FeedsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FeedsServlet</servlet-name>
+        <url-pattern>/feeds</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>NotificationServlet</servlet-name>
