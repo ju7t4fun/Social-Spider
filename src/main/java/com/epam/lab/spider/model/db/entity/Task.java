@@ -37,6 +37,7 @@ public class Task {
     private StartTimeType startTimeType = StartTimeType.INTERVAL;
     private WorkTimeLimit workTimeLimit = WorkTimeLimit.ROUND_DAILY;
     private GrabbingMode grabbingMode = GrabbingMode.PER_GROUP;
+    private GrabbingType grabbingType = GrabbingType.BEGIN;
     private ActionAfterPosting actionAfterPosting = ActionAfterPosting.DO_NOTHING;
     private String signature;
     private String hashTags;
@@ -49,6 +50,9 @@ public class Task {
     //
     private Integer postCount = 1;
     private Integer grabbingSize = 10;
+    //
+    private Repeat repeat = Repeat.REPEAT_DISABLE;
+    private Integer repeatCount = 90;
     //
     private Set<ScheduleRecord> schedulers = null;
     private Set<PeriodIntervalRecord> dayPeriod = null;
@@ -66,6 +70,15 @@ public class Task {
     /**
      * Types added by shell at 25.06.2015
      */
+
+    public enum Repeat{
+        REPEAT_DISABLE, REPEAT_ON_TIME, REPEAT_ON_COUNT
+    }
+
+    public enum GrabbingType{
+        BEGIN,RANDOM,END,NEW
+    }
+
     public enum StartTimeType{
         INTERVAL, SCHEDULE, CRON
     }
@@ -447,6 +460,30 @@ public class Task {
         this.workTimeLimit = workTimeLimit;
     }
 
+
+    public GrabbingType getGrabbingType() {
+        return grabbingType;
+    }
+
+    public void setGrabbingType(GrabbingType grabbingType) {
+        this.grabbingType = grabbingType;
+    }
+
+    public Integer getRepeatCount() {
+        return repeatCount;
+    }
+
+    public void setRepeatCount(Integer repeatCount) {
+        this.repeatCount = repeatCount;
+    }
+
+    public Repeat getRepeat() {
+        return repeat;
+    }
+
+    public void setRepeat(Repeat repeat) {
+        this.repeat = repeat;
+    }
 
     @Override
     public String toString() {

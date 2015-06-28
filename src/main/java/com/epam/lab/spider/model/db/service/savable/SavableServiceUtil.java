@@ -27,8 +27,7 @@ public class SavableServiceUtil<E> {
     public static boolean safeSave(Object o){
         try{
             SavableService savableService = serviceFactory.getSavableService(o.getClass());
-            savableService.save(o);
-            return true;
+            return savableService.save(o);
         }catch (Exception x){
             x.printStackTrace();
             return false;
@@ -68,6 +67,7 @@ public class SavableServiceUtil<E> {
 
     public static boolean customSave(Connection connection,Object entity, Object[]before, Object[] after, CustomizeSavableAction[] actions)
             throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
+
         List beforeEntityList = null;
         List afterEntityList = null;
         if(before!=null)
@@ -116,8 +116,6 @@ public class SavableServiceUtil<E> {
                     connection.setAutoCommit(true);
                     connection.close();
                 }
-
-
             }
         } catch (SQLException x) {
 

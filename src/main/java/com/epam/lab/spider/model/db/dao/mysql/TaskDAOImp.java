@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,13 +21,16 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
 
     private static final String SQL_INSERT_QUERY_NEW = "INSERT INTO task (user_id, filter_id, type, state, deleted, " +     // #1
             "signature, hashtags, content_type, actions_after_posting, start_time_type, work_time_limit, next_task_run," +  // #2
-            "interval_min, interval_max,  grabbing_size, post_count, post_delay_min, post_delay_max, grabbing_mode) " +     // #3
+            "interval_min, interval_max,  grabbing_size, post_count, post_delay_min, post_delay_max, grabbing_mode, " +     // #3
+            "grabbing_type, repeat_type, repeat_count  ) "+
             //set added field at #1 count 5
             "VALUES (?, ?, ?, ?, ?, " +
             //set added field at #2 count 7
             "?, ?, ?, ?, ?, ?, ?, " +
             //set added field at #3 count 7
-            "?, ?, ?, ?, ?, ?, ?)";
+            "?, ?, ?, ?, ?, ?, ?, "+
+            //set added field at #4 count 3
+            "?, ?, ? ) ";
     private static final String SQL_UPDATE_QUERY = "UPDATE task SET user_id = ?, filter_id = ?, type = ? " +
             "state = ?, deleted = ? WHERE id = ?";
 
@@ -34,8 +38,14 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
             "user_id = ?, filter_id = ?, type = ?, state = ?, deleted = ?, " +                                  // #1[5]
             "signature = ?, hashtags = ?, content_type = ?, actions_after_posting = ?, start_time_type = ?, " + // #2[5]
             "work_time_limit = ?, next_task_run = ?, interval_min = ?, interval_max = ?, grabbing_size = ?, " + // #3[5]
-            "post_count = ?, post_delay_min = ?, post_delay_max = ?, grabbing_mode = ? " +                      // #4[4]
+            "post_count = ?, post_delay_min = ?, post_delay_max = ?, grabbing_mode = ?, " +                      // #4[4]
+            "grabbing_type = ?, repeat_type = ?, repeat_count = ? " +                                               // #5[3]
             "WHERE id = ?";                                                                                     // ID
+    // quick update query
+    private static final String SQL_UPDATE_NEXT_TIME_RUN_QUERY = "UPDATE task SET next_task_run = ? WHERE id = ?";
+    private static final String SQL_UPDATE_STATE_QUERY = "UPDATE task SET state = ? WHERE id = ?";
+    private static final String SQL_UPDATE_STATE_AND_NEXT_TIME_RUN_QUERY = "UPDATE task SET state = ?, next_task_run = ? WHERE id = ?";
+
     // private static final String SQL_DELETE_QUERY = "DELETE * FROM task WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE task SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM task WHERE deleted = false";
@@ -43,7 +53,16 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
     private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT * FROM task WHERE user_id = ? AND deleted = false";
     private static final String SQL_GET_BY_CATEGORY_ID_QUERY = "SELECT * FROM task JOIN category_has_task ON task.id " +
             "= category_has_task.task_id WHERE category_id = ? AND deleted = false";
+    private static final String SQL_GET_BY_ID_LIMIT_BY_USER_ID_QUERY =
+            "SELECT * FROM task WHERE id = ? AND user_id = ?  AND deleted = false";
+    private static final String SQL_GET_ALL_BY_DATE_TIME_LIMIT_BY_STATE_QUERY =
+            "SELECT * FROM task WHERE next_task_run < ? AND state = ?  AND deleted = false";
 
+
+    @Override
+    public boolean save(Connection conn, Task entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException {
+        return SavableCRUDUtil.save(conn,entity,this);
+    }
     @Override
     public boolean insert(Connection connection, Task task) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY_NEW,
@@ -68,7 +87,11 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
                 task.getPostCount(),
                 task.getPostDelayMin(),
                 task.getPostDelayMax(),
-                task.getGrabbingMode().toString().toUpperCase()
+                task.getGrabbingMode().toString().toUpperCase(),
+                //set field at #4
+                task.getGrabbingType().toString().toUpperCase(),
+                task.getRepeat().toString().toUpperCase(),
+                task.getRepeatCount()
         );
         task.setId(getLastInsertId(connection));
         return res;
@@ -91,7 +114,7 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
                 task.getStartTimeType().toString().toUpperCase(),
                 //set field at #3
                 task.getWorkTimeLimit().toString().toUpperCase(),
-                task.getNextTaskRunDate(),
+                task.getNextTaskRunDate().toString(),
                 task.getIntervalMin(),
                 task.getIntervalMax(),
                 task.getGrabbingSize(),
@@ -100,6 +123,10 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
                 task.getPostDelayMin(),
                 task.getPostDelayMax(),
                 task.getGrabbingMode().toString().toUpperCase(),
+                //set field at #5
+                task.getGrabbingType().toString().toUpperCase(),
+                task.getRepeat().toString().toUpperCase(),
+                task.getRepeatCount(),
                 // ID
                 i
         );
@@ -130,7 +157,7 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
             task.setActionAfterPosting(Task.ActionAfterPosting.valueOf(rs.getString("actions_after_posting")));
             task.setStartTimeType(Task.StartTimeType.valueOf(rs.getString("start_time_type")));
             task.setWorkTimeLimit(Task.WorkTimeLimit.valueOf(rs.getString("work_time_limit")));
-            task.setNextTaskRunDate(rs.getTime("next_task_run"));
+            task.setNextTaskRunDate(rs.getTimestamp("next_task_run"));
             //set field at #3
             task.setIntervalMin( rs.getInt("interval_min"));
             task.setIntervalMax( rs.getInt("interval_max"));
@@ -139,6 +166,10 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
             task.setPostDelayMin(rs.getInt("post_delay_min"));
             task.setPostDelayMax(rs.getInt("post_delay_max"));
             task.setGrabbingMode( Task.GrabbingMode.valueOf(rs.getString("grabbing_mode")));
+            // added in rev3
+            task.setGrabbingType(Task.GrabbingType.valueOf(rs.getString("grabbing_type")));
+            task.setRepeat(Task.Repeat.valueOf(rs.getString("repeat_type")));
+            task.setRepeatCount(rs.getInt("repeat_count"));
 
             taskList.add(task);
         }
@@ -166,7 +197,24 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
     }
 
     @Override
-    public boolean save(Connection conn, Task entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException {
-        return SavableCRUDUtil.save(conn,entity,this);
+    public Task getByIdLimitByUserId(Connection connection, int id, int userId) throws SQLException {
+        return first(select(connection, SQL_GET_BY_ID_LIMIT_BY_USER_ID_QUERY, id, userId));
+    }
+    @Override
+    public List<Task> getAllByNextRunDateLimitByState(Connection connection, Date date, Task.State state) throws SQLException {
+        return select(connection, SQL_GET_ALL_BY_DATE_TIME_LIMIT_BY_STATE_QUERY, date,state.toString());
+    }
+    @Override
+    public boolean updateNextTimeRun(Connection connection, int id, Date date) throws SQLException{
+        return changeQuery(connection, SQL_UPDATE_NEXT_TIME_RUN_QUERY, date, id);
+    }
+    @Override
+    public boolean updateState(Connection connection, int id, Task.State state) throws SQLException{
+        return changeQuery(connection, SQL_UPDATE_STATE_QUERY, state, id);
+    }
+    @Override
+    public boolean updateNextTimeRunAndState(Connection connection, int id, Date date,Task.State state) throws SQLException{
+        return changeQuery(connection, SQL_UPDATE_STATE_AND_NEXT_TIME_RUN_QUERY,  state, date, id);
+
     }
 }

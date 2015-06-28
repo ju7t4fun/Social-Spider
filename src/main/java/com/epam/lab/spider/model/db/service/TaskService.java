@@ -16,8 +16,8 @@ import com.epam.lab.spider.model.db.service.savable.exception.UnsupportedServise
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import static com.epam.lab.spider.model.db.SQLTransactionException.assertTransaction;
 
@@ -177,6 +177,49 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
         }
         return null;
     }
+
+    public Task getByIdAndLimitByUserId(int id, int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getByIdLimitByUserId(connection, id, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Task> getRunnableByNextRunDate(Date date) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getAllByNextRunDateLimitByState(connection, date, Task.State.RUNNING);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public boolean updateTimeToNextRun(Task task) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.updateNextTimeRun(connection, task.getId(), task.getNextTaskRunDate());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean updateNextTimeRunAndState(Task task) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.updateNextTimeRunAndState(connection, task.getId(), task.getNextTaskRunDate(), task.getState());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean updateState(Task task) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.updateState(connection, task.getId(), task.getState());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
     public List<Task> getByCategoryId(int id) {
         try (Connection connection = PoolConnection.getConnection()) {

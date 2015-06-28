@@ -133,7 +133,7 @@
                                                 <td><c:out value="${task.time}"/></td>
                                                 <td><c:out value="${task.workLimit}"/></td>
                                                 <td>
-                                                    <div class="switch switch-square"
+                                                    <div change="${task.id}" class="task-switch switch switch-square"
                                                          data-on-label="<i class=' icon-ok'></i>"
                                                          data-off-label="<i class='icon-remove'></i>">
                                                         <input type="checkbox" ${task.active!=null?'checked':''} />
@@ -142,6 +142,43 @@
                                             </tr>
                                             </c:forEach>
                                         </table>
+                                        <script type="text/javascript">
+                                            $(document).ready(function () {
+                                                $(" div.task-switch").change(function () {
+                                                    $(this).children(".switch-on").each(function () {
+                                                        var row = $(this).parent().parent().parent();
+                                                        $(row).css("background-color", "yellow");
+                                                        var id = $(this).parent().attr('change');
+                                                        $.post("task?action=stateChange&toState=RUNNING&taskId=".concat(id))
+                                                                .done(function (data) {
+                                                                    $(row).css("background-color", "green");
+                                                                    alert(data.alert + id);
+                                                                })
+                                                                .fail(function (jqXHR, textStatus, errorThrown) {
+                                                                    $(row).css("background-color", "red");
+                                                                    alert(textStatus + id);
+
+
+                                                                });
+                                                    });
+                                                    $(this).children(".switch-off").each(function () {
+                                                        var row = $(this).parent().parent().parent();
+                                                        $(row).css("background-color", "yellow");
+                                                        var id = $(this).parent().attr('change');
+                                                        $.post("task?action=stateChange&toState=STOPPED&taskId=".concat(id))
+                                                                .done(function (data) {
+                                                                    $(row).css("background-color", "green");
+                                                                    alert(data.alert + id);
+                                                                })
+                                                                .fail(function (jqXHR, textStatus, errorThrown) {
+                                                                    $(row).css("background-color", "red");
+                                                                    alert(textStatus + id);
+                                                                });
+                                                    });
+
+                                                });
+                                            });
+                                        </script>
                                     </div>
                                 </div>
                             </div>
