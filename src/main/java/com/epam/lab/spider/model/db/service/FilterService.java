@@ -4,7 +4,13 @@ import com.epam.lab.spider.model.db.PoolConnection;
 import com.epam.lab.spider.model.db.SQLTransactionException;
 import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.dao.FilterDAO;
+import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
+import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
+import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
 import com.epam.lab.spider.model.db.entity.Filter;
+import com.epam.lab.spider.model.db.service.savable.SavableService;
+import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
+import com.epam.lab.spider.model.db.service.savable.exception.UnsupportedServiseException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,11 +21,21 @@ import static com.epam.lab.spider.model.db.SQLTransactionException.assertTransac
 /**
  * Created by Sasha on 12.06.2015.
  */
-public class FilterService implements BaseService<Filter> {
+public class FilterService implements BaseService<Filter>, SavableService {
 
     private DAOFactory factory = DAOFactory.getInstance();
     private FilterDAO fdao = factory.create(FilterDAO.class);
 
+
+    @Override
+    public boolean save(Object entity) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
+        return  SavableServiceUtil.saveFromInterface(entity, this);
+    }
+
+    @Override
+    public boolean save(Object entity, Connection conn) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
+        return SavableServiceUtil.customSave(conn, entity);
+    }
     @Override
     public boolean insert(Filter filter) {
         try (Connection connection = PoolConnection.getConnection()) {
@@ -83,4 +99,6 @@ public class FilterService implements BaseService<Filter> {
         }
         return null;
     }
+
+
 }

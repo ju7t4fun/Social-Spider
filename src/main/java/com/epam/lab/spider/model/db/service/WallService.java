@@ -10,6 +10,7 @@ import com.epam.lab.spider.model.db.entity.Wall;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.epam.lab.spider.model.db.SQLTransactionException.assertTransaction;
@@ -174,5 +175,27 @@ public class WallService implements BaseService<Wall> {
             e.printStackTrace();
         }
         return null;
+    }
+    /**
+     * REWRITE THIS METHOD TO USED user id
+     * @param id
+     * @param userId
+     * @return
+     */
+    public Wall getByIdAndUserLimit(int id, int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getById(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public  List<Wall> getAllByUserID(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getByUserId(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 }

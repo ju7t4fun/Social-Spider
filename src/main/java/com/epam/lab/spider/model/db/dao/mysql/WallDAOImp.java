@@ -41,6 +41,10 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     private static final String SQL_UPDATE_ON_ACTIVE_QUERY = "UPDATE wall SET deleted = false WHERE owner_id = ? AND " +
             "profile_id = ? AND permission = ? AND deleted=true";
 
+    private static final String SQL_SELECT_PROFILE_ID_BY_USER_ID_QUERY = "SELECT id FROM profile WHERE user_id = ? AND deleted = false";
+    private static final String SQL_GET_ALL_BY_USER_ID_QUERY = "SELECT * FROM wall WHERE profile_id IN ("+
+            SQL_SELECT_PROFILE_ID_BY_USER_ID_QUERY+") AND deleted = false";
+
     @Override
     public boolean insert(Connection connection, Wall wall) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
@@ -157,5 +161,8 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     public List<Wall> getByProfileId(Connection connection, int id) throws SQLException {
         return select(connection, SQL_GET_ALL_BY_PROFILE_ID_QUERY, id);
     }
-
+    @Override
+    public List<Wall> getByUserId(Connection connection, int id) throws SQLException {
+        return select(connection, SQL_GET_ALL_BY_USER_ID_QUERY,id);
+    }
 }

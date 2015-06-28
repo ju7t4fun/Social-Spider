@@ -1,6 +1,10 @@
 package com.epam.lab.spider.model.db.dao.mysql;
 
 import com.epam.lab.spider.model.db.dao.TaskDAO;
+import com.epam.lab.spider.model.db.dao.savable.SavableCRUDUtil;
+import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
+import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
+import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
 import com.epam.lab.spider.model.db.entity.Task;
 
 import java.sql.Connection;
@@ -14,10 +18,24 @@ import java.util.List;
  */
 public class TaskDAOImp extends BaseDAO implements TaskDAO {
 
-    private static final String SQL_INSERT_QUERY = "INSERT INTO task (user_id, filter_id, type, state, deleted) " +
-            "VALUES (?, ?, ?)";
+    private static final String SQL_INSERT_QUERY_NEW = "INSERT INTO task (user_id, filter_id, type, state, deleted, " +     // #1
+            "signature, hashtags, content_type, actions_after_posting, start_time_type, work_time_limit, next_task_run," +  // #2
+            "interval_min, interval_max,  grabbing_size, post_count, post_delay_min, post_delay_max, grabbing_mode) " +     // #3
+            //set added field at #1 count 5
+            "VALUES (?, ?, ?, ?, ?, " +
+            //set added field at #2 count 7
+            "?, ?, ?, ?, ?, ?, ?, " +
+            //set added field at #3 count 7
+            "?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE task SET user_id = ?, filter_id = ?, type = ? " +
             "state = ?, deleted = ? WHERE id = ?";
+
+    private static final String SQL_UPDATE_QUERY_NEW = "UPDATE task SET " +
+            "user_id = ?, filter_id = ?, type = ?, state = ?, deleted = ?, " +                                  // #1[5]
+            "signature = ?, hashtags = ?, content_type = ?, actions_after_posting = ?, start_time_type = ?, " + // #2[5]
+            "work_time_limit = ?, next_task_run = ?, interval_min = ?, interval_max = ?, grabbing_size = ?, " + // #3[5]
+            "post_count = ?, post_delay_min = ?, post_delay_max = ?, grabbing_mode = ? " +                      // #4[4]
+            "WHERE id = ?";                                                                                     // ID
     // private static final String SQL_DELETE_QUERY = "DELETE * FROM task WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE task SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM task WHERE deleted = false";
@@ -28,25 +46,63 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
 
     @Override
     public boolean insert(Connection connection, Task task) throws SQLException {
-        boolean res = changeQuery(connection, SQL_INSERT_QUERY,
+        boolean res = changeQuery(connection, SQL_INSERT_QUERY_NEW,
+                //set field at #1
                 task.getUserId(),
                 task.getFilterId(),
                 task.getType().toString().toUpperCase(),
                 task.getState().toString().toUpperCase(),
-                task.getDeleted());
+                task.getDeleted(),
+                //set field at #2
+                task.getSignature(),
+                task.getHashTags(),
+                task.getContentType().getType(),
+                task.getActionAfterPosting().toString().toUpperCase(),
+                task.getStartTimeType().toString().toUpperCase(),
+                task.getWorkTimeLimit().toString().toUpperCase(),
+                task.getNextTaskRunDate(),
+                //set field at #3
+                task.getIntervalMin(),
+                task.getIntervalMax(),
+                task.getGrabbingSize(),
+                task.getPostCount(),
+                task.getPostDelayMin(),
+                task.getPostDelayMax(),
+                task.getGrabbingMode().toString().toUpperCase()
+        );
         task.setId(getLastInsertId(connection));
         return res;
     }
 
     @Override
     public boolean update(Connection connection, int i, Task task) throws SQLException {
-        return changeQuery(connection, SQL_UPDATE_QUERY,
+        return changeQuery(connection, SQL_UPDATE_QUERY_NEW,
+                //set field at #1
                 task.getUserId(),
                 task.getFilterId(),
                 task.getType().toString().toUpperCase(),
                 task.getState().toString().toUpperCase(),
                 task.getDeleted(),
-                i);
+                //set field at #2
+                task.getSignature(),
+                task.getHashTags(),
+                task.getContentType().getType(),
+                task.getActionAfterPosting().toString().toUpperCase(),
+                task.getStartTimeType().toString().toUpperCase(),
+                //set field at #3
+                task.getWorkTimeLimit().toString().toUpperCase(),
+                task.getNextTaskRunDate(),
+                task.getIntervalMin(),
+                task.getIntervalMax(),
+                task.getGrabbingSize(),
+                //set field at #4
+                task.getPostCount(),
+                task.getPostDelayMin(),
+                task.getPostDelayMax(),
+                task.getGrabbingMode().toString().toUpperCase(),
+                // ID
+                i
+        );
     }
 
     @Override
@@ -67,6 +123,23 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
             task.setType(Task.Type.valueOf(rs.getString("type").toUpperCase()));
             task.setState(Task.State.valueOf(rs.getString("state").toUpperCase()));
             task.setDeleted(rs.getBoolean("deleted"));
+
+            task.setSignature(rs.getString("signature"));
+            task.setHashTags(rs.getString("hashtags"));
+            task.setContentType(new Task.ContentType(rs.getInt("content_type")));
+            task.setActionAfterPosting(Task.ActionAfterPosting.valueOf(rs.getString("actions_after_posting")));
+            task.setStartTimeType(Task.StartTimeType.valueOf(rs.getString("start_time_type")));
+            task.setWorkTimeLimit(Task.WorkTimeLimit.valueOf(rs.getString("work_time_limit")));
+            task.setNextTaskRunDate(rs.getTime("next_task_run"));
+            //set field at #3
+            task.setIntervalMin( rs.getInt("interval_min"));
+            task.setIntervalMax( rs.getInt("interval_max"));
+            task.setGrabbingSize(rs.getInt("grabbing_size"));
+            task.setPostCount(   rs.getInt("post_count"));
+            task.setPostDelayMin(rs.getInt("post_delay_min"));
+            task.setPostDelayMax(rs.getInt("post_delay_max"));
+            task.setGrabbingMode( Task.GrabbingMode.valueOf(rs.getString("grabbing_mode")));
+
             taskList.add(task);
         }
         return taskList;
@@ -92,4 +165,8 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
         return select(connection, SQL_GET_BY_CATEGORY_ID_QUERY, id);
     }
 
+    @Override
+    public boolean save(Connection conn, Task entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException {
+        return SavableCRUDUtil.save(conn,entity,this);
+    }
 }

@@ -26,7 +26,7 @@ public class PoolConnection {
                 dataSource = init();
             }
             return dataSource.getConnection();
-        }catch (NullPointerException|SQLException x) {
+        }catch (SQLException|RuntimeException x) {
             LOG.error("Незнайдено налаштувань пулу. Повернуто нульовий обєкт. Створення одиночного зєднання!");
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/vk_spider", "root", "root");
         }

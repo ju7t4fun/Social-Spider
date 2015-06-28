@@ -57,6 +57,14 @@ public class OwnerService implements BaseService<Owner> {
         }
         return null;
     }
+    public List<Owner> getLimited(Integer begin, Integer end) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.getLimited(connection, begin, end);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @Override
     public Owner getById(int id) {
