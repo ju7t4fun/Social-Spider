@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.servlet;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.UploadFileFromURLCommand;
+import com.epam.lab.spider.controller.command.controller.UploadFileFromURLCommand;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

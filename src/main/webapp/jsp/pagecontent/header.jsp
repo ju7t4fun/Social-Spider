@@ -125,16 +125,11 @@
                 </a>
                 <ul class="dropdown-menu extended logout">
                     <div class="log-arrow-up"></div>
-                    <li class="eborder-top">
+                    <li id="aaaa" class="eborder-top">
                         <a href="/profile"><i class="icon_clock_alt"></i>Profile</a>
                     </li>
                     <li>
-                        <a href="${pageContext.request.contextPath}/jsp/user/user_accounts.jsp"><i
-                                class="icon_profile"></i> My Accounts</a>
-                    </li>
-                    <li>
-                        <a href="${pageContext.request.contextPath}/jsp/user/inbox.jsp"><i class="icon_mail_alt"></i> My
-                            Inbox</a>
+                        <a href="/accounts"><i class="icon_profile"></i> My Accounts</a>
                     </li>
                     <li>
                         <a href="/login?action=signOut"><i class="icon_key_alt"></i> Log Out</a>

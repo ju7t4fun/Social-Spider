@@ -18,19 +18,21 @@ import java.util.List;
  */
 public class PostDAOImp extends BaseDAO implements PostDAO {
 
-    private static final String SQL_INSERT_QUERY = "INSERT INTO post (message, deleted) VALUES (?, ?)";
-    private static final String SQL_UPDATE_QUERY = "UPDATE post SET message = ?, deleted = ? WHERE id = ?";
+    private static final String SQL_INSERT_QUERY = "INSERT INTO post (message, deleted, user_id) VALUES (?, ?, ?)";
+    private static final String SQL_UPDATE_QUERY = "UPDATE post SET message = ?, deleted = ?, user_id = ? WHERE id = ?";
     //private static final String SQL_DELETE_QUERY = "DELETE FROM post WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE post SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM post WHERE deleted = false";
     private static final String SQL_GET_ALL_NOT_IN_NEWPOST_QUERY = "SELECT * FROM post WHERE deleted = false AND id NOT IN (SELECT post_id AS id FROM new_post) " ;
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM post WHERE id = ? AND deleted = false";
+    private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT * FROM post WHERE user_id = ? AND deleted = 0";
 
     @Override
     public boolean insert(Connection connection, Post post) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
                 post.getMessage(),
-                post.getDeleted());
+                post.getDeleted(),
+                post.getUserId());
         post.setId(getLastInsertId(connection));
         return res;
     }
@@ -40,6 +42,7 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
         return changeQuery(connection, SQL_UPDATE_QUERY,
                 post.getMessage(),
                 post.getDeleted(),
+                post.getUserId(),
                 id);
     }
 
@@ -79,7 +82,13 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
     }
 
     @Override
-    public boolean save(Connection conn, Post entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException {
+    public boolean save(Connection conn, Post entity) throws UnsupportedDAOException, ResolvableDAOException,
+            InvalidEntityException {
         return SavableCRUDUtil.saveFromInterface(conn, entity);
+    }
+
+    @Override
+    public List<Post> getByUserId(Connection connection, Integer userId) throws SQLException {
+        return select(connection, SQL_GET_BY_USER_ID_QUERY, userId);
     }
 }

@@ -1,4 +1,7 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
+<script src="${pageContext.request.contextPath}/js/language.js"></script>
 
 <aside>
     <div id="sidebar" class="nav-collapse ">
@@ -12,10 +15,8 @@
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="${pageContext.request.contextPath}/jsp/post/allposts.jsp">All
-                                Posts</a></li>
-                            <li><a class="" href="${pageContext.request.contextPath}/jsp/post/addpost.jsp">Add New
-                                Post</a></li>
+                            <li><a class="" href="/post">All Posts</a></li>
+                            <li><a class="" href="/post?action=add">Add New Post</a></li>
                         </ul>
                     </li>
                     <li class="sub-menu">
@@ -25,9 +26,9 @@
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="${pageContext.request.contextPath}/jsp/post/alltasks.jsp">All
+                            <li><a class="" href="${pageContext.request.contextPath}/task">All
                                 Tasks</a></li>
-                            <li><a class="" href="${pageContext.request.contextPath}/jsp/post/addtask.jsp">Add New
+                            <li><a class="" href="${pageContext.request.contextPath}/task?action=create">Add New
                                 Task</a></li>
                             <li><a class="" href="${pageContext.request.contextPath}/jsp/post/bindaccount.jsp">Bind
                                 Accounts</a>
@@ -62,5 +63,28 @@
                 </ul>
             </c:when>
         </c:choose>
+
+        <div style="position:fixed; top: 510px; left: 10px;">
+            <div class="btn-group" style="margin-right: 20px;">
+                <a style="border: 1px; color: #030303;
+                        border-radius: 20px;   border-bottom-right-radius: 0;
+                             border-top-right-radius: 0; font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+                         font-weight: 700;width: 30px;
+                 height: 25px;" class="btn btn-default btn-sm" change="ua">UA</a>
+                <a class="btn btn-default btn-sm" style="border: 1px ;
+                         border-radius: 20px; border-bottom-left-radius: 0;
+                     border-top-left-radius: 0; margin-left: -1px; font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+                     font-weight: 700;color: #030303;width: 30px;
+                    height: 25px;" change="en"><span style="margin-left: -4px;">EN</span></a>
+            </div>
+            <div style="color:#fff;">
+                <h6>Social-Spider Corp. </h6>
+                <h6>Ukraine, Lviv, St.Bandery 5</h6>
+                <h6>(032)555-9876</h6>
+
+                <p><a href="mailto:example@gmail.com " style="color:#39afea"><h6>socialspider@gmail.com</h6></a></p>
+            </div>
+        </div>
     </div>
+
 </aside>

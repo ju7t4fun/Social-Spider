@@ -17,7 +17,7 @@ import java.util.*;
 /**
  * Created by Boyarsky Vitaliy on 22.06.2015.
  */
-@ServerEndpoint(value = "/support", configurator = GetHttpSessionConfigurator.class)
+@ServerEndpoint(value = "/websocket/support", configurator = GetHttpSessionConfigurator.class)
 public class SupportWebSocket {
 
     private static final Logger LOG = Logger.getLogger(SupportWebSocket.class);
@@ -171,6 +171,7 @@ public class SupportWebSocket {
             Session session = sessions.get(id);
             int count = service.getCountUnReadByUserId(id);
             session.getBasicRemote().sendText("count|" + count);
+            session.getBasicRemote().sendText("new|");
             session.getBasicRemote().sendText("admin|" + msg.getText() + "|" + new SimpleDateFormat
                     ("HH:mm:ss").format(msg.getDate()));
         }

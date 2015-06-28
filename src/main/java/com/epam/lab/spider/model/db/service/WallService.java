@@ -10,6 +10,7 @@ import com.epam.lab.spider.model.db.entity.Wall;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.epam.lab.spider.model.db.SQLTransactionException.assertTransaction;
@@ -64,7 +65,7 @@ public class WallService implements BaseService<Wall> {
 
     public List<Wall> getAllByOwnerIdAndPermission(int owner_id, Wall.Permission permission) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return wdao.getAllByOwnerIdAndPermission(connection,owner_id,permission);
+            return wdao.getAllByOwnerIdAndPermission(connection, owner_id, permission);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -175,4 +176,54 @@ public class WallService implements BaseService<Wall> {
         }
         return null;
     }
+    /**
+     * REWRITE THIS METHOD TO USED user id
+     * @param id
+     * @param userId
+     * @return
+     */
+    public Wall getByIdAndUserLimit(int id, int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getById(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public  List<Wall> getAllByUserID(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getByUserId(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    public List<Wall> getByUserId(int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getByUserId(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Wall> getReadByUserId(int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getReadByUserId(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Wall> getWriteByUserId(int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getWriteByUserId(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

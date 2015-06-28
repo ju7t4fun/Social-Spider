@@ -2,16 +2,14 @@ package com.epam.lab.spider.model.db.service;
 
 import com.epam.lab.spider.model.db.PoolConnection;
 import com.epam.lab.spider.model.db.SQLTransactionException;
-import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.dao.ProfileDAO;
 import com.epam.lab.spider.model.db.dao.WallDAO;
+import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.entity.Profile;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
-import static com.epam.lab.spider.model.db.SQLTransactionException.assertTransaction;
 
 
 /**
@@ -49,8 +47,8 @@ public class ProfileService implements BaseService<Profile> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                assertTransaction(wdao.deleteByProfileId(connection, id));
-                assertTransaction(pdao.delete(connection, id));
+                wdao.deleteByProfileId(connection, id);
+                pdao.delete(connection, id);
                 connection.commit();
             } catch (SQLTransactionException e) {
                 connection.rollback();

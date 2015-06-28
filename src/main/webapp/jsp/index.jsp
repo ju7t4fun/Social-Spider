@@ -53,7 +53,7 @@
 
     <c:choose>
         <c:when test="${user.role == 'ADMIN'}">
-            <jsp:forward page="admin_index.jsp"/>
+            <jsp:forward page="admin/index.jsp"/>
         </c:when>
         <c:when test="${user.role == 'USER'}">
             <jsp:forward page="user/index.jsp"/>

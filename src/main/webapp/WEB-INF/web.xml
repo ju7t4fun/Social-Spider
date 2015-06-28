@@ -144,9 +144,18 @@
         <servlet-name>FillingPostsServlet</servlet-name>
         <url-pattern>/FillingPostsServlet</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>FeedsServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.FeedsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FeedsServlet</servlet-name>
+        <url-pattern>/feeds</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>NotificationServlet</servlet-name>
-        <url-pattern>/user/notification</url-pattern>
+        <url-pattern>/notification</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>OptionFillingServlet</servlet-name>
@@ -194,7 +203,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AccountsServlet</servlet-name>
-        <url-pattern>/user/accounts</url-pattern>
+        <url-pattern>/accounts</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ControllerServlet</servlet-name>

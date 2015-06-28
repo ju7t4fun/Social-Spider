@@ -1,6 +1,7 @@
 package com.epam.lab.spider.model.db.dao.mysql;
 
 import com.epam.lab.spider.model.db.dao.*;
+import com.epam.lab.spider.model.db.dao.savable.SavableDAO;
 import com.epam.lab.spider.model.db.entity.*;
 
 import java.util.HashMap;
@@ -62,4 +63,11 @@ public class DAOFactory {
         return (CRUD<E>) daoByEntity.get(entityClass);
     }
 
+    public <E> SavableDAO<E> getSavableDAO(Class<E> clazz) {
+        CRUD localDAO = this.getCrudDAOByEntity(clazz);
+        if(localDAO instanceof SavableDAO){
+            return (SavableDAO<E>) localDAO;
+        }
+        return null;
+    }
 }

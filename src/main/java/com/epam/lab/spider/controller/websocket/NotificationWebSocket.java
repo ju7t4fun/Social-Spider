@@ -22,22 +22,18 @@ import java.util.Map;
 /**
  * Created by Boyarsky Vitaliy on 25.06.2015.
  */
-@ServerEndpoint(value = "/notification", configurator = GetHttpSessionConfigurator.class)
-public class NotificationWebSocket2 implements Receiver {
+@ServerEndpoint(value = "/websocket/notification", configurator = GetHttpSessionConfigurator.class)
+public class NotificationWebSocket implements Receiver {
 
-    private static final Logger LOG = Logger.getLogger(NotificationWebSocket2.class);
-    private static final List<Sender> senders = new ArrayList<Sender>() {
-        {
-            add(new EventLogger.EventSender());
-        }
-    };
+    private static final Logger LOG = Logger.getLogger(NotificationWebSocket.class);
+    private static final List<Sender> senders = new ArrayList<>();
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static EventService service = factory.create(EventService.class);
     private static Map<Integer, Session> sessions = new HashMap<>();
     private int id;
 
-    public NotificationWebSocket2() {
-        super();
+    public NotificationWebSocket() {
+        senders.add(new EventLogger.NotificationSender());
         for (Sender sender : senders) {
             sender.accept(this);
         }
@@ -98,7 +94,6 @@ public class NotificationWebSocket2 implements Receiver {
         return send(id, msg);
     }
 
-
     @Override
     public void visit(Sender sender) {
         sender.accept(this);
@@ -119,4 +114,5 @@ public class NotificationWebSocket2 implements Receiver {
         }
         return false;
     }
+
 }

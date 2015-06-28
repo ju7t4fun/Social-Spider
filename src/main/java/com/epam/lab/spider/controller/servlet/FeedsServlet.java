@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.servlet;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.user.profile.EditProfileCommand;
+import com.epam.lab.spider.controller.command.controller.CategoriesCommand;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,15 +11,16 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Marian Voronovskyi on 21.06.2015.
+ * Created by Marian Voronovskyi on 27.06.2015.
  */
-public class EditProfileServlet extends HttpServlet {
-    private static ActionFactory factory = new EditProfileFactory();
+public class FeedsServlet extends HttpServlet {
 
-    private static class EditProfileFactory extends ActionFactory {
-        public EditProfileFactory() {
+    private static ActionFactory factory = new FeedsFactory();
+
+    private static class FeedsFactory extends ActionFactory {
+        public FeedsFactory() {
             commands = new HashMap<>();
-            commands.put("editprofile", new EditProfileCommand());
+            commands.put("feeds", new CategoriesCommand());
         }
     }
 

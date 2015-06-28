@@ -10,7 +10,6 @@ div.Tokenize {
     position: relative;
     display: inline-block;
     zoom: 1;
-    z-index: 99;
 }
 
 div.Tokenize ul {

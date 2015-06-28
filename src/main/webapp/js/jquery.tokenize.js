@@ -42,7 +42,7 @@
             }
 
             this.dropdown = $('<ul />')
-                .addClass('Dropdown');
+                .addClass('Dropdown').css({"overflow-y": "scroll", "max-height": "166px"});
 
             this.tokensContainer = $('<ul />')
                 .addClass('TokensContainer');
@@ -91,7 +91,6 @@
                 .insertAfter(this.select);
 
             this.tokensContainer.on('click', function(e){
-                alert("dddd");
                 e.stopImmediatePropagation();
                 $this.searchInput.get(0).focus();
                 $this.updatePlaceholder();

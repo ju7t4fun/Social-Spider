@@ -17,6 +17,7 @@ public class Post {
     private Integer id;
     private String message;
     private Boolean deleted = false;
+    private Integer userId;
 
     private Set<Attachment> attachments = null;
 
@@ -69,14 +70,22 @@ public class Post {
         this.deleted = deleted;
     }
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
                 "id=" + id +
                 ", message='" + message + '\'' +
-                ", attachments=" + attachments +
                 ", deleted=" + deleted +
+                ", userId=" + userId +
+                ", attachments=" + attachments +
                 '}';
     }
-
 }

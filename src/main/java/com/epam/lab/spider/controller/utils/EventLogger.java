@@ -15,8 +15,8 @@ public class EventLogger {
     private static final ServiceFactory factory = ServiceFactory.getInstance();
     private static final EventService service = factory.create(EventService.class);
     private static Map<Integer, EventLogger> instances = new HashMap<>();
-    private static Receiver receiverEx;
-    private static Receiver receiverNotf;
+    private static Receiver eventReceiver;
+    private static Receiver notificationReceiver;
     private final int userId;
 
     private EventLogger(int userId) {
@@ -53,30 +53,27 @@ public class EventLogger {
         event.setTitle(title);
         event.setMessage(message);
         event.setTime(new Date());
-        if (sendEvent(event)) {
+        if (sendEvent(event))
             event.setShown(true);
-        }
-        sendNotification(event);
+        else
+            sendNotification(event);
         return service.insert(event);
     }
 
     private boolean sendEvent(Event event) {
-        if (receiverEx != null) {
-            return receiverEx.send(userId, Notification.basic(event).toString());
-        }
-        return false;
+        return eventReceiver != null && eventReceiver.send(userId, Notification.basic(event).toString());
     }
 
     private boolean sendNotification(Event event) {
-        return receiverNotf != null && receiverNotf.send(userId, "notf|" + event.getType().toString() + "|" + event
-                .getTitle() + "|" + new SimpleDateFormat("HH:mm").format(event.getTime()));
+        return notificationReceiver != null && notificationReceiver.send(userId, "notf|" + event.getType().toString()
+                + "|" + event.getTitle() + "|" + new SimpleDateFormat("HH:mm").format(event.getTime()));
     }
 
     public static class EventSender implements Sender {
 
         @Override
         public void accept(Receiver receiver) {
-            EventLogger.receiverEx = receiver;
+            eventReceiver = receiver;
         }
 
         @Override
@@ -97,24 +94,24 @@ public class EventLogger {
                 List<Event> list = new ArrayList<>();
                 for (Event event : allEvent) {
                     if (list.size() == 5) {
-                        receiverEx.send(clientId, Notification.list(list).toString());
+                        eventReceiver.send(clientId, Notification.list(list).toString());
                         list = new ArrayList<>();
                     }
                     list.add(event);
                 }
                 if (list.size() > 0)
-                    receiverEx.send(clientId, Notification.list(list).toString());
+                    eventReceiver.send(clientId, Notification.list(list).toString());
             }
             service.markAsShowByUserId(clientId);
         }
 
     }
 
-    public static class NotififcationSender implements Sender {
+    public static class NotificationSender implements Sender {
 
         @Override
         public void accept(Receiver receiver) {
-            EventLogger.receiverNotf = receiver;
+            notificationReceiver = receiver;
         }
 
         @Override

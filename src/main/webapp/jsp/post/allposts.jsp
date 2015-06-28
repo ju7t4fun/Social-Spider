@@ -83,24 +83,24 @@
 <!-- container section start -->
 <section id="container" class="">
 
-  <jsp:include page="../pagecontent/header.jsp"/>
-  <jsp:include page="../pagecontent/sidebar.jsp"/>
+    <jsp:include page="../pagecontent/header.jsp"/>
+    <jsp:include page="../pagecontent/sidebar.jsp"/>
 
-  <!--main content start-->
-  <section id="main-content">
-    <section class="wrapper">
-      <div class="row">
-        <div class="col-lg-12">
-          <ol class="breadcrumb">
-            <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-            <li><i class="fa fa-desktop"></i>Post</li>
-            <li><i class="fa fa-list-alt"></i>All Posts</li>
-          </ol>
-        </div>
-      </div>
+    <!--main content start-->
+    <section id="main-content">
+        <section class="wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ol class="breadcrumb">
+                        <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+                        <li><i class="fa fa-desktop"></i>Post</li>
+                        <li><i class="fa fa-list-alt"></i>All Posts</li>
+                    </ol>
+                </div>
+            </div>
 
-      <div class="row">
-        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12">
 
           <div class="panel">
             <div class="panel-body">
@@ -210,7 +210,111 @@
 <!--main content end-->
 </section>
 <!-- container section end -->
+<div aria-hidden="true"  aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 840px; position: relative; left: -120px;">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
+                <h3 class="modal-title">Post</h3>
+            </div>
+            <div class="modal-body" style="position: relative; left: 70px; top: -21px;">
+                <div class="row">
+                    <div class="col-md-8 portlets">
+                        <div class="panel panel-default">
+                            <div class="panel-body" style="width: 700px; margin-left: -15px;">
+                                <ul style="margin-left:-30px;">
+                                    <li>
+                                        <table width="100%" style="padding:0 50px;">
+                                            <tr>
+                                                <td style="text-align:left;padding-left:20px;"><img
+                                                        src="${pageContext.request.contextPath}/img/post.png"
+                                                        style="margin:15px;"><strong>GROUP NAME</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:justify;">
+                                                    Vivamus tincidunt eleifend congue. Sed lacinia ullamcorper
+                                                    fringilla.
+                                                    Suspendisse mi nisi, molestie eget varius quis, cursus nec felis.
+                                                    Quisque mi tortor, accumsan vitae tempus a, placerat et est. Mauris
+                                                    eu
+                                                    mauris urna. Quisque ipsum purus, iaculis nec libero vel, euismod
+                                                    lacinia est. Proin quis mi et velit scelerisque feugiat. Nunc
+                                                    porttitor,
+                                                    nunc et ultricies scelerisque, velit est sollicitudin tortor, ut
+                                                    condimentum dolor nulla id sem. In suscipit urna a nibh bibendum
+                                                    cursus.
+                                                    Sed ex orci, rhoncus at convallis quis, bibendum ac ex. Proin
+                                                    vulputate
+                                                    lacus tellus, nec sollicitudin nisl congue eget.
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left;padding-left:20px;">
+                                                    <br>
 
+                                                    <div style="color:blue;">#lorem #ipsum #dolor</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <img src="${pageContext.request.contextPath}/img/bg-1.jpg"
+                                                         width="600"
+                                                         style="margin:20px;">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </li>
+                                    <hr>
+                                    <li>
+                                        <table width="100%" style="padding:0 50px;">
+                                            <tr>
+                                                <td style="text-align:left;padding-left:20px;"><img
+                                                        src="${pageContext.request.contextPath}/img/post.png"
+                                                        style="margin:15px;"><strong>GROUP NAME</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:justify;">
+                                                    Vivamus tincidunt eleifend congue. Sed lacinia ullamcorper
+                                                    fringilla.
+                                                    Suspendisse mi nisi, molestie eget varius quis, cursus nec felis.
+                                                    Quisque mi tortor, accumsan vitae tempus a, placerat et est. Mauris
+                                                    eu
+                                                    mauris urna. Quisque ipsum purus, iaculis nec libero vel, euismod
+                                                    lacinia est. Proin quis mi et velit scelerisque feugiat. Nunc
+                                                    porttitor,
+                                                    nunc et ultricies scelerisque, velit est sollicitudin tortor, ut
+                                                    condimentum dolor nulla id sem. In suscipit urna a nibh bibendum
+                                                    cursus.
+                                                    Sed ex orci, rhoncus at convallis quis, bibendum ac ex. Proin
+                                                    vulputate
+                                                    lacus tellus, nec sollicitudin nisl congue eget.
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left;padding-left:20px;">
+                                                    <br>
+                                                  <div style="color:#ffbbf1;">#lorem #ipsum #dolor</div>
+                                                </td>
+                                            </tr>
+                                          <tr>
+                                            <td>
+                                              <img src="${pageContext.request.contextPath}/img/sample-img-1.jpg"
+                                                   style="margin:20px;">
+                                              <img src="${pageContext.request.contextPath}/img/sample-img-2.png"
+                                                   style="margin:20px;">
+                                              <img src="${pageContext.request.contextPath}/img/sample-img-3.png"
+                                                   style="margin:20px;">
+                                            </td>
+                                          </tr>
+                                        </table>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 <style>
   tfoot input {
@@ -270,7 +374,8 @@
     padding-left: 20px;
   }
 </style>
-
+                     
+    
 </body>
 </html>
 
