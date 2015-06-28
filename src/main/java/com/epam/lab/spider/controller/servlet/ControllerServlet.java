@@ -5,6 +5,8 @@ import com.epam.lab.spider.controller.command.controller.CategoriesCommand;
 import com.epam.lab.spider.controller.command.controller.UploadFileCommand;
 import com.epam.lab.spider.controller.command.controller.UploadFileFromURLCommand;
 import com.epam.lab.spider.controller.command.controller.LocaleCommand;
+import com.epam.lab.spider.controller.command.post.GetPostByIdCommand;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +39,7 @@ public class ControllerServlet extends HttpServlet {
             commands.put("upload", new UploadFileCommand());
             commands.put("uploadurl", new UploadFileFromURLCommand());
             commands.put("categories", new CategoriesCommand());
+            commands.put("getpostbyid", new GetPostByIdCommand());
         }
     }
 
