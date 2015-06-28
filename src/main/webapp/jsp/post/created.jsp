@@ -74,6 +74,36 @@
     <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
     <![endif]-->
 
+    <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
+    <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
+    <script type="text/javascript">
+
+        // При завантаженні сторінки
+        setTimeout(function () {
+            if (${toastr_notification!=null}) {
+                var args = "${toastr_notification}".split("|");
+                toastrNotification(args[0], args[1]);
+            }
+        }, 500);
+
+        function removePost(id, elm) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('GET', '/post?action=remove&id=' + id, true);
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    var response = JSON.parse(xmlhttp.responseText);
+                    toastrNotification(response.status, response.msg);
+                    if (response.status === 'success') {
+                        $('#postsTable').DataTable().row($(this).parents('tr'))
+                                .remove()
+                                .draw();
+                    }
+                }
+            };
+            xmlhttp.send(null);
+        }
+    </script>
+
     <script type="text/javascript">
         var table;
 
@@ -89,21 +119,10 @@
                 'iDisplayLength': 10,
                 "bServerSide": true,
                 "sAjaxSource": path + "/post?action=getCreatedPost",
-//                "dom": 'C<"clear">lfrtip',
                 colVis: {
                     "align": "right",
-//                    restore: "Restore",
-//                    showAll: "Show all",
-//                    showNone: "Show none",
-//                    order: 'alpha',
                     "buttonText": "columns <img src=\"/img/caaret.png\"/>",
                 },
-
-//                "language": {
-//                    "infoFiltered": ""
-//                }
-//                ,
-//                "dom": 'Cf<"toolbar"">rtip',//, "columnDefs": [ { "targets": 2,"orderable": false }, { "targets": 3,"orderable": false } ]//,
 
                 "columnDefs": [{
                     "bVisible": false, "aTargets": [0]
@@ -115,23 +134,22 @@
                     "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
                         $(td).html(parseAttachment(cellData));
                     }
+                }, {
+                    "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).html('<div class="btn-group"><a class="btn btn-primary" href="#"><i class="icon_plus_alt2"></i></a><a class="btn btn-danger" onclick="removePost(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
+                    }
+                }, {
+                    "width": "60%", "targets": 1
+                }, {
+                    "class": "dt-body-left", "targets": 1
+                }, {
+                    "class": "dt-body-right", "targets": 3
                 }]
 
-            })
-//                    .columnFilter({
-//                        aoColumns: [],
-//                        bUseColVis: true
-//                    }).fnSetFilteringDelay();
+            });
 
-
-//            $(".dataTables_filter").css({"position": "auto"});
-//            $(".dataTables_filter").css({"left": "0px"});
-//            $(".dataTables_filter").css({"right": "30%"});
-//            $(".dataTables_filter").css({"top": "-10px"});
-//            $(".dataTables_filter").css({"width": "350px"});
-//            $(".dataTables_filter").attr("hidden", "");
-//            $("div.toolbar").append($("dataTables_filter")).append('<div class="btn-group" style="padding:5px "><button class="btn btn-default" id="refreshbtn" style="background:none;border:1px solid #ccc;height:30px" type="button"><span class="glyphicon glyphicon-refresh" style="padding:3px"></span></button></div>');
-//            $("div.toolbar").css("float", "right").css({"position": "relative"});
+            $(".dataTables_filter").attr("hidden", "");
+            $(".dataTables_length").attr("hidden", "");
 
 
             $('#refreshbtn').click(function () {
@@ -151,13 +169,13 @@
                 var args = arg.split("|");
                 switch (args[0]) {
                     case "PHOTO":
-                        return '<img src="${pageContext.request.contextPath}/img/icons/jpg-icon.png" style="width: 25px; height: 25px"><span class="badge bg-important">{count}</span>'.replace("{count}", args[1]);
+                        return '<img src="${pageContext.request.contextPath}/img/icons/jpg-icon.png" style="width: 30px; height: 30px"><span class="badge bg-important">{count}</span>'.replace("{count}", args[1]);
                     case "VIDEO":
-                        return '<img src="${pageContext.request.contextPath}/img/icons/mpg-icon.png" style="width: 25px; height: 25px"><span class="badge bg-important">{count}</span>'.replace("{count}", args[1]);
+                        return '<img src="${pageContext.request.contextPath}/img/icons/mpg-icon.png" style="width: 30px; height: 30px"><span class="badge bg-important">{count}</span>'.replace("{count}", args[1]);
                     case "AUDIO":
-                        return '<img src="${pageContext.request.contextPath}/img/icons/mp3-icon.png" style="width: 25px; height: 25px"><span class="badge bg-important">{count}</span>'.replace("{count}", args[1]);
+                        return '<img src="${pageContext.request.contextPath}/img/icons/mp3-icon.png" style="width: 30px; height: 30px"><span class="badge bg-important">{count}</span>'.replace("{count}", args[1]);
                     case "DOC":
-                        return '<img src="${pageContext.request.contextPath}/img/icons/txt-icon.png" style="width: 25px; height: 25px"><span class="badge bg-important">{count}</span>'.replace("{count}", args[1]);
+                        return '<img src="${pageContext.request.contextPath}/img/icons/txt-icon.png" style="width: 30px; height: 30px"><span class="badge bg-important">{count}</span>'.replace("{count}", args[1]);
                 }
                 return "";
             }
@@ -178,6 +196,11 @@
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> Home</h3>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
@@ -201,10 +224,11 @@
                                                class="row-border tableHeader" id="postsTable">
                                             <tbody>
                                             <thead>
-                                            <tr>
+                                            <tr style="align-content: center">
                                                 <th>id</th>
                                                 <th>Message</th>
                                                 <th>Attachment</th>
+                                                <th></th>
                                             </tr>
                                             </thead>
                                             </tbody>

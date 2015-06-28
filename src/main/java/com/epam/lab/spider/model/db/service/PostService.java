@@ -111,7 +111,8 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                assertTransaction(adao.deleteByPostId(connection, id));
+                if (pdao.getById(connection, id).getAttachments().size() > 0)
+                    assertTransaction(adao.deleteByPostId(connection, id));
                 assertTransaction(pdao.delete(connection, id));
                 connection.commit();
             } catch (SQLTransactionException e) {

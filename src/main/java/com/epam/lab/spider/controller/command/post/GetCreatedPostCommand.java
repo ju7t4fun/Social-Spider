@@ -44,7 +44,7 @@ public class GetCreatedPostCommand implements ActionCommand {
                 Post post = posts.get(i);
                 JSONArray row = new JSONArray();
                 row.put(post.getId());
-                row.put(post.getMessage().length() > 50 ? post.getMessage().substring(0, 47) + "..." : post
+                row.put(post.getMessage().length() > 75 ? post.getMessage().substring(0, 72) + "..." : post
                         .getMessage());
                 Set<Attachment> attachments = post.getAttachments();
                 if (attachments.size() > 0) {
@@ -66,6 +66,7 @@ public class GetCreatedPostCommand implements ActionCommand {
                 } else {
                     row.put("");
                 }
+                row.put(post.getId());
                 array.put(row);
             }
         }

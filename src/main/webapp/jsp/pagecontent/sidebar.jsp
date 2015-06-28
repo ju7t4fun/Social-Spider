@@ -15,7 +15,7 @@
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="/post">All Posts</a></li>
+                            <li><a class="" href="/post?action=showCreated">Created</a></li>
                             <li><a class="" href="/post?action=add">Add New Post</a></li>
                         </ul>
                     </li>

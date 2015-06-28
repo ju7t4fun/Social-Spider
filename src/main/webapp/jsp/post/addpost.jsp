@@ -18,7 +18,7 @@
           content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-    <title>Add Post</title>
+    <title><l:resource key="addnewpost" /></title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -76,6 +76,11 @@
     <section id="main-content">
         <section class="wrapper">
             <!--overview start-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-credit-card"></i><l:resource key="newpost.newpost" /></h3>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
