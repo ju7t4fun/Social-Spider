@@ -92,7 +92,7 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
             nPost.setPostId(rs.getInt("post_id"));
             nPost.setWallId(rs.getInt("wall_id"));
             nPost.setPostTime(rs.getTimestamp("post_time"));
-            nPost.setDeleteTime(rs.getDate("delete_time"));
+            nPost.setDeleteTime(rs.getTimestamp("delete_time"));
             nPost.setState(NewPost.State.valueOf(rs.getString("state")));
             nPost.setDeleted(rs.getBoolean("deleted"));
             posts.add(nPost);

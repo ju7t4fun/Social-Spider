@@ -5,6 +5,7 @@ import com.epam.lab.spider.model.db.entity.Task;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,5 +16,15 @@ public interface TaskDAO extends CRUD<Task>,SavableDAO<Task> {
     List<Task> getByUserId(Connection connection, int id) throws SQLException;
 
     List<Task> getByCategoryId(Connection connection, int id) throws SQLException;
+
+    public Task getByIdLimitByUserId(Connection connection, int id, int userId) throws SQLException;
+
+    public List<Task> getAllByNextRunDateLimitByState(Connection connection, Date date, Task.State state) throws SQLException;
+
+    public boolean updateNextTimeRun(Connection connection, int id, Date date) throws SQLException;
+
+    public boolean updateState(Connection connection, int id, Task.State state) throws SQLException;
+
+    public boolean updateNextTimeRunAndState(Connection connection, int id, Date date,Task.State state) throws SQLException;
 
 }

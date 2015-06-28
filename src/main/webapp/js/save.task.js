@@ -17,6 +17,7 @@ $(document).ready(function () {
         options.grabbing_type = $("input[name=grabbing_type][type='radio']:checked").val();
         options.posting_type = $("input[name=posting_type][type='radio']:checked").val();
         options.repeat = $("input[name=repeat][type='radio']:checked").val();
+        options.repeat_count = $("input[name=repeat_days][type='number']").val();
         options.start_time = $("input[name=start_time][type='radio']:checked").val();
         options.work_time = $("input[name=work_time][type='radio']:checked").val();
 
@@ -29,18 +30,18 @@ $(document).ready(function () {
         options.signature = $("textarea[name=addtext]").val();
 
 
-        options.interval_min = 3;
-        options.interval_max = 10;
+        options.interval_min = $("input[name=interval_min][type='number']").val();
+        options.interval_max = $("input[name=interval_max][type='number']").val();
         options.post_count = 1;
-        options.post_delay_min = 5;
-        options.post_delay_max = 25;
+        options.post_delay_min = $("input[name=post_delay_min][type='number']").val();
+        options.post_delay_max = $("input[name=post_delay_max][type='number']").val();
         options.grabbing_mode = 'per_group';
 
 
         var filter = new Object() ;
-        filter.likes = 60;
-        filter.reposts = 10;
-        filter.comments = 0;
+        filter.likes = $("input[name=likes][type='number']").val();
+        filter.reposts = $("input[name=reposts][type='number']").val();
+        filter.comments = $("input[name=comments][type='number']").val();
         filter.min_time = 3600;
         filter.max_time = 7*24*3600;
 
@@ -58,7 +59,7 @@ $(document).ready(function () {
                 else
                 alert("done");
             })
-            .fail(function(data) {
+            .fail(function() {
                 alert( "error" );
             });
 

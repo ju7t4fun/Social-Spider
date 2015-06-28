@@ -176,13 +176,8 @@ public class WallService implements BaseService<Wall> {
         }
         return null;
     }
-    /**
-     * REWRITE THIS METHOD TO USED user id
-     * @param id
-     * @param userId
-     * @return
-     */
-    public Wall getByIdAndUserLimit(int id, int userId) {
+    // TODO: REFACTOR BY REAL USER CHECK BY USER ID
+    public Wall getByIdAndLimitByUser(int id, int userId) {
         try (Connection connection = PoolConnection.getConnection()) {
             return wdao.getById(connection, id);
         } catch (SQLException e) {
