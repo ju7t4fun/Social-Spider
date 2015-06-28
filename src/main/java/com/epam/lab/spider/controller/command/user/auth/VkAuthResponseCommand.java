@@ -48,7 +48,6 @@ public class VkAuthResponseCommand implements ActionCommand {
         Vkontakte vk = (Vkontakte) session.getAttribute("siteVk");
         AccessToken token = vk.OAuth().signIn(request);
         vk.setAccessToken(token);
-
         User vkUser = authUser(vk);
         Profile vkProfile = profileService.getByVkId(vkUser.getId());
         if (vkProfile != null) {

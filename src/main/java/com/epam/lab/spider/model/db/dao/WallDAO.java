@@ -32,5 +32,10 @@ public interface WallDAO extends CRUD<Wall> {
     boolean updateOnActive(Connection connection, int owner_id, int profile_id, Wall.Permission permission) throws
             SQLException;
 
-    public List<Wall> getByUserId(Connection connection, int id) throws SQLException;
+    List<Wall> getByUserId(Connection connection, int userId) throws SQLException;
+
+    List<Wall> getReadByUserId(Connection connection, int userId) throws SQLException;
+
+    List<Wall> getWriteByUserId(Connection connection, int userId) throws SQLException;
+   
 }

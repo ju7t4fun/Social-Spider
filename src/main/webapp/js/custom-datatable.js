@@ -1,11 +1,22 @@
 var table;
 
+
+var urlBanned;
+
+var urlCreated;
+var urlActivated;
+
+
 jQuery(document).ready(function () {
     table = $('#personTable').dataTable({
+
         "bPaginate": true,
         "order": [0, 'asc'],
         "bInfo": true,
+        "bLengthChange": true,
         "iDisplayStart": 0,
+        'iDisplayLength': 5,
+        "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": path + "/UserFillingTableServlet",
@@ -23,6 +34,41 @@ jQuery(document).ready(function () {
         },
         "dom": 'Cf<"toolbar"">rtip',
 
+        "columnDefs": [ {
+
+
+            "targets": 4,
+
+            "createdCell": function (td, cellData, rowData, row, col) {
+
+                urlBanned = "<img src=\"/img/banned.jpg\" " +
+                    " style=\"width:37px;height:37px;\" " +
+                    " id=\"" + rowData[3] + "\" onclick=\"changeImage(this)\" title=\"banned\" >";
+
+                urlCreated = "<img src=\"/img/created.jpg\" " +
+                    " style=\"width:37px;height:37px;\" " +
+                    " id=\"" + rowData[3] + "\" onclick=\"changeImage(this)\" title=\"created\" >";
+
+                urlActivated = "<img src=\"/img/activated.jpg\" " +
+                    " style=\"width:37px;height:37px;\" " +
+                    " id=\"" + rowData[3] + "\" onclick=\"changeImage(this)\" title=\"activated\" >";
+
+
+                if (cellData == "ACTIVATED") {
+                    $(td).html(urlActivated);
+                } else
+                if (cellData == 'BANNED') {
+                    $(td).html(urlBanned);
+                } else
+                if (cellData == 'CREATED') {
+                    alert(rowData[3]);
+                    $(td).html(urlCreated);
+                }
+
+
+            }
+        } ]
+
     })
         .columnFilter({
             aoColumns: [
@@ -38,6 +84,7 @@ jQuery(document).ready(function () {
     $("#personTable_length").hide();
     //$(".dataTables_filter").css({ "display" :"none" });
 
+    $('th').css('backgroundColor', 'blue');
 
     $(".dataTables_filter").css({"position": "auto"});
     $(".dataTables_filter").css({"left": "30%"});

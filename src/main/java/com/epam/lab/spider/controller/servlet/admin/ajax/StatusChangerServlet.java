@@ -3,6 +3,7 @@ package com.epam.lab.spider.controller.servlet.admin.ajax;
 import com.epam.lab.spider.model.db.entity.User;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
 import com.epam.lab.spider.model.db.service.UserService;
+import com.mchange.v2.sql.filter.SynchronizedFilterStatement;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +16,7 @@ import java.io.IOException;
  */
 public class StatusChangerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("in servlet!!!");
         String email = request.getParameter("email");
         String status = request.getParameter("status");
         UserService userService = ServiceFactory.getInstance().create(UserService.class);

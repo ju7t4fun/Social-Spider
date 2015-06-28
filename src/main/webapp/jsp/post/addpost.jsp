@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,18 +75,12 @@
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper">
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-m"></i> Home</h3>
-                </div>
-            </div>
             <!--overview start-->
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-laptop"></i>Add New Post</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home" /></a></li>
+                        <li><i class="fa fa-laptop"></i><l:resource key="addnewpost" /></li>
                     </ol>
                 </div>
             </div>
@@ -96,7 +91,7 @@
                 <div class="col-md-6 portlets" style="width:100%;">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left">Додати новий пост</div>
+                            <div class="pull-left"><l:resource key="addnewpost" /></div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="panel-body">
@@ -109,7 +104,7 @@
                                         <input type="hidden" name="action" value="addPost">
                                         <!-- Title -->
                                         <div class="form-group">
-                                            <label class="control-label col-lg-2" for="title">Title</label>
+                                            <label class="control-label col-lg-2" for="title"><l:resource key="newpost.title" /></label>
 
                                             <div class="col-lg-10">
                                                 <input type="text" name="title" class="form-control" id="title">
@@ -117,7 +112,7 @@
                                         </div>
                                         <!-- Content -->
                                         <div class="form-group">
-                                            <label class="control-label col-lg-2" for="content">Content</label>
+                                            <label class="control-label col-lg-2" for="content"><l:resource key="newpost.content" /></label>
 
                                             <div class="col-lg-10">
                                                 <textarea class="form-control" name="message" id="content"
@@ -125,23 +120,24 @@
                                             </div>
                                         </div>
                                         <!-- Tags -->
-                                        <div class="form-group">
-                                            <label class="control-label col-lg-2" for="tagsinput">Tags</label>
 
-                                            <div class="panel-body">
+                                        <div class="form-group">
+                                            <div style="width:1100px;">
+                                            <label class="control-label col-lg-2" for="tagsinput" style="margin-right:20px;"><l:resource key="newpost.tags" /></label>
+
+
                                                 <input name="tags" id="tagsinput" class="tagsinput"/>
-                                            </div>
+
+                                        </div>
                                         </div>
                                         <!-- Add file -->
 
                                         <div class="form-group">
-                                            <label class="control-label col-lg-2" for="title">Add file</label>
+                                            <label class="control-label col-lg-2" for="title"><l:resource key="newpost.addfile" /></label>
 
                                             <div id="upload-from">
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-primary">Upload
-                                                        from
-                                                    </button>
+                                                    <button type="button" class="btn btn-primary"><l:resource key="newpost.upload" /></button>
                                                     <button type="button" class="btn btn-primary dropdown-toggle"
                                                             data-toggle="dropdown" aria-haspopup="true"
                                                             aria-expanded="false">
@@ -150,9 +146,9 @@
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <li><a href="#"
-                                                               onclick="uploadFromComputer();">Computer
+                                                               onclick="uploadFromComputer();"><l:resource key="newpost.computer" />
                                                         </a></li>
-                                                        <li><a href="#" onclick="uploadFromURL();">URL</a></li>
+                                                        <li><a href="#" onclick="uploadFromURL();"><l:resource key="newpost.url" /></a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -258,11 +254,11 @@
                                             <br>
                                             <!-- Buttons -->
                                             <div id="scrl" class="col-lg-offset-2 col-lg-9">
-                                                <button id="publish" class="btn btn-primary">Save</button>
+                                                <button id="publish" class="btn btn-primary"><l:resource key="newpost.save" /></button>
                                                 <button class="btn btn-info" data-toggle="modal"
-                                                        data-target="#myModal">Publish
+                                                        data-target="#myModal"><l:resource key="newpost.publish" />
                                                 </button>
-                                                <button type="reset" class="btn btn-default">Reset</button>
+                                                <button type="reset" class="btn btn-default"><l:resource key="newpost.reset" /></button>
                                             </div>
                                         </div>
                                         <script>
@@ -292,7 +288,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h4 class="modal-title">Post date and time</h4>
+                <h4 class="modal-title"><l:resource key="newpost.dateandtime" /></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -302,26 +298,26 @@
 
                             <div style="position: relative; left: -130px; top:30px;">
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="date">Date</label>
+                                    <label class="col-md-4 control-label" for="date"><l:resource key="newpost.date" /></label>
 
                                     <div class="col-md-4">
-                                        <input id="date" name="date" type="date" min="${date}" value="${date}"
-                                               placeholder="Post date" class="form-control input-md">
+                                        <l:resource key="newpost.postdate"><input id="date" name="date" type="date" min="${date}" value="${date}"
+                                               placeholder="" class="form-control input-md"></l:resource>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="time">Time</label>
+                                    <label class="col-md-4 control-label" for="time"><l:resource key="newpost.time" /></label>
 
                                     <div class="col-md-4">
-                                        <input id="time" name="time" type="time" value="${time}" placeholder="Post time"
-                                               class="form-control input-md">
+                                        <l:resource key="newpost.posttime"><input id="time" name="time" type="time" value="${time}" placeholder=""
+                                               class="form-control input-md"></l:resource>
                                     </div>
                                 </div>
                             </div>
                             <div style="position: relative; left: 250px; top:-109px;">
                                 <div class="form-group" style="">
                                     <div class="col-lg-6">
-                                        <h4>Select group:</h4>
+                                        <h4><l:resource key="newpost.selectgroup" />:</h4>
                                         <select name="groups" id="tokenize_focus" multiple="multiple"
                                                 class="tokenize-sample">
                                             <option value="1">GrabGroup 1</option>
@@ -347,29 +343,29 @@
                                     </div>
                                 </div>
                             </div>
-                            <div style="position: relative; left:-68px; top:-100px;">
+                            <div style="position: relative; left:-58px; top:-100px;">
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="check">Removing date</label>
+                                    <label class="col-md-4 control-label" for="check"><l:resource key="newpost.removingdate" /></label>
                                     <input id="check" type="checkbox">
                                 </div>
                             </div>
                             <div style="position: relative; left:54px; top:-90px; width: 600px;">
                                 <div id="time3" class="col-md-4">
-                                    <input id="time1" name="date_delete" min="${date}" value="${del_date}" type="date"
-                                           placeholder="Date" class="form-control input-md">
+                                    <l:resource key="newpost.date"><input id="time1" name="date_delete" min="${date}" value="${del_date}" type="date"
+                                           placeholder="" class="form-control input-md"></l:resource>
                                 </div>
 
                             </div>
                             <div style="position: relative; left:-146px; top:-50px; width: 600px;">
                                 <div id="time4" class="col-md-4">
-                                    <input id="time5" name="time_delete" type="time" placeholder="Time"
-                                           class="form-control input-md" value="${del_time}">
+                                    <l:resource key="newpost.time"><input id="time5" name="time_delete" type="time" placeholder="Time"
+                                           class="form-control input-md" value="${del_time}"></l:resource>
                                 </div>
                             </div>
-                            <button id="submit_modal" type="button" style="margin-left: 495px;margin-top: -80px;"
+                            <button id="submit_modal" type="button" style="margin-left: 455px;margin-top: -80px;"
                                     class="btn btn-primary"
                                     data-dismiss="modal">
-                                Save
+                                <l:resource key="newpost.save" />
                             </button>
                         </form>
                     </div>

@@ -15,16 +15,17 @@ import java.util.List;
  */
 public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
 
-    private static final String SQL_INSERT_QUERY = "INSERT INTO owner (vk_id, name, domain, deleted) " +
+    private static final String SQL_INSERT_QUERY = "INSERT INTO owner (vk_id, name, domain, deleted, user_id) " +
             "VALUES (?, ?, ?, ?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE owner SET vk_id = ?, name = ?, domain = ?, deleted = ? " +
-            "WHERE id = ?";
+            "user_id = ? WHERE id = ?";
     // private static final String SQL_DELETE_QUERY = "DELETE * FROM owner WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE owner SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM owner WHERE deleted = false";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM owner WHERE id = ? AND deleted = false";
     private static final String SQL_GET_LIMITED_QUERY = "SELECT * FROM owner WHERE deleted = false LIMIT ?, ?";
     private static final String SQL_GET_BY_VK_ID_QUERY = "SELECT * FROM owner WHERE vk_id = ? AND deleted = false";
+    private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT * FROM owner WHERE user_id = ? AND deleted = 0";
 
     @Override
     public boolean insert(Connection connection, Owner owner) throws SQLException {
@@ -32,7 +33,8 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
                 owner.getVk_id(),
                 owner.getName(),
                 owner.getDomain(),
-                owner.getDeleted());
+                owner.getDeleted(),
+                owner.getUserId());
         owner.setId(getLastInsertId(connection));
         return res;
     }
@@ -44,6 +46,7 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
                 owner.getName(),
                 owner.getDomain(),
                 owner.getDeleted(),
+                owner.getUserId(),
                 id);
     }
 
@@ -86,6 +89,11 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
     @Override
     public Owner getByVkId(Connection connection, int vk_id) throws SQLException {
         return first(select(connection,  SQL_GET_BY_VK_ID_QUERY, vk_id));
+    }
+
+    @Override
+    public List<Owner> getByUserId(Connection connection, int userId) throws SQLException {
+        return select(connection, SQL_GET_BY_USER_ID_QUERY, userId);
     }
 
     //should remake later

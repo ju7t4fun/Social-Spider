@@ -149,4 +149,22 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
         return null;
     }
 
+    public List<Post> getByUserId(int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getByUserId(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Post> getAllNotInNewPost() {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getAllNotInNewPost(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

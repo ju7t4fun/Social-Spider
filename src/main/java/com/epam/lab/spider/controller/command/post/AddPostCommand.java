@@ -4,6 +4,7 @@ import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.model.db.entity.Attachment;
 import com.epam.lab.spider.model.db.entity.NewPost;
 import com.epam.lab.spider.model.db.entity.Post;
+import com.epam.lab.spider.model.db.entity.User;
 import com.epam.lab.spider.model.db.service.NewPostService;
 import com.epam.lab.spider.model.db.service.PostService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
@@ -35,6 +36,7 @@ public class AddPostCommand implements ActionCommand {
         response.setContentType("application/json");
         response.setContentType("UTF-8");
         HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
 
         Map<String, String> urlType = (Map<String, String>) request.getSession().getAttribute("files_url");
         String message = request.getParameter("message");
@@ -52,6 +54,7 @@ public class AddPostCommand implements ActionCommand {
         }
 
         Post post = new Post();
+        post.setUserId(user.getId());
         Attachment attachment;
         Set<Attachment> attachments = new HashSet<>();
         for (Map.Entry<String, String> entry : urlType.entrySet()) {
@@ -78,13 +81,14 @@ public class AddPostCommand implements ActionCommand {
             String groups = request.getParameter("groups");
 
             NewPost newPost = new NewPost();
+            newPost.setUserId(user.getId());
             newPost.setPost(post);
             newPost.setState(NewPost.State.CREATED);
 
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
                 newPost.setPostTime(formatter.parse(date + " " + time));
-                if (dateDelete.length() > 0) {
+                if (request.getParameter("checked").equals("true")) {
                     newPost.setDeleteTime(formatter.parse(dateDelete + " " + timeDelete));
                 }
             } catch (ParseException e) {

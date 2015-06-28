@@ -52,6 +52,7 @@
     <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
     <script src="${pageContext.request.contextPath}/js/form-component.js"></script>
 
+    <script src="${pageContext.request.contextPath}/js/jquery-1.8.3.min.js"></script>
 
     <!--[if lt IE 9]>
     <![endif]-->
@@ -73,8 +74,8 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/postbinding-datatable.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnStandingRedraw.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnSetFilteringDelay.js"></script>
-
-    <link href="${pageContext.request.contextPath}/css/multi-select.css" media="screen" rel="stylesheet" type="text/css"/>
+    <link href="${pageContext.request.contextPath}/css/multi-select.css" media="screen" rel="stylesheet"
+          type="text/css"/>
 </head>
 
 <body>
@@ -116,23 +117,23 @@
 
                                     <tr>
                                         <td>
-                                            <select id="tokenize_read" multiple="multiple"   >
+                                            <select id="tokenize_read" multiple="multiple">
                                                 <%--class="tokenize-sample"--%>
-                                                    <%--style="width: 350px; margin: 0px; padding: 0px; border: 0px; display: none;">--%>
+                                                <%--style="width: 350px; margin: 0px; padding: 0px; border: 0px; display: none;">--%>
                                             </select>
                                             <%--<script type="text/javascript">--%>
-                                                <%--$('select#tokenize_read').tokenize({displayDropdownOnFocus: true});--%>
+                                            <%--$('select#tokenize_read').tokenize({displayDropdownOnFocus: true});--%>
                                             <%--</script>--%>
                                         </td>
                                         <td>
-                                            <select id="tokenize_write" multiple="multiple" >
+                                            <select id="tokenize_write" multiple="multiple">
                                                 <%--class="tokenize-sample"--%>
-                                                    <%--style="width: 350px; margin: 0px; padding: 0px; border: 0px; display: none;">--%>
+                                                <%--style="width: 350px; margin: 0px; padding: 0px; border: 0px; display: none;">--%>
 
                                             </select>
 
                                             <%--<script type="text/javascript">--%>
-                                                <%--$('select#tokenize_write').tokenize({displayDropdownOnFocus: true});--%>
+                                            <%--$('select#tokenize_write').tokenize({displayDropdownOnFocus: true});--%>
                                             <%--</script>--%>
                                         </td>
                                     </tr>
@@ -169,6 +170,57 @@
 
                             </tbody>
                         </table>
+
+
+                        <input type="button" value="add" id="addbtn"/>
+
+
+
+                        <div id="overlay" class="web_dialog_overlay"></div>
+
+
+
+                        <div id="dialog" class="web_dialog">
+                            <table style="width: 100%; border: 0px;" cellpadding="3" cellspacing="0">
+                                <tr>
+                                    <td class="web_dialog_title">Adding Public</td>
+                                    <td class="web_dialog_title align_right">
+                                        <a href="#" id="btnClose">Close</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="padding-left: 15px;">
+                                        <b>Paste public url, pls </b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <input type="text" id="publicUrl" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align: center;">
+                                        <input id="btnSubmit" type="button" value="Submit"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -196,8 +248,42 @@
     var profilesRead;
 
 
-
     $(document).ready(function () {
+
+        //start of add row
+//       table.makeEditable({
+//            sUpdateURL: "UpdateData.php",
+//            sAddURL: "AddData.php",
+//            sDeleteURL: "DeleteData.php"
+//        })
+
+
+        $("#btnClose").click(function (e) {
+            HideDialog();
+            e.preventDefault();
+        });
+
+        $("#btnSubmit").click(function (e) {
+            alert(document.getElementById("publicUrl").value);
+
+            var xmlhttp = new  XMLHttpRequest();
+            xmlhttp.open("POST","/AddNewOwnerServlet",true);
+            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xmlhttp.send("publicUrl="+document.getElementById("publicUrl").value);
+
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    var parsed = JSON.parse(xmlhttp.responseText.replace(/\u0000/g, ""));
+                    alert(parsed.SelectedProfilesRead);
+                }
+            }
+
+            HideDialog();
+            e.preventDefault();
+        });
+
+
+        //end of popup adding row
 
 
         $('#tokenize_read').multiSelect(
@@ -221,6 +307,25 @@
         profilesWrite = [];
         profilesRead = [];
     });
+
+    function ShowDialog(modal) {
+        $("#overlay").show();
+        $("#dialog").fadeIn(300);
+
+        if (modal) {
+            $("#overlay").unbind("click");
+        }
+        else {
+            $("#overlay").click(function (e) {
+                HideDialog();
+            });
+        }
+    }
+
+    function HideDialog() {
+        $("#overlay").hide();
+        $("#dialog").fadeOut(300);
+    }
 
     function initializeArraysFromRequest(jsFile) {
 
@@ -268,15 +373,19 @@
 
         if (selectedProfilesRead != undefined) {
             for (i = 0; i < selectedProfilesRead.length; i++) {
-                $('#tokenize_read').multiSelect('addOption', { value: ''.concat(selectedProfilesRead[i]),
-                    text: 'Profile ID : '.concat(selectedProfilesRead[i]), index: 0 });
+                $('#tokenize_read').multiSelect('addOption', {
+                    value: ''.concat(selectedProfilesRead[i]),
+                    text: 'Profile ID : '.concat(selectedProfilesRead[i]), index: 0
+                });
                 $('#tokenize_read').multiSelect('select', ''.concat(selectedProfilesRead[i]));
             }
         }
         if (selectedProfilesWrite != undefined) {
             for (i = 0; i < selectedProfilesWrite.length; i++) {
-                $('#tokenize_write').multiSelect('addOption', { value: ''.concat(selectedProfilesWrite[i]),
-                    text: 'Profile ID : '.concat(selectedProfilesWrite[i]), index: 0 });
+                $('#tokenize_write').multiSelect('addOption', {
+                    value: ''.concat(selectedProfilesWrite[i]),
+                    text: 'Profile ID : '.concat(selectedProfilesWrite[i]), index: 0
+                });
                 $('#tokenize_write').multiSelect('select', ''.concat(selectedProfilesWrite[i]));
             }
         }
@@ -328,21 +437,22 @@
 
         var afterSelectionRead = document.getElementById("tokenize_read").options;
         var afterSelectionWrite = document.getElementById("tokenize_write").options;
-         var readResult = [];
+        var readResult = [];
         var writeResult = [];
         for (var i = 0; i < afterSelectionRead.length; i++) {
             if (afterSelectionRead[i].selected)
-                    readResult.push(afterSelectionRead[i].value);
+                readResult.push(afterSelectionRead[i].value);
         }
         for (var i = 0; i < afterSelectionWrite.length; i++) {
             if (afterSelectionWrite[i].selected)
                 writeResult.push(afterSelectionWrite[i].value);
         }
 
-        var jsonRes = {"ownerVkId" : index,
-                        "Read" :  readResult ,
-                        "Write" : writeResult
-                                            };
+        var jsonRes = {
+            "ownerVkId": index,
+            "Read": readResult,
+            "Write": writeResult
+        };
 
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open("POST", "/jsonhandler");
@@ -411,6 +521,62 @@
         padding-left: 20px;
     }
 
+
+</style>
+
+<style type="text/css">
+
+    .web_dialog_overlay {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: #000000;
+        opacity: .15;
+        filter: alpha(opacity=15);
+        -moz-opacity: .15;
+        z-index: 101;
+        display: none;
+    }
+
+    .web_dialog {
+        display: none;
+        position: fixed;
+        width: 380px;
+        height: 200px;
+        top: 50%;
+        left: 50%;
+        margin-left: -190px;
+        margin-top: -100px;
+        background-color: #ffffff;
+        border: 2px solid #336699;
+        padding: 0px;
+        z-index: 102;
+        font-family: Verdana;
+        font-size: 10pt;
+    }
+
+    .web_dialog_title {
+        border-bottom: solid 2px #336699;
+        background-color: #336699;
+        padding: 4px;
+        color: White;
+        font-weight: bold;
+    }
+
+    .web_dialog_title a {
+        color: White;
+        text-decoration: none;
+    }
+
+    .align_right {
+        text-align: right;
+    }
 
 </style>
 

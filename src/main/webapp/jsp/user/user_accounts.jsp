@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,6 +31,8 @@
     <!-- Custom styles -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
@@ -58,9 +61,10 @@
             xmlhttp.open('GET', '/accounts?action=remove&id=' + id, true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
-                    if (xmlhttp.status == 200) {
-                        var response = JSON.parse(xmlhttp.responseText);
-                        toastrNotification(response.status, response.msg);
+                    var response = JSON.parse(xmlhttp.responseText);
+                    toastrNotification(response.status,response.msg);
+                    if (response.status === 'success') {
+                        $("#account" + id).remove();
                     }
                 }
             };
@@ -81,10 +85,10 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-list"></i> VK_ACCOUNTS</h3>
+                    <h3 class="page-header"><i class="fa fa-list"></i><l:resource key="vkaccounts" /></h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">HOME</a></li>
-                        <li><i class="fa fa-th-list"></i>VK_ACCOUNTS</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home" /></a></li>
+                        <li><i class="fa fa-th-list"></i><l:resource key="vkaccounts" /></li>
                     </ol>
                 </div>
             </div>
@@ -96,14 +100,14 @@
                         <table class="table table-striped table-advance table-hover">
                             <tbody>
                             <tr>
-                                <th><i class="icon_id-2_alt"></i> Id</th>
-                                <th><i class="icon_profile"></i> Full Name</th>
-                                <th><i class="icon_link_alt"></i> Url</th>
-                                <th><i class="icon_cogs"></i> Action</th>
+                                <th><i class="icon_id-2_alt"></i> <l:resource key="vkaccounts.id" /></th>
+                                <th><i class="icon_profile"></i> <l:resource key="vkaccounts.fullname" /></th>
+                                <th><i class="icon_link_alt"></i> <l:resource key="vkaccounts.url" /></th>
+                                <th><i class="icon_cogs"></i> <l:resource key="vkaccounts.action" /></th>
                             </tr>
                             <c:set var="i" value="0"/>
                             <c:forEach var="profile" items="${profiles}">
-                                <tr>
+                                <tr id="account${profile.id}">
                                     <td>${profile.vkId}</td>
                                     <td>
                                             ${fullNames[i]}
@@ -132,7 +136,7 @@
                             </tbody>
                         </table>
                     </section>
-                    <a href="/accounts?action=add" class="btn btn-primary">Add Account</a>
+                    <a href="/accounts?action=add" class="btn btn-primary"><l:resource key="vkaccounts.add" /></a>
                 </div>
             </div>
             <!-- page end-->

@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="en">
@@ -76,8 +77,28 @@
 
     <script>
         <%--var mysrc = "${pageContext.request.contextPath}/img/deleted.png";--%>
+
+//        $(document).ready(function() {
+//            var oTable = $('#personTable').dataTable();
+//
+//            // Highlight every second row
+//            oTable.$('tr:odd').css('backgroundColor', 'blue');
+//        } );
+
+
+//        $(document).ready(function() {
+//            var oTable = $('#example').dataTable();
+//
+//            // Filter to rows with 'Webkit' in them, add a background colour and then
+//            // remove the filter, thus highlighting the 'Webkit' rows only.
+//            oTable.fnFilter('Webkit');
+//            oTable.$('tr', {"filter": "applied"}).css('backgroundColor', 'blue');
+//            oTable.fnFilter('');
+//        } );
+
         function changeImage(e) {
 
+            var dataString;
             if (e.title.valueOf() == "activated".valueOf()) {
                 e.src = "${pageContext.request.contextPath}/img/banned.jpg";
                 e.title = "banned";
@@ -85,7 +106,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "statuschanger",
+                    url: "/statuschanger",
                     data: dataString
                 });
                 return;
@@ -98,7 +119,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "statuschanger",
+                    url: "/statuschanger",
                     data: dataString
                 });
                 return;
@@ -111,7 +132,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "statuschanger",
+                    url: "/statuschanger",
                     data: dataString
                 });
                 return;

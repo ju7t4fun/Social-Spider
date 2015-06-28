@@ -205,4 +205,41 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
         return false;
     }
 
+    public List<NewPost> getByUserId(int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.getByUserId(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getMessageByID(int newpost_id) {
+
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.getMessageById(connection, newpost_id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "bad message";
+    }
+
+    public List<NewPost> getAllWithQuery(String someQuery) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.getAllWithQuery(connection,someQuery);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getCountWithQuery(String query) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.getCountWithQuery(connection,query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
 }
