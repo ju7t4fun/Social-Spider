@@ -4,6 +4,7 @@ import com.epam.lab.spider.controller.command.ActionFactory;
 import com.epam.lab.spider.controller.command.task.CreateTaskCommand;
 import com.epam.lab.spider.controller.command.task.SaveTaskCommand;
 import com.epam.lab.spider.controller.command.task.ShowAllTasksCommand;
+import com.epam.lab.spider.controller.command.task.StateChangeTaskCommand;
 import com.epam.lab.spider.controller.command.wall.GetWallsCommand;
 
 import javax.servlet.ServletException;
@@ -36,7 +37,8 @@ public class TaskServlet extends HttpServlet {
             commands.put("default", new ShowAllTasksCommand());
             commands.put("create", new CreateTaskCommand());
             commands.put("save", new SaveTaskCommand());
-            commands.put("search.wall", new GetWallsCommand());
+
+            commands.put("stateChange", new StateChangeTaskCommand());
         }
 
     }

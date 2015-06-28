@@ -116,13 +116,25 @@
                   <div class="col-lg-6">
                     <h4>Type of Grabbing: </h4>
                     <br>
-                    <input type="radio" name="grabbing_type" value="1" checked> Grab posts from the start of the wall. <br>
+                    <input type="radio" name="grabbing_type" value="begin" checked> Grab posts from the start of the wall. <br>
+
+                    <input type="radio" name="grabbing_type" value="end"> Grab posts from the end of the wall. <br>
+
+                    <input type="radio" name="grabbing_type" value="random"> Grab random post. <br>
+
+                    <input type="radio" name="grabbing_type" value="new"> Grab new posts only. <br>
                     <br>
-                    <input type="radio" name="grabbing_type" value="2"> Grab posts from the end of the wall. <br>
+                    <h4>Filter: </h4>
                     <br>
-                    <input type="radio" name="grabbing_type" value="3"> Grab random post. <br>
+                    <span style="width:80px;display: inline-block">Likes </span>
+                    <input type="number" name="likes" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="60" />
                     <br>
-                    <input type="radio" name="grabbing_type" value="4"> Grab new posts only. <br>
+                    <span style="width:80px;display: inline-block"> Reposting </span>
+                    <input type="number" name="reposts" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="10" />
+                    <br>
+                    <span style="width:80px;display: inline-block"> Comments </span>
+                    <input type="number" name="comments" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="0" />
+                    <br>
                   </div>
 
 
@@ -145,21 +157,37 @@
                     <input type="radio" name="posting_type" value="REPOST" style="margin-left:15px;"> Reposting
 
                     <h4>Repeat: </h4>
-                    <input type="radio" name="repeat" value="1" checked> Do not repeat posts. <br>
-                    <input type="radio" name="repeat" value="2"> Post can be repeated every
+                    <input type="radio" name="repeat" value="REPEAT_DISABLE" checked> Do not repeat posts. <br>
+                    <input type="radio" name="repeat" value="REPEAT_ON_TIME"> Post can be repeated every
                     <input type="number" name="repeat_days" style="width:40px;border: none;-webkit-appearance: none; "> days.
 
                   </div>
                   <div class="col-lg-6">
                     <h4>Start Time: </h4>
                     <input type="radio" name="start_time" value="INTERVAL" checked> Interval
-                    <input type="radio" name="start_time" value="SCHEDULE" style="margin-left:15px;"> Schedule
-                    <br>[INTERVAL_SLIDER]
+                    <input type="radio" name="start_time" value="SCHEDULE" style="margin-left:15px;" disabled > Schedule
+                    <br>
+                    <br>
+                    <%--[INTERVAL_SLIDER]--%>
+                      <span>Between </span>
+                      <input type="number" name="interval_min" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="3" />
+                      <span> and </span>
+                      <input type="number" name="interval_max" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="10" />
+                      <span> minutes.</span>
+
                     <br>
                     <h4>Work Time: </h4>
                     <input type="radio" name="work_time" value="ROUND_DAILY" checked> Around the Clock
-                    <input type="radio" name="work_time" value="DAY_PERIOD" style="margin-left:15px;"> Select Time
-                    <br>[TIME_SELECT]
+                    <input type="radio" name="work_time" value="DAY_PERIOD" style="margin-left:15px;" disabled> Select Time
+                    <br>
+                    <br>
+                    <%--[TIME_SELECT]--%>
+                    <h4>Post delay: </h4>
+                    <span>Between </span>
+                    <input type="number" name="post_delay_min" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="10" />
+                    <span> and </span>
+                    <input type="number" name="post_delay_max" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="25" />
+                    <span> seconds.</span>
                   </div>
                 </div>
               </div>

@@ -22,6 +22,8 @@ public class Wall {
     private Owner owner;
     private Profile profile;
 
+
+
     public enum Permission {
         READ, WRITE
     }
@@ -103,6 +105,22 @@ public class Wall {
                 ", permission=" + permission +
                 ", deleted=" + deleted +
                 '}';
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Wall wall = (Wall) o;
+
+        if (id != null ? !id.equals(wall.id) : wall.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 
 }

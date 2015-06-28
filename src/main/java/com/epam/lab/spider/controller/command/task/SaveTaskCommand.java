@@ -26,7 +26,6 @@ import java.util.*;
 public class SaveTaskCommand implements ActionCommand {
     public  final static Logger LOG = Logger.getLogger(SaveTaskCommand.class);
     private static ServiceFactory factory = ServiceFactory.getInstance();
-
     private WallService wallService = factory.create(WallService.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -53,8 +52,10 @@ public class SaveTaskCommand implements ActionCommand {
             JSONObject jsonFilter = (JSONObject)mainOption.get("filter");
 
             String type =   jsonOptions.get("posting_type").toString();
-//            String grabbingType =  (String) jsonOptions.get("grabbing_type");
-//            String repeat =  (String) jsonOptions.get("repeat");
+            String grabbingType =   jsonOptions.get("grabbing_type").toString();
+            String repeat =   jsonOptions.get("repeat").toString();
+            String repeatCount =   jsonOptions.get("repeat_count").toString();
+
             String signature      = jsonOptions.get("signature").toString();
             String hashtags =  jsonOptions.get("hashtags").toString();
             String actionsAfterPosting =  jsonOptions.get("actions").toString();
@@ -116,6 +117,7 @@ public class SaveTaskCommand implements ActionCommand {
             task.setActionAfterPosting(Task.ActionAfterPosting.valueOf(actionsAfterPosting));
             task.setStartTimeType(Task.StartTimeType.valueOf(startTime));
             task.setWorkTimeLimit(Task.WorkTimeLimit.valueOf(workTime));
+            task.setGrabbingType(Task.GrabbingType.valueOf(grabbingType.toUpperCase()));
             task.setNextTaskRunDate(new Date(System.currentTimeMillis()+task.getIntervalMin()));
             //set field at #3
             task.setIntervalMin( Integer.parseInt(intervalMin));
@@ -131,7 +133,7 @@ public class SaveTaskCommand implements ActionCommand {
             for (int i = 0; i < jsonSources.size(); i++) {
                 Integer index = Integer.parseInt(jsonSources.get(i).toString());
                 sourceWallBlock.add(index);
-                Wall wall = wallService.getByIdAndUserLimit(index, user.getId());
+                Wall wall = wallService.getByIdAndLimitByUser(index, user.getId());
                 if(wall!=null)task.getSource().add(wall);
                 else {
                     wallWarning.add("Impossible wall#"+index+" for this user");
@@ -142,7 +144,7 @@ public class SaveTaskCommand implements ActionCommand {
                 if(sourceWallBlock.contains(index)){
                     continue;
                 }
-                Wall wall = wallService.getByIdAndUserLimit(index, user.getId());
+                Wall wall = wallService.getByIdAndLimitByUser(index, user.getId());
                 if(wall!=null)task.getDestination().add(wall);
                 else {
                     wallWarning.add("Impossible wall#"+index+" for this user");
@@ -156,7 +158,7 @@ public class SaveTaskCommand implements ActionCommand {
             }
 
 
-        } catch (ParseException | ClassCastException|NullPointerException e) {
+        } catch (ParseException | RuntimeException e) {
             e.printStackTrace();
             response.sendError(400);
             return;

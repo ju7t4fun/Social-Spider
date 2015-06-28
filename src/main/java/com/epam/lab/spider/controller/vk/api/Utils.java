@@ -32,6 +32,8 @@ public class Utils extends Methods {
 
     /**
      * Определяет тип объекта (пользователь, сообщество, приложение) и его идентификатор по короткому имени screen_name.
+     * для груп -id
+     * для пользователей id
      */
     public int resolveScreenNameEx(String  domain) throws VKException {
         Parameters param = new Parameters();
