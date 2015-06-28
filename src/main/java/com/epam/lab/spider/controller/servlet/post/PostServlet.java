@@ -2,6 +2,7 @@ package com.epam.lab.spider.controller.servlet.post;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
 import com.epam.lab.spider.controller.command.post.AddPostCommand;
+import com.epam.lab.spider.controller.command.post.GetCreatedPostCommand;
 import com.epam.lab.spider.controller.command.post.ShowAddNewPostCommand;
 import com.epam.lab.spider.controller.command.post.ShowAllPostsCommand;
 
@@ -35,6 +36,7 @@ public class PostServlet extends HttpServlet {
             commands.put("default", new ShowAllPostsCommand());
             commands.put("add", new ShowAddNewPostCommand());
             commands.put("addPost", new AddPostCommand());
+            commands.put("getCreatedPost", new GetCreatedPostCommand());
         }
     }
 }

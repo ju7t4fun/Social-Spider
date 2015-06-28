@@ -23,9 +23,13 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
     //private static final String SQL_DELETE_QUERY = "DELETE FROM post WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE post SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM post WHERE deleted = false";
-    private static final String SQL_GET_ALL_NOT_IN_NEWPOST_QUERY = "SELECT * FROM post WHERE deleted = false AND id NOT IN (SELECT post_id AS id FROM new_post) " ;
+    private static final String SQL_GET_ALL_NOT_IN_NEWPOST_QUERY = "SELECT * FROM post WHERE deleted = false AND id " +
+            "NOT IN (SELECT post_id AS id FROM new_post) ";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM post WHERE id = ? AND deleted = false";
     private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT * FROM post WHERE user_id = ? AND deleted = 0";
+    private static final String SQL_GET_BY_USER_ID_LIMIT_QUERY = "SELECT * FROM post WHERE user_id = ? AND deleted = " +
+            "0 LIMIT ?, ?";
+    private static final String SQL_GET_COUNT_BY_USER_ID = "SELECT COUNT(*) FROM post WHERE user_id=? AND deleted = 0";
 
     @Override
     public boolean insert(Connection connection, Post post) throws SQLException {
@@ -90,5 +94,19 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
     @Override
     public List<Post> getByUserId(Connection connection, Integer userId) throws SQLException {
         return select(connection, SQL_GET_BY_USER_ID_QUERY, userId);
+    }
+
+    @Override
+    public List<Post> getByUserId(Connection connection, Integer id, int page, int size) throws SQLException {
+        return select(connection, SQL_GET_BY_USER_ID_LIMIT_QUERY, id, page, size);
+    }
+
+    @Override
+    public int getCountByUserId(Connection connection, Integer id) throws SQLException {
+        ResultSet rs = selectQuery(connection, SQL_GET_COUNT_BY_USER_ID, id);
+        if (rs.next()) {
+            return rs.getInt("COUNT(*)");
+        }
+        return 0;
     }
 }

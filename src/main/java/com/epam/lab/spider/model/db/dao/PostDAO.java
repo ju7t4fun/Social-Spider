@@ -10,9 +10,13 @@ import java.util.List;
 /**
  * Created by Sasha on 12.06.2015.
  */
-public interface PostDAO extends CRUD<Post>,SavableDAO<Post> {
+public interface PostDAO extends CRUD<Post>, SavableDAO<Post> {
 
     List<Post> getAllNotInNewPost(Connection connection) throws SQLException;
 
     List<Post> getByUserId(Connection connection, Integer userId) throws SQLException;
+
+    List<Post> getByUserId(Connection connection, Integer id, int page, int size) throws SQLException;
+
+    int getCountByUserId(Connection connection, Integer id) throws SQLException;
 }

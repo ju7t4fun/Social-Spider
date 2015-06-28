@@ -1,10 +1,8 @@
 package com.epam.lab.spider.controller.servlet.post.ajax;
 
 import com.epam.lab.spider.model.db.entity.NewPost;
-import com.epam.lab.spider.model.db.entity.Owner;
 import com.epam.lab.spider.model.db.entity.Post;
 import com.epam.lab.spider.model.db.service.NewPostService;
-import com.epam.lab.spider.model.db.service.OwnerService;
 import com.epam.lab.spider.model.db.service.PostService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
 import org.json.JSONArray;
@@ -22,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Орест on 6/27/2015.
+ * Created by пїЅпїЅпїЅпїЅпїЅ on 6/27/2015.
  */
 public class FillingPostsServlet extends HttpServlet {
 
@@ -55,7 +53,6 @@ public class FillingPostsServlet extends HttpServlet {
                 listDisplayAmount = 10;
             }*/
         }
-
 
 
         RECORD_SIZE = listDisplayAmount;
@@ -108,13 +105,12 @@ public class FillingPostsServlet extends HttpServlet {
         }
 
 
-
         ArrayList<TempComplexObjForTable> resList = new ArrayList<>();
 
 
-        //заповнюю ліст, який передаватиму
+        //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         System.out.println("Initial :" + INITIAL);
-        for (int i = INITIAL; (i < INITIAL+RECORD_SIZE && i < allObjects.size() ); ++i) {
+        for (int i = INITIAL; (i < INITIAL + RECORD_SIZE && i < allObjects.size()); ++i) {
             resList.add(allObjects.get(i));
         }
 
@@ -135,10 +131,10 @@ public class FillingPostsServlet extends HttpServlet {
 
 
         try {
-            //ITotalRecords - взагалі всі записи до фільтрації
-            //ITotalDisplayRecords - всі записи, які підходять під фільт(в цьому сервлеті я нічого не фільтрую),
-            // а не лишень ті, котрі я повертаю
-            //оскільки я нічого взагалі не фільтрую, то значення одинакові
+            //ITotalRecords - пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+            //ITotalDisplayRecords - пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ(пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ),
+            // пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ, пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+            //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             result.put("iTotalRecords", allObjects.size());
             result.put("iTotalDisplayRecords", allObjects.size());
             result.put("aaData", array);
