@@ -37,4 +37,5 @@ public interface WallDAO extends CRUD<Wall> {
     List<Wall> getReadByUserId(Connection connection, int userId) throws SQLException;
 
     List<Wall> getWriteByUserId(Connection connection, int userId) throws SQLException;
+   
 }

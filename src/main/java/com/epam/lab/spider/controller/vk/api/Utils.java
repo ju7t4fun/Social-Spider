@@ -31,6 +31,18 @@ public class Utils extends Methods {
     }
 
     /**
+     * Определяет тип объекта (пользователь, сообщество, приложение) и его идентификатор по короткому имени screen_name.
+     */
+    public int resolveScreenNameEx(String  domain) throws VKException {
+        Parameters param = new Parameters();
+        param.add("screen_name", domain);
+        final Response response = request("utils.resolveScreenName", param).execute();
+        Integer id = response.root().child("object_id").get(0).value().toInt();
+        boolean isGroup = response.root().child("type").get(0).value().toString().equals("group");
+        return isGroup?-id:id;
+    }
+
+    /**
      * Возвращает текущее время на сервере ВКонтакте.
      */
     public Date getServerTime() throws VKException {

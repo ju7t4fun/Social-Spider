@@ -4,26 +4,59 @@ import com.epam.lab.spider.model.db.PoolConnection;
 import com.epam.lab.spider.model.db.SQLTransactionException;
 import com.epam.lab.spider.model.db.dao.*;
 import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
+import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
+import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
+import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
 import com.epam.lab.spider.model.db.entity.Task;
 import com.epam.lab.spider.model.db.entity.Wall;
+import com.epam.lab.spider.model.db.service.savable.CustomizeSavableAction;
+import com.epam.lab.spider.model.db.service.savable.SavableService;
+import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
+import com.epam.lab.spider.model.db.service.savable.exception.UnsupportedServiseException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 import static com.epam.lab.spider.model.db.SQLTransactionException.assertTransaction;
 
 /**
  * Created by Boyarsky Vitaliy on 12.06.2015.
  */
-public class TaskService implements BaseService<Task> {
+public class TaskService implements BaseService<Task>, SavableService<Task> {
 
     private static DAOFactory factory = DAOFactory.getInstance();
     private TaskDAO tdao = factory.create(TaskDAO.class);
     private TaskSourceDAO tsdao = factory.create(TaskSourceDAO.class);
     private TaskDestinationDAO tddao = factory.create(TaskDestinationDAO.class);
-    private CategoryHasTaskDAO chtdao = factory.create(CategoryHasTaskDAO.class);
+//    private CategoryHasTaskDAO chtdao = factory.create(CategoryHasTaskDAO.class);
     private FilterDAO fdao = factory.create(FilterDAO.class);
+
+    @Override
+    public boolean save(Task entity) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
+        return SavableServiceUtil.saveFromInterface(entity, this);
+    }
+
+    @Override
+    public boolean save(Task entity, final Connection conn) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
+        return SavableServiceUtil.customSave(conn, entity, new Object[]{entity.getFilter()},null, new CustomizeSavableAction[]{
+            new CustomizeSavableAction() {
+                @Override
+                public void action(Object entity) throws SQLException {
+                    Task task = (Task) entity;
+                    tsdao.deleteByTaskId(conn, task.getId());
+                    for (Wall wall : task.getSource()) {
+                        assertTransaction(tsdao.insert(conn, task.getId(), wall.getId()));
+                    }
+                    tddao.deleteByTaskId(conn, task.getId());
+                    for (Wall wall : task.getDestination()) {
+                        assertTransaction(tddao.insert(conn, task.getId(), wall.getId()));
+                    }
+                }
+            }
+        });
+    }
 
     @Override
     public boolean insert(Task task) {
@@ -63,11 +96,13 @@ public class TaskService implements BaseService<Task> {
                 connection.setAutoCommit(false);
                 assertTransaction(tdao.update(connection, id, task));
                 assertTransaction(fdao.update(connection, task.getFilterId(), task.getFilter()));
-                assertTransaction(tsdao.deleteByTaskId(connection, id));
+                //приймаємо до уваги що джерел може небути
+                tsdao.deleteByTaskId(connection, id);
                 for (Wall wall : task.getSource()) {
                     assertTransaction(tsdao.insert(connection, id, wall.getId()));
                 }
-                assertTransaction(tddao.deleteByTaskId(connection, id));
+                //приймаємо до уваги що призначень може небути
+                tddao.deleteByTaskId(connection, id);
                 for (Wall wall : task.getDestination()) {
                     assertTransaction(tddao.insert(connection, id, wall.getId()));
                 }
@@ -96,7 +131,7 @@ public class TaskService implements BaseService<Task> {
                 assertTransaction(fdao.delete(connection, tdao.getById(connection, id).getFilterId()));
                 assertTransaction(tddao.deleteByTaskId(connection, id));
                 assertTransaction(tsdao.deleteByTaskId(connection, id));
-                assertTransaction(chtdao.deleteByTaskId(connection, id));
+//                assertTransaction(chtdao.deleteByTaskId(connection, id));
                 assertTransaction(tdao.delete(connection, id));
                 connection.commit();
             } catch (SQLTransactionException e) {
@@ -151,5 +186,4 @@ public class TaskService implements BaseService<Task> {
         }
         return null;
     }
-
 }
