@@ -71,11 +71,11 @@
                              border-top-right-radius: 0; font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
                          font-weight: 700;width: 30px;
                  height: 25px;" class="btn btn-default btn-sm" change="ua">UA</a>
-                <a class="btn btn-default btn-sm" style="border: 1px ;
+                <a style="border: 1px;color: #030303;
                          border-radius: 20px; border-bottom-left-radius: 0;
                      border-top-left-radius: 0; margin-left: -1px; font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
-                     font-weight: 700;color: #030303;width: 30px;
-                    height: 25px;" change="en"><span style="margin-left: -4px;">EN</span></a>
+                     font-weight: 700;width: 30px;
+                    height: 25px;" class="btn btn-default btn-sm" change="en"><span style="margin-left: -4px;">EN</span></a>
             </div>
             <div style="color:#fff;">
                 <h6>Social-Spider Corp. </h6>
