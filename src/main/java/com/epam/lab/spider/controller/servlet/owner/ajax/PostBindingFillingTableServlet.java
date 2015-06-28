@@ -70,7 +70,8 @@ public class PostBindingFillingTableServlet extends HttpServlet {
         }
 
         String colName = columnNames[column];
-        int totalRecords = getTotalRecordCount();
+        User user = (User)request.getSession().getAttribute("user");
+        int totalRecords = getTotalRecordCount(user.getId().toString());
 
 
         RECORD_SIZE = listDisplayAmount;
@@ -104,14 +105,15 @@ public class PostBindingFillingTableServlet extends HttpServlet {
         JSONArray array = new JSONArray();
         String searchSQL = "";
 
-        ;
-        String sql = "SELECT " + "vk_id, name FROM owner ";
+        User user = (User)request.getSession().getAttribute("user");
 
-        String globeSearch = " WHERE  vk_id LIKE '%" + GLOBAL_SEARCH_TERM + "%'"
-                + " OR name LIKE '%" + GLOBAL_SEARCH_TERM + "%'";
+        String sql = "SELECT " + "vk_id, name FROM owner WHERE user_id='" + user.getId() + "'  AND deleted=false ";
 
-        String idSearch = "  WHERE vk_id LIKE " + ID_SEARCH_TERM + "";
-        String nameSearch = "  WHERE name like '%" + NAME_SEARCH_TERM + "%'";
+        String globeSearch = " AND  ( vk_id LIKE '%" + GLOBAL_SEARCH_TERM + "%'"
+                + " OR name LIKE '%" + GLOBAL_SEARCH_TERM + "%' ) ";
+
+        String idSearch = "  AND vk_id LIKE " + ID_SEARCH_TERM + "";
+        String nameSearch = "  AND name like '%" + NAME_SEARCH_TERM + "%'";
 
 
         if (GLOBAL_SEARCH_TERM != "") {
@@ -137,20 +139,10 @@ public class PostBindingFillingTableServlet extends HttpServlet {
                 JSONArray ja = new JSONArray();
                 ja.put(resList.get(i).getVk_id().toString());
                 ja.put(resList.get(i).getName());
+                ja.put(resList.get(i).getVk_id());
 
-                String col3 =  "<a href=\"javascript:PopUpShow(" + resList.get(i).getVk_id() + ")\">" +
-                        "<button style=\"border-radius: 4px;border-color:#424D5F;background-color:#424D5F;color:#ffffff;margin:5px;padding:10px;\">" +
-                        "Bind Accounts..." +
-                        "</button> </a>";
-
-
-                ja.put(col3);
-
-                String col4 = "<button style=\"border-radius: 4px;border-color:#424D5F;background-color:#424D5F;" +
-                        "color:#ffffff;margin:5px;padding:10px;\">" +
-                        "Show Statistic" +
-                        "</button>";
-                ja.put(col4);
+                //giving some trash to avoid ajax errorr notify (anyway need to pass some data to cell even if u dont need)
+                ja.put("some trash");
                 array.put(ja);
             }
         }
@@ -175,14 +167,12 @@ public class PostBindingFillingTableServlet extends HttpServlet {
         return result;
     }
 
-    public int getTotalRecordCount() {
+    public int getTotalRecordCount(String id) {
 
-        String sql = "SELECT COUNT(*) FROM  owner";
+        String sql = "SELECT COUNT(*) FROM  owner WHERE user_id='" + id + "'  AND deleted=false ";
         OwnerService serv = ServiceFactory.getInstance().create(OwnerService.class);
         int totalRecords = serv.getCountWithQuery(sql);
-        System.out.println("Total Records : " + totalRecords + " omg");
-//        UserService serv = ServiceFactory.getInstance().create(UserService.class);
-//        int totalRecords = serv.getAll().size();
+
         return totalRecords;
     }
 }

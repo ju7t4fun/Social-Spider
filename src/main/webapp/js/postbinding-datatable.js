@@ -13,74 +13,63 @@ jQuery(document).ready(function () {
         'iDisplayLength': 5,
         "bServerSide": true,
         "sAjaxSource": path + "/PostBindingFillingTableServlet",
-        "dom": 'C<"clear">lfrtip',
         colVis: {
             "align": "right",
-            restore: "Restore",
-            showAll: "Show all",
-            showNone: "Show none",
-            order: 'alpha',
             "buttonText": "columns <img src=\"/img/caaret.png\"/>",
         },
+        "aoColumnDefs":  [
 
-        "language": {
-            "infoFiltered": ""
-        }
-        ,
-        "dom": 'Cf<"toolbar"">rtip',
-        "columnDefs": [{"targets": 2, "orderable": false}, {"targets": 3, "orderable": false}],
+            {
+                "targets": 2, "orderable": false
+            },
+            {
+                "targets": 3, "orderable": false
+            },
+
+            {
+                "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
+
+                var strCellValue ="<a href=\"javascript:PopUpShow(" + cellData + ")\">" +
+                    "<button style=\"border-radius: 4px;border-color:#424D5F;background-color:#424D5F;color:#ffffff;margin:5px;padding:10px;\">" +
+                    "Bind Accounts..." +
+                    "</button> </a>";
+                $(td).html(strCellValue);
+
+            }
+            },
+
+            {
+                "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
+
+                var strCellValue = "<button style=\"border-radius: 4px;border-color:#424D5F;background-color:#424D5F;" +
+                    "color:#ffffff;margin:5px;padding:10px;\">" +
+                    "Show Statistic" +
+                    "</button>";
+                $(td).html(strCellValue);
+
+            }
+            }
 
 
-    })
+        ],
+    });
 
 
-        .columnFilter({
-            aoColumns: [
-                //{ type: "number"},
-                //{ type: "text" },
-                //{ type: "text" },
-                //{ type: "text" },
-                //{ type: "text" },
-                //{ type: "text" },
-            ],
-            bUseColVis: true
-        }).fnSetFilteringDelay();
-    $("#postBindingTable_length").hide();
-//$(".dataTables_filter").css({ "display" :"none" });
+    //$(".dataTables_filter").attr("hidden", "");
 
 
-    $(".dataTables_filter").css({"position": "auto"});
-    $(".dataTables_filter").css({"left": "30%"});
-    $(".dataTables_filter").css({"right": "30%"});
-    $(".dataTables_filter").css({"top": "2%"});
-    $(".dataTables_filter").css({"width": "350px"});
-    $("div.toolbar").append(
-        $("dataTables_filter")).append('<div class="btn-group" style="padding:5px "><button class="btn btn-default" id="refreshbtn" style="background:none;border:1px solid #ccc;height:30px" type="button"><span class="glyphicon glyphicon-refresh" style="padding:3px"></span></button></div>'
-    );
-    $("div.toolbar").css("float", "right").css({"position": "relative"});
-
+    //$(".dataTables_length").attr("hidden", "");
 
     $('#refreshbtn').click(function () {
         table.fnStandingRedraw();
     });
 
-    $('#addbtn').click(addrow
-        //function () {
-        //    table.row.add( [
-        //        "efeg", "degrgrg"
-        //    ] ).draw();
-        //
-        //}
-
-    );
+    $('#addbtn').click(addrow);
 
 
 });
 
 function addrow() {
-
     ShowDialog(true);
-    //$('#postBindingTable').dataTable().fnAddData( [
-    // "defe", "defe" ] );
 
 }
