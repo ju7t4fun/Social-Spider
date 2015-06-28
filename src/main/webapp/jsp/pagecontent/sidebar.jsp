@@ -11,12 +11,12 @@
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
                             <i class="icon_genius"></i>
-                            <span>Post</span>
+                            <span><l:resource key="post" /></span>
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="/post">All Posts</a></li>
-                            <li><a class="" href="/post?action=add">Add New Post</a></li>
+                            <li><a class="" href="/post"><l:resource key="allposts" /></a></li>
+                            <li><a class="" href="/post?action=add"><l:resource key="addnewpost" /></a></li>
                         </ul>
                     </li>
                     <li class="sub-menu">

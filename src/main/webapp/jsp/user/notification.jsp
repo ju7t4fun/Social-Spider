@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +19,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-    <title>Accounts</title>
+    <title>Notifications</title>
 
     <!-- Bootstrap CSS -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -83,23 +84,24 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-list"></i> NOTIFICATIONS</h3>
+                    <h3 class="page-header"><i class="fa fa-list"></i> <l:resource key="notification" /></h3>
                 </div>
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-home"></i><a href="/"><l:resource key="home" /></a></li>
+                    <li><i class="fa fa-th-list"></i><l:resource key="notification" /></li>
+                </ol>
             </div>
             <!-- page start-->
             <div class="row">
                 <div class="col-lg-12">
                     <section class="panel">
-                        <header class="panel-heading">
-                            Notifications
-                        </header>
                         <table class="table table-striped table-advance table-hover">
                             <tbody>
                             <tr>
-                                <th>Type</th>
-                                <th>Title</th>
-                                <th>Message</th>
-                                <th>Time</th>
+                                <th><l:resource key="notification.type" /></th>
+                                <th><l:resource key="notification.title" /></th>
+                                <th><l:resource key="notification.message" /></th>
+                                <th><l:resource key="notification.time" /></th>
                                 <th></th>
                             </tr>
                             <c:forEach var="event" items="${events}">
