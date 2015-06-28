@@ -62,7 +62,7 @@ public class GrabbingTypeUtil {
                 }
             }
         }
-        return null;
+        return postsPrepareToPosting;
     }
 
 }

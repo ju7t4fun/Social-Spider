@@ -17,7 +17,7 @@ public class Post {
     private Integer id;
     private String message;
     private Boolean deleted = false;
-    private Integer userId;
+    private Integer userId = 1;
 
     private Set<Attachment> attachments = null;
 

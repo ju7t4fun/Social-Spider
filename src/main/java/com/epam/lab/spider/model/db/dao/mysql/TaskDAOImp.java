@@ -56,7 +56,7 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
     private static final String SQL_GET_BY_ID_LIMIT_BY_USER_ID_QUERY =
             "SELECT * FROM task WHERE id = ? AND user_id = ?  AND deleted = false";
     private static final String SQL_GET_ALL_BY_DATE_TIME_LIMIT_BY_STATE_QUERY =
-            "SELECT * FROM task WHERE next_task_run = ? AND state = ?  AND deleted = false";
+            "SELECT * FROM task WHERE next_task_run < ? AND state = ?  AND deleted = false";
 
 
     @Override

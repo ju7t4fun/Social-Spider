@@ -166,7 +166,7 @@ public class TaskJob implements Job {
             // то принипини працювання завдання
             if (activeSourceInTask == 0) {
                 LOG.info("TASK#" + task.getId() + " has hot active source wall!");
-                break taskProcessing;
+                continue taskProcessing;
             }
 
 
