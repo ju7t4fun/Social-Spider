@@ -36,6 +36,8 @@ public class PostServlet extends HttpServlet {
             commands.put("getCreatedPost", new GetCreatedPostCommand());
             commands.put("remove", new RemovePostCommand());
             commands.put("showCreated", new ShowCreatedPostCommand());
+            commands.put("fillpostedposts", new FillPostedPostsCommand());
+            commands.put("fillqueuededposts", new FillQueuededPostsCommand());
         }
     }
 }

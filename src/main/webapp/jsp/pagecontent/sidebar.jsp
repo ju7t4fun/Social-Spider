@@ -15,8 +15,8 @@
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="/post?action=showCreated">Created</a></li>
-                            <li><a class="" href="/post?action=add">Add New Post</a></li>
+                            <li><a class="" href="/post?action=showCreated"><l:resource key="allposts" /></a></li>
+                            <li><a class="" href="/post?action=add"><l:resource key="addnewpost" /></a></li>
                         </ul>
                     </li>
                     <li class="sub-menu">
