@@ -22,7 +22,7 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
     private static final String SQL_INSERT_QUERY_NEW = "INSERT INTO task (user_id, filter_id, type, state, deleted, " +     // #1
             "signature, hashtags, content_type, actions_after_posting, start_time_type, work_time_limit, next_task_run," +  // #2
             "interval_min, interval_max,  grabbing_size, post_count, post_delay_min, post_delay_max, grabbing_mode, " +     // #3
-            "grabbing_type,repeat,repeat_count  ) "+
+            "grabbing_type, repeat_type, repeat_count  ) "+
             //set added field at #1 count 5
             "VALUES (?, ?, ?, ?, ?, " +
             //set added field at #2 count 7
@@ -30,7 +30,7 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
             //set added field at #3 count 7
             "?, ?, ?, ?, ?, ?, ?, "+
             //set added field at #4 count 3
-            "?, ?, ? )";
+            "?, ?, ? ) ";
     private static final String SQL_UPDATE_QUERY = "UPDATE task SET user_id = ?, filter_id = ?, type = ? " +
             "state = ?, deleted = ? WHERE id = ?";
 
@@ -39,7 +39,7 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
             "signature = ?, hashtags = ?, content_type = ?, actions_after_posting = ?, start_time_type = ?, " + // #2[5]
             "work_time_limit = ?, next_task_run = ?, interval_min = ?, interval_max = ?, grabbing_size = ?, " + // #3[5]
             "post_count = ?, post_delay_min = ?, post_delay_max = ?, grabbing_mode = ?, " +                      // #4[4]
-            "grabbing_type = ?, repeat = ?, repeat_count = ? " +                                               // #5[3]
+            "grabbing_type = ?, repeat_type = ?, repeat_count = ? " +                                               // #5[3]
             "WHERE id = ?";                                                                                     // ID
     // quick update query
     private static final String SQL_UPDATE_NEXT_TIME_RUN_QUERY = "UPDATE task SET next_task_run = ? WHERE id = ?";
@@ -56,7 +56,7 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
     private static final String SQL_GET_BY_ID_LIMIT_BY_USER_ID_QUERY =
             "SELECT * FROM task WHERE id = ? AND user_id = ?  AND deleted = false";
     private static final String SQL_GET_ALL_BY_DATE_TIME_LIMIT_BY_STATE_QUERY =
-            "SELECT * FROM task WHERE next_task_run = ? AND state = ?  AND deleted = false";
+            "SELECT * FROM task WHERE next_task_run < ? AND state = ?  AND deleted = false";
 
 
     @Override
@@ -168,7 +168,7 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
             task.setGrabbingMode( Task.GrabbingMode.valueOf(rs.getString("grabbing_mode")));
             // added in rev3
             task.setGrabbingType(Task.GrabbingType.valueOf(rs.getString("grabbing_type")));
-            task.setRepeat(Task.Repeat.valueOf(rs.getString("repeat")));
+            task.setRepeat(Task.Repeat.valueOf(rs.getString("repeat_type")));
             task.setRepeatCount(rs.getInt("repeat_count"));
 
             taskList.add(task);

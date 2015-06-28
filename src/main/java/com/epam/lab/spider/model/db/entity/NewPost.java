@@ -25,7 +25,7 @@ public class NewPost {
     private Date deleteTime;
     private State state = State.CREATED;
     private Boolean deleted = false;
-    private Integer userId;
+    private Integer userId = 1;
     private Integer vkPostId;
 
     private Post post;
@@ -39,6 +39,9 @@ public class NewPost {
     }
 
     public Integer getPostId() {
+        if(post!=null){
+            return post.getId();
+        }
         return postId;
     }
 
