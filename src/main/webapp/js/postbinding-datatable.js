@@ -3,7 +3,6 @@ var table;
 jQuery(document).ready(function () {
 
 
-
     table = $('#postBindingTable').dataTable({
 
         "bPaginate": true,
@@ -28,14 +27,14 @@ jQuery(document).ready(function () {
             "infoFiltered": ""
         }
         ,
-        "dom": 'Cf<"toolbar"">rtip', "columnDefs": [ { "targets": 2,"orderable": false }, { "targets": 3,"orderable": false } ],
-
+        "dom": 'Cf<"toolbar"">rtip',
+        "columnDefs": [{"targets": 2, "orderable": false}, {"targets": 3, "orderable": false}],
 
 
     })
 
 
-    .columnFilter({
+        .columnFilter({
             aoColumns: [
                 //{ type: "number"},
                 //{ type: "text" },
@@ -55,7 +54,9 @@ jQuery(document).ready(function () {
     $(".dataTables_filter").css({"right": "30%"});
     $(".dataTables_filter").css({"top": "2%"});
     $(".dataTables_filter").css({"width": "350px"});
-    $("div.toolbar").append($("dataTables_filter")).append('<div class="btn-group" style="padding:5px "><button class="btn btn-default" id="refreshbtn" style="background:none;border:1px solid #ccc;height:30px" type="button"><span class="glyphicon glyphicon-refresh" style="padding:3px"></span></button></div>');
+    $("div.toolbar").append(
+        $("dataTables_filter")).append('<div class="btn-group" style="padding:5px "><button class="btn btn-default" id="refreshbtn" style="background:none;border:1px solid #ccc;height:30px" type="button"><span class="glyphicon glyphicon-refresh" style="padding:3px"></span></button></div>'
+    );
     $("div.toolbar").css("float", "right").css({"position": "relative"});
 
 
@@ -63,7 +64,7 @@ jQuery(document).ready(function () {
         table.fnStandingRedraw();
     });
 
-    $('#addbtn').click( addrow
+    $('#addbtn').click(addrow
         //function () {
         //    table.row.add( [
         //        "efeg", "degrgrg"

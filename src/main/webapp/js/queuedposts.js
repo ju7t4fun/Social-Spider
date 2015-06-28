@@ -1,10 +1,13 @@
 /**
+ * Created by Орест on 6/28/2015.
+ */
+/**
  * Created by Орест on 6/27/2015.
  */
 var table;
 
 jQuery(document).ready(function () {
-    table = $('#postsTable').dataTable({
+    table = $('#queuedTable').dataTable({
 
         "bPaginate": true,
         paging: true,
@@ -22,24 +25,17 @@ jQuery(document).ready(function () {
         "aoColumnDefs": [
 
             {
-                "class": "dt-body-left", "targets": 0
+                "class": "dt-body-left", "targets": [0,1,2]
             },
 
             {
-                "width": "60%", "targets": 0
-            },
-            {
-                "width": "10%", "targets": 2
+                "width": "80%", "targets": 0
             },
 
             {
-                "class": "dt-body-left", "targets": [3,4,5]
+                "bVisible": false, "aTargets": [3]
             },
 
-
-            {
-                "bVisible": false, "aTargets": [6]
-            },
 
             {
                 "aTargets": [0], "createdCell": function (td, cellData, rowData, row, col) {
@@ -51,46 +47,16 @@ jQuery(document).ready(function () {
                 $(td).html(strCellValue);
 
             }
-
-            },
-
-
-            {
-                "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
-
-                $(td).html('<img src=\"/img/like.png" width="23" height="23">' + "  " + cellData);
-
-            }
-            },
-
-            {
-                "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
-
-                $(td).html('<img src=\"/img/speaker.png" width="23" height="23">' + "  " + cellData);
-
-            }
-            },
-
-            {
-                "aTargets": [5], "createdCell": function (td, cellData, rowData, row, col) {
-
-                $(td).html('<img src=\"/img/comment.png" width="23" height="23">' + "  " + cellData);
-
-            }
             }
 
         ]
 
     });
 
-
-
     //$(".dataTables_filter").attr("hidden", "");
 
 
     //$(".dataTables_length").attr("hidden", "");
-
-
 
     $('#refreshbtn').click(function () {
         table.fnStandingRedraw();

@@ -16,18 +16,20 @@ public interface NewPostDAO extends CRUD<NewPost>, SavableDAO<NewPost> {
 
     List<NewPost> getAllUnpostedByDate(Connection connection, Date date) throws SQLException;
 
-    public boolean setErrorStateByWall(Connection connection, Integer wallId) throws SQLException;
+    boolean setErrorStateByWall(Connection connection, Integer wallId) throws SQLException;
 
-    public boolean setRestoredStateByWall(Connection connection, Integer wallId) throws SQLException;
+    boolean setRestoredStateByWall(Connection connection, Integer wallId) throws SQLException;
 
-    public boolean setErrorStateByOwner(Connection connection, Integer ownerId) throws SQLException;
-//    public boolean setRestoredStateByOwner(Connection connection, Integer ownerId) throws SQLException ;
+    boolean setErrorStateByOwner(Connection connection, Integer ownerId) throws SQLException;
+//  boolean setRestoredStateByOwner(Connection connection, Integer ownerId) throws SQLException ;
 
-    public boolean setErrorStateByProfile(Connection connection, Integer profileId) throws SQLException;
+    boolean setErrorStateByProfile(Connection connection, Integer profileId) throws SQLException;
 
     List<NewPost> getByUserId(Connection connection, int userId) throws SQLException;
-//    public boolean setRestoredStateByProfile(Connection connection, Integer profileId) throws SQLException ;
+   //  boolean setRestoredStateByProfile(Connection connection, Integer profileId) throws SQLException ;
 
     String getMessageById(Connection connection, int id) throws SQLException;
+    List<NewPost> getAllWithQuery(Connection connection, String someQuery) throws SQLException;
+    int getCountWithQuery(Connection connection, String SQL_SOME_QUERY) throws SQLException;
 
 }

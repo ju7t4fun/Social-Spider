@@ -110,6 +110,22 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     }
 
     @Override
+    public List<NewPost> getAllWithQuery(Connection connection, String someQuery) throws SQLException {
+        List<NewPost> posts = new ArrayList<>();
+        ResultSet rs = selectQuery(connection, someQuery);
+        NewPost nPost;
+        while (rs.next()) {
+            nPost = new NewPost();
+            nPost.setPostId(rs.getInt("post_id"));
+            nPost.setWallId(rs.getInt("wall_id"));
+            nPost.setPostTime(rs.getTimestamp("post_time"));
+            nPost.setState(NewPost.State.valueOf(rs.getString("state")));
+            posts.add(nPost);
+        }
+        return posts;
+    }
+
+    @Override
     public List<NewPost> getAll(Connection connection) throws SQLException {
         return select(connection, SQL_GET_ALL_QUERY);
     }
@@ -164,5 +180,18 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
 //    public boolean setRestoredStateByProfile(Connection connection, Integer profileId) throws SQLException {
 //        return changeQuery(connection, SQL_SET_RESTORED_STAGE_BY_PROFILE_ID, profileId);
 //    }
+
+    //should remake later
+    @Override
+    public int getCountWithQuery(Connection connection, String SQL_SOME_QUERY) throws SQLException {
+
+        ResultSet rs = selectQuery(connection, SQL_SOME_QUERY);
+        if (rs != null) {
+            while (rs.next()) {
+                return Integer.parseInt(rs.getString(1));
+            }
+        }
+        return -322;
+    }
 
 }
