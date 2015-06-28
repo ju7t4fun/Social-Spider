@@ -33,7 +33,7 @@ public class UserFillingTableServlet extends HttpServlet {
         String[] columnNames = {"id", "name", "surname", "email", "state"};
 
         JSONObject jsonResult = new JSONObject();
-        int listDisplayAmount = 10;
+        int listDisplayAmount = 5;
         int start = 0;
         int column = 0;
         String dir = "asc";
@@ -49,10 +49,12 @@ public class UserFillingTableServlet extends HttpServlet {
             }
         }
         if (pageSize != null) {
-            listDisplayAmount = Integer.parseInt(pageSize);
-            /*if (listDisplayAmount < 10 || listDisplayAmount > 50) {
+            try {
+                listDisplayAmount = Integer.parseInt(pageSize);
+            } catch (Exception e){listDisplayAmount = 5;}
+            if (listDisplayAmount < 3 || listDisplayAmount > 50) {
                 listDisplayAmount = 10;
-            }*/
+            }
         }
         if (colIndex != null) {
             column = Integer.parseInt(colIndex);
@@ -149,30 +151,7 @@ public class UserFillingTableServlet extends HttpServlet {
                 ja.put(resList.get(i).getName());
                 ja.put(resList.get(i).getSurname());
                 ja.put(resList.get(i).getEmail());
-
-
-                String urlBanned = "<img src=\"/img/banned.jpg\" " +
-                        " style=\"width:37px;height:37px;\" " +
-                        " id=\"" + resList.get(i).getEmail() + "\" onclick=\"changeImage(this)\" title=\"banned\" >";
-
-                String urlCreated = "<img src=\"/img/created.jpg\" " +
-                        " style=\"width:37px;height:37px;\" " +
-                        " id=\"" + resList.get(i).getEmail() + "\" onclick=\"changeImage(this)\" title=\"created\" >";
-                String urlActivated = "<img src=\"/img/activated.jpg\" " +
-                        " style=\"width:37px;height:37px;\" " +
-                        " id=\"" + resList.get(i).getEmail() + "\" onclick=\"changeImage(this)\" title=\"activated\" >";
-
-
-                if (resList.get(i).getState().toString().equals("ACTIVATED")) {
-                    ja.put(urlActivated);
-                }
-                if (resList.get(i).getState().toString().equals("BANNED")) {
-                    ja.put(urlBanned);
-                }
-                if (resList.get(i).getState().toString().equals("CREATED")) {
-                    ja.put(urlCreated);
-                }
-
+                ja.put(resList.get(i).getState().toString());
                 array.put(ja);
             }
         }

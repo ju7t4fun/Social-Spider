@@ -23,6 +23,7 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
     //private static final String SQL_DELETE_QUERY = "DELETE FROM post WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE post SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM post WHERE deleted = false";
+    private static final String SQL_GET_ALL_NOT_IN_NEWPOST_QUERY = "SELECT * FROM post WHERE deleted = false AND id NOT IN (SELECT post_id AS id FROM new_post) " ;
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM post WHERE id = ? AND deleted = false";
 
     @Override
@@ -65,6 +66,11 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
     @Override
     public List<Post> getAll(Connection connection) throws SQLException {
         return select(connection, SQL_GET_ALL_QUERY);
+    }
+
+    @Override
+    public List<Post> getAllNotInNewPost(Connection connection) throws SQLException {
+        return select(connection, SQL_GET_ALL_NOT_IN_NEWPOST_QUERY);
     }
 
     @Override

@@ -6,8 +6,5 @@ package com.epam.lab.spider;
 
 public aspect RunAspect {
     public String myInjectedField;
-    public String RunInterface.getInjectedMethod() {
-        return "Injected method";
-    }
 
 }

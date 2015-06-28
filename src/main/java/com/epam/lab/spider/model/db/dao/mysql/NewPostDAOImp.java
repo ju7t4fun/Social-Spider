@@ -50,6 +50,9 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     private static final String SQL_SET_ERROR_STAGE_BY_PROFILE_ID = SQL_SET_ERROR_STATE_BASE +"("+SQL_PROFILE_PREDICATE+")";
 //    private static final String SQL_SET_RESTORED_STAGE_BY_PROFILE_ID = SQL_SET_RESTORED_STATE_BASE + "("+SQL_PROFILE_PREDICATE+")";
 
+    private static final String SQL_GET_MESSAGE_BY_newPostQUERY = "SELECT post.message AS message FROM ( new_post JOIN post ON post.id=new_post.post_id " +
+            " AND new_post.post_id=? AND new_post.deleted = false)";
+
     @Override
     public boolean insert(Connection connection, NewPost post) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
@@ -107,6 +110,15 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     @Override
     public NewPost getById(Connection connection, int id) throws SQLException {
         return first(select(connection, SQL_GET_BY_ID_QUERY, id));
+    }
+
+    @Override
+    public String getMessageById(Connection connection, int id) throws SQLException {
+        ResultSet rs = selectQuery(connection, SQL_GET_MESSAGE_BY_newPostQUERY, id);
+        while (rs.next()) {
+            return  rs.getString("message");
+        }
+        return "No Message :(";
     }
 
     public List<NewPost> getAllUnpostedByDate(Connection connection, Date date) throws SQLException {

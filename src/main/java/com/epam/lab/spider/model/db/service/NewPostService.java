@@ -205,4 +205,14 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
         return false;
     }
 
+    public String getMessageByID(int newpost_id) {
+
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.getMessageById(connection, newpost_id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "bad message";
+    }
+
 }

@@ -1,19 +1,20 @@
+/**
+ * Created by Орест on 6/27/2015.
+ */
 var table;
 
 jQuery(document).ready(function () {
+    table = $('#postsTable').dataTable({
 
-
-
-    table = $('#postBindingTable').dataTable({
-
+        "bSort": false,
         "bPaginate": true,
-        "order": [0, 'asc'],
+        paging: true,
         "bInfo": true,
         "iDisplayStart": 0,
         "bProcessing": true,
-        'iDisplayLength': 5,
+        'iDisplayLength': 3,
         "bServerSide": true,
-        "sAjaxSource": path + "/PostBindingFillingTableServlet",
+        "sAjaxSource": path + "/FillingPostsServlet",
         "dom": 'C<"clear">lfrtip',
         colVis: {
             "align": "right",
@@ -28,14 +29,47 @@ jQuery(document).ready(function () {
             "infoFiltered": ""
         }
         ,
-        "dom": 'Cf<"toolbar"">rtip', "columnDefs": [ { "targets": 2,"orderable": false }, { "targets": 3,"orderable": false } ],
+        "dom": 'Cf<"toolbar"">rtip',//, "columnDefs": [ { "targets": 2,"orderable": false }, { "targets": 3,"orderable": false } ]//,
 
+        "columnDefs": [
 
+            //{
+            //"targets": [3,4,5],
+            //
+            //"createdCell": function (td, cellData, rowData, row, col) {
+            //
+            //    $(td).html('<img src=\"/img/like.png" width="23" height="23">' + "  " + cellData);
+            //
+            //}
+
+            {
+                "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
+
+                $(td).html('<img src=\"/img/like.png" width="23" height="23">' + "  " + cellData);
+
+            }
+            },
+
+            {
+                "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
+
+                $(td).html('<img src=\"/img/speaker.png" width="23" height="23">' + "  " + cellData);
+
+            }
+            },
+
+            {
+                "aTargets": [5], "createdCell": function (td, cellData, rowData, row, col) {
+
+                $(td).html('<img src=\"/img/comment.png" width="23" height="23">' + "  " + cellData);
+
+            }
+            }
+
+        ]
 
     })
-
-
-    .columnFilter({
+        .columnFilter({
             aoColumns: [
                 //{ type: "number"},
                 //{ type: "text" },
@@ -46,8 +80,6 @@ jQuery(document).ready(function () {
             ],
             bUseColVis: true
         }).fnSetFilteringDelay();
-    $("#postBindingTable_length").hide();
-//$(".dataTables_filter").css({ "display" :"none" });
 
 
     $(".dataTables_filter").css({"position": "auto"});
@@ -63,23 +95,5 @@ jQuery(document).ready(function () {
         table.fnStandingRedraw();
     });
 
-    $('#addbtn').click( addrow
-        //function () {
-        //    table.row.add( [
-        //        "efeg", "degrgrg"
-        //    ] ).draw();
-        //
-        //}
-
-    );
-
-
-});
-
-function addrow() {
-
-    ShowDialog(true);
-    //$('#postBindingTable').dataTable().fnAddData( [
-    // "defe", "defe" ] );
-
-}
+})
+;

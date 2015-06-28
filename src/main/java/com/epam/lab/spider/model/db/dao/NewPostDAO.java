@@ -25,4 +25,6 @@ public interface NewPostDAO extends CRUD<NewPost>,SavableDAO<NewPost> {
     public boolean setErrorStateByProfile(Connection connection, Integer profileId) throws SQLException ;
 //    public boolean setRestoredStateByProfile(Connection connection, Integer profileId) throws SQLException ;
 
+    String getMessageById(Connection connection, int id) throws SQLException;
+
 }

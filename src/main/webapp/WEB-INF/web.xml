@@ -128,6 +128,22 @@
         <servlet-name>NotificationServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.NotificationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FillingPostsServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.post.ajax.FillingPostsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddNewOwnerServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.owner.ajax.AddNewOwnerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddNewOwnerServlet</servlet-name>
+        <url-pattern>/AddNewOwnerServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FillingPostsServlet</servlet-name>
+        <url-pattern>/FillingPostsServlet</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>NotificationServlet</servlet-name>
         <url-pattern>/user/notification</url-pattern>
