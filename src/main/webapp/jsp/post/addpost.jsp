@@ -396,6 +396,7 @@
                             time: $("#time").val(),
                             date_delete: $("#time1").val(),
                             time_delete: $("#time5").val(),
+                            checked: $("#check").prop('checked'),
                             groups: $("#tokenize_focus").val().toString()
                         },
                         onAjaxSuccess

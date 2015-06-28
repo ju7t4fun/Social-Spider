@@ -31,6 +31,8 @@
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
 
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
     <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
@@ -58,9 +60,10 @@
             xmlhttp.open('GET', '/accounts?action=remove&id=' + id, true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
-                    if (xmlhttp.status == 200) {
-                        var response = JSON.parse(xmlhttp.responseText);
-                        toastrNotification(response.status, response.msg);
+                    var response = JSON.parse(xmlhttp.responseText);
+                    toastrNotification(response.status,response.msg);
+                    if (response.status === 'success') {
+                        $("#account" + id).remove();
                     }
                 }
             };
@@ -103,7 +106,7 @@
                             </tr>
                             <c:set var="i" value="0"/>
                             <c:forEach var="profile" items="${profiles}">
-                                <tr>
+                                <tr id="account${profile.id}">
                                     <td>${profile.vkId}</td>
                                     <td>
                                             ${fullNames[i]}

@@ -95,6 +95,13 @@ public class OwnerService implements BaseService<Owner> {
         return -1;
     }
 
-
+    public List<Owner> getByUserId(int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.getByUserId(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

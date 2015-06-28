@@ -6,7 +6,6 @@ import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException
 import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
 import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
 import com.epam.lab.spider.model.db.entity.NewPost;
-import com.epam.lab.spider.model.db.entity.Owner;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -22,44 +21,47 @@ import java.util.List;
 public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
 
     private static final String SQL_INSERT_QUERY = "INSERT INTO new_post (post_id, wall_id, post_time, delete_time, " +
-            "state, deleted) VALUES (?, ?, ?, ?, ?, ?)";
+            "state, deleted, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE new_post SET post_id = ?, wall_id = ?, post_time = ?," +
-            "delete_time = ?, state = ?, deleted = ? WHERE id = ?";
+            "delete_time = ?, state = ?, deleted = ?, user_id = ?, vk_post_id = ? WHERE id = ?";
     // private static final String SQL_DELETE_QUERY = "DELETE FROM new_post WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE new_post SET deleted = true WHERE id = ?";
-    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM new_post WHERE deleted = false";
-    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM new_post WHERE id = ? AND deleted = false";
+    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM new_post WHERE deleted = 0";
+    private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM new_post WHERE id = ? AND deleted = 0";
     private static final String SQL_SELECT_CREATED_BY_DATE_LE = "SELECT * FROM new_post WHERE state in " +
-            "('"+NewPost.State.CREATED+"', 'RESTORED') AND " +
-            "post_time < ? AND deleted = false";
+            "('CREATED', 'RESTORED') AND post_time < ? AND deleted = 0";
 
-
-    private static final String SQL_SET_ERROR_STATE_BASE = "UPDATE new_post SET state = 'ERROR' WHERE state IN ('CREATED', 'POSTING','RESTORED') AND wall_id IN ";
-    private static final String SQL_SET_RESTORED_STATE_BASE = "UPDATE new_post SET state = 'RESTORED' WHERE state IN ('ERROR') AND wall_id IN ";
+    private static final String SQL_SET_ERROR_STATE_BASE = "UPDATE new_post SET state = 'ERROR' WHERE state IN " +
+            "('CREATED', 'POSTING','RESTORED') AND wall_id IN ";
+    private static final String SQL_SET_RESTORED_STATE_BASE = "UPDATE new_post SET state = 'RESTORED' WHERE state IN " +
+            "('ERROR') AND wall_id IN ";
 
     private static final String SQL_WALL_PREDICATE = " ? ";
     private static final String SQL_OWNER_PREDICATE = " SELECT id FROM wall WHERE owner_id = ? ";
     private static final String SQL_PROFILE_PREDICATE = " SELECT id FROM wall WHERE profile_id = ? ";
 
-    private static final String SQL_SET_ERROR_STAGE_BY_WALL_ID = SQL_SET_ERROR_STATE_BASE +"("+SQL_WALL_PREDICATE+")";
-    private static final String SQL_SET_RESTORED_STAGE_BY_WALL_ID = SQL_SET_RESTORED_STATE_BASE + "("+SQL_WALL_PREDICATE+")";
+    private static final String SQL_SET_ERROR_STAGE_BY_WALL_ID = SQL_SET_ERROR_STATE_BASE + "(" + SQL_WALL_PREDICATE
+            + ")";
+    private static final String SQL_SET_RESTORED_STAGE_BY_WALL_ID = SQL_SET_RESTORED_STATE_BASE + "(" +
+            SQL_WALL_PREDICATE + ")";
 
-    private static final String SQL_SET_ERROR_STAGE_BY_OWNER_ID = SQL_SET_ERROR_STATE_BASE +"("+SQL_OWNER_PREDICATE+")";
-//    private static final String SQL_SET_RESTORED_STAGE_BY_OWNER_ID = SQL_SET_RESTORED_STATE_BASE + "("+SQL_OWNER_PREDICATE+")";
+    private static final String SQL_SET_ERROR_STAGE_BY_OWNER_ID = SQL_SET_ERROR_STATE_BASE + "(" +
+            SQL_OWNER_PREDICATE + ")";
 
-    private static final String SQL_SET_ERROR_STAGE_BY_PROFILE_ID = SQL_SET_ERROR_STATE_BASE +"("+SQL_PROFILE_PREDICATE+")";
-//    private static final String SQL_SET_RESTORED_STAGE_BY_PROFILE_ID = SQL_SET_RESTORED_STATE_BASE + "("+SQL_PROFILE_PREDICATE+")";
+    private static final String SQL_SET_ERROR_STAGE_BY_PROFILE_ID = SQL_SET_ERROR_STATE_BASE + "(" +
+            SQL_PROFILE_PREDICATE + ")";
+    private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT * FROM new_post WHERE user_id = ? AND deleted = 0";
 
     @Override
     public boolean insert(Connection connection, NewPost post) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
-  //              post.getPost().getId(),
                 post.getPostId(),
                 post.getWallId(),
                 post.getPostTime(),
                 post.getDeleteTime(),
                 post.getState().toString().toUpperCase(),
-                post.getDeleted());
+                post.getDeleted(),
+                post.getUserId());
         post.setId(getLastInsertId(connection));
         return res;
     }
@@ -73,6 +75,8 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
                 post.getDeleteTime(),
                 post.getState().toString().toUpperCase(),
                 post.getDeleted(),
+                post.getUserId(),
+                post.getVkPostId(),
                 id);
     }
 
@@ -95,6 +99,8 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
             nPost.setDeleteTime(rs.getDate("delete_time"));
             nPost.setState(NewPost.State.valueOf(rs.getString("state")));
             nPost.setDeleted(rs.getBoolean("deleted"));
+            nPost.setUserId(rs.getInt("user_id"));
+            nPost.setVkPostId(rs.getInt("vk_post_id"));
             posts.add(nPost);
         }
         return posts;
@@ -117,6 +123,7 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     public boolean setErrorStateByWall(Connection connection, Integer wallId) throws SQLException {
         return changeQuery(connection, SQL_SET_ERROR_STAGE_BY_WALL_ID, wallId);
     }
+
     public boolean setRestoredStateByWall(Connection connection, Integer wallId) throws SQLException {
         return changeQuery(connection, SQL_SET_RESTORED_STAGE_BY_WALL_ID, wallId);
     }
@@ -133,7 +140,13 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     }
 
     @Override
-    public boolean save(Connection conn, NewPost entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException {
+    public List<NewPost> getByUserId(Connection connection, int userId) throws SQLException {
+        return select(connection, SQL_GET_BY_USER_ID_QUERY, userId);
+    }
+
+    @Override
+    public boolean save(Connection conn, NewPost entity) throws UnsupportedDAOException, ResolvableDAOException,
+            InvalidEntityException {
         return SavableCRUDUtil.saveFromInterface(conn, entity);
     }
 //    public boolean setRestoredStateByProfile(Connection connection, Integer profileId) throws SQLException {

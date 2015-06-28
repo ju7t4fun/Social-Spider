@@ -34,12 +34,21 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
             "task_source.wall_id = wall.id WHERE task_id = ?";
     private static final String SQL_DELETED_BY_PROFILE_ID_QUERY = "UPDATE wall SET deleted = 1 WHERE profile_id = ? " +
             "AND deleted = 0";
-    private static final String SQL_GET_ALL_BY_PROFILE_ID_QUERY = "SELECT * FROM wall WHERE profile_id = ? AND deleted = 0";
+    private static final String SQL_GET_ALL_BY_PROFILE_ID_QUERY = "SELECT * FROM wall WHERE profile_id = ? AND " +
+            "deleted = 0";
 
     private static final String SQL_CHECK_EXIST_QUERY = "SELECT * FROM wall WHERE profile_id = ? AND owner_id=? AND " +
             "permission=? AND deleted=true";
     private static final String SQL_UPDATE_ON_ACTIVE_QUERY = "UPDATE wall SET deleted = false WHERE owner_id = ? AND " +
             "profile_id = ? AND permission = ? AND deleted=true";
+    private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT wall.* FROM wall WHERE wall.profile_id IN (SELECT " +
+            "profile.id FROM user JOIN profile ON user.id = profile.user_id  WHERE user.id = ?) AND deleted = 0";
+    private static final String GET_READ_BY_USER_ID_QUERY = "SELECT wall.* FROM wall WHERE wall.profile_id IN (SELECT" +
+            " profile.id FROM user JOIN profile ON user.id = profile.user_id  WHERE user.id = ?) AND permission = " +
+            "'read' AND deleted = 0";
+    private static final String GET_WRITE_BY_USER_ID_QUERY = "SELECT wall.* FROM wall WHERE wall.profile_id IN " +
+            "(SELECT profile.id FROM user JOIN profile ON user.id = profile.user_id  WHERE user.id = ?) AND " +
+            "permission = 'write' AND deleted = 0";
 
     @Override
     public boolean insert(Connection connection, Wall wall) throws SQLException {
@@ -77,6 +86,21 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
             throws SQLException {
         return changeQuery(connection, SQL_UPDATE_ON_ACTIVE_QUERY, owner_id, profile_id, permission.toString()
                 .toUpperCase());
+    }
+
+    @Override
+    public List<Wall> getByUserId(Connection connection, int userId) throws SQLException {
+        return select(connection, SQL_GET_BY_USER_ID_QUERY, userId);
+    }
+
+    @Override
+    public List<Wall> getReadByUserId(Connection connection, int userId) throws SQLException {
+        return select(connection, GET_READ_BY_USER_ID_QUERY, userId);
+    }
+
+    @Override
+    public List<Wall> getWriteByUserId(Connection connection, int userId) throws SQLException {
+        return select(connection, GET_WRITE_BY_USER_ID_QUERY, userId);
     }
 
     @Override

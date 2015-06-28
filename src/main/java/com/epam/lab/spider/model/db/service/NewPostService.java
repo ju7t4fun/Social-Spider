@@ -205,4 +205,13 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
         return false;
     }
 
+    public List<NewPost> getByUserId(int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.getByUserId(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

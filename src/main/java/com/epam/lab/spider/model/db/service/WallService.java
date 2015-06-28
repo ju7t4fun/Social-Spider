@@ -64,7 +64,7 @@ public class WallService implements BaseService<Wall> {
 
     public List<Wall> getAllByOwnerIdAndPermission(int owner_id, Wall.Permission permission) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return wdao.getAllByOwnerIdAndPermission(connection,owner_id,permission);
+            return wdao.getAllByOwnerIdAndPermission(connection, owner_id, permission);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -175,4 +175,32 @@ public class WallService implements BaseService<Wall> {
         }
         return null;
     }
+
+    public List<Wall> getByUserId(int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getByUserId(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Wall> getReadByUserId(int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getReadByUserId(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Wall> getWriteByUserId(int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getWriteByUserId(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
