@@ -16,7 +16,7 @@ jQuery(document).ready(function () {
         "bProcessing": true,
         'iDisplayLength': 10,
         "bServerSide": true,
-        "sAjaxSource": "http://localhost:8080/post?action=fillqueuededposts",
+        "sAjaxSource": path + "/post?action=fillqueuededposts",
         colVis: {
             "align": "right",
             "buttonText": "columns <img src=\"/img/caaret.png\"/>",
