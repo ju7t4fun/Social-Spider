@@ -15,8 +15,10 @@
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="/post?action=showCreated"><l:resource key="allposts" /></a></li>
-                            <li><a class="" href="/post?action=add"><l:resource key="addnewpost" /></a></li>
+                            <li><a class="" href="/post?action=created">Created</a></li>
+                            <li><a class="" href="/post?action=queued">Queued</a></li>
+                            <li><a class="" href="/post?action=posted">Posted</a></li>
+                            <li><a class="" href="/post?action=add"><l:resource key="addnewpost"/></a></li>
                         </ul>
                     </li>
                     <li class="sub-menu">

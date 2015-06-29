@@ -1,8 +1,8 @@
 /**
- * Created by Орест on 6/28/2015.
+ * Created by пїЅпїЅпїЅпїЅпїЅ on 6/28/2015.
  */
 /**
- * Created by Орест on 6/27/2015.
+ * Created by пїЅпїЅпїЅпїЅпїЅ on 6/27/2015.
  */
 var table;
 
@@ -16,7 +16,7 @@ jQuery(document).ready(function () {
         "bProcessing": true,
         'iDisplayLength': 10,
         "bServerSide": true,
-        "sAjaxSource": path + "/post?action=fillpostedposts",
+        "sAjaxSource": "http://localhost:8080/post?action=fillqueuededposts",
         colVis: {
             "align": "right",
             "buttonText": "columns <img src=\"/img/caaret.png\"/>",

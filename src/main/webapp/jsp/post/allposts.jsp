@@ -206,7 +206,7 @@
                         $.post(
                                 "/controller?action=getpostbyid",
                                 {
-                                    post_id: "41",
+                                    post_id: "15",
                                 },
                                 onAjaxSuccess
                         );

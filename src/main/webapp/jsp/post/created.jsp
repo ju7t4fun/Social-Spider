@@ -29,10 +29,6 @@
     <!-- Custom styles -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
-    <%--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>--%>
-    <%--<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>--%>
-    <%--<link rel="stylesheet" type="text/css" href="css/jquery.tokenize.css" />--%>
-
 
     <!-- javascripts -->
     <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
@@ -48,18 +44,11 @@
     <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
 
-
     <%--for table--%>
 
-    <script type="text/javascript">
-        var path = '${pageContext.request.contextPath}';
-    </script>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link href="http://cdn.datatables.net/1.10.3/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
     <link href="http://datatables.net/release-datatables/extensions/ColVis/css/dataTables.colVis.css" rel="stylesheet"
           type="text/css">
-    <%--<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>--%>
     <script src="http://cdn.datatables.net/1.10.3/js/jquery.dataTables.min.js"></script>
     <script src="http://datatables.net/release-datatables/extensions/ColVis/js/dataTables.colVis.js"></script>
     <script src="http://jquery-datatables-column-filter.googlecode.com/svn/trunk/media/js/jquery.dataTables.columnFilter.js"></script>
@@ -118,7 +107,7 @@
                 "bProcessing": true,
                 'iDisplayLength': 10,
                 "bServerSide": true,
-                "sAjaxSource": path + "/post?action=getCreatedPost",
+                "sAjaxSource": "http://localhost:8080/post?action=getCreatedPost",
                 colVis: {
                     "align": "right",
                     "buttonText": "columns <img src=\"/img/caaret.png\"/>",
@@ -128,7 +117,8 @@
                     "bVisible": false, "aTargets": [0]
                 }, {
                     "aTargets": [1], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html("<a href='#' onclick='showPost(" + rowData[0] + ")'>" + cellData + "</a>");
+                        $(td).html('<a onclick="viewPost(' + rowData[0] + ')" data-toggle="modal" data-target="#myModal">' +
+                                cellData + '</a>');
                     }
                 }, {
                     "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
@@ -190,15 +180,13 @@
     <jsp:include page="../pagecontent/header.jsp"/>
     <jsp:include page="../pagecontent/sidebar.jsp"/>
 
-    <a href="" onclick="showPost()"></a>
+    <jsp:include page="../post/viewpost.jsp"/>
 
-
-    <!--main content start-->
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-list-alt"></i> Home</h3>
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> Created</h3>
                 </div>
             </div>
             <div class="row">
@@ -210,48 +198,37 @@
                     </ol>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-lg-12">
-
-                    <div class="panel">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="pull-left">Created</div>
+                            <div class="clearfix"></div>
+                        </div>
                         <div class="panel-body">
-                            <div class="tab-content">
-                                <div id="active" class="tab-pane active">
-                                    <div class="col-lg-12">
-
-                                        <table width="100%" border="0" margin="0" padding="0"
-                                               class="row-border tableHeader" id="postsTable">
-                                            <tbody>
-                                            <thead>
-                                            <tr style="align-content: center">
-                                                <th>id</th>
-                                                <th>Message</th>
-                                                <th>Attachment</th>
-                                                <th></th>
-                                            </tr>
-                                            </thead>
-                                            </tbody>
-                                        </table>
-
-                                    </div>
+                            <div id="active" class="tab-pane active">
+                                <div class="col-lg-12">
+                                    <table width="100%" border="0" margin="0" padding="0"
+                                           class="row-border tableHeader" id="postsTable">
+                                        <thead>
+                                        <tr style="align-content: center">
+                                            <th>id</th>
+                                            <th>Message</th>
+                                            <th>Attachment</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
         </section>
-        </div>
-
-        </div>
     </section>
 </section>
-<!--main content end-->
 </section>
-<!-- container section end -->
 </body>
 </html>
 

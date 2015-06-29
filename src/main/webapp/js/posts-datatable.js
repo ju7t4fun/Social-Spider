@@ -1,5 +1,5 @@
 /**
- * Created by Орест on 6/27/2015.
+ * Created by пїЅпїЅпїЅпїЅпїЅ on 6/27/2015.
  */
 var table;
 
@@ -13,7 +13,7 @@ jQuery(document).ready(function () {
         "bProcessing": true,
         'iDisplayLength': 10,
         "bServerSide": true,
-        "sAjaxSource": path + "/post?action=fillpostedposts",
+        "sAjaxSource": "http://localhost:8080/post?action=fillpostedposts",
         colVis: {
             "align": "right",
             "buttonText": "columns <img src=\"/img/caaret.png\"/>",
@@ -33,7 +33,7 @@ jQuery(document).ready(function () {
             },
 
             {
-                "class": "dt-body-left", "targets": [3,4,5]
+                "class": "dt-body-left", "targets": [3, 4, 5]
             },
 
 
@@ -84,12 +84,10 @@ jQuery(document).ready(function () {
     });
 
 
-
     //$(".dataTables_filter").attr("hidden", "");
 
 
     //$(".dataTables_length").attr("hidden", "");
-
 
 
     $('#refreshbtn').click(function () {

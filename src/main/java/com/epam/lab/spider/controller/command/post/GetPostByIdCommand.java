@@ -29,11 +29,12 @@ public class GetPostByIdCommand implements ActionCommand {
         }
         Set<Attachment> attachmentSet = post.getAttachments();
         JSONArray jsonArray = new JSONArray(attachmentSet);
-        System.out.println(jsonArray);
         JSONObject jsonObject = new JSONObject();
-
         jsonObject.put("postText", post.getMessage());
         jsonObject.put("attachments", jsonArray);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        System.out.println(jsonObject);
         response.getWriter().print(jsonObject);
     }
 }
