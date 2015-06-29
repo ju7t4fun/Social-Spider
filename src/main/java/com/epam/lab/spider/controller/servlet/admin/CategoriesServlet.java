@@ -2,6 +2,7 @@ package com.epam.lab.spider.controller.servlet.admin;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
 import com.epam.lab.spider.controller.command.admin.CategoriesCommand;
+import com.epam.lab.spider.controller.command.category.GetCategoryCommand;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,6 +22,7 @@ public class CategoriesServlet extends HttpServlet {
         public CategoriesFactory() {
             commands = new HashMap<>();
             commands.put("default", new CategoriesCommand());
+            commands.put("getcategory", new GetCategoryCommand());
         }
     }
 

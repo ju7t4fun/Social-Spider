@@ -66,9 +66,6 @@
                                     list</a>
                             </li>
                             <li>
-                                <a class="" href="${pageContext.request.contextPath}/admin/groups">Groups</a>
-                            </li>
-                            <li>
                                 <a class="" href="${pageContext.request.contextPath}/admin/categories">Categories
                                 </a>
                             </li>
