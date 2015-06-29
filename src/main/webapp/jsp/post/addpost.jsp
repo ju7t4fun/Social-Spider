@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +19,7 @@
           content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-    <title><l:resource key="addnewpost" /></title>
+    <title><l:resource key="addnewpost"/></title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -78,14 +79,14 @@
             <!--overview start-->
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-credit-card"></i><l:resource key="newpost.newpost" /></h3>
+                    <h3 class="page-header"><i class="fa fa-credit-card"></i><l:resource key="newpost.newpost"/></h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home" /></a></li>
-                        <li><i class="fa fa-laptop"></i><l:resource key="addnewpost" /></li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-laptop"></i><l:resource key="addnewpost"/></li>
                     </ol>
                 </div>
             </div>
@@ -96,7 +97,7 @@
                 <div class="col-md-6 portlets" style="width:100%;">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left"><l:resource key="addnewpost" /></div>
+                            <div class="pull-left"><l:resource key="addnewpost"/></div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="panel-body">
@@ -109,7 +110,8 @@
                                         <input type="hidden" name="action" value="addPost">
                                         <!-- Title -->
                                         <div class="form-group">
-                                            <label class="control-label col-lg-2" for="title"><l:resource key="newpost.title" /></label>
+                                            <label class="control-label col-lg-2" for="title"><l:resource
+                                                    key="newpost.title"/></label>
 
                                             <div class="col-lg-10">
                                                 <input type="text" name="title" class="form-control" id="title">
@@ -117,7 +119,8 @@
                                         </div>
                                         <!-- Content -->
                                         <div class="form-group">
-                                            <label class="control-label col-lg-2" for="content"><l:resource key="newpost.content" /></label>
+                                            <label class="control-label col-lg-2" for="content"><l:resource
+                                                    key="newpost.content"/></label>
 
                                             <div class="col-lg-10">
                                                 <textarea class="form-control" name="message" id="content"
@@ -128,21 +131,25 @@
 
                                         <div class="form-group">
                                             <div style="width:1100px;">
-                                            <label class="control-label col-lg-2" for="tagsinput" style="margin-right:20px;"><l:resource key="newpost.tags" /></label>
+                                                <label class="control-label col-lg-2" for="tagsinput"
+                                                       style="margin-right:20px;"><l:resource
+                                                        key="newpost.tags"/></label>
 
 
                                                 <input name="tags" id="tagsinput" class="tagsinput"/>
 
-                                        </div>
+                                            </div>
                                         </div>
                                         <!-- Add file -->
 
                                         <div class="form-group">
-                                            <label class="control-label col-lg-2" for="title"><l:resource key="newpost.addfile" /></label>
+                                            <label class="control-label col-lg-2" for="title"><l:resource
+                                                    key="newpost.addfile"/></label>
 
                                             <div id="upload-from">
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-primary"><l:resource key="newpost.upload" /></button>
+                                                    <button type="button" class="btn btn-primary"><l:resource
+                                                            key="newpost.upload"/></button>
                                                     <button type="button" class="btn btn-primary dropdown-toggle"
                                                             data-toggle="dropdown" aria-haspopup="true"
                                                             aria-expanded="false">
@@ -151,9 +158,11 @@
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <li><a href="#"
-                                                               onclick="uploadFromComputer();"><l:resource key="newpost.computer" />
+                                                               onclick="uploadFromComputer();"><l:resource
+                                                                key="newpost.computer"/>
                                                         </a></li>
-                                                        <li><a href="#" onclick="uploadFromURL();"><l:resource key="newpost.url" /></a></li>
+                                                        <li><a href="#" onclick="uploadFromURL();"><l:resource
+                                                                key="newpost.url"/></a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -259,11 +268,13 @@
                                             <br>
                                             <!-- Buttons -->
                                             <div id="scrl" class="col-lg-offset-2 col-lg-9">
-                                                <button id="publish" class="btn btn-primary"><l:resource key="newpost.save" /></button>
+                                                <button id="publish" class="btn btn-primary"><l:resource
+                                                        key="newpost.save"/></button>
                                                 <button class="btn btn-info" data-toggle="modal"
-                                                        data-target="#myModal"><l:resource key="newpost.publish" />
+                                                        data-target="#myModal"><l:resource key="newpost.publish"/>
                                                 </button>
-                                                <button type="reset" class="btn btn-default"><l:resource key="newpost.reset" /></button>
+                                                <button type="reset" class="btn btn-default"><l:resource
+                                                        key="newpost.reset"/></button>
                                             </div>
                                         </div>
                                         <script>
@@ -293,7 +304,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h4 class="modal-title"><l:resource key="newpost.dateandtime" /></h4>
+                <h4 class="modal-title"><l:resource key="newpost.dateandtime"/></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -303,43 +314,36 @@
 
                             <div style="position: relative; left: -130px; top:30px;">
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="date"><l:resource key="newpost.date" /></label>
+                                    <label class="col-md-4 control-label" for="date"><l:resource
+                                            key="newpost.date"/></label>
 
                                     <div class="col-md-4">
-                                        <l:resource key="newpost.postdate"><input id="date" name="date" type="date" min="${date}" value="${date}"
-                                               placeholder="" class="form-control input-md"></l:resource>
+                                        <l:resource key="newpost.postdate"><input id="date" name="date" type="date"
+                                                                                  min="${date}" value="${date}"
+                                                                                  placeholder=""
+                                                                                  class="form-control input-md"></l:resource>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="time"><l:resource key="newpost.time" /></label>
+                                    <label class="col-md-4 control-label" for="time"><l:resource
+                                            key="newpost.time"/></label>
 
                                     <div class="col-md-4">
-                                        <l:resource key="newpost.posttime"><input id="time" name="time" type="time" value="${time}" placeholder=""
-                                               class="form-control input-md"></l:resource>
+                                        <l:resource key="newpost.posttime"><input id="time" name="time" type="time"
+                                                                                  value="${time}" placeholder=""
+                                                                                  class="form-control input-md"></l:resource>
                                     </div>
                                 </div>
                             </div>
                             <div style="position: relative; left: 250px; top:-109px;">
                                 <div class="form-group" style="">
                                     <div class="col-lg-6">
-                                        <h4><l:resource key="newpost.selectgroup" />:</h4>
+                                        <h4><l:resource key="newpost.selectgroup"/>:</h4>
                                         <select name="groups" id="tokenize_focus" multiple="multiple"
                                                 class="tokenize-sample">
-                                            <option value="1">GrabGroup 1</option>
-                                            <option value="2">GrabGroup 2</option>
-                                            <option value="3">GrabGroup 3</option>
-                                            <option value="4">GrabGroup 4</option>
-                                            <option value="5">GrabGroup 5</option>
-                                            <option value="11">GrabGroup 11</option>
-                                            <option value="12">GrabGroup 12</option>
-                                            <option value="13">GrabGroup 13</option>
-                                            <option value="14">GrabGroup 14</option>
-                                            <option value="15">GrabGroup 15</option>
-                                            <option value="21">GrabGroup 21</option>
-                                            <option value="22">GrabGroup 22</option>
-                                            <option value="23">GrabGroup 23</option>
-                                            <option value="24">GrabGroup 24</option>
-                                            <option value="25">GrabGroup 25</option>
+                                            <c:forEach items="${owners}" var="owner">
+                                                <option value="${owner.wallId}">${owner.name}</option>
+                                            </c:forEach>
                                         </select>
 
                                         <script type="text/javascript">
@@ -350,27 +354,32 @@
                             </div>
                             <div style="position: relative; left:-58px; top:-100px;">
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="check"><l:resource key="newpost.removingdate" /></label>
+                                    <label class="col-md-4 control-label" for="check"><l:resource
+                                            key="newpost.removingdate"/></label>
                                     <input id="check" type="checkbox">
                                 </div>
                             </div>
                             <div style="position: relative; left:54px; top:-90px; width: 600px;">
                                 <div id="time3" class="col-md-4">
-                                    <l:resource key="newpost.date"><input id="time1" name="date_delete" min="${date}" value="${del_date}" type="date"
-                                           placeholder="" class="form-control input-md"></l:resource>
+                                    <l:resource key="newpost.date"><input id="time1" name="date_delete" min="${date}"
+                                                                          value="${del_date}" type="date"
+                                                                          placeholder=""
+                                                                          class="form-control input-md"></l:resource>
                                 </div>
 
                             </div>
                             <div style="position: relative; left:-146px; top:-50px; width: 600px;">
                                 <div id="time4" class="col-md-4">
-                                    <l:resource key="newpost.time"><input id="time5" name="time_delete" type="time" placeholder="Time"
-                                           class="form-control input-md" value="${del_time}"></l:resource>
+                                    <l:resource key="newpost.time"><input id="time5" name="time_delete" type="time"
+                                                                          placeholder="Time"
+                                                                          class="form-control input-md"
+                                                                          value="${del_time}"></l:resource>
                                 </div>
                             </div>
                             <button id="submit_modal" type="button" style="margin-left: 455px;margin-top: -80px;"
                                     class="btn btn-primary"
                                     data-dismiss="modal">
-                                <l:resource key="newpost.save" />
+                                <l:resource key="newpost.save"/>
                             </button>
                         </form>
                     </div>
@@ -397,6 +406,7 @@
                             time: $("#time").val(),
                             date_delete: $("#time1").val(),
                             time_delete: $("#time5").val(),
+                            checked: $("#check").prop('checked'),
                             groups: $("#tokenize_focus").val().toString()
                         },
                         onAjaxSuccess
@@ -404,13 +414,12 @@
                 function onAjaxSuccess(data) {
                     var responce = JSON.parse(data);
                     if (responce.status === 'success') {
-                        location.href = "/post";
+                        location.href = "/post?action=queued";
                     }
                 }
             });
         });
     </script>
-    <!-- container section start -->
 
     <!-- javascripts -->
 

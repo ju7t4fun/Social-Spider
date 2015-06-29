@@ -144,6 +144,30 @@
         <servlet-name>FeedsServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.FeedsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ShowUsersServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.ShowUsersServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GroupsServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.GroupsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CategoriesServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.CategoriesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CategoriesServlet</servlet-name>
+        <url-pattern>/admin/categories</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GroupsServlet</servlet-name>
+        <url-pattern>/admin/groups</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowUsersServlet</servlet-name>
+        <url-pattern>/admin/users</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>FeedsServlet</servlet-name>
         <url-pattern>/feeds</url-pattern>

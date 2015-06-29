@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.command.owner;
+package com.epam.lab.spider.controller.command.admin;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 
@@ -8,11 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Орест on 23/06/2015.
+ * Created by Marian Voronovskyi on 29.06.2015.
  */
-public class ShowBindAccountCommand implements ActionCommand {
+public class CategoriesCommand implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("jsp/owner/owner.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/admin/admin_categories.jsp").forward(request, response);
     }
 }

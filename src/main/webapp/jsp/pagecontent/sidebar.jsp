@@ -40,9 +40,8 @@
                         </ul>
                     </li>
                     <li>
-                        <a class="" href="chart-chartjs.html">
-                            <i class="icon_piechart"></i>
-                            <span>Function 3</span>
+                        <a class="" href="/owner"> <i class="icon_piechart"></i>
+                            <span>Owner</span>
                         </a>
                     </li>
                 </ul>
@@ -50,16 +49,26 @@
             <c:when test="${user.role =='ADMIN'}">
                 <ul class="sidebar-menu">
                     <li class="sub-menu">
+                        <a href="${pageContext.request.contextPath}/admin/support" class="">
+                            <i class="icon_genius"></i>
+                            <span>Support</span>
+                        </a>
+                    </li>
+                    <li class="sub-menu">
                         <a href="javascript:;" class="">
                             <i class="icon_genius"></i>
-                            <span>Post</span>
+                            <span>Edit</span>
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="${pageContext.request.contextPath}/jsp/post/allposts.jsp">All
-                                Posts</a></li>
-                            <li><a class="" href="${pageContext.request.contextPath}/jsp/post/addpost.jsp">Add New
-                                Post</a></li>
+                            <li>
+                                <a class="" href="${pageContext.request.contextPath}/admin/users">Users
+                                    list</a>
+                            </li>
+                            <li>
+                                <a class="" href="${pageContext.request.contextPath}/admin/categories">Categories
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>

@@ -68,10 +68,10 @@ public class AddPostCommand implements ActionCommand {
         post.setDeleted(false);
         post.setAttachments(attachments);
 
+        postService.insert(post);
         if (request.getParameter("typePost") == null) {
-            postService.insert(post);
             session.setAttribute("toastr_notification", "success|" + "Створено новий пост!");
-            response.sendRedirect("/post");
+            response.sendRedirect("/post?action=created");
             return;
         } else {
             String date = request.getParameter("date");
@@ -81,8 +81,10 @@ public class AddPostCommand implements ActionCommand {
             String groups = request.getParameter("groups");
 
             NewPost newPost = new NewPost();
+
             newPost.setUserId(user.getId());
-            newPost.setPost(post);
+            newPost.setPostId(post.getId());
+//            newPost.setPost(post);
             newPost.setState(NewPost.State.CREATED);
 
             try {
@@ -96,8 +98,11 @@ public class AddPostCommand implements ActionCommand {
             }
 
             newPost.setDeleted(false);
-            newPost.setWallId(1);
-            newPostService.insert(newPost);
+            String[] groupsId = groups.split(",");
+            for (String id : groupsId) {
+                newPost.setWallId(Integer.parseInt(id));
+                newPostService.insert(newPost);
+            }
         }
 
         session.setAttribute("toastr_notification", "success|" + "Створено новий пост!");

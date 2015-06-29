@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
-  User: Sasha
-  Date: 19.06.2015
-  Time: 15:09
+  User: maryan
+  Date: 29.06.2015
+  Time: 17:37
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -42,7 +42,7 @@
     <script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>
     <%--<!--custome script for all page-->--%>
     <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
-    <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
+    <%--<script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>--%>
 
     <%--for table--%>
     <link href="http://cdn.datatables.net/1.10.3/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
@@ -54,6 +54,10 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnStandingRedraw.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnSetFilteringDelay.js"></script>
 
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <script src="${pageContext.request.contextPath}/js/jquery.multi-select.js" type="text/javascript"></script>
+    <link href="${pageContext.request.contextPath}/css/multi-select.css" media="screen" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
@@ -74,17 +78,16 @@
             }
         }, 500);
 
-        function removePost(id, elm) {
+        function removeOwner(id, elm) {
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/post?action=remove&id=' + id, true);
+            xmlhttp.open('GET', '/owner?action=remove&id=' + id, true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
                     toastrNotification(response.status, response.msg);
                     if (response.status === 'success') {
-                        $('#postsTable').DataTable().row($(this).parents('tr'))
-                                .remove()
-                                .draw();
+                        $('#ownersTable').DataTable().row($(this).parents('tr'))
+                                .remove().draw();
                     }
                 }
             };
@@ -96,9 +99,9 @@
         var table;
 
         jQuery(document).ready(function () {
-            table = $('#postsTable').dataTable({
+            table = $('#ownersTable').dataTable({
 
-                "bSort": false,
+                "bSort": true,
                 "bPaginate": true,
                 "paging": true,
                 "bInfo": false,
@@ -106,70 +109,27 @@
                 "bProcessing": true,
                 'iDisplayLength': 10,
                 "bServerSide": true,
-                "sAjaxSource": "http://localhost:8080/post?action=getCreatedPost",
+                "sAjaxSource": "http://localhost:8080/controller?action=getcategory",
                 colVis: {
                     "align": "right",
                     "buttonText": "columns <img src=\"/img/caaret.png\"/>",
                 },
 
-                "columnDefs": [{
-                    "bVisible": false, "aTargets": [0]
-                }, {
-                    "aTargets": [1], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<a onclick="viewPost(' + rowData[0] + ')" data-toggle="modal" data-target="#myModal">' +
-                                cellData + '</a>');
-                    }
-                }, {
-                    "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html(parseAttachment(cellData));
-                    }
-                }, {
-                    "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<div class="btn-group"><a class="btn btn-primary" href="#"><i class="icon_plus_alt2"></i></a><a class="btn btn-danger" onclick="removePost(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
-                    }
-                }, {
-                    "width": "60%", "targets": 1
-                }, {
-                    "class": "dt-body-left", "targets": 1
-                }, {
-                    "class": "dt-body-right", "targets": 3
-                }]
+                "columnDefs": [
+
+                ]
 
             });
 
-            $(".dataTables_filter").attr("hidden", "");
+//            $(".dataTables_filter").attr("hidden", "");
             $(".dataTables_length").attr("hidden", "");
+            var dataTables_filter_input = $(".dataTables_filter").find("input");
+            dataTables_filter_input.attr("class", "form-control");
+            dataTables_filter_input.attr("style", "width: 500px")
 
-
-            $('#refreshbtn').click(function () {
-                table.fnStandingRedraw();
-            });
-
-            function parseAttachment(arg) {
-                var args = arg.split("!");
-                var cell = "";
-                for (var i = 0; i < args.length; i++) {
-                    cell = cell + " " + parseDoc(args[i]);
-                }
-                return cell;
-            }
-
-            function parseDoc(arg) {
-                var args = arg.split("|");
-                switch (args[0]) {
-                    case "PHOTO":
-                        return '<img src="${pageContext.request.contextPath}/img/icons/jpg-icon.png" style="width: 30px; height: 30px"><span class="badge bg-important">{count}</span>'.replace("{count}", args[1]);
-                    case "VIDEO":
-                        return '<img src="${pageContext.request.contextPath}/img/icons/mpg-icon.png" style="width: 30px; height: 30px"><span class="badge bg-important">{count}</span>'.replace("{count}", args[1]);
-                    case "AUDIO":
-                        return '<img src="${pageContext.request.contextPath}/img/icons/mp3-icon.png" style="width: 30px; height: 30px"><span class="badge bg-important">{count}</span>'.replace("{count}", args[1]);
-                    case "DOC":
-                        return '<img src="${pageContext.request.contextPath}/img/icons/txt-icon.png" style="width: 30px; height: 30px"><span class="badge bg-important">{count}</span>'.replace("{count}", args[1]);
-                }
-                return "";
-            }
         })
     </script>
+
 </head>
 <body>
 
@@ -185,39 +145,26 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-list-alt"></i> Created</h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-desktop"></i>Post</li>
-                        <li><i class="fa fa-list-alt"></i>Created</li>
-                    </ol>
+                    <h3 class="page-header" style="width: 100%"><i class="fa fa-list-alt"></i>Categories</h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <div class="pull-left">Created</div>
-                            <div class="clearfix"></div>
-                        </div>
                         <div class="panel-body">
                             <div id="active" class="tab-pane active">
                                 <div class="col-lg-12">
                                     <table width="100%" border="0" margin="0" padding="0"
-                                           class="row-border tableHeader" id="postsTable">
+                                           class="row-border tableHeader" id="ownersTable">
                                         <thead>
                                         <tr style="align-content: center">
                                             <th>id</th>
-                                            <th>Message</th>
-                                            <th>Attachment</th>
-                                            <th></th>
+                                            <th>Category name</th>
+                                            <th>Delete</th>
                                         </tr>
                                         </thead>
                                     </table>
+                                    <a class="btn btn-primary" href="#">Add category</a>
                                 </div>
                             </div>
                         </div>
@@ -226,7 +173,6 @@
             </div>
         </section>
     </section>
-</section>
 </section>
 </body>
 </html>

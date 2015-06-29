@@ -112,4 +112,21 @@ public class OwnerService implements BaseService<Owner> {
         return null;
     }
 
+    public List<Owner> getByUserId(Integer id, int page, int size) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.getByUserId(connection, id, page, size);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getCountByUserId(Integer id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.getCountByUserId(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }

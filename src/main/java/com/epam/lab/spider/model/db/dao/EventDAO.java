@@ -21,4 +21,5 @@ public interface EventDAO extends CRUD<Event> {
 
     List<Event> getByUserId(Connection connection, Integer id, int page, int limit) throws SQLException;
 
+    int getCountByUserId(Connection connection, Integer id) throws SQLException;
 }
