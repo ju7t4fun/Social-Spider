@@ -15,9 +15,9 @@
                                         <br>
                                         <table width="100%" style="padding:0 50px;">
                                             <tr>
-                                                <td style="text-align:center;padding-left:20px;"><img
+                                                <td style="text-align:left;padding-left:-300px;"><img
                                                         src="${pageContext.request.contextPath}/img/post.png"
-                                                        style="margin:15px;"><strong
+                                                        style="margin:0px;"><strong
                                                         id="group_name"></strong>
                                                 </td>
                                             </tr>
@@ -52,26 +52,37 @@
         );
         function onAjaxSuccess(data) {
             var response = data;
-            $("#post_text").text(response.postText);
+            $("#post_text").html(response.postText);
+            function checkType(i) {
+                var atr;
+                if (response.attachments[i].payload.includes("video")) {
+                    atr = "video controls";
+                } else if (response.attachments[i].payload.includes("music")) {
+                    atr = "video controls";
+                } else if (response.attachments[i].payload.includes("image")) {
+                    atr = "img";
+                }
+                return atr;
+            }
             var table = $("#attachments_table");
             table.empty();
             if (response.attachments.length != 0) {
                 var row = $("<tr></tr>");
-                for (var i = 0; i < response.attachments.length; i++) {
-                    var atr;
-                    if (response.attachments[i].payload.includes("video")) {
-                        atr = "video controls";
-                    } else if (response.attachments[i].payload.includes("music")) {
-                        atr = "video controls";
-                    } else if (response.attachments[i].payload.includes("image")) {
-                        atr = "img";
-                    }
-                    row.append('<td><' + atr + ' width="320" height="240" src="' +
-                            response.attachments[i].payload +
-                            '"></' + atr + '><td>');
-                    if (i % 2 != 0) {
-                        table.append(row);
-                        row = $('<tr></tr>');
+                if (response.attachments.length == 1) {
+                    var atr = checkType(0);
+                    row.append('<td><' + atr + ' width="620" height="400" src="' +
+                            response.attachments[0].payload +
+                            '"></' + atr + '></td>');
+                } else {
+                    for (var i = 0; i < response.attachments.length; i++) {
+                        var atr = checkType(i);
+                        row.append('<td><' + atr + ' width="320" height="240" src="' +
+                                response.attachments[i].payload +
+                                '"></' + atr + '><td>');
+                        if (i % 2 != 0) {
+                            table.append(row);
+                            row = $('<tr></tr>');
+                        }
                     }
                 }
                 table.append(row);
