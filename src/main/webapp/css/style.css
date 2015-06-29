@@ -1320,11 +1320,11 @@ div[data-role="editor-toolbar"] {
 }
 
 .panel .panel-heading {
-    line-height: 34px;
+    /*line-height: 34px;*/
     padding: 0 15px;
     min-height: 34px;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
+    /*border-left: 1px solid #ccc;*/
+    /*border-right: 1px solid #ccc;*/
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
@@ -1406,9 +1406,9 @@ div[data-role="editor-toolbar"] {
 }
 
 .panel .panel-body {
-    border-width: 1px 1px 2px;
-    border-style: solid;
-    border-top: none;
+    /*border-width: 1px 1px 2px;*/
+    /*border-style: solid;*/
+    /*border-top: none;*/
     border-right-color: #ccc !important;
     border-bottom-color: #ccc !important;
     border-left-color: #ccc !important;
