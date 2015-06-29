@@ -19,14 +19,14 @@ jQuery(document).ready(function () {
         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": path + "/UserFillingTableServlet",
+        "sAjaxSource":  "http://localhost:8080/UserFillingTableServlet",
         "dom": 'C<"clear">lfrtip',
         colVis: {
             "align": "right",
-            restore: "Restore",
-            showAll: "Show all",
-            showNone: "Show none",
-            order: 'alpha',
+            //restore: "Restore",
+            //showAll: "Show all",
+            //showNone: "Show none",
+            //order: 'alpha',
             "buttonText": "columns <img src=\"/img/caaret.png\"/>"
         },
         "language": {
@@ -84,7 +84,7 @@ jQuery(document).ready(function () {
     $("#personTable_length").hide();
     //$(".dataTables_filter").css({ "display" :"none" });
 
-    $('th').css('backgroundColor', 'blue');
+    $('th').css('backgroundColor', 'white');
 
     $(".dataTables_filter").css({"position": "auto"});
     $(".dataTables_filter").css({"left": "30%"});
