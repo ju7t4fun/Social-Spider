@@ -45,7 +45,6 @@
     <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
 
     <%--for table--%>
-
     <link href="http://cdn.datatables.net/1.10.3/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
     <link href="http://datatables.net/release-datatables/extensions/ColVis/css/dataTables.colVis.css" rel="stylesheet"
           type="text/css">

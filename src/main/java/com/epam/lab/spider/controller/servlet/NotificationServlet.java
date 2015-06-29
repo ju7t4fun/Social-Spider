@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.servlet;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
+import com.epam.lab.spider.controller.command.notf.GetNotificationCommand;
 import com.epam.lab.spider.controller.command.notf.RemoveNotificationCommand;
 import com.epam.lab.spider.controller.command.notf.ShowNotificationCommand;
 
@@ -33,6 +34,7 @@ public class NotificationServlet extends HttpServlet {
             commands = new HashMap<>();
             commands.put("default", new ShowNotificationCommand());
             commands.put("remove", new RemoveNotificationCommand());
+            commands.put("get", new GetNotificationCommand());
         }
     }
 }

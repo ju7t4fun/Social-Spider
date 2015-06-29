@@ -26,7 +26,9 @@ public class EventDAOImp extends BaseDAO implements EventDAO {
     private static final String SQL_MARK_AS_SHOW_BY_USER_ID_QUERY = "UPDATE event SET shown = 1 WHERE user_id = ?";
     private static final String SQL_GET_LAST_UN_SHOWN_BY_USER_ID_QUERY = "SELECT * FROM event WHERE user_id = ? " +
             "AND shown = 0 ORDER BY time DESC LIMIT ?";
-    private static final String SQL_GET_BY_USER_ID_PAGE_QUERY = "SELECT * FROM event WHERE user_id = ? LIMIT ?,?";
+    private static final String SQL_GET_BY_USER_ID_PAGE_QUERY = "SELECT * FROM event WHERE user_id = ? ORDER BY time " +
+            "DESC LIMIT ?,?";
+    private static final String GET_COUNT_BY_USER_ID_QUERY = "SELECT COUNT(*) FROM event WHERE user_id = ?";
 
     @Override
     public boolean insert(Connection connection, Event event) throws SQLException {
@@ -109,5 +111,13 @@ public class EventDAOImp extends BaseDAO implements EventDAO {
     @Override
     public List<Event> getByUserId(Connection connection, Integer id, int page, int limit) throws SQLException {
         return select(connection, SQL_GET_BY_USER_ID_PAGE_QUERY, id, page, limit);
+    }
+
+    @Override
+    public int getCountByUserId(Connection connection, Integer id) throws SQLException {
+        ResultSet rs = selectQuery(connection, GET_COUNT_BY_USER_ID_QUERY, id);
+        if (rs.next())
+            return rs.getInt("COUNT(*)");
+        return 0;
     }
 }
