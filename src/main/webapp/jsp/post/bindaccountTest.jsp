@@ -264,7 +264,6 @@
         });
 
         $("#btnSubmit").click(function (e) {
-            alert(document.getElementById("publicUrl").value);
 
             var xmlhttp = new  XMLHttpRequest();
             xmlhttp.open("POST","/AddNewOwnerServlet",true);
@@ -274,7 +273,8 @@
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var parsed = JSON.parse(xmlhttp.responseText.replace(/\u0000/g, ""));
-                    alert(parsed.SelectedProfilesRead);
+//                    alert(parsed.SelectedProfilesRead);
+                    table.fnStandingRedraw();
                 }
             }
 
@@ -462,67 +462,6 @@
 
 
 </script>
-
-<style>
-    tfoot input {
-        width: 100%;
-        padding: 3px;
-        box-sizing: border-box;
-    }
-
-    .tableHeader {
-        text-align: left;
-    }
-
-    tfoot {
-        display: table-header-group;
-    }
-
-    .dataTables_length {
-        position: absolute;
-        top: 10px;
-        left: 220px;
-    }
-
-    .dataTables_info {
-        position: absolute;
-        top: 0px;
-        left: 5px;
-    }
-
-    .ColVis {
-        padding-right: 10px;
-        padding-top: 5px;
-
-    }
-
-    .dataTables_filter {
-        position: absolute;
-        top: 10px;
-        left: 200px;
-        font-size: 15px;
-    }
-
-    .dataTables_filter input {
-        height: 22px;
-        margin-right: 10px;
-        width: 150px
-    }
-
-    input {
-        -moz-border-radius: 15px;
-        border-radius: 3px;
-        border: solid 1px #c7c7c7;
-        padding: 1px;
-    }
-
-    table.dataTable tbody td {
-        padding: 7px;
-        padding-left: 20px;
-    }
-
-
-</style>
 
 <style type="text/css">
 

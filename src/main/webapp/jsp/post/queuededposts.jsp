@@ -28,11 +28,6 @@
   <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet"/>
   <!-- Custom styles -->
   <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
-  <%--<link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />--%>
-  <%--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>--%>
-  <%--<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>--%>
-  <%--<link rel="stylesheet" type="text/css" href="css/jquery.tokenize.css" />--%>
-
 
   <!-- javascripts -->
   <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
@@ -41,12 +36,6 @@
   <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
   <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
   <!-- gritter -->
-
-  <%--<!-- custom gritter script for this page only-->--%>
-  <%--<script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>--%>
-  <%--<!--custome script for all page-->--%>
-  <%--<script src="${pageContext.request.contextPath}/js/scripts.js"></script>--%>
-  <%--<script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>--%>
 
 
   <%--for table--%>
@@ -105,58 +94,6 @@
               <div class="tab-content">
                 <div id="active" class="tab-pane active">
                   <div class="col-lg-12">
-                    <%--<table class="table table-striped table-advance table-hover">--%>
-                    <%--<tr><th>Post</th><th>Time</th><th>Statistics</th></tr>--%>
-                    <%--<tr>--%>
-                    <%--<td style="width:600px;text-align:left;"> <img src="${pageContext.request.contextPath}/img/post.png" width="50" height="45" style="margin:0 20px;"> POST_TITLE</td>--%>
-                    <%--<td>15.06.2015 18:33</td>--%>
-                    <%--<td>--%>
-                    <%--<table>--%>
-                    <%--<tr>--%>
-                    <%--<td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/like.png" width="23" height="23"></td>--%>
-                    <%--<td style="border:none;">68</td>--%>
-                    <%--<td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/speaker.png" width="23" height="23"></td>--%>
-                    <%--<td style="border:none;">21</td>--%>
-                    <%--<td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/comment.png" width="23" height="23"></td>--%>
-                    <%--<td style="border:none;">4</td>--%>
-                    <%--</tr>--%>
-                    <%--</table>--%>
-                    <%--</td>--%>
-                    <%--</tr>--%>
-                    <%--<tr>--%>
-                    <%--<td style="width:600px;text-align:left;"> <img src="${pageContext.request.contextPath}/img/post.png" width="50" height="45" style="margin:0 20px;"> POST_TITLE</td>--%>
-                    <%--<td>14.06.2015 08:11</td>--%>
-                    <%--<td>--%>
-                    <%--<table>--%>
-                    <%--<tr>--%>
-                    <%--<td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/like.png" width="23" height="23"></td>--%>
-                    <%--<td style="border:none;">213</td>--%>
-                    <%--<td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/speaker.png" width="23" height="23"></td>--%>
-                    <%--<td style="border:none;">56</td>--%>
-                    <%--<td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/comment.png" width="23" height="23"></td>--%>
-                    <%--<td style="border:none;">41</td>--%>
-                    <%--</tr>--%>
-                    <%--</table>--%>
-                    <%--</td>--%>
-                    <%--</tr>--%>
-                    <%--<tr>--%>
-                    <%--<td style="width:600px;text-align:left;"> <img src="${pageContext.request.contextPath}/img/post.png" width="50" height="45" style="margin:0 20px;"> POST_TITLE</td>--%>
-                    <%--<td>14.06.2015 07:59</td>--%>
-                    <%--<td>--%>
-                    <%--<table>--%>
-                    <%--<tr>--%>
-                    <%--<td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/like.png" width="23" height="23"></td>--%>
-                    <%--<td style="border:none;">566</td>--%>
-                    <%--<td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/speaker.png" width="23" height="23"></td>--%>
-                    <%--<td style="border:none;">347</td>--%>
-                    <%--<td style="text-align:left;border:none;"><img src="${pageContext.request.contextPath}/img/comment.png" width="23" height="23"></td>--%>
-                    <%--<td style="border:none;">114</td>--%>
-                    <%--</tr>--%>
-                    <%--</table>--%>
-                    <%--</td>--%>
-                    <%--</tr>--%>
-                    <%--</table>--%>
-
 
                     <table width="100%" border="0" margin="0" padding="0"
                            class="row-border tableHeader" id="queuedTable">
