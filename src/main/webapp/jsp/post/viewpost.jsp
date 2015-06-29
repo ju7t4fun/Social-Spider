@@ -29,6 +29,7 @@
                                         </table>
                                         <br>
                                         <table width="100%" style="padding:0 50px;" id="attachments_table"></table>
+
                                     </li>
                                     <hr>
                                 </ul>
@@ -57,8 +58,17 @@
             if (response.attachments.length != 0) {
                 var row = $("<tr></tr>");
                 for (var i = 0; i < response.attachments.length; i++) {
-                    row.append('<td><embed width="300" height="250" src="' + response.attachments[i].payload +
-                            '"></embed><td>');
+                    var atr;
+                    if (response.attachments[i].payload.includes("video")) {
+                        atr = "video controls";
+                    } else if (response.attachments[i].payload.includes("music")) {
+                        atr = "video controls";
+                    } else if (response.attachments[i].payload.includes("image")) {
+                        atr = "img";
+                    }
+                    row.append('<td><' + atr + ' width="320" height="240" src="' +
+                            response.attachments[i].payload +
+                            '"></' + atr + '><td>');
                     if (i % 2 != 0) {
                         table.append(row);
                         row = $('<tr></tr>');
