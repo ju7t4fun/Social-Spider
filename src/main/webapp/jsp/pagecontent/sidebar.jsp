@@ -40,9 +40,8 @@
                         </ul>
                     </li>
                     <li>
-                        <a class="" href="chart-chartjs.html">
-                            <i class="icon_piechart"></i>
-                            <span>Function 3</span>
+                        <a class="" href="/owner"> <i class="icon_piechart"></i>
+                            <span>Owner</span>
                         </a>
                     </li>
                 </ul>

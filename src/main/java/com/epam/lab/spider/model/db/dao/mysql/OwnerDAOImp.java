@@ -2,7 +2,6 @@ package com.epam.lab.spider.model.db.dao.mysql;
 
 import com.epam.lab.spider.model.db.dao.OwnerDAO;
 import com.epam.lab.spider.model.db.entity.Owner;
-import com.epam.lab.spider.model.db.entity.User;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -26,6 +25,9 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
     private static final String SQL_GET_LIMITED_QUERY = "SELECT * FROM owner WHERE deleted = false LIMIT ?, ?";
     private static final String SQL_GET_BY_VK_ID_QUERY = "SELECT * FROM owner WHERE vk_id = ? AND deleted = false";
     private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT * FROM owner WHERE user_id = ? AND deleted = 0";
+    private static final String SQL_GET_BY_USER_ID_LIMIT_QUERY = "SELECT * FROM owner WHERE user_id = ? AND deleted =" +
+            " 0 ORDER BY id DESC LIMIT ?, ?";
+    private static final String SQL_GET_COUNT_BY_USER_ID = "SELECT COUNT(*) FROM owner WHERE user_id=? AND deleted = 0";
 
     @Override
     public boolean insert(Connection connection, Owner owner) throws SQLException {
@@ -78,7 +80,7 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
     }
 
     @Override
-       public Owner getById(Connection connection, int id) throws SQLException {
+    public Owner getById(Connection connection, int id) throws SQLException {
         return first(select(connection, SQL_GET_BY_ID_QUERY, id));
     }
 
@@ -86,9 +88,10 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
     public List<Owner> getLimited(Connection connection, Integer begin, Integer end) throws SQLException {
         return select(connection, SQL_GET_LIMITED_QUERY, begin, end);
     }
+
     @Override
     public Owner getByVkId(Connection connection, int vk_id) throws SQLException {
-        return first(select(connection,  SQL_GET_BY_VK_ID_QUERY, vk_id));
+        return first(select(connection, SQL_GET_BY_VK_ID_QUERY, vk_id));
     }
 
     @Override
@@ -96,10 +99,23 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
         return select(connection, SQL_GET_BY_USER_ID_QUERY, userId);
     }
 
+    @Override
+    public List<Owner> getByUserId(Connection connection, Integer id, int page, int size) throws SQLException {
+        return select(connection, SQL_GET_BY_USER_ID_LIMIT_QUERY, id, page, size);
+    }
+
+    @Override
+    public int getCountByUserId(Connection connection, Integer id) throws SQLException {
+        ResultSet rs = selectQuery(connection, SQL_GET_COUNT_BY_USER_ID, id);
+        if (rs.next())
+            return rs.getInt("COUNT(*)");
+        return -1;
+    }
+
     //should remake later
     @Override
     public List<Owner> getWithQuery(Connection connection, String SQL_SOME_QUERY) throws SQLException {
-        List<Owner> ownerList= new ArrayList<>();
+        List<Owner> ownerList = new ArrayList<>();
         ResultSet rs = selectQuery(connection, SQL_SOME_QUERY);
         Owner owner;
         while (rs.next()) {
@@ -116,16 +132,14 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
     public int getCountWithQuery(Connection connection, String SQL_SOME_QUERY) throws SQLException {
 
         ResultSet rs = selectQuery(connection, SQL_SOME_QUERY);
-        if (rs!=null) {
-            while(rs.next()) {
+        if (rs != null) {
+            while (rs.next()) {
                 System.out.println(rs.getString(1));
                 return Integer.parseInt(rs.getString(1));
             }
         }
         return -322;
     }
-
-
 
 
 }

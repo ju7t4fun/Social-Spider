@@ -13,6 +13,6 @@ import java.io.IOException;
 public class ShowBindAccountCommand implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("jsp/post/bindaccountTest.jsp").forward(request, response);
+        request.getRequestDispatcher("jsp/owner/owner.jsp").forward(request, response);
     }
 }

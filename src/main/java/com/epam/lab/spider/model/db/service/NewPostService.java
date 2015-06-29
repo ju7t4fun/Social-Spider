@@ -51,7 +51,7 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                if (nPost.getPost() != null) {
+                if (nPost.getPostId() == null) {
                     ps.insert(connection, nPost.getPost());
                     nPost.setPostId(nPost.getPost().getId());
                 }

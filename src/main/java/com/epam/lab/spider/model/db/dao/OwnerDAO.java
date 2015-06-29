@@ -12,6 +12,7 @@ import java.util.List;
 public interface OwnerDAO extends CRUD<Owner> {
 
     List<Owner> getLimited(Connection connection, Integer begin, Integer end) throws SQLException;
+
     List<Owner> getWithQuery(Connection connection, String SQL_SOME_QUERY) throws SQLException;
 
     int getCountWithQuery(Connection connection, String SQL_SOME_QUERY) throws SQLException;
@@ -19,4 +20,8 @@ public interface OwnerDAO extends CRUD<Owner> {
     Owner getByVkId(Connection connection, int vk_id) throws SQLException;
 
     List<Owner> getByUserId(Connection connection, int userId) throws SQLException;
+
+    List<Owner> getByUserId(Connection connection, Integer id, int page, int size) throws SQLException;
+
+    int getCountByUserId(Connection connection, Integer id) throws SQLException;
 }
