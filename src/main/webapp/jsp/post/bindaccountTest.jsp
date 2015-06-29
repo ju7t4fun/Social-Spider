@@ -272,8 +272,6 @@
 
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
-                    var parsed = JSON.parse(xmlhttp.responseText.replace(/\u0000/g, ""));
-//                    alert(parsed.SelectedProfilesRead);
                     table.fnStandingRedraw();
                 }
             }
