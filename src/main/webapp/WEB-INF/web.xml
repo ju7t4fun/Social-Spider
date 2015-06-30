@@ -49,7 +49,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>WallServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.wall.WallServlet</servlet-class>
+        <servlet-class>com.epam.lab.spider.controller.servlet.WallServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>WallServlet</servlet-name>
@@ -89,7 +89,7 @@
     </servlet>
     <servlet>
         <servlet-name>PostServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.post.PostServlet</servlet-class>
+        <servlet-class>com.epam.lab.spider.controller.servlet.PostServlet</servlet-class>
     </servlet>
 
     <servlet>
@@ -102,7 +102,7 @@
     </servlet>
     <servlet>
         <servlet-name>OwnerServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.owner.OwnerServlet</servlet-class>
+        <servlet-class>com.epam.lab.spider.controller.servlet.OwnerServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PostBindingFillingTableServlet</servlet-name>

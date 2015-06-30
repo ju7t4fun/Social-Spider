@@ -1,12 +1,10 @@
 package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.model.db.entity.Attachment;
 import com.epam.lab.spider.model.db.entity.NewPost;
-
-
 import com.epam.lab.spider.model.db.service.NewPostService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
-
 import com.epam.lab.spider.model.db.service.WallService;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,10 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.*;
 
 /**
- * Created by Орест on 6/28/2015.
+ * Created by пїЅпїЅпїЅпїЅпїЅ on 6/28/2015.
  */
 public class FillPostedPostsCommand implements ActionCommand {
 
@@ -32,11 +30,8 @@ public class FillPostedPostsCommand implements ActionCommand {
         JSONObject jsonResult = new JSONObject();
         int listDisplayAmount = 5;
         int start = 0;
-        int column = 0;
-        String dir = "asc";
         String pageNo = request.getParameter("iDisplayStart");
         String pageSize = request.getParameter("iDisplayLength");
-        String colIndex = request.getParameter("iSortCol_0");
         String sortDirection = request.getParameter("sSortDir_0");
 
         if (pageNo != null) {
@@ -55,14 +50,13 @@ public class FillPostedPostsCommand implements ActionCommand {
                 listDisplayAmount = 10;
             }
         }
-        if (colIndex != null) {
-            column = Integer.parseInt(colIndex);
-            if (column < 3 || column > 5)
-                column = 3;
-        }
+
+
         if (sortDirection != null) {
             if (!sortDirection.equals("asc"))
-                dir = "desc";
+                sortDirection = "desc";
+        } else {
+            sortDirection = "asc";
         }
 
         int totalRecords = getTotalRecordCount();
@@ -71,7 +65,7 @@ public class FillPostedPostsCommand implements ActionCommand {
         GLOBAL_SEARCH_TERM = request.getParameter("sSearch");
 
         try {
-            jsonResult = getPersonDetails(start, listDisplayAmount, column, dir, totalRecords, request);
+            jsonResult = getPersonDetails(start, listDisplayAmount, sortDirection, totalRecords, request);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -85,14 +79,16 @@ public class FillPostedPostsCommand implements ActionCommand {
         out.print(jsonResult);
     }
 
-    public JSONObject getPersonDetails(int start, int listDisplayAmount, int column, String dir, int totalRecords, HttpServletRequest request)
+    public JSONObject getPersonDetails(int start, int listDisplayAmount, String dir, int totalRecords,
+                                       HttpServletRequest request)
             throws SQLException, ClassNotFoundException {
 
         int totalAfterSearch = totalRecords;
         JSONObject result = new JSONObject();
         JSONArray array = new JSONArray();
         String searchSQL = "";
-        String sql = "SELECT  new_post.post_id AS post_id , " +
+        String sql = "SELECT  new_post.vk_post_id AS vk_post_id, new_post.post_id AS post_id , " +
+                " new_post.id AS  id, " +
                 " new_post.wall_id AS wall_id , " +
                 " new_post.post_time AS post_time, " +
                 " new_post.state AS state " +
@@ -110,68 +106,152 @@ public class FillPostedPostsCommand implements ActionCommand {
         sql += " limit " + start + ", " + listDisplayAmount;
         List<NewPost> resList = ServiceFactory.getInstance().create(NewPostService.class).getAllWithQuery(sql);
 
-
-        try {
-
-            if (dir.equals("asc")) {
-                for (int i = 0; i < resList.size(); ++i) {
-                    for (int j = i + 1; j < resList.size(); ++j) {
-                        if (getNumber(column, resList.get(j)) > getNumber(column, resList.get(i))) {
-                            NewPost temp = resList.get(i);
-                            resList.set(i, resList.get(j));
-                            resList.set(j, temp);
-                        }
-                    }
-                }
-            } else {
-                for (int i = 0; i < resList.size(); ++i) {
-                    for (int j = i + 1; j < resList.size(); ++j) {
-                        if (getNumber(column, resList.get(j)) < getNumber(column, resList.get(i))) {
-                            NewPost temp = resList.get(i);
-                            resList.set(i, resList.get(j));
-                            resList.set(j, temp);
-                        }
-                    }
-                }
-            }
-        }
-     catch (Exception ex) {
-            ex.printStackTrace();
-    }
-
         if (resList != null) {
+            try {
+
+                if (dir.equals("asc")) {
+                    for (int i = 0; i < resList.size(); ++i) {
+                        for (int j = i + 1; j < resList.size(); ++j) {
+                            if (resList.get(j).getPostTime().getTime() > resList.get(i).getPostTime().getTime()) {
+                                NewPost temp = resList.get(i);
+                                resList.set(i, resList.get(j));
+                                resList.set(j, temp);
+                            }
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < resList.size(); ++i) {
+                        for (int j = i + 1; j < resList.size(); ++j) {
+                            if (resList.get(j).getPostTime().getTime() < resList.get(i).getPostTime().getTime()) {
+                                NewPost temp = resList.get(i);
+                                resList.set(i, resList.get(j));
+                                resList.set(j, temp);
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            String groupNameToGroup = request.getParameter("groupNameToGroup");
+            System.out.println("groupNameToGroup:  " + groupNameToGroup);
+            if (groupNameToGroup != null) {
+
+                List<NewPost> newResList = new ArrayList<>();
+                for (int i = 0; i < resList.size(); ++i) {
+                    try {
+                        WallService wallService = ServiceFactory.getInstance().create(WallService.class);
+                        String groupName = wallService.getById(resList.get(i).getWallId()).getOwner().getName();
+                        if (groupName.equals(groupNameToGroup)) {
+                            newResList.add(resList.get(i));
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                resList = newResList;
+            }
+
+
             for (int i = 0; i < resList.size(); ++i) {
                 JSONArray ja = new JSONArray();
                 NewPost currPost = resList.get(i);
-                //message
-                String msg;
-                if (currPost.getPost().getMessage().length() > 20) {
-                    msg = currPost.getPost().getMessage().substring(0, 19);
-                } else {
-                    msg = currPost.getPost().getMessage();
+                if (currPost != null) {
+
+
+                    //message
+                    try {
+                        String msg;
+                        if (currPost.getPost().getMessage().length() > 20) {
+                            msg = currPost.getPost().getMessage().substring(0, 19);
+                        } else {
+                            msg = currPost.getPost().getMessage();
+                        }
+                        ja.put(msg);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        ja.put("No MESSAGE!");
+                    }
+
+
+                    //group name
+                    try {
+                        WallService wallService = ServiceFactory.getInstance().create(WallService.class);
+                        String groupName = wallService.getById(currPost.getWallId()).getOwner().getName();
+                        ja.put(groupName);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        System.out.println(ex.getMessage());
+                        ja.put("Empty Wall!");
+                    }
+
+
+                    try {
+
+                        Set<Attachment> attachments = currPost.getPost().getAttachments();
+                        if (attachments.size() > 0) {
+                            Map<Attachment.Type, Integer> attachmentCount = new HashMap<>();
+                            for (Attachment attachment : attachments) {
+                                int count = 0;
+                                if (attachmentCount.containsKey(attachment.getType())) {
+                                    count = attachmentCount.get(attachment.getType());
+                                }
+                                count++;
+                                attachmentCount.put(attachment.getType(), count);
+                            }
+                            String group = null;
+                            for (Attachment.Type type : attachmentCount.keySet()) {
+                                group = group == null ? "" + type + "|" + attachmentCount.get(type) : group + "!" +
+                                        type +
+                                        "|" + attachmentCount.get(type);
+                            }
+                            ja.put(group);
+                        } else {
+                            ja.put("");
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        ja.put("");
+                    }
+
+
+                    try {
+                        ja.put(currPost.getPostTime());
+                    } catch (Exception ex) {
+                        ja.put("Unknown Time!");
+                    }
+
+
+                    int likes;
+                    try {
+                        likes = currPost.getStats().getLikes();
+                    } catch (Exception ex) {
+                        likes = 0;
+                        ex.printStackTrace();
+                    }
+                    int reposts;
+                    try {
+                        reposts = currPost.getStats().getReposts();
+                    } catch (Exception ex) {
+                        reposts = 0;
+                        ex.printStackTrace();
+                    }
+                    int comments;
+                    try {
+                        comments = currPost.getStats().getComments();
+                    } catch (Exception ex) {
+                        comments = 0;
+                        ex.printStackTrace();
+                    }
+
+                    String data = likes + "|" + reposts + "|" + comments;
+
+                    ja.put(data);
+                    ja.put(currPost.getPostId());
+                    ja.put(currPost.getId());
+                    array.put(ja);
                 }
-                //group name
-                ja.put(msg);
-                try {
-                    WallService wallService = ServiceFactory.getInstance().create(WallService.class);
-                    String groupName = wallService.getById(currPost.getWallId()).getOwner().getName();
-                    ja.put(groupName);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    System.out.println(ex.getMessage());
-                    ja.put("Empty Wall!");
-                }
-                //post time
-                ja.put(currPost.getPostTime());
-                //likes
-                ja.put(i + 1);
-                //speakers
-                ja.put(i + 2);
-                //comments
-                ja.put(i + 3);
-                //post_id
-                ja.put(currPost.getPostId());
-                array.put(ja);
             }
         }
         String query = "SELECT COUNT(*) FROM new_post WHERE deleted=false AND state='POSTED' ";
@@ -198,19 +278,4 @@ public class FillPostedPostsCommand implements ActionCommand {
         return totalRecords;
     }
 
-    private int getNumber(int colIndex, NewPost nPost) {
-        try {
-            if (colIndex == 3) {
-                return nPost.getStats().getLikes();
-            } else if (colIndex == 4) {
-                return nPost.getStats().getReposts();
-            } else {
-                return nPost.getStats().getComments();
-            }
-        } catch (Exception ex) {
-
-        /* ex.printStackTrace(); return  0;*/
-        return nPost.getPost().getMessage().length();
-        }
-    }
 }

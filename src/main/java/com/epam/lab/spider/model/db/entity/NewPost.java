@@ -120,6 +120,7 @@ public class NewPost {
     }
 
     public Stats getStats() {
+        System.out.println("VK_POST_ID " + vkPostId);
         if (vkPostId != null) {
             WallService wallService = new WallService();
             Wall wall = wallService.getById(wallId);
@@ -132,6 +133,7 @@ public class NewPost {
             vk.setAccessToken(accessToken);
             Parameters param = new Parameters();
             param.add("posts", "" + wall.getOwner().getVk_id() + "_" + this.vkPostId);
+//            param.add("extended", 1);
             try {
                 final com.epam.lab.spider.model.vk.Post post = vk.wall().getById(param).get(0);
                 return new Stats() {
@@ -154,7 +156,22 @@ public class NewPost {
                 e.printStackTrace();
             }
         }
-        return null;
+        return new Stats() {
+            @Override
+            public int getLikes() {
+                return 0;
+            }
+
+            @Override
+            public int getReposts() {
+                return 0;
+            }
+
+            @Override
+            public int getComments() {
+                return 0;
+            }
+        };
     }
 
     public com.epam.lab.spider.controller.vk.api.Stats.Reach getPostReach() {

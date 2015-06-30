@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.servlet.wall;
+package com.epam.lab.spider.controller.servlet;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
 import com.epam.lab.spider.controller.command.wall.GetWallsCommand;

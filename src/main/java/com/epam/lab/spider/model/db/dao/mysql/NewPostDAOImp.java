@@ -124,10 +124,12 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
         NewPost nPost;
         while (rs.next()) {
             nPost = new NewPost();
+            nPost.setId(rs.getInt("id"));
             nPost.setPostId(rs.getInt("post_id"));
             nPost.setWallId(rs.getInt("wall_id"));
             nPost.setPostTime(rs.getTimestamp("post_time"));
             nPost.setState(NewPost.State.valueOf(rs.getString("state")));
+            nPost.setVkPostId(rs.getInt("vk_post_id"));
             posts.add(nPost);
         }
         return posts;

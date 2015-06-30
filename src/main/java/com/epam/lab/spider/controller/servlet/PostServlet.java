@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.servlet.post;
+package com.epam.lab.spider.controller.servlet;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
 import com.epam.lab.spider.controller.command.post.*;
@@ -40,6 +40,7 @@ public class PostServlet extends HttpServlet {
             commands.put("created", new ShowCreatedPostCommand());
             commands.put("posted", new ShowPostedPostCommand());
             commands.put("queued", new ShowQueuedPostCommand());
+            commands.put("deletenewpost", new DeleteNewPostCommand());
         }
     }
 }

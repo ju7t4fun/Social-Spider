@@ -108,6 +108,8 @@ public class NotificationWebSocket implements Receiver {
                 session.getBasicRemote().sendText("count|" + count);
                 session.getBasicRemote().sendText(message);
                 return true;
+            } catch (IllegalStateException e) {
+                LOG.warn(e.getMessage());
             } catch (IOException e) {
                 e.printStackTrace();
             }

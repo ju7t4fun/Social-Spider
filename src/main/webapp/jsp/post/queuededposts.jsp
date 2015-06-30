@@ -46,6 +46,9 @@
 
     <%--for table--%>
 
+    <script>
+        var path = '${pageContext.request.contextPath}';
+    </script>
     <link href="http://cdn.datatables.net/1.10.3/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
     <link href="http://datatables.net/release-datatables/extensions/ColVis/css/dataTables.colVis.css" rel="stylesheet"
           type="text/css">
@@ -109,8 +112,10 @@
                                         <tr>
                                             <th>Message</th>
                                             <th>Group Name</th>
+                                            <th>Attachments</th>
                                             <th>Post Time</th>
                                             <th>Id</th>
+                                            <th>Delete</th>
 
                                         </tr>
                                         </thead>

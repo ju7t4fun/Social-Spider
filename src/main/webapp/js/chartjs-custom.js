@@ -1,31 +1,7 @@
 $(document).ready(function() {
 
-
-    var doughnutData = [
-        {
-            value: 30,
-            color:"#F7464A"
-        },
-        {
-            value : 50,
-            color : "#46BFBD"
-        },
-        {
-            value : 100,
-            color : "#FDB45C"
-        },
-        {
-            value : 40,
-            color : "#949FB1"
-        },
-        {
-            value : 120,
-            color : "#4D5360"
-        }
-
-    ];
     var lineChartData = {
-        labels : ["","","","","","",""],
+        labels : ["aa","bbb","","","","",""],
         datasets : [
             {
                 fillColor : "rgba(220,220,220,0.5)",
@@ -47,6 +23,7 @@ $(document).ready(function() {
     var pieData = [
         {
             value: 30,
+            label: 'aaaa',
             color:"#F38630"
         },
         {
@@ -78,6 +55,7 @@ $(document).ready(function() {
     var chartData = [
         {
             value : Math.random(),
+            label: 'aaaa',
             color: "#D97041"
         },
         {
@@ -121,12 +99,9 @@ $(document).ready(function() {
         ]
 
     };
-    //new Chart(document.getElementById("doughnut").getContext("2d")).Doughnut(doughnutData);
-    new Chart(document.getElementById("line").getContext("2d")).Line(lineChartData);
-    //new Chart(document.getElementById("radar").getContext("2d")).Radar(radarChartData);
-    //new Chart(document.getElementById("polarArea").getContext("2d")).PolarArea(chartData);
-    new Chart(document.getElementById("bar").getContext("2d")).Bar(barChartData);
-    new Chart(document.getElementById("pie").getContext("2d")).Pie(pieData);
+    //new Chart(document.getElementById("line").getContext("2d")).Line(lineChartData);
+    //new Chart(document.getElementById("bar").getContext("2d")).Bar(barChartData);
+    //new Chart(document.getElementById("pie").getContext("2d")).Pie(pieData);
 
 
 });

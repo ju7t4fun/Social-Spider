@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.model.db.entity.Attachment;
 import com.epam.lab.spider.model.db.entity.NewPost;
 import com.epam.lab.spider.model.db.service.NewPostService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
@@ -14,14 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.*;
 
 /**
- * Created by Орест on 6/28/2015.
+ * Created by пїЅпїЅпїЅпїЅпїЅ on 6/28/2015.
  */
 public class FillQueuededPostsCommand implements ActionCommand {
 
-    String GLOBAL_SEARCH_TERM ="";
+    String GLOBAL_SEARCH_TERM = "";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,6 +32,7 @@ public class FillQueuededPostsCommand implements ActionCommand {
         int start = 0;
         String pageNo = request.getParameter("iDisplayStart");
         String pageSize = request.getParameter("iDisplayLength");
+        String sortDirection = request.getParameter("sSortDir_0");
 
 
         if (pageNo != null) {
@@ -39,6 +41,14 @@ public class FillQueuededPostsCommand implements ActionCommand {
                 start = 0;
             }
         }
+
+        if (sortDirection != null) {
+            if (!sortDirection.equals("asc"))
+                sortDirection = "desc";
+        } else {
+            sortDirection = "asc";
+        }
+
         if (pageSize != null) {
             try {
                 listDisplayAmount = Integer.parseInt(pageSize);
@@ -53,7 +63,7 @@ public class FillQueuededPostsCommand implements ActionCommand {
         GLOBAL_SEARCH_TERM = request.getParameter("sSearch");
 
         try {
-            jsonResult = getPersonDetails(start,listDisplayAmount,totalRecords, request);
+            jsonResult = getPersonDetails(start, listDisplayAmount, sortDirection, totalRecords, request);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -67,7 +77,7 @@ public class FillQueuededPostsCommand implements ActionCommand {
         out.print(jsonResult);
     }
 
-    public JSONObject getPersonDetails(int start, int listDisplayAmount, int totalRecords, HttpServletRequest request)
+    public JSONObject getPersonDetails(int start, int listDisplayAmount, String sortDirection, int totalRecords, HttpServletRequest request)
             throws SQLException, ClassNotFoundException {
 
         int totalAfterSearch = totalRecords;
@@ -75,6 +85,7 @@ public class FillQueuededPostsCommand implements ActionCommand {
         JSONArray array = new JSONArray();
         String searchSQL = "";
         String sql = "SELECT  new_post.post_id AS post_id , " +
+                " new_post.id AS  id, " +
                 " new_post.wall_id AS wall_id , " +
                 " new_post.post_time AS post_time, " +
                 " new_post.state AS state " +
@@ -91,31 +102,127 @@ public class FillQueuededPostsCommand implements ActionCommand {
         sql += searchSQL;
         sql += " limit " + start + ", " + listDisplayAmount;
         List<NewPost> resList = ServiceFactory.getInstance().create(NewPostService.class).getAllWithQuery(sql);
+
+
         if (resList != null) {
+
+            for (int i = 0; i < resList.size(); ++i) {
+                System.out.println(resList.get(i).getPostTime());
+            }
+
+            try {
+
+                if (sortDirection.equals("asc")) {
+                    for (int i = 0; i < resList.size(); ++i) {
+                        for (int j = i + 1; j < resList.size(); ++j) {
+                            if (resList.get(j).getPostTime().getTime() > resList.get(i).getPostTime().getTime()) {
+                                NewPost temp = resList.get(i);
+                                resList.set(i, resList.get(j));
+                                resList.set(j, temp);
+                            }
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < resList.size(); ++i) {
+                        for (int j = i + 1; j < resList.size(); ++j) {
+                            if (resList.get(j).getPostTime().getTime() < resList.get(i).getPostTime().getTime()) {
+                                NewPost temp = resList.get(i);
+                                resList.set(i, resList.get(j));
+                                resList.set(j, temp);
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            String groupNameToGroup = request.getParameter("groupNameToGroup");
+            System.out.println("groupNameToGroup:  " + groupNameToGroup);
+            if (groupNameToGroup != null) {
+
+                List<NewPost> newResList = new ArrayList<>();
+                for (int i = 0; i < resList.size(); ++i) {
+                    try {
+                        WallService wallService = ServiceFactory.getInstance().create(WallService.class);
+                        String groupName = wallService.getById(resList.get(i).getWallId()).getOwner().getName();
+                        if (groupName.equals(groupNameToGroup)) {
+                            newResList.add(resList.get(i));
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                resList = newResList;
+            }
             for (int i = 0; i < resList.size(); ++i) {
                 JSONArray ja = new JSONArray();
                 NewPost currPost = resList.get(i);
-                //message
-                String msg;
-                if (currPost.getPost().getMessage().length() > 20) {
-                    msg = currPost.getPost().getMessage().substring(0, 19);
-                } else {
-                    msg = currPost.getPost().getMessage();
+                if (currPost != null) {
+                    //message
+
+                    try {
+                        String msg;
+                        if (currPost.getPost().getMessage().length() > 20) {
+                            msg = currPost.getPost().getMessage().substring(0, 19);
+                        } else {
+                            msg = currPost.getPost().getMessage();
+                        }
+                        ja.put(msg);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        ja.put("No MESSAGE!!!");
+                    }
+
+                    //group name
+                    try {
+                        WallService wallService = ServiceFactory.getInstance().create(WallService.class);
+                        String groupName = wallService.getById(currPost.getWallId()).getOwner().getName();
+                        ja.put(groupName);
+                    } catch (Exception ex) {
+                        System.out.println(ex.getMessage());
+                        ja.put("Empty Wall!");
+                        ex.printStackTrace();
+                    }
+
+                    try {
+                        Set<Attachment> attachments = currPost.getPost().getAttachments();
+                        if (attachments.size() > 0) {
+                            Map<Attachment.Type, Integer> attachmentCount = new HashMap<>();
+                            for (Attachment attachment : attachments) {
+                                int count = 0;
+                                if (attachmentCount.containsKey(attachment.getType())) {
+                                    count = attachmentCount.get(attachment.getType());
+                                }
+                                count++;
+                                attachmentCount.put(attachment.getType(), count);
+                            }
+                            String group = null;
+                            for (Attachment.Type type : attachmentCount.keySet()) {
+                                group = group == null ? "" + type + "|" + attachmentCount.get(type) : group + "!" + type +
+                                        "|" + attachmentCount.get(type);
+                            }
+                            ja.put(group);
+                        } else {
+                            ja.put("");
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        ja.put("");
+                    }
+
+
+                    try {
+                        ja.put(currPost.getPostTime());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        ja.put("Unknown DateTime :(");
+                    }
+
+                    ja.put(currPost.getPostId());
+
+                    ja.put(currPost.getId());
+                    array.put(ja);
                 }
-                //group name
-                ja.put(msg);
-                try {
-                    WallService wallService = ServiceFactory.getInstance().create(WallService.class);
-                    String groupName = wallService.getById(currPost.getWallId()).getOwner().getName();
-                    ja.put(groupName);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    System.out.println(ex.getMessage());
-                    ja.put("Empty Wall!");
-                }
-                ja.put(currPost.getPostTime());
-                ja.put(currPost.getPostId());
-                array.put(ja);
             }
         }
         String query = "SELECT COUNT(*) FROM new_post WHERE deleted=false AND ( state='CREATED' OR state='ERROR' ) ";
@@ -130,7 +237,7 @@ public class FillQueuededPostsCommand implements ActionCommand {
             result.put("iTotalDisplayRecords", totalAfterSearch);
             result.put("aaData", array);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return result;
     }
