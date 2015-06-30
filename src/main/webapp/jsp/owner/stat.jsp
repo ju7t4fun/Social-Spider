@@ -21,10 +21,7 @@
                                 <%--<Char>General Chart</Char>--%>
                             <%--</header>--%>
                             <div style="position: fixed; top: 100px; left: 30px;">
-                                <l:resource key="charts.uniquevisitsdaily" />: 10
-                                <br>
-                                <l:resource key="charts.uniquevisits" /> 30 <l:resource key="charts.days" />: 300
-                                <br>
+
                                 <label for="startDate" style="position: fixed; left: 20px; top: 105px"><l:resource key="charts.from" /></label>
                                 <l:resource key="charts.startdate"><input id="startDate" name="date" type="date" max="2015-06-30" value="2015-06-30"
                                        placeholder="" class="form-control"
