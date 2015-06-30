@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -300,15 +301,15 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header" style="width: 80%"><i class="fa fa-list-alt"></i> Created</h3>
+                    <h3 class="page-header" style="width: 80%"><i class="fa fa-list-alt"></i><l:resource key="created" /></h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-desktop"></i>Post</li>
-                        <li><i class="fa fa-list-alt"></i>Created</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home" /></a></li>
+                        <li><i class="fa fa-desktop"></i><l:resource key="charts.uniquevisitsdaily" /></li>
+                        <li><i class="fa fa-list-alt"></i><l:resource key="created" /></li>
                     </ol>
                 </div>
             </div>
@@ -316,17 +317,17 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left">Created</div>
+                            <div class="pull-left"><l:resource key="created" /></div>
                             <div class="clearfix"></div>
                         </div>
 
                         <div class="b-popup" id="popup_bind">
                             <div class="b-popup-content" style="height: 340px;">
-                                <h4>Binding Accounts</h4>
+                                <h4><l:resource key="owner.accbinding" /></h4>
                                 <table style="margin-left: 12px">
                                     <tr>
-                                        <th style="width:400px;">Read</th>
-                                        <th style="width:400px;">Write</th>
+                                        <th style="width:400px;"><l:resource key="owner.read" /></th>
+                                        <th style="width:400px;"><l:resource key="owner.write" /></th>
                                     </tr>
                                     <tr>
                                         <td>
@@ -343,7 +344,7 @@
 
                                 <div align="right">
                                     <a href="javascript:PopUpHide()">
-                                        <button class="btn btn-info" style="margin-right: 14px">Save</button>
+                                        <button class="btn btn-info" style="margin-right: 14px"><l:resource key="newpost.save" /></button>
                                     </a>
                                 </div>
 
@@ -357,15 +358,15 @@
                                            class="row-border tableHeader" id="ownersTable">
                                         <thead>
                                         <tr style="align-content: center">
-                                            <th>id</th>
-                                            <th>Name</th>
-                                            <th>Binding account</th>
-                                            <th>Statistics</th>
-                                            <th>Action</th>
+                                            <th><l:resource key="owner.id" /></th>
+                                            <th><l:resource key="owner.name" /></th>
+                                            <th><l:resource key="owner.accbinding" /></th>
+                                            <th><l:resource key="owner.statistics" /></th>
+                                            <th><l:resource key="owner.action" /></th>
                                         </tr>
                                         </thead>
                                     </table>
-                                    <a class="btn btn-primary" href="">Add group</a>
+                                    <a class="btn btn-primary" href=""><l:resource key="owner.addgroup" /></a>
                                 </div>
                             </div>
                         </div>

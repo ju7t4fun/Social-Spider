@@ -163,8 +163,7 @@
                                 <l:resource key="header.typemessagehere"> <input style="width: 100%" id="message_text" type="text" class="form-control"
                                        placeholder=""></l:resource>
                             </div>
-                            <l:resource key="header.send"><input onclick="send()" type="button" class="btn btn-info" style="margin-left:5%"
-                                   value=""></l:resource>
+                            <a onclick="send()" class="btn btn-info" style="margin-left:5%"><l:resource key="header.send" /></a>
                         </form>
                     </div>
                 </div>

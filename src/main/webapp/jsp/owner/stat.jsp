@@ -8,7 +8,7 @@
         <div class="modal-content" style="width: 1000px; margin-left: -200px;">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h4 class="modal-title"><l:resource key="charts" /></h4>
+                <h4 class="modal-title">Charts</h4>
             </div>
 
             <div class="modal-body">
@@ -21,6 +21,10 @@
                                 <%--<Char>General Chart</Char>--%>
                             <%--</header>--%>
                             <div style="position: fixed; top: 100px; left: 30px;">
+                                <l:resource key="charts.uniquevisitsdaily" />: 10
+                                <br>
+                                <l:resource key="charts.uniquevisits" /> 30 <l:resource key="charts.days" />: 300
+                                <br>
                                 <label for="startDate" style="position: fixed; left: 20px; top: 105px"><l:resource key="charts.from" /></label>
                                 <l:resource key="charts.startdate"><input id="startDate" name="date" type="date" max="2015-06-30" value="2015-06-30"
                                        placeholder="" class="form-control"
@@ -31,8 +35,8 @@
                                        placeholder="" class="form-control" style="width: 200px;  position:
                                        fixed; left: 305px; top: 100px;"></l:resource>
 
-                                <a onclick="redrawChart()" style="width: 60px;  position:
-                                       fixed; left: 530px; top: 100px;" class="btn btn-default"><l:resource key="charts.update" /></a>
+                                <a onclick="redrawChart()" style="position:fixed; left: 530px;
+                                top: 100px;" class="btn btn-default"><l:resource key="charts.update" /></a>
                             </div>
                             <div class="panel-body" style="margin-top: 50px;">
                                 <div class="tab-pane" id="chartjs">
@@ -41,8 +45,6 @@
                                         <div class="col-lg-6" style="margin-left: -150px;">
                                             <section class="panel">
                                                 <header class="panel-heading" style="margin-left: 50px;">
-                                                    <l:resource key="charts.uniquevisitsdaily" />: 10
-                                                    <l:resource key="charts.uniquevisits" /> 30 <l:resource key="charts.days" />: 300
                                                 </header>
                                                 <div class="panel-body text-center">
                                                     <canvas id="line" height="500" width="930"></canvas>
