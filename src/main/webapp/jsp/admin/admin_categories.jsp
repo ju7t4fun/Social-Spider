@@ -178,7 +178,7 @@
 <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modal_category"
      class="modal fade">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content"  style="height: 150px;">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
                 <h4 class="modal-title">Add category</h4>
@@ -186,38 +186,14 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form id="modal_form" method="POST" action="" class="form-horizontal">
-                            <input type="hidden" name="typePost" value="new">
-
-                            <div style="position: relative; left: -130px; top:30px;">
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label" for="date"><l:resource
-                                            key="newpost.date"/></label>
-
-                                    <div class="col-md-4">
-                                        <l:resource key="newpost.postdate"><input id="date" name="date" type="date"
-                                                                                  min="${date}" value="${date}"
-                                                                                  placeholder=""
-                                                                                  class="form-control input-md"></l:resource>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label" for="time"><l:resource
-                                            key="newpost.time"/></label>
-
-                                    <div class="col-md-4">
-                                        <l:resource key="newpost.posttime"><input id="time" name="time" type="time"
-                                                                                  value="${time}" placeholder=""
-                                                                                  class="form-control input-md"></l:resource>
-                                    </div>
-                                </div>
+                        <form id="modal_form" method="POST" action="/controller?action=addcategory"
+                              class="form-horizontal">
+                            <div>
+                                <input type="text" name="category" class="form-control" placeholder="Category name">
                             </div>
-                           
-                            <button id="submit_modal" type="button" style="margin-left: 455px;margin-top: -80px;"
-                                    class="btn btn-primary"
-                                    data-dismiss="modal">
-                                <l:resource key="newpost.save"/>
-                            </button>
+                            <div style="position: relative; top: 10px; left: 497px;">
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </div>
                         </form>
                     </div>
                 </div>
