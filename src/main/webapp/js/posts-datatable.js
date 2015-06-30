@@ -3,7 +3,18 @@
  */
 var table;
 
+
+function reloadData(grName) {
+
+    document.getElementById("showAllBtnId").style.visibility = "visible";
+    var newUrl = path + "/post?action=fillpostedposts&groupNameToGroup="+grName;
+    table.api().ajax.url(newUrl).load();
+
+    document.getElementById("showAllBtnId").style.visibility = "visible";
+};
+
 jQuery(document).ready(function () {
+
     table = $('#postsTable').dataTable({
 
         "bPaginate": true,
@@ -118,14 +129,6 @@ jQuery(document).ready(function () {
 });
 
 
-function reloadData(grName) {
-
-    var newUrl = path + "/post?action=fillpostedposts&groupNameToGroup="+grName;
-
-    table.api().ajax.url(newUrl).load();
-
-}
-
 function removePost(i) {
 
     var xmlhttp = new  XMLHttpRequest();
@@ -138,7 +141,7 @@ function removePost(i) {
             table.fnStandingRedraw();
         }
     }
-}
+};
 
 function parseAttachment(arg) {
     var args = arg.split("!");
@@ -147,7 +150,7 @@ function parseAttachment(arg) {
         cell = cell + " " + parseDoc(args[i]);
     }
     return cell;
-}
+};
 
 function parseDoc(arg) {
     var args = arg.split("|");
@@ -162,4 +165,4 @@ function parseDoc(arg) {
             return '<img src=\"/img/icons/txt-icon.png" style="width: 30px; height: 30px"><span class="badge bg-important">{count}</span>'.replace("{count}", args[1]);
     }
     return "";
-}
+};

@@ -84,7 +84,7 @@ public class FillQueuededPostsCommand implements ActionCommand {
         JSONObject result = new JSONObject();
         JSONArray array = new JSONArray();
         String searchSQL = "";
-        String sql = "SELECT  new_post.post_id AS post_id , " +
+        String sql = "SELECT new_post.vk_post_id AS vk_post_id,  new_post.post_id AS post_id , " +
                 " new_post.id AS  id, " +
                 " new_post.wall_id AS wall_id , " +
                 " new_post.post_time AS post_time, " +

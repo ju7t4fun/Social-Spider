@@ -100,36 +100,42 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="panel-body">
-                            <div id="active" class="tab-pane active">
-                                <div class="col-lg-12">
-                                    <table width="100%" border="0" margin="0" padding="0"
-                                           class="row-border tableHeader" id="postsTable">
-                                        <tbody>
-                                        <thead>
-                                        <tr>
-                                            <th>Message</th>
-                                            <th>Group Name</th>
-                                            <th>Attachments</th>
-                                            <th>Post Time</th>
-                                            <th>Statistic</th>
-                                            <th>Id</th>
-                                            <th>Delete</th>
-                                        </tr>
-                                        </thead>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            <table width="100%" border="0" margin="0" padding="0"
+                                   class="row-border tableHeader" id="postsTable">
+                                <tbody>
+                                <thead>
+                                <tr>
+                                    <th>Message</th>
+                                    <th>Group Name</th>
+                                    <th>Attachments</th>
+                                    <th>Post Time</th>
+                                    <th>Statistic</th>
+                                    <th>Id</th>
+                                    <th>Delete</th>
+                                </tr>
+                                </thead>
+                                </tbody>
+                            </table>
+                            <%--<input type="button" id="showAllBtnId" onclick="myFunc()" value="Show All"/>--%>
                         </div>
                     </div>
                 </div>
             </div>
+            <input type="button" id="showAllBtnId" onclick="myFunc()" value="Show All"/>
         </section>
     </section>
 </section>
 <!--main content end-->
 </section>
+<script>
+    function myFunc() {
+        var newUrl = path + "/post?action=fillpostedposts";
+        table.api().ajax.url(newUrl).load();
 
+
+        document.getElementById("showAllBtnId").style.visibility = "hidden";
+    };
+</script>
 </body>
 </html>
 
