@@ -263,6 +263,9 @@
                     new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
                     new Chart(document.getElementById("bar").getContext("2d")).Bar(response.bar);
                     new Chart(document.getElementById("pie").getContext("2d")).Pie(response.pie);
+                    for (var i = 0; i < response.pie.length; i++) {
+                        $("#country_list").append('<li class="list-group-item">' + response.pie[i].name + '</li>');
+                    }
                 }
             };
             xmlhttp.send();
@@ -279,6 +282,9 @@
                     new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
                     new Chart(document.getElementById("bar").getContext("2d")).Bar(response.bar);
                     new Chart(document.getElementById("pie").getContext("2d")).Pie(response.pie);
+                    for (var i = 0; i < response.pie.length; i++) {
+                        $("#country_list").append('<li class="list-group-item">' + response.pie[i].name + '</li>');
+                    }
                 }
             };
             xmlhttp.send();

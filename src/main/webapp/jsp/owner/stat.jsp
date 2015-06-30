@@ -8,7 +8,7 @@
         <div class="modal-content" style="width: 1000px; margin-left: -200px;">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h4 class="modal-title">Charts</h4>
+                <h4 class="modal-title"><l:resource key="charts" /></h4>
             </div>
 
             <div class="modal-body">
@@ -45,6 +45,8 @@
                                         <div class="col-lg-6" style="margin-left: -150px;">
                                             <section class="panel">
                                                 <header class="panel-heading" style="margin-left: 50px;">
+                                                    <l:resource key="charts.uniquevisitsdaily" />: 10
+                                                    <l:resource key="charts.uniquevisits" /> 30 <l:resource key="charts.days" />: 300
                                                 </header>
                                                 <div class="panel-body text-center">
                                                     <canvas id="line" height="500" width="930"></canvas>
@@ -54,10 +56,10 @@
                                     </div>
                                     <!-- Bar -->
                                     <div class="row">
-                                        <div class="col-lg-6"  style="margin-left: -150px;">
+                                        <div class="col-lg-6" style="margin-left: -150px;">
                                             <section class="panel">
-                                                <header class="panel-heading"  style="margin-left: 50px;">
-                                                    <l:resource key="charts.age" />
+                                                <header class="panel-heading" style="margin-left: 50px;">
+                                                    <l:resource key="charts.age"/>
                                                 </header>
                                                 <div class="panel-body text-center">
                                                     <canvas id="bar" height="500" width="930"></canvas>
@@ -67,17 +69,22 @@
                                     </div>
                                     <div class="row">
                                         <!-- Pie -->
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-6" style="margin-left: -70px;">
                                             <section class="panel">
                                                 <header class="panel-heading">
-                                                    <l:resource key="charts.geografy" />
+                                                    <l:resource key="charts.geografy"/>
                                                 </header>
                                                 <div class="panel-body text-center">
-                                                    <canvas id="pie" height="300" width="400"></canvas>
+                                                    <canvas id="pie" height="400" width="400"></canvas>
                                                 </div>
                                             </section>
                                         </div>
-
+                                        <div class="col-lg-6">
+                                            <section class="panel" style="margin-top: 31px">
+                                                <ul class="list-group" id="country_list">
+                                                </ul>
+                                            </section>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
