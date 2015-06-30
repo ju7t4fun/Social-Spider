@@ -8,6 +8,7 @@ import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException
 import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
 import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.db.service.savable.exception.SavableTransactionException;
 import com.epam.lab.spider.model.db.service.savable.exception.UnsupportedServiseException;
 import org.apache.log4j.Logger;
 
@@ -33,9 +34,6 @@ public class SavableServiceUtil<E> {
             return false;
         }
     }
-
-
-
 
     private static List unpack(Object[] array){
         List list = new ArrayList();
@@ -67,7 +65,7 @@ public class SavableServiceUtil<E> {
 
     public static boolean customSave(Connection connection,Object entity, Object[]before, Object[] after, CustomizeSavableAction[] actions)
             throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
-
+        boolean result = false;
         List beforeEntityList = null;
         List afterEntityList = null;
         if(before!=null)
@@ -82,7 +80,7 @@ public class SavableServiceUtil<E> {
             }
         }
         SavableDAO savableDAO = daoFactory.getSavableDAO(entity.getClass());
-        savableDAO.save(connection, entity);
+        result = savableDAO.save(connection, entity);
         if(afterEntityList!=null)
         for(Object innerEntity:afterEntityList){
             if(innerEntity!=null){
@@ -98,7 +96,7 @@ public class SavableServiceUtil<E> {
                 LOG.error(x);
             }
         }
-        return true;
+        return result;
     }
 
     public static boolean saveFromInterface(Object entity, SavableService savableService ) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException
@@ -108,7 +106,7 @@ public class SavableServiceUtil<E> {
             try {
                 connection.setAutoCommit(false);
                 return savableService.save(entity, connection);
-            } catch (SQLTransactionException x) {
+            } catch (SQLTransactionException|SavableTransactionException x) {
                 connection.rollback();
                 return false;
             } finally {
@@ -118,7 +116,6 @@ public class SavableServiceUtil<E> {
                 }
             }
         } catch (SQLException x) {
-
             x.printStackTrace();
             return false;
         }

@@ -82,7 +82,7 @@
                 </h4>
               </div>
               <div id="collapseOne" class="panel-collapse collapse in">
-                <div class="panel-body" style="height:330px;">
+                <div class="panel-body">
                   <div class="col-lg-6">
                     <h4>Select group from which you are grabbing posts:</h4>
                     <select id="tokenize_focus_source_walls" multiple="multiple" class="tokenize-sample" style="width:350px;">
@@ -111,6 +111,13 @@
                         newElements:'false'
                       });
                     </script>
+
+                    <h4>Select Grabbing Mode And count of post per one task grabbing:</h4>
+                    <br>
+                    <input type="radio" name="grabbing_mode" value="total" checked> For each source group give full count of posts. <br>
+                    <input type="radio" name="grabbing_mode" value="per_group"> Give count of posts from random group. <br>
+                    <span>Counts of post per one task grabbing action:  </span>
+                    <input type="number" name="post_count" style="width:40px;border: none;-webkit-appearance: none; ">
                   </div>
 
                   <div class="col-lg-6">

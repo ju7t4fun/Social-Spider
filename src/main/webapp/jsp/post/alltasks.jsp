@@ -147,15 +147,15 @@
                                                 $(" div.task-switch").change(function () {
                                                     $(this).children(".switch-on").each(function () {
                                                         var row = $(this).parent().parent().parent();
-                                                        $(row).css("background-color", "yellow");
+//                                                        $(row).css("background-color", "yellow");
                                                         var id = $(this).parent().attr('change');
                                                         $.post("task?action=stateChange&toState=RUNNING&taskId=".concat(id))
                                                                 .done(function (data) {
-                                                                    $(row).css("background-color", "green");
+//                                                                    $(row).css("background-color", "green");
                                                                     alert(data.alert + id);
                                                                 })
                                                                 .fail(function (jqXHR, textStatus, errorThrown) {
-                                                                    $(row).css("background-color", "red");
+//                                                                    $(row).css("background-color", "red");
                                                                     alert(textStatus + id);
 
 
@@ -163,15 +163,15 @@
                                                     });
                                                     $(this).children(".switch-off").each(function () {
                                                         var row = $(this).parent().parent().parent();
-                                                        $(row).css("background-color", "yellow");
+//                                                        $(row).css("background-color", "yellow");
                                                         var id = $(this).parent().attr('change');
                                                         $.post("task?action=stateChange&toState=STOPPED&taskId=".concat(id))
                                                                 .done(function (data) {
-                                                                    $(row).css("background-color", "green");
+//                                                                    $(row).css("background-color", "green");
                                                                     alert(data.alert + id);
                                                                 })
                                                                 .fail(function (jqXHR, textStatus, errorThrown) {
-                                                                    $(row).css("background-color", "red");
+//                                                                    $(row).css("background-color", "red");
                                                                     alert(textStatus + id);
                                                                 });
                                                     });
