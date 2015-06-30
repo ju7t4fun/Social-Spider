@@ -34,7 +34,8 @@ public class PostJob implements Job {
         for (NewPost newPost : newPosts) {
 //            Locker.getInstance().isLock(newPost.get)
             newPost.setState(NewPost.State.POSTING);
-            SavableServiceUtil.safeSave(newPost);
+            newPostService.updateStage(newPost);
+//            SavableServiceUtil.safeSave(newPost);
             JobDetail jobDetail = newJob(OnePostJob.class).usingJobData("new_post_id", newPost.getId()).build();
             SimpleTrigger jobTrigger = (SimpleTrigger) newTrigger()
                     .startAt(newPost.getPostTime())

@@ -22,7 +22,7 @@ public class RefreshAccountCommand implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Vkontakte vk = new Vkontakte(APP_ID);
-        vk.conf().setPermissions(Scope.WALL, Scope.GROUPS, Scope.PHOTOS);
+        vk.conf().setPermissions(Scope.WALL, Scope.GROUPS, Scope.PHOTOS, Scope.AUDIO, Scope.VIDEO, Scope.DOCS);
         vk.createOAuth(Authorization.Type.CLIENT);
         vk.OAuth().open(response, true);
     }

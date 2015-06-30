@@ -8,6 +8,7 @@ import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
 import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
 import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
+import com.epam.lab.spider.model.db.service.savable.exception.SavableTransactionException;
 
 
 import java.lang.reflect.InvocationTargetException;
@@ -81,13 +82,15 @@ public class SavableCRUDUtil {
         if (!(dao instanceof SavableDAO)) {
             throw new UnsupportedDAOException("" + crudDAO.getClass().getName() + " must implements " + SavableDAO.class.getName());
         }
+        boolean result ;
         try{
             Integer index = getId(entity);
             //if(entity.id!=null)
             if (index != null) {
                 crudDAO.update(conn, index, entity);
             } else {
-                crudDAO.insert(conn, entity);
+                result = crudDAO.insert(conn, entity);
+                if(!result)throw new SavableTransactionException();
             }
         }catch (SQLException x){
             throw new ResolvableDAOException(x);

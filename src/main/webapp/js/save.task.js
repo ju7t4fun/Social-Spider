@@ -32,10 +32,10 @@ $(document).ready(function () {
 
         options.interval_min = $("input[name=interval_min][type='number']").val();
         options.interval_max = $("input[name=interval_max][type='number']").val();
-        options.post_count = 1;
+        options.post_count = $("input[name=post_count][type='number']").val();
         options.post_delay_min = $("input[name=post_delay_min][type='number']").val();
         options.post_delay_max = $("input[name=post_delay_max][type='number']").val();
-        options.grabbing_mode = 'per_group';
+        options.grabbing_mode =  $("input[name=grabbing_mode][type='radio']:checked").val();
 
 
         var filter = new Object() ;

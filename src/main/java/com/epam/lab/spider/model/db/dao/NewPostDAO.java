@@ -32,4 +32,6 @@ public interface NewPostDAO extends CRUD<NewPost>, SavableDAO<NewPost> {
     List<NewPost> getAllWithQuery(Connection connection, String someQuery) throws SQLException;
     int getCountWithQuery(Connection connection, String SQL_SOME_QUERY) throws SQLException;
 
+    public boolean updateState(Connection connection, int id, NewPost.State state) throws SQLException;
+
 }
