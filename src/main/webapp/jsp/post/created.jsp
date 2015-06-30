@@ -6,6 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,6 +32,8 @@
     <!-- Custom styles -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
+
 
     <!-- javascripts -->
     <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
@@ -64,6 +69,9 @@
 
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
+    <!--custom tagsinput-->
+    <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
+
     <script type="text/javascript">
 
         // При завантаженні сторінки
@@ -125,7 +133,7 @@
                     }
                 }, {
                     "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<div class="btn-group"><a class="btn btn-primary" href="#"><i class="icon_plus_alt2"></i></a><a class="btn btn-danger" onclick="removePost(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
+                        $(td).html('<div class="btn-group"><a class="btn btn-primary" data-toggle="modal"  data-target="#create_dialog"  href=""><i class="icon_plus_alt2"></i></a><a class="btn btn-danger" onclick="removePost(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
                     }
                 }, {
                     "width": "60%", "targets": 1
@@ -228,6 +236,129 @@
     </section>
 </section>
 </section>
+
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="create_dialog"
+     class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
+                <h4 class="modal-title"><l:resource key="newpost.dateandtime"/></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="modal_form" method="POST" action="/post?action=addPost" class="form-horizontal">
+                            <input type="hidden" name="typePost" value="new">
+
+                            <div style="position: relative; left: -130px; top:30px;">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="date"><l:resource
+                                            key="newpost.date"/></label>
+
+                                    <div class="col-md-4">
+                                        <l:resource key="newpost.postdate"><input id="date" name="date" type="date"
+                                                                                  min="${date}" value="${date}"
+                                                                                  placeholder=""
+                                                                                  class="form-control input-md"></l:resource>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="time"><l:resource
+                                            key="newpost.time"/></label>
+
+                                    <div class="col-md-4">
+                                        <l:resource key="newpost.posttime"><input id="time" name="time" type="time"
+                                                                                  value="${time}" placeholder=""
+                                                                                  class="form-control input-md"></l:resource>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="position: relative; left: 250px; top:-109px;">
+                                <div class="form-group" style="">
+                                    <div class="col-lg-6">
+                                        <h4><l:resource key="newpost.selectgroup"/>:</h4>
+                                        <select name="groups" id="tokenize_focus" multiple="multiple"
+                                                class="tokenize-sample">
+                                            <c:forEach items="${owners}" var="owner">
+                                                <option value="${owner.wallId}">${owner.name}</option>
+                                            </c:forEach>
+                                        </select>
+
+                                        <script type="text/javascript">
+                                            $('select#tokenize_focus').tokenize({displayDropdownOnFocus: true});
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="position: relative; left:-58px; top:-100px;">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="check"><l:resource
+                                            key="newpost.removingdate"/></label>
+                                    <input id="check" type="checkbox">
+                                </div>
+                            </div>
+                            <div style="position: relative; left:54px; top:-90px; width: 600px;">
+                                <div id="time3" class="col-md-4">
+                                    <l:resource key="newpost.date"><input id="time1" name="date_delete" min="${date}"
+                                                                          value="${del_date}" type="date"
+                                                                          placeholder=""
+                                                                          class="form-control input-md"></l:resource>
+                                </div>
+
+                            </div>
+                            <div style="position: relative; left:-146px; top:-50px; width: 600px;">
+                                <div id="time4" class="col-md-4">
+                                    <l:resource key="newpost.time"><input id="time5" name="time_delete" type="time"
+                                                                          placeholder="Time"
+                                                                          class="form-control input-md"
+                                                                          value="${del_time}"></l:resource>
+                                </div>
+                            </div>
+                            <button id="submit_modal" type="button" style="margin-left: 455px;margin-top: -80px;"
+                                    class="btn btn-primary"
+                                    data-dismiss="modal">
+                                <l:resource key="newpost.save"/>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#time3, #time4").hide();
+    $('#check').click(function () {
+        $("#time3, #time4").toggle(this.checked);
+    });
+    $(document).ready(function () {
+        $("#submit_modal").click(function () {
+            $.post(
+                    "/post?action=addPost",
+                    {
+                        typePost: "new",
+                        title: $("#title").val(),
+                        message: $("#content").val(),
+                        tags: $("#tagsinput").val(),
+                        date: $("#date").val(),
+                        time: $("#time").val(),
+                        date_delete: $("#time1").val(),
+                        time_delete: $("#time5").val(),
+                        checked: $("#check").prop('checked'),
+                        groups: $("#tokenize_focus").val().toString()
+                    },
+                    onAjaxSuccess
+            );
+            function onAjaxSuccess(data) {
+                var responce = JSON.parse(data);
+                if (responce.status === 'success') {
+                    location.href = "/post?action=queued";
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>
 

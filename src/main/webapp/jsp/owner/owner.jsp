@@ -307,15 +307,16 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header" style="width: 80%"><i class="fa fa-list-alt"></i><l:resource key="created" /></h3>
+                    <h3 class="page-header" style="width: 80%"><i class="fa fa-list-alt"></i><l:resource key="created"/>
+                    </h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home" /></a></li>
-                        <li><i class="fa fa-desktop"></i><l:resource key="charts.uniquevisitsdaily" /></li>
-                        <li><i class="fa fa-list-alt"></i><l:resource key="created" /></li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-desktop"></i><l:resource key="charts.uniquevisitsdaily"/></li>
+                        <li><i class="fa fa-list-alt"></i><l:resource key="created"/></li>
                     </ol>
                 </div>
             </div>
@@ -323,17 +324,17 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left"><l:resource key="created" /></div>
+                            <div class="pull-left"><l:resource key="created"/></div>
                             <div class="clearfix"></div>
                         </div>
 
                         <div class="b-popup" id="popup_bind">
                             <div class="b-popup-content" style="height: 340px;">
-                                <h4><l:resource key="owner.accbinding" /></h4>
+                                <h4><l:resource key="owner.accbinding"/></h4>
                                 <table style="margin-left: 12px">
                                     <tr>
-                                        <th style="width:400px;"><l:resource key="owner.read" /></th>
-                                        <th style="width:400px;"><l:resource key="owner.write" /></th>
+                                        <th style="width:400px;"><l:resource key="owner.read"/></th>
+                                        <th style="width:400px;"><l:resource key="owner.write"/></th>
                                     </tr>
                                     <tr>
                                         <td>
@@ -350,7 +351,8 @@
 
                                 <div align="right">
                                     <a href="javascript:PopUpHide()">
-                                        <button class="btn btn-info" style="margin-right: 14px"><l:resource key="newpost.save" /></button>
+                                        <button class="btn btn-info" style="margin-right: 14px"><l:resource
+                                                key="newpost.save"/></button>
                                     </a>
                                 </div>
 
@@ -364,15 +366,16 @@
                                            class="row-border tableHeader" id="ownersTable">
                                         <thead>
                                         <tr style="align-content: center">
-                                            <th><l:resource key="owner.id" /></th>
-                                            <th><l:resource key="owner.name" /></th>
-                                            <th><l:resource key="owner.accbinding" /></th>
-                                            <th><l:resource key="owner.statistics" /></th>
-                                            <th><l:resource key="owner.action" /></th>
+                                            <th><l:resource key="owner.id"/></th>
+                                            <th><l:resource key="owner.name"/></th>
+                                            <th><l:resource key="owner.accbinding"/></th>
+                                            <th><l:resource key="owner.statistics"/></th>
+                                            <th><l:resource key="owner.action"/></th>
                                         </tr>
                                         </thead>
                                     </table>
-                                    <a class="btn btn-primary" href=""><l:resource key="owner.addgroup" /></a>
+                                    <a class="btn btn-primary" data-toggle="modal"
+                                       data-target="#modal_owner" href=""><l:resource key="owner.addgroup"/></a>
                                 </div>
                             </div>
                         </div>
@@ -382,5 +385,33 @@
         </section>
     </section>
 </section>
+
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modal_owner"
+     class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content" style="height: 150px;">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
+                <h4 class="modal-title">Add group</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="modal_form" method="POST" action="/controller?action="
+                              class="form-horizontal">
+                            <div>
+                                <input type="text" name="category" class="form-control" placeholder="Group name">
+                            </div>
+                            <div style="position: relative; top: 10px; left: 497px;">
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
