@@ -55,6 +55,8 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     private static final String SQL_GET_MESSAGE_BY_newPostQUERY = "SELECT post.message AS message FROM ( new_post JOIN post ON post.id=new_post.post_id " +
             " AND new_post.post_id=? AND new_post.deleted = false)";
 
+    private static final String SQL_UPDATE_STATE_QUERY = "UPDATE new_post SET state = ? WHERE id = ?";
+
     @Override
     public boolean insert(Connection connection, NewPost post) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
@@ -80,6 +82,12 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
                 post.getDeleted(),
                 post.getUserId(),
                 post.getVkPostId(),
+                id);
+    }
+    @Override
+    public boolean updateState(Connection connection, int id, NewPost.State state) throws SQLException {
+        return changeQuery(connection, SQL_UPDATE_STATE_QUERY,
+                state.toString().toUpperCase(),
                 id);
     }
 

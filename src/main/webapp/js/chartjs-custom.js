@@ -23,6 +23,7 @@ $(document).ready(function() {
     var pieData = [
         {
             value: 30,
+            label: 'aaaa',
             color:"#F38630"
         },
         {
@@ -54,6 +55,7 @@ $(document).ready(function() {
     var chartData = [
         {
             value : Math.random(),
+            label: 'aaaa',
             color: "#D97041"
         },
         {
@@ -98,8 +100,8 @@ $(document).ready(function() {
 
     };
     //new Chart(document.getElementById("line").getContext("2d")).Line(lineChartData);
-    new Chart(document.getElementById("bar").getContext("2d")).Bar(barChartData);
-    new Chart(document.getElementById("pie").getContext("2d")).Pie(pieData);
+    //new Chart(document.getElementById("bar").getContext("2d")).Bar(barChartData);
+    //new Chart(document.getElementById("pie").getContext("2d")).Pie(pieData);
 
 
 });

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <header class="header dark-bg" style="background: rgb(26, 39, 50)">
     <div class="toggle-nav">
         <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"></div>
@@ -126,13 +127,13 @@
                 <ul class="dropdown-menu extended logout">
                     <div class="log-arrow-up"></div>
                     <li id="aaaa" class="eborder-top">
-                        <a href="/profile"><i class="icon_clock_alt"></i>Profile</a>
+                        <a href="/profile"><i class="icon_clock_alt"></i><l:resource key="profile" /></a>
                     </li>
                     <li>
-                        <a href="/accounts"><i class="icon_profile"></i> My Accounts</a>
+                        <a href="/accounts"><i class="icon_profile"></i> <l:resource key="myaccounts" /></a>
                     </li>
                     <li>
-                        <a href="/login?action=signOut"><i class="icon_key_alt"></i> Log Out</a>
+                        <a href="/login?action=signOut"><i class="icon_key_alt"></i> <l:resource key="logout" /></a>
                     </li>
                 </ul>
             </li>

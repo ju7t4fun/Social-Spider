@@ -204,6 +204,14 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
         }
         return false;
     }
+    public boolean updateStage(NewPost nPost) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.updateState(connection, nPost.getId(), nPost.getState());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public List<NewPost> getByUserId(int userId) {
         try (Connection connection = PoolConnection.getConnection()) {

@@ -5,6 +5,7 @@ import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
 import com.epam.lab.spider.job.util.Locker;
+import com.epam.lab.spider.job.util.PostAttachmentUtil;
 import com.epam.lab.spider.model.db.entity.*;
 import com.epam.lab.spider.model.db.service.*;
 import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
@@ -45,121 +46,7 @@ public class OnePostJob implements Job {
     ProfileService profileService = new ProfileService();
     AttachmentService attachmentService = new AttachmentService();
 
-    public static String uploadPhoto(Vkontakte vk, String file, Integer wall) {
-        boolean manyRequest = false;
-        do {
-            try {
-                if (manyRequest) {
-                    Thread.sleep(400);
-                    manyRequest = false;
-                }
-                Parameters parameters;
-                parameters = new Parameters();
-                if (wall < 0) parameters.add("group_id", -wall);
-                URL uri = vk.photos().getWallUploadServer(parameters);
-                LOG.debug("SERVER URL to upload photo :" + uri);
 
-                LOG.debug("Begin upload photo with url: " + file);
-                CloseableHttpClient client = HttpClients.createDefault();
-                HttpPost httpPost = new HttpPost(uri.toString());
-                HttpEntity entity = MultipartEntityBuilder.create()
-                        .addBinaryBody("photo", new URL(file).openStream(), ContentType.create("image/jpeg"), "image" +
-                                ".jpg").build();
-                httpPost.setEntity(entity);
-
-                String response = EntityUtils.toString(client.execute(httpPost).getEntity(), "UTF-8");
-                client.close();
-                LOG.debug("RESPONSE FROM FILE SERVER: " + response);
-
-                JSONParser parser = new JSONParser();
-                JSONObject jsonObject = (JSONObject) parser.parse(response);
-
-                parameters = new Parameters();
-                parameters.add("server", jsonObject.get("server").toString());
-                parameters.add("photo", jsonObject.get("photo").toString());
-                parameters.add("hash", jsonObject.get("hash").toString());
-                if (wall > 0)
-                    parameters.add("user_id", wall);
-                else
-                    parameters.add("group_id", -wall);
-
-                List<Photo> photos = vk.photos().saveWallPhoto(parameters);
-                for (Photo photo : photos) {
-                    String photoInVk = "photo" + photo.getOwnerId() + "_" + photo.getId();
-                    return photoInVk;
-                }
-
-            } catch (VKException x) {
-                if (x.getExceptionCode() == VKException.VK_MANY_REQUESTS) manyRequest = true;
-                x.printStackTrace();
-            } catch (InterruptedException | IOException | ParseException e) {
-                e.printStackTrace();
-            }
-        } while (manyRequest);
-        return null;
-    }
-
-    public static String uploadAudio(Vkontakte vk, String file, Integer wall) {
-        boolean manyRequest = false;
-        do {
-            try {
-                if (manyRequest) {
-                    Thread.sleep(400);
-                    manyRequest = false;
-                }
-                Parameters parameters;
-                parameters = new Parameters();
-                if (wall < 0) parameters.add("group_id", -wall);
-                URL uri = null;//vk.audio();
-                LOG.debug("SERVER URL to upload photo :" + uri);
-
-                LOG.debug("Begin upload photo with url: " + file);
-                CloseableHttpClient client = HttpClients.createDefault();
-                HttpPost httpPost = new HttpPost(uri.toString());
-                HttpEntity entity = MultipartEntityBuilder.create()
-                        .addBinaryBody("photo", new URL(file).openStream(), ContentType.create("image/jpeg"), "image" +
-                                ".jpg").build();
-                httpPost.setEntity(entity);
-
-                String response = EntityUtils.toString(client.execute(httpPost).getEntity(), "UTF-8");
-                client.close();
-                LOG.debug("RESPONSE FROM FILE SERVER: " + response);
-
-                JSONParser parser = new JSONParser();
-                JSONObject jsonObject = (JSONObject) parser.parse(response);
-
-                parameters = new Parameters();
-                parameters.add("server", jsonObject.get("server").toString());
-                parameters.add("photo", jsonObject.get("photo").toString());
-                parameters.add("hash", jsonObject.get("hash").toString());
-                if (wall > 0)
-                    parameters.add("user_id", wall);
-                else
-                    parameters.add("group_id", -wall);
-
-                List<Photo> photos = vk.photos().saveWallPhoto(parameters);
-                for (Photo photo : photos) {
-                    String photoInVk = "photo" + photo.getOwnerId() + "_" + photo.getId();
-                    return photoInVk;
-                }
-
-            } catch (VKException x) {
-                if (x.getExceptionCode() == VKException.VK_MANY_REQUESTS) manyRequest = true;
-                x.printStackTrace();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } while (manyRequest);
-        return null;
-    }
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
@@ -212,16 +99,31 @@ public class OnePostJob implements Job {
                 List<String> attachmentsList = new ArrayList<>();
                 for (Attachment attachment : newPost.getPost().getAttachments()) {
                     if (attachment.getType() == Attachment.Type.PHOTO && attachment.getMode() == Attachment.Mode.URL) {
-                        String att = uploadPhoto(vk, attachment.getPayload().toString(), owner.getVk_id());
+                        String att = PostAttachmentUtil.uploadPhoto(vk, attachment.getPayload().toString(), owner.getVk_id());
+                        if (att != null) attachmentsList.add(att);
+                    }
+                    if (attachment.getType() == Attachment.Type.PHOTO && attachment.getMode() == Attachment.Mode.CODE) {
+                        String att = attachment.getPayload();
+                        if (att != null) attachmentsList.add(att);
+                    }
+                    if (attachment.getType() == Attachment.Type.AUDIO && attachment.getMode() == Attachment.Mode.URL) {
+                        String att = PostAttachmentUtil.uploadAudio(vk, attachment.getPayload().toString());
                         if (att != null) attachmentsList.add(att);
                     }
                     if (attachment.getType() == Attachment.Type.AUDIO && attachment.getMode() == Attachment.Mode.CODE) {
                         String att = attachment.getPayload();
                         if (att != null) attachmentsList.add(att);
                     }
+                    if (attachment.getType() == Attachment.Type.VIDEO && attachment.getMode() == Attachment.Mode.URL) {
+                        String att = PostAttachmentUtil.uploadVideo(vk, attachment.getPayload().toString(), owner.getVk_id());
+                        if (att != null) attachmentsList.add(att);
+                    }
                     if (attachment.getType() == Attachment.Type.VIDEO && attachment.getMode() == Attachment.Mode.CODE) {
                         String att = attachment.getPayload();
                         if (att != null) attachmentsList.add(att);
+                    }
+                    if (attachment.getType() == Attachment.Type.DOC && attachment.getMode() == Attachment.Mode.URL) {
+                        LOG.error("METhOD UNSUPPORTED!");
                     }
                     if (attachment.getType() == Attachment.Type.DOC && attachment.getMode() == Attachment.Mode.CODE) {
                         String att = attachment.getPayload();
@@ -230,23 +132,23 @@ public class OnePostJob implements Job {
 
 
                 }
-                StringBuilder attachmetsStringBuilder = new StringBuilder();
-                if (!attachmentsList.isEmpty()) attachmetsStringBuilder.append(attachmentsList.get(0));
+                StringBuilder attachmentsStringBuilder = new StringBuilder();
+                if (!attachmentsList.isEmpty()) attachmentsStringBuilder.append(attachmentsList.get(0));
                 for (int i = 1; i < attachmentsList.size(); i++) {
-                    attachmetsStringBuilder.append(", ").append(attachmentsList.get(i));
+                    attachmentsStringBuilder.append(", ").append(attachmentsList.get(i));
                 }
-                LOG.debug("Attachments: " + attachmetsStringBuilder.toString());
+                LOG.debug("Attachments: " + attachmentsStringBuilder.toString());
 
                 Parameters parameters = new Parameters();
                 parameters.add("owner_id", owner.getVk_id());
-                parameters.add("attachments", attachmetsStringBuilder.toString());
+                parameters.add("attachments", attachmentsStringBuilder.toString());
                 parameters.add("message", newPost.getPost().getMessage());
                 if (owner.getVk_id() < 0) {
                     parameters.add("from_group", 1);
                 }
 
 
-                long response = 0;
+                Long response = null;
                 if (true) {
                     boolean manyRequest = false;
 
@@ -260,13 +162,24 @@ public class OnePostJob implements Job {
                         } catch (VKException x) {
                             if (x.getExceptionCode() == VKException.VK_MANY_REQUESTS) manyRequest = true;
                             else throw x;
-                        } catch (InterruptedException e) {
+                        }
+                        // фікс кривої архітектури
+                        // перехоплення NullPointerException by UnknownHostException
+                        catch (NullPointerException x){
+                            try {
+                                Thread.sleep(500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     } while (manyRequest);
                 }
 
                 newPost.setState(NewPost.State.POSTED);
+                newPost.setVkPostId(Integer.parseInt(response.toString()));
                 SavableServiceUtil.safeSave(newPost);
 
                 LOG.debug("new post success : " + owner.getVk_id() + "_" + response);

@@ -115,9 +115,7 @@
                     "buttonText": "columns <img src=\"/img/caaret.png\"/>",
                 },
 
-                "columnDefs": [
-
-                ]
+                "columnDefs": []
 
             });
 
@@ -164,7 +162,8 @@
                                         </tr>
                                         </thead>
                                     </table>
-                                    <a class="btn btn-primary" href="#">Add category</a>
+                                    <a class="btn btn-primary" data-toggle="modal"
+                                       data-target="#modal_category" href="#">Add category</a>
                                 </div>
                             </div>
                         </div>
@@ -174,6 +173,34 @@
         </section>
     </section>
 </section>
+
+
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modal_category"
+     class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content"  style="height: 150px;">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
+                <h4 class="modal-title">Add category</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="modal_form" method="POST" action="/controller?action=addcategory"
+                              class="form-horizontal">
+                            <div>
+                                <input type="text" name="category" class="form-control" placeholder="Category name">
+                            </div>
+                            <div style="position: relative; top: 10px; left: 497px;">
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 

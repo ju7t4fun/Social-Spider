@@ -85,7 +85,7 @@
             </div>
             <div style="color:#fff;">
                 <h6>Social-Spider Corp. </h6>
-                <h6>Ukraine, Lviv, St.Bandery 5</h6>
+                <h6><l:resource key="address"/></h6>
                 <h6>(032)555-9876</h6>
 
                 <p><a href="mailto:example@gmail.com " style="color:#39afea"><h6>socialspider@gmail.com</h6></a></p>
