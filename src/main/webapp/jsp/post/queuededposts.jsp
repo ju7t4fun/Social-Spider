@@ -129,11 +129,28 @@
                     </div>
                 </div>
             </div>
+            <input type="button" id="showAllBtnId" onclick="myFunc()" value="Show All"/>
         </section>
     </section>
     <!--main content end-->
 </section>
 <!-- container section end -->
+<script>
+    function myFunc() {
+        if (document.getElementById("showAllBtnId").style.visibility = "visible") {
+            alert("LOL I was visible");
+            document.getElementById("showAllBtnId").style.visibility = "hidden";
+        } else {
+            alert("LOL I was hidden");
+            document.getElementById("showAllBtnId").style.visibility = "visible";
+        }
+        var newUrl = path + "/post?action=fillqueuededposts";
+        table.api().ajax.url(newUrl).load();
+
+        alert("dd");
+//        document.getElementById("showAllBtnId").style.visibility = "hidden";
+    };
+</script>
 </body>
 </html>
 

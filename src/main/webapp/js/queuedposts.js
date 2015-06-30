@@ -6,6 +6,22 @@
  */
 var table;
 
+function reloadData(grName) {
+
+    if (document.getElementById("showAllBtnId").style.visibility = "visible") {
+        alert("LOL I was visible");
+        document.getElementById("showAllBtnId").style.visibility = "hidden";
+    } else {
+        alert("LOL I was hidden");
+        document.getElementById("showAllBtnId").style.visibility = "visible";
+    }
+    //document.getElementById("showAllBtnId").style.visibility = "visible";
+    var newUrl = path + "/post?action=fillqueuededposts&groupNameToGroup="+grName;
+    table.api().ajax.url(newUrl).load();
+    alert("dd");
+
+};
+
 jQuery(document).ready(function () {
     table = $('#queuedTable').dataTable({
 
