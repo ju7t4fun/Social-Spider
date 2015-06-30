@@ -3,11 +3,8 @@ package com.epam.lab.spider.controller.command.post;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.model.db.entity.Attachment;
 import com.epam.lab.spider.model.db.entity.NewPost;
-
-
 import com.epam.lab.spider.model.db.service.NewPostService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
-
 import com.epam.lab.spider.model.db.service.WallService;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -82,14 +79,15 @@ public class FillPostedPostsCommand implements ActionCommand {
         out.print(jsonResult);
     }
 
-    public JSONObject getPersonDetails(int start, int listDisplayAmount, String dir, int totalRecords, HttpServletRequest request)
+    public JSONObject getPersonDetails(int start, int listDisplayAmount, String dir, int totalRecords,
+                                       HttpServletRequest request)
             throws SQLException, ClassNotFoundException {
 
         int totalAfterSearch = totalRecords;
         JSONObject result = new JSONObject();
         JSONArray array = new JSONArray();
         String searchSQL = "";
-        String sql = "SELECT  new_post.post_id AS post_id , " +
+        String sql = "SELECT  new_post.vk_post_id AS vk_post_id, new_post.post_id AS post_id , " +
                 " new_post.id AS  id, " +
                 " new_post.wall_id AS wall_id , " +
                 " new_post.post_time AS post_time, " +
@@ -204,7 +202,8 @@ public class FillPostedPostsCommand implements ActionCommand {
                             }
                             String group = null;
                             for (Attachment.Type type : attachmentCount.keySet()) {
-                                group = group == null ? "" + type + "|" + attachmentCount.get(type) : group + "!" + type +
+                                group = group == null ? "" + type + "|" + attachmentCount.get(type) : group + "!" +
+                                        type +
                                         "|" + attachmentCount.get(type);
                             }
                             ja.put(group);
@@ -227,21 +226,21 @@ public class FillPostedPostsCommand implements ActionCommand {
                     int likes;
                     try {
                         likes = currPost.getStats().getLikes();
-                    } catch(Exception ex) {
-                    likes = 0;
+                    } catch (Exception ex) {
+                        likes = 0;
                         ex.printStackTrace();
                     }
                     int reposts;
                     try {
                         reposts = currPost.getStats().getReposts();
-                    } catch(Exception ex) {
+                    } catch (Exception ex) {
                         reposts = 0;
                         ex.printStackTrace();
                     }
                     int comments;
                     try {
                         comments = currPost.getStats().getComments();
-                    } catch(Exception ex) {
+                    } catch (Exception ex) {
                         comments = 0;
                         ex.printStackTrace();
                     }

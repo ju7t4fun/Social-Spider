@@ -2,18 +2,16 @@ package com.epam.lab.spider.model.db.service;
 
 import com.epam.lab.spider.model.db.PoolConnection;
 import com.epam.lab.spider.model.db.SQLTransactionException;
-import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.dao.TaskDestinationDAO;
 import com.epam.lab.spider.model.db.dao.TaskSourceDAO;
 import com.epam.lab.spider.model.db.dao.WallDAO;
+import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.entity.Wall;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.epam.lab.spider.model.db.SQLTransactionException.assertTransaction;
 
 /**
  * Created by Sasha on 12.06.2015.
@@ -97,14 +95,15 @@ public class WallService implements BaseService<Wall> {
         return true;
     }
 
-    public boolean deleteByOwnerAndProfileIDAndPermission(int owner_id,int profile_id, int wallid, Wall.Permission permission) {
+    public boolean deleteByOwnerAndProfileIDAndPermission(int owner_id, int profile_id, int wallid, Wall.Permission
+            permission) {
         try {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
 //                tsdao.deleteByWallId(connection, wallid);
 //                tddao.deleteByWallId(connection, wallid);
-               wdao.deleteByOwnerId(connection, owner_id, profile_id, permission);
+                wdao.deleteByOwnerId(connection, owner_id, profile_id, permission);
                 connection.commit();
             } catch (SQLTransactionException e) {
                 connection.rollback();
@@ -150,7 +149,7 @@ public class WallService implements BaseService<Wall> {
         return null;
     }
 
-    public  List<Wall> getAllByProfileID(int id) {
+    public List<Wall> getAllByProfileID(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
             return wdao.getAllByProfileID(connection, id);
         } catch (SQLException e) {
@@ -168,6 +167,7 @@ public class WallService implements BaseService<Wall> {
         }
         return null;
     }
+
     public List<Wall> getWallsByProfileId(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
             return wdao.getByProfileId(connection, id);
@@ -176,6 +176,7 @@ public class WallService implements BaseService<Wall> {
         }
         return null;
     }
+
     // TODO: REFACTOR BY REAL USER CHECK BY USER ID
     public Wall getByIdAndLimitByUser(int id, int userId) {
         try (Connection connection = PoolConnection.getConnection()) {
@@ -185,7 +186,8 @@ public class WallService implements BaseService<Wall> {
         }
         return null;
     }
-    public  List<Wall> getAllByUserID(int id) {
+
+    public List<Wall> getAllByUserID(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
             return wdao.getByUserId(connection, id);
         } catch (SQLException e) {
@@ -215,6 +217,33 @@ public class WallService implements BaseService<Wall> {
     public List<Wall> getWriteByUserId(int userId) {
         try (Connection connection = PoolConnection.getConnection()) {
             return wdao.getWriteByUserId(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Wall> getByOwnerId(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getByOwnerId(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Wall> getReadByOwnerId(int ownerId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getReadByOwnerId(connection, ownerId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Wall> getWriteByOwnerId(int ownerId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getWriteByOwnerId(connection, ownerId);
         } catch (SQLException e) {
             e.printStackTrace();
         }

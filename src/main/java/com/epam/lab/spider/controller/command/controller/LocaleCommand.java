@@ -1,15 +1,11 @@
 package com.epam.lab.spider.controller.command.controller;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-
-
 import com.epam.lab.spider.controller.utils.UTF8;
-import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -28,6 +24,8 @@ public class LocaleCommand implements ActionCommand {
 
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String lang = request.getParameter("lang");
+        if (lang.equals("undefined"))
+            return;
         Locale locale = new Locale(lang);
         ResourceBundle bundle = ResourceBundle.getBundle("locale/messages", locale);
         HttpSession session = request.getSession();
@@ -44,13 +42,13 @@ public class LocaleCommand implements ActionCommand {
             Object obj;
             obj = parser.parse(namesJson);
             JSONArray jsonArray = (JSONArray) obj;
-            for (int i = 0; i <jsonArray.size() ; i++) {
+            for (int i = 0; i < jsonArray.size(); i++) {
                 String name = (String) jsonArray.get(i);
 
-                String value =  UTF8.encoding(bundle.getString(name));
-                resultJson.put(name,value);
+                String value = UTF8.encoding(bundle.getString(name));
+                resultJson.put(name, value);
             }
-        } catch (ParseException|ClassCastException e) {
+        } catch (ParseException | ClassCastException e) {
             e.printStackTrace();
         }
 

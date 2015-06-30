@@ -32,11 +32,6 @@
                                 Tasks</a></li>
                             <li><a class="" href="${pageContext.request.contextPath}/task?action=create">Add New
                                 Task</a></li>
-                            <li><a class="" href="${pageContext.request.contextPath}/jsp/post/bindaccount.jsp">Bind
-                                Accounts</a>
-                            </li>
-                            <li><a class="" href="${pageContext.request.contextPath}/jsp/post/schedule.jsp">Schedule</a>
-                            </li>
                         </ul>
                     </li>
                     <li>

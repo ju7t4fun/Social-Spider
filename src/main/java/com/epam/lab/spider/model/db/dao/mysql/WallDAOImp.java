@@ -49,6 +49,11 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     private static final String GET_WRITE_BY_USER_ID_QUERY = "SELECT wall.* FROM wall WHERE wall.profile_id IN " +
             "(SELECT profile.id FROM user JOIN profile ON user.id = profile.user_id  WHERE user.id = ?) AND " +
             "permission = 'write' AND deleted = 0";
+    private static final String SQL_GET_BY_OWNER_ID_QUERY = "SELECT * FROM wall WHERE owner_id = ? AND deleted = 0";
+    private static final String SQL_GET_WRITE_BY_OWNER_ID = "SELECT * FROM wall WHERE owner_id = ? AND deleted = 0 AND" +
+            " permission = 'write'";
+    private static final String SQL_GET_READ_BY_OWNER_ID = "SELECT * FROM wall WHERE owner_id = ? AND deleted = 0 AND" +
+            " permission = 'read'";
 
 
     @Override
@@ -102,6 +107,21 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     @Override
     public List<Wall> getWriteByUserId(Connection connection, int userId) throws SQLException {
         return select(connection, GET_WRITE_BY_USER_ID_QUERY, userId);
+    }
+
+    @Override
+    public List<Wall> getByOwnerId(Connection connection, int id) throws SQLException {
+        return select(connection, SQL_GET_BY_OWNER_ID_QUERY, id);
+    }
+
+    @Override
+    public List<Wall> getReadByOwnerId(Connection connection, int ownerId) throws SQLException {
+        return select(connection, SQL_GET_READ_BY_OWNER_ID, ownerId);
+    }
+
+    @Override
+    public List<Wall> getWriteByOwnerId(Connection connection, int ownerId) throws SQLException {
+        return select(connection, SQL_GET_WRITE_BY_OWNER_ID, ownerId);
     }
 
     @Override

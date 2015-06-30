@@ -66,6 +66,8 @@
     <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
     <![endif]-->
 
+
+    <%--Видалення--%>
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
     <script type="text/javascript">
@@ -78,7 +80,7 @@
             }
         }, 500);
 
-        function removeOwner(id, elm) {
+        function removeOwner(id) {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open('GET', '/owner?action=remove&id=' + id, true);
             xmlhttp.onreadystatechange = function () {
@@ -95,6 +97,7 @@
         }
     </script>
 
+    <%--Наповнення таблиці--%>
     <script type="text/javascript">
         var table;
 
@@ -138,7 +141,8 @@
                     }
                 }, {
                     "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<a class="btn btn-primary" href=""><span class="fa fa-bar-chart"></span></a>');
+                        $(td).html('<a class="btn btn-primary" onclick="showGroupStat(' + cellData +
+                                ')" data-toggle="modal" data-target="#modal_stat"><span class="fa fa-bar-chart"></span></a>');
                     }
                 }, {
                     "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
@@ -163,6 +167,121 @@
         })
     </script>
 
+    <%--Привязка акаунтів--%>
+    <script>
+
+        var ownerId;
+
+        function PopUpShow(id) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('GET', '/owner?action=optionFilling&id=' + id, true);
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    var response = JSON.parse(xmlhttp.responseText);
+                    setOption(response);
+                    ownerId = id;
+                    $("#popup_bind").show();
+                }
+            };
+            xmlhttp.send();
+        }
+
+        function setOption(response) {
+            $('#tokenize_read').empty();
+            $('#tokenize_read').multiSelect('refresh');
+            $('#tokenize_write').empty();
+            $('#tokenize_write').multiSelect('refresh');
+            for (var i = 0; i < response.read.length; i++) {
+                $('#tokenize_read').multiSelect('addOption', {
+                    value: '' + response.read[i].id,
+                    text: response.read[i].name, index: 0,
+                });
+                if (response.read[i].select == true) {
+                    $('#tokenize_read').multiSelect('select', '' + response.read[i].id);
+                }
+            }
+            for (var i = 0; i < response.write.length; i++) {
+                $('#tokenize_write').multiSelect('addOption', {
+                    value: '' + response.write[i].id,
+                    text: response.write[i].name, index: 0
+                });
+                if (response.write[i].select == true) {
+                    $('#tokenize_write').multiSelect('select', '' + response.write[i].id);
+                }
+            }
+        }
+
+        function PopUpHide() {
+            sendSelectedField(ownerId);
+            $("#popup_bind").hide();
+        }
+
+        function sendSelectedField(id) {
+            var selectionRead = document.getElementById("tokenize_read").options;
+            var selectionWrite = document.getElementById("tokenize_write").options;
+            var read = [], write = [];
+            for (var i = 0; i < selectionRead.length; i++) {
+                if (selectionRead[i].selected)
+                    read.push(selectionRead[i].value);
+            }
+            for (i = 0; i < selectionWrite.length; i++) {
+                if (selectionWrite[i].selected)
+                    write.push(selectionWrite[i].value);
+            }
+            var request = {
+                read: read,
+                write: write
+            };
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "/owner?action=bind&id=" + id);
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    var response = JSON.parse(xmlhttp.responseText);
+                    for (var i = 0; i < response.length; i++) {
+                        toastrNotification(response[i].status, response[i].msg);
+                    }
+                }
+            };
+            xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xmlhttp.send(JSON.stringify(request));
+        }
+    </script>
+
+    <%--Статистика--%>
+    <script>
+
+        var ownerId;
+        var lineChart;
+
+        function showGroupStat(id) {
+            ownerId = 1;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('GET', '/owner?action=stat&id=1', true);
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    var response = JSON.parse(xmlhttp.responseText);
+                    lineChart = new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
+                }
+            };
+            xmlhttp.send();
+        }
+
+        function redrawChart() {
+            var dateFrom = document.getElementById("startDate").value;
+            var dateTo = document.getElementById("endDate").value;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('GET', '/owner?action=stat&id=' + ownerId + '&date_from=' + dateFrom + "&date_to=" + dateTo, true);
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    var response = JSON.parse(xmlhttp.responseText);
+                    lineChart = new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
+                }
+            };
+            xmlhttp.send();
+        }
+
+    </script>
+
 </head>
 <body>
 
@@ -172,7 +291,7 @@
     <jsp:include page="../pagecontent/header.jsp"/>
     <jsp:include page="../pagecontent/sidebar.jsp"/>
 
-    <jsp:include page="../post/viewpost.jsp"/>
+    <jsp:include page="../owner/stat.jsp"/>
 
     <section id="main-content">
         <section class="wrapper">
@@ -198,9 +317,10 @@
                             <div class="clearfix"></div>
                         </div>
 
-                        <div class="b-popup" id="popup1">
-                            <div class="b-popup-content">
-                                <table>
+                        <div class="b-popup" id="popup_bind">
+                            <div class="b-popup-content" style="height: 340px;">
+                                <h4>Binding Accounts</h4>
+                                <table style="margin-left: 12px">
                                     <tr>
                                         <th style="width:400px;">Read</th>
                                         <th style="width:400px;">Write</th>
@@ -215,13 +335,15 @@
                                             </select>
                                         </td>
                                     </tr>
-
                                 </table>
-                                <a href="javascript:PopUpHide()">
-                                    <button style="border-radius: 4px;border-color:#424D5F;background-color:#424D5F;color:#ffffff;margin:15px;padding:10px;width:150px;">
-                                        Save
-                                    </button>
-                                </a>
+                                <br>
+
+                                <div align="right">
+                                    <a href="javascript:PopUpHide()">
+                                        <button class="btn btn-info" style="margin-right: 14px">Save</button>
+                                    </a>
+                                </div>
+
                             </div>
                         </div>
 
@@ -252,229 +374,3 @@
 </section>
 </body>
 </html>
-
-<script>
-
-    var rowID;
-    var selectedProfilesRead;
-    var selectedProfilesWrite;
-    var profilesWrite;
-    var profilesRead;
-
-
-    $(document).ready(function () {
-
-        //start of add row
-//       table.makeEditable({
-//            sUpdateURL: "UpdateData.php",
-//            sAddURL: "AddData.php",
-//            sDeleteURL: "DeleteData.php"
-//        })
-
-
-        $("#btnClose").click(function (e) {
-            HideDialog();
-            e.preventDefault();
-        });
-
-        $("#btnSubmit").click(function (e) {
-
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("POST", "/AddNewOwnerServlet", true);
-            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xmlhttp.send("publicUrl=" + document.getElementById("publicUrl").value);
-
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4) {
-                    var parsed = JSON.parse(xmlhttp.responseText.replace(/\u0000/g, ""));
-//                    alert(parsed.SelectedProfilesRead);
-                    table.fnStandingRedraw();
-                }
-            }
-
-            HideDialog();
-            e.preventDefault();
-        });
-
-
-        //end of popup adding row
-
-
-        $('#tokenize_read').multiSelect(
-                {
-                    selectableHeader: "<div class='custom-header'>Non Selected Profiles</div>",
-                    selectionHeader: "<div class='custom-header'>Selected Profiles</div>"
-                }
-        );
-
-        $('#tokenize_write').multiSelect(
-                {
-                    selectableHeader: "<div class='custom-header'>Non Selected Profiles</div>",
-                    selectionHeader: "<div class='custom-header'>Selected Profiles</div>"
-                }
-        );
-
-
-        $("#popup1").hide();
-        selectedProfilesRead = [];
-        selectedProfilesWrite = [];
-        profilesWrite = [];
-        profilesRead = [];
-    });
-
-    function ShowDialog(modal) {
-        $("#overlay").show();
-        $("#dialog").fadeIn(300);
-
-        if (modal) {
-            $("#overlay").unbind("click");
-        }
-        else {
-            $("#overlay").click(function (e) {
-                HideDialog();
-            });
-        }
-    }
-
-    function HideDialog() {
-        $("#overlay").hide();
-        $("#dialog").fadeOut(300);
-    }
-
-    function initializeArraysFromRequest(jsFile) {
-
-        var arr = [];
-        arr = jsFile.SelectedProfilesRead;
-        var i;
-        if (arr != undefined) {
-            for (i = 0; i < arr.length; i++) {
-                selectedProfilesRead.push(arr[i].id);
-            }
-        }
-        arr = jsFile.SelectedProfilesWrite;
-        if (arr != undefined) {
-            for (i = 0; i < arr.length; i++) {
-                selectedProfilesWrite.push(arr[i].id);
-            }
-        }
-        arr = jsFile.ProfilesWrite;
-        if (arr != undefined) {
-            for (i = 0; i < arr.length; i++) {
-                profilesWrite.push(arr[i].id);
-            }
-        }
-        arr = jsFile.ProfilesRead;
-        if (arr != undefined) {
-
-            for (i = 0; i < arr.length; i++) {
-
-                profilesRead.push(arr[i].id);
-            }
-        }
-    }
-    function setOptions(jsFile) {
-
-        selectedProfilesRead = [];
-        selectedProfilesWrite = [];
-        profilesWrite = [];
-        profilesRead = [];
-
-
-        $('#tokenize_read').multiSelect('refresh');
-        $('#tokenize_write').multiSelect('refresh');
-
-        initializeArraysFromRequest(jsFile);
-
-        if (selectedProfilesRead != undefined) {
-            for (i = 0; i < selectedProfilesRead.length; i++) {
-                $('#tokenize_read').multiSelect('addOption', {
-                    value: ''.concat(selectedProfilesRead[i]),
-                    text: 'Profile ID : '.concat(selectedProfilesRead[i]), index: 0
-                });
-                $('#tokenize_read').multiSelect('select', ''.concat(selectedProfilesRead[i]));
-            }
-        }
-        if (selectedProfilesWrite != undefined) {
-            for (i = 0; i < selectedProfilesWrite.length; i++) {
-                $('#tokenize_write').multiSelect('addOption', {
-                    value: ''.concat(selectedProfilesWrite[i]),
-                    text: 'Profile ID : '.concat(selectedProfilesWrite[i]), index: 0
-                });
-                $('#tokenize_write').multiSelect('select', ''.concat(selectedProfilesWrite[i]));
-            }
-        }
-
-        if (profilesRead != undefined) {
-            for (var i = 0; i < profilesRead.length; i++) {
-                $('#tokenize_read').multiSelect('addOption', {
-                    value: ''.concat(profilesRead[i]),
-                    text: 'Profile ID : '.concat(profilesRead[i]), index: 0
-                });
-            }
-        }
-        if (profilesWrite != undefined) {
-            for (var i = 0; i < profilesWrite.length; i++) {
-                $('#tokenize_write').multiSelect('addOption', {
-                    value: ''.concat(profilesWrite[i]),
-                    text: 'Profile ID : '.concat(profilesWrite[i]), index: 0
-                });
-            }
-        }
-    }
-
-
-    function PopUpShow(i) {
-        document.getElementById("tokenize_read").options.length = 0;
-        document.getElementById("tokenize_write").options.length = 0;
-        rowID = i;
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4) {
-                alert(xhr.responseText);
-                var parsed = JSON.parse(xhr.responseText.replace(/\u0000/g, ""));
-                setOptions(parsed);
-            }
-        };
-        var url = '/OptionFillingServlet?';
-        var param = "ownerID=".concat(i);
-        alert(url.concat(param));
-        xhr.open('GET', url.concat(param), false);
-        xhr.send();
-
-        $("#popup1").show();
-    }
-    function PopUpHide() {
-        sendRequest(rowID);
-        $("#popup1").hide();
-
-    }
-
-    function sendRequest(index) {
-
-        var afterSelectionRead = document.getElementById("tokenize_read").options;
-        var afterSelectionWrite = document.getElementById("tokenize_write").options;
-        var readResult = [];
-        var writeResult = [];
-        for (var i = 0; i < afterSelectionRead.length; i++) {
-            if (afterSelectionRead[i].selected)
-                readResult.push(afterSelectionRead[i].value);
-        }
-        for (var i = 0; i < afterSelectionWrite.length; i++) {
-            if (afterSelectionWrite[i].selected)
-                writeResult.push(afterSelectionWrite[i].value);
-        }
-
-        var jsonRes = {
-            "ownerVkId": index,
-            "Read": readResult,
-            "Write": writeResult
-        };
-
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("POST", "/jsonhandler");
-        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xmlhttp.send(JSON.stringify(jsonRes));
-    }
-
-
-</script>

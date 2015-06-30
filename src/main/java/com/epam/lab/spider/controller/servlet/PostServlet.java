@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.servlet.post;
+package com.epam.lab.spider.controller.servlet;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
 import com.epam.lab.spider.controller.command.post.*;
