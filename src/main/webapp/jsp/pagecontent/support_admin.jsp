@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/admin-inbox.js"></script>
 <div hidden>
     <li id="message">
@@ -17,13 +18,13 @@
     <ul class="dropdown-menu extended notification">
         <div class="notify-arrow notify-arrow-blue"></div>
         <li>
-            <p class="blue">See all messages</p>
+            <p class="blue"><l:resource key="header.seeallmessages" /></p>
         </li>
         <div id="message_chat">
 
         </div>
         <li>
-            <a href="/admin/support">See all messages</a>
+            <a href="/admin/support"><l:resource key="header.seeallmessages" /></a>
         </li>
     </ul>
 </li>

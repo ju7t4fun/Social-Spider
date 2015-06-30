@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <script type="text/javascript">
 
     var webSocketN = new WebSocket("ws://localhost:8080/websocket/notification");
@@ -87,14 +88,14 @@
     <ul class="dropdown-menu extended notification">
         <div class="notify-arrow notify-arrow-blue"></div>
         <li>
-            <p class="blue">You have <span id="count_notification_a">4</span> new notifications</p>
+            <p class="blue"><l:resource key="header.youhave" /> <span id="count_notification_a">4</span> <l:resource key="header.newnotif" /></p>
         </li>
         <div id="notf-body">
 
         </div>
 
         <li>
-            <a href="/notification">See all notifications</a>
+            <a href="/notification"><l:resource key="header.seeallnotif" /></a>
         </li>
     </ul>
 </li>
