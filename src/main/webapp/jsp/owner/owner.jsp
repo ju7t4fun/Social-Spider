@@ -251,7 +251,6 @@
     <script>
 
         var ownerId;
-        var lineChart;
 
         function showGroupStat(id) {
             ownerId = 1;
@@ -260,7 +259,9 @@
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
-                    lineChart = new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
+                    new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
+                    new Chart(document.getElementById("bar").getContext("2d")).Bar(response.bar);
+                    new Chart(document.getElementById("pie").getContext("2d")).Pie(response.pie);
                 }
             };
             xmlhttp.send();
@@ -274,7 +275,9 @@
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
-                    lineChart = new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
+                    new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
+                    new Chart(document.getElementById("bar").getContext("2d")).Bar(response.bar);
+                    new Chart(document.getElementById("pie").getContext("2d")).Pie(response.pie);
                 }
             };
             xmlhttp.send();

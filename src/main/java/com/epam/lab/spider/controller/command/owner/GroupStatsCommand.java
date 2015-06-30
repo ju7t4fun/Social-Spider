@@ -18,14 +18,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Boyarsky Vitaliy on 30.06.2015.
  */
 public class GroupStatsCommand implements ActionCommand {
 
+    private static final String[] COLOR = new String[]{"#F38630", "#E0E4CC", "#69D2E7", "#D97041", "#C7604C",
+            "#21323D"};
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static WallService wallService = factory.create(WallService.class);
 
@@ -96,6 +97,76 @@ public class GroupStatsCommand implements ActionCommand {
             line.put("labels", labels);
             line.put("datasets", datasets);
             result.put("line", line);
+        }
+        // Вік користувачів
+        {
+            Map<String, Integer> ageVisitors = new HashMap<>();
+            for (Period period : periods) {
+                for (Period.Item item : period.getSexAge()) {
+                    int count = 0;
+                    if (ageVisitors.containsKey(item.getValue())) {
+                        count = ageVisitors.get(item.getValue());
+                    }
+                    count = count + item.getVisitors();
+                    ageVisitors.put(item.getValue(), count);
+                }
+            }
+            JSONObject bar = new JSONObject();
+            JSONArray labels = new JSONArray();
+            JSONArray fData = new JSONArray();
+            JSONArray mData = new JSONArray();
+            List<String> keys = new ArrayList<>(ageVisitors.keySet());
+            Collections.sort(keys);
+            for (String value : keys) {
+                String[] args = value.split(";");
+                if (args[0].equals("m")) {
+                    labels.put(args[1]);
+                    mData.put(ageVisitors.get(value));
+                } else
+                    fData.put(ageVisitors.get(value));
+            }
+            JSONArray datasets = new JSONArray();
+            JSONObject dataset = new JSONObject();
+            dataset.put("fillColor", "rgba(151,187,205,0.5)");
+            dataset.put("strokeColor", "rgba(151,187,205,1)");
+            dataset.put("data", mData);
+            datasets.put(dataset);
+            dataset = new JSONObject();
+            dataset.put("fillColor", "rgba(215,127,215,0.5)");
+            dataset.put("strokeColor", "rgba(225,64,215,1)");
+            dataset.put("data", fData);
+            datasets.put(dataset);
+            bar.put("labels", labels);
+            bar.put("datasets", datasets);
+            result.put("bar", bar);
+        }
+        // Країни
+        {
+            Map<String, Integer> countryVisitors = new HashMap<>();
+            for (Period period : periods) {
+                for (Period.Item item : period.getCountries()) {
+                    int count = 0;
+                    if (countryVisitors.containsKey(item.getName())) {
+                        count = countryVisitors.get(item.getName());
+                    }
+                    count = count + item.getVisitors();
+                    countryVisitors.put(item.getName(), count);
+                }
+            }
+            JSONArray array = new JSONArray();
+            int i = 0;
+            for (String name : countryVisitors.keySet()) {
+                JSONObject item = new JSONObject();
+                item.put("name", name);
+                item.put("value", countryVisitors.get(name));
+                item.put("color", COLOR[i]);
+                array.put(item);
+                i++;
+                if (i >= COLOR.length)
+                    break;
+            }
+            result.put("pie", array);
+
         }
         response.getWriter().write(result.toString());
     }

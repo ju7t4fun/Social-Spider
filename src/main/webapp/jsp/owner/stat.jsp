@@ -50,13 +50,13 @@
                                     </div>
                                     <!-- Bar -->
                                     <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-6"  style="margin-left: -150px;">
                                             <section class="panel">
-                                                <header class="panel-heading">
+                                                <header class="panel-heading"  style="margin-left: 50px;">
                                                     Bar
                                                 </header>
                                                 <div class="panel-body text-center">
-                                                    <canvas id="bar" height="300" width="500"></canvas>
+                                                    <canvas id="bar" height="500" width="930"></canvas>
                                                 </div>
                                             </section>
                                         </div>
