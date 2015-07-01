@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.owner;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
@@ -15,7 +16,9 @@ import org.json.JSONObject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 /**
  * Created by Boyarsky Vitaliy on 01.07.2015.
@@ -27,6 +30,8 @@ public class AddNewOwnewCommand implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         String ownerUrl = request.getParameter("ownerUrl");
         JSONObject json = new JSONObject();
         response.setContentType("application/json");
@@ -77,10 +82,10 @@ public class AddNewOwnewCommand implements ActionCommand {
             owner.setDomain(domain);
             if (service.insert(owner)) {
                 json.put("status", "success");
-                json.put("msg", "Создано");
+                json.put("msg", UTF8.encoding(bundle.getString("notification.add.owner.success")));
             } else {
                 json.put("status", "error");
-                json.put("msg", "Не создано");
+                json.put("msg", UTF8.encoding(bundle.getString("notification.add.owner.error")));
             }
             response.getWriter().write(json.toString());
         }
