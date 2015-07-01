@@ -124,14 +124,13 @@
 
                                         </tbody>
                                     </table>
-
+                                    <input class="btn btn-primary" style="visibility: hidden" type="button" id="showAllBtnId" onclick="myFunc()" value="Show All"/>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <input type="button" id="showAllBtnId" onclick="myFunc()" value="Show All"/>
         </section>
     </section>
     <!--main content end-->

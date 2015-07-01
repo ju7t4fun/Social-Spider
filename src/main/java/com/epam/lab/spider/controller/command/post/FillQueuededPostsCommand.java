@@ -93,6 +93,7 @@ public class FillQueuededPostsCommand implements ActionCommand {
                 " new_post.post_id=post.id  " +
                 " AND new_post.deleted=false " +
                 "AND ( new_post.state='CREATED' OR new_post.state='ERROR' )";
+
         String globeSearch = " AND  post.message LIKE '%" + GLOBAL_SEARCH_TERM + "%' ";
 
         if (GLOBAL_SEARCH_TERM != "") {
@@ -162,12 +163,16 @@ public class FillQueuededPostsCommand implements ActionCommand {
 
                     try {
                         String msg;
-                        if (currPost.getPost().getMessage().length() > 20) {
-                            msg = currPost.getPost().getMessage().substring(0, 19);
+                        if (currPost.getPost() == null) {
+                            ja.put("No Post");
                         } else {
-                            msg = currPost.getPost().getMessage();
+                            if (currPost.getPost().getMessage().length() > 20) {
+                                msg = currPost.getPost().getMessage().substring(0, 19);
+                            } else {
+                                msg = currPost.getPost().getMessage();
+                            }
+                            ja.put(msg);
                         }
-                        ja.put(msg);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         ja.put("No MESSAGE!!!");
@@ -186,23 +191,25 @@ public class FillQueuededPostsCommand implements ActionCommand {
 
                     try {
                         Set<Attachment> attachments = currPost.getPost().getAttachments();
-                        if (attachments.size() > 0) {
-                            Map<Attachment.Type, Integer> attachmentCount = new HashMap<>();
-                            for (Attachment attachment : attachments) {
-                                int count = 0;
-                                if (attachmentCount.containsKey(attachment.getType())) {
-                                    count = attachmentCount.get(attachment.getType());
+                        if(attachments!=null) {
+                            if (attachments.size() > 0) {
+                                Map<Attachment.Type, Integer> attachmentCount = new HashMap<>();
+                                for (Attachment attachment : attachments) {
+                                    int count = 0;
+                                    if (attachmentCount.containsKey(attachment.getType())) {
+                                        count = attachmentCount.get(attachment.getType());
+                                    }
+                                    count++;
+                                    attachmentCount.put(attachment.getType(), count);
                                 }
-                                count++;
-                                attachmentCount.put(attachment.getType(), count);
+                                String group = null;
+                                for (Attachment.Type type : attachmentCount.keySet()) {
+                                    group = group == null ? "" + type + "|" + attachmentCount.get(type) : group + "!" + type +
+                                            "|" + attachmentCount.get(type);
+                                }
+                                ja.put(group);
                             }
-                            String group = null;
-                            for (Attachment.Type type : attachmentCount.keySet()) {
-                                group = group == null ? "" + type + "|" + attachmentCount.get(type) : group + "!" + type +
-                                        "|" + attachmentCount.get(type);
-                            }
-                            ja.put(group);
-                        } else {
+                        }else {
                             ja.put("");
                         }
                     } catch (Exception ex) {

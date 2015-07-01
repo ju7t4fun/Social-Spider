@@ -185,4 +185,22 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
         }
         return -1;
     }
+
+    public List<Post> getByUserIdWithSearch(int userId,int page, int size, String messageToSearch) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getByUserIdWithSearch(connection,userId,page,size,messageToSearch);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getCountByUserIdWithSearch(Integer id, String messageToSearch) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getCountByUserIdWithSearch(connection,id,messageToSearch);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }
