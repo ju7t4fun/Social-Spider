@@ -6,6 +6,7 @@ var Script = function () {
 
         // validate signup form on keyup and submit
         $("#register_form").validate({
+
             rules: {
                 name: {
                     required: true,

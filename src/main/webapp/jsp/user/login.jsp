@@ -80,15 +80,15 @@
             <div class="login-wrap">
                 <p class="login-img"><i class="icon_lock_alt"></i></p>
 
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
+                <div class="form-group">
+                    <!--<span class="input-group-addon"><i class="icon_mail_alt"></i></span>-->
                     <l:resource key="login.email"><input type="email" value="${login}" name="email" id="email"
                                                          class="form-control" placeholder=""
                                                          style="border-color:#ffffff;"
                                                          required/></l:resource>
                 </div>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                <div class="form-group">
+                    <!--<span class="input-group-addon"><i class="icon_key_alt"></i></span>-->
                     <l:resource key="login.password"><input type="password" name="password" id="password"
                                                             class="form-control" placeholder="" required/></l:resource>
                 </div>

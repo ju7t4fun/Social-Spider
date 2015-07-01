@@ -81,6 +81,7 @@
             }
         }, 500);
 
+        // Видалення групи
         function removeOwner(id) {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open('GET', '/owner?action=remove&id=' + id, true);
@@ -143,8 +144,8 @@
                 }, {
                     "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
                         if (rowData[0] < 0) {
-                            $(td).html('<a class="btn btn-primary" onclick="showGroupStat(' + Math.abs(rowData[0]) +
-                                    ')" data-toggle="modal" data-target="#modal_stat"><span class="fa fa-bar-chart"></span></a>');
+                            $(td).html('<a class="btn btn-primary" onclick="showGroupStat(' + cellData +
+                                    ')" ><span class="fa fa-bar-chart"></span></a>');
                         } else {
                             $(td).html('<a class="btn btn-primary" disabled><span class="fa fa-bar-chart"></span></a>');
                         }
@@ -268,8 +269,14 @@
                     var response = JSON.parse(xmlhttp.responseText);
                     if (response.status == 'error')
                         toastrNotification(response.status, response.msg);
-                    else
+                    else {
+                        $('#modal_stat').modal('show');
                         drawChart(response);
+                        $('#startDate').attr("max", response.max);
+                        $('#startDate').attr("value", response.date_from);
+                        $('#endDate').attr("max", response.max);
+                        $('#endDate').attr("value", response.date_to);
+                    }
                 }
             };
             xmlhttp.send();
@@ -300,6 +307,10 @@
             for (var i = 0; i < response.pie.length; i++) {
                 $("#country_list").append('<li class="list-group-item row"><div style="border-radius: 4px; width: 20px; height: 20px; background: ' + response.pie[i].color + '"><span style="margin-left: 30px">  ' + response.pie[i].name + '</span></div></li>');
             }
+            $("#day1").html(response.day);
+            $("#day2").html(response.day);
+            $("#visitors").html(response.visitors);
+            $("#dayVisitors").html(response.dayVisitors);
         }
 
     </script>

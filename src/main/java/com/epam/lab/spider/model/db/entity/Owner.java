@@ -28,7 +28,7 @@ public class Owner {
         this.id = id;
     }
 
-    public Integer getVk_id() {
+    public Integer getVkId() {
         return vk_id;
     }
 

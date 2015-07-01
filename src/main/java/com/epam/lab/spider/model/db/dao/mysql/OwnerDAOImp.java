@@ -36,7 +36,7 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
     @Override
     public boolean insert(Connection connection, Owner owner) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
-                owner.getVk_id(),
+                owner.getVkId(),
                 owner.getName(),
                 owner.getDomain(),
                 owner.getDeleted(),
@@ -48,7 +48,7 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
     @Override
     public boolean update(Connection connection, int id, Owner owner) throws SQLException {
         return changeQuery(connection, SQL_UPDATE_QUERY,
-                owner.getVk_id(),
+                owner.getVkId(),
                 owner.getName(),
                 owner.getDomain(),
                 owner.getDeleted(),
