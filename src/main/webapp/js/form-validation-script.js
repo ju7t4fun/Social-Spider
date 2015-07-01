@@ -6,11 +6,7 @@ var Script = function () {
 
         // validate signup form on keyup and submit
         $("#register_form").validate({
-            icon: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
+
             rules: {
                 name: {
                     required: true,
