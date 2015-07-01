@@ -76,6 +76,8 @@
     <jsp:include page="../pagecontent/header.jsp"/>
     <jsp:include page="../pagecontent/sidebar.jsp"/>
 
+    <jsp:include page="../post/viewpost.jsp"/>
+
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
@@ -116,7 +118,6 @@
                                 </thead>
                                 </tbody>
                             </table>
-                            <%--<input type="button" id="showAllBtnId" onclick="myFunc()" value="Show All"/>--%>
                         </div>
                     </div>
                 </div>
