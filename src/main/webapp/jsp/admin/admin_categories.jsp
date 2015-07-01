@@ -45,6 +45,9 @@
     <%--<script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>--%>
 
     <%--for table--%>
+    <script>
+        var path = '${pageContext.request.contextPath}';
+    </script>
     <link href="http://cdn.datatables.net/1.10.3/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
     <link href="http://datatables.net/release-datatables/extensions/ColVis/css/dataTables.colVis.css" rel="stylesheet"
           type="text/css">
@@ -56,8 +59,6 @@
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
-    <script src="${pageContext.request.contextPath}/js/jquery.multi-select.js" type="text/javascript"></script>
-    <link href="${pageContext.request.contextPath}/css/multi-select.css" media="screen" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
@@ -68,40 +69,18 @@
 
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
-    <script type="text/javascript">
 
-        // При завантаженні сторінки
-        setTimeout(function () {
-            if (${toastr_notification!=null}) {
-                var args = "${toastr_notification}".split("|");
-                toastrNotification(args[0], args[1]);
-            }
-        }, 500);
-
-        function removeOwner(id, elm) {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/owner?action=remove&id=' + id, true);
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4) {
-                    var response = JSON.parse(xmlhttp.responseText);
-                    toastrNotification(response.status, response.msg);
-                    if (response.status === 'success') {
-                        $('#ownersTable').DataTable().row($(this).parents('tr'))
-                                .remove().draw();
-                    }
-                }
-            };
-            xmlhttp.send(null);
-        }
-    </script>
 
     <script type="text/javascript">
+
         var table;
 
+
         jQuery(document).ready(function () {
-            table = $('#ownersTable').dataTable({
+            table = $('#categoryTable').dataTable({
 
                 "bSort": true,
+                aaSorting:[],
                 "bPaginate": true,
                 "paging": true,
                 "bInfo": false,
@@ -109,13 +88,26 @@
                 "bProcessing": true,
                 'iDisplayLength': 10,
                 "bServerSide": true,
-                "sAjaxSource": "http://localhost:8080/controller?action=getcategory",
+                "sAjaxSource": path +  "/admin/categories?action=getcategory",
                 colVis: {
                     "align": "right",
                     "buttonText": "columns <img src=\"/img/caaret.png\"/>",
                 },
 
-                "columnDefs": []
+                "columnDefs": [
+
+                    {
+                        "targets": [0,1,2], "orderable": false
+                    },
+
+                    {
+                        "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
+
+                        $(td).html('<div class="btn-group"><a class="btn btn-danger" onclick="removeCategory('  + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
+
+                    }
+                    }
+                ]
 
             });
 
@@ -126,6 +118,33 @@
             dataTables_filter_input.attr("style", "width: 500px")
 
         })
+        function addCat(name){
+
+            var xmlhttp = new  XMLHttpRequest();
+            xmlhttp.open("POST",path + "/admin/categories?action=addcategory",true);
+            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xmlhttp.send("category="+name);
+
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    table.fnStandingRedraw();
+                }
+            }
+        }
+
+        function removeCategory(i) {
+            var xmlhttp = new  XMLHttpRequest();
+            xmlhttp.open("POST", path +  "/admin/categories?action=removecategory",true);
+            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xmlhttp.send("id="+i);
+
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    table.fnStandingRedraw();
+                }
+            }
+        }
+
     </script>
 
 </head>
@@ -137,7 +156,7 @@
     <jsp:include page="../pagecontent/header.jsp"/>
     <jsp:include page="../pagecontent/sidebar.jsp"/>
 
-    <jsp:include page="../post/viewpost.jsp"/>
+    <%--<jsp:include page="../post/viewpost.jsp"/>--%>
 
     <section id="main-content">
         <section class="wrapper">
@@ -153,7 +172,7 @@
                             <div id="active" class="tab-pane active">
                                 <div class="col-lg-12">
                                     <table width="100%" border="0" margin="0" padding="0"
-                                           class="row-border tableHeader" id="ownersTable">
+                                           class="row-border tableHeader" id="categoryTable">
                                         <thead>
                                         <tr style="align-content: center">
                                             <th>id</th>
@@ -181,18 +200,18 @@
         <div class="modal-content"  style="height: 150px;">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h4 class="modal-title">Add category</h4>
+                <h4 class="modal-title"  >Add category</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form id="modal_form" method="POST" action="/controller?action=addcategory"
+                        <form id="modal_form" method="POST" action="" onsubmit="addCat(document.getElementById('catName').value)"
                               class="form-horizontal">
                             <div>
-                                <input type="text" name="category" class="form-control" placeholder="Category name">
+                                <input type="text" name="category" class="form-control" id="catName" placeholder="Category name">
                             </div>
                             <div style="position: relative; top: 10px; left: 497px;">
-                                <button type="submit" class="btn btn-primary">Add</button>
+                                <button type="submit" class="btn btn-primary" >Add</button>
                             </div>
                         </form>
                     </div>
