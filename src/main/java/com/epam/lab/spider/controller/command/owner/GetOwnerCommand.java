@@ -29,8 +29,16 @@ public class GetOwnerCommand implements ActionCommand {
         User user = (User) session.getAttribute("user");
         int page = Integer.parseInt(request.getParameter("iDisplayStart"));
         int size = Integer.parseInt(request.getParameter("iDisplayLength"));
-        List<Owner> owners = service.getByUserId(user.getId(), page, size);
-        int count = service.getCountByUserId(user.getId());
+        List<Owner> owners = null;
+        int count = 0;
+        if (request.getParameter("sSearch").length() > 0) {
+            String q = request.getParameter("sSearch");
+            owners = service.searchByUserId(user.getId(), q, page, size);
+            count = service.getCountSearchByUserId(user.getId(), q);
+        }else{
+            owners = service.getByUserId(user.getId(), page, size);
+            count = service.getCountByUserId(user.getId());
+        }
         JSONObject result = new JSONObject();
         JSONArray table = new JSONArray();
         for (Owner owner : owners) {

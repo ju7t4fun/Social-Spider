@@ -90,7 +90,7 @@
                     toastrNotification(response.status, response.msg);
                     if (response.status === 'success') {
                         $('#ownersTable').DataTable().row($(this).parents('tr'))
-                                .remove().draw();
+                                .remove().draw(false);
                     }
                 }
             };
@@ -138,13 +138,16 @@
                     }
                 }, {
                     "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<a class="btn btn-default" onclick="PopUpShow(' + cellData +
-                                ');"><span class="fa fa-users"></span></a>');
+                        $(td).html('<a class="btn btn-default" onclick="PopUpShow(' + cellData + ')"><span class="fa fa-users"></span></a>');
                     }
                 }, {
                     "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<a class="btn btn-primary" onclick="showGroupStat(' + cellData +
-                                ')" data-toggle="modal" data-target="#modal_stat"><span class="fa fa-bar-chart"></span></a>');
+                        if (rowData[0] < 0) {
+                            $(td).html('<a class="btn btn-primary" onclick="showGroupStat(' + Math.abs(rowData[0]) +
+                                    ')" data-toggle="modal" data-target="#modal_stat"><span class="fa fa-bar-chart"></span></a>');
+                        } else {
+                            $(td).html('<a class="btn btn-primary" disabled><span class="fa fa-bar-chart"></span></a>');
+                        }
                     }
                 }, {
                     "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
@@ -257,18 +260,16 @@
         var ownerId;
 
         function showGroupStat(id) {
-            ownerId = 1;
+            ownerId = id;
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/owner?action=stat&id=1', true);
+            xmlhttp.open('GET', '/owner?action=stat&id=' + id, true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
-                    new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
-                    new Chart(document.getElementById("bar").getContext("2d")).Bar(response.bar);
-                    new Chart(document.getElementById("pie").getContext("2d")).Pie(response.pie);
-                    for (var i = 0; i < response.pie.length; i++) {
-                        $("#country_list").append('<li class="list-group-item">' + response.pie[i].name + '</li>');
-                    }
+                    if (response.status == 'error')
+                        toastrNotification(response.status, response.msg);
+                    else
+                        drawChart(response);
                 }
             };
             xmlhttp.send();
@@ -282,15 +283,23 @@
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
-                    new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
-                    new Chart(document.getElementById("bar").getContext("2d")).Bar(response.bar);
-                    new Chart(document.getElementById("pie").getContext("2d")).Pie(response.pie);
-                    for (var i = 0; i < response.pie.length; i++) {
-                        $("#country_list").append('<li class="list-group-item">' + response.pie[i].name + '</li>');
-                    }
+                    if (response.status == 'error')
+                        toastrNotification(response.status, response.msg);
+                    else
+                        drawChart(response);
                 }
             };
             xmlhttp.send();
+        }
+
+        function drawChart(response) {
+            new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
+            new Chart(document.getElementById("bar").getContext("2d")).Bar(response.bar);
+            new Chart(document.getElementById("pie").getContext("2d")).Pie(response.pie);
+            $("#country_list").empty();
+            for (var i = 0; i < response.pie.length; i++) {
+                $("#country_list").append('<li class="list-group-item row"><div style="border-radius: 4px; width: 20px; height: 20px; background: ' + response.pie[i].color + '"><span style="margin-left: 30px">  ' + response.pie[i].name + '</span></div></li>');
+            }
         }
 
     </script>
@@ -310,16 +319,14 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header" style="width: 80%"><i class="fa fa-list-alt"></i><l:resource key="created"/>
-                    </h3>
+                    <h3 class="page-header" style="width: 80%"><i class="fa fa-list-alt"></i> Owner</h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
-                        <li><i class="fa fa-desktop"></i><l:resource key="charts.uniquevisitsdaily"/></li>
-                        <li><i class="fa fa-list-alt"></i><l:resource key="created"/></li>
+                        <li><i class="fa fa-list-alt"></i>Owner</li>
                     </ol>
                 </div>
             </div>
@@ -327,7 +334,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left"><l:resource key="created"/></div>
+                            <div class="pull-left">Owner</div>
                             <div class="clearfix"></div>
                         </div>
 
@@ -400,14 +407,32 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form id="modal_form" method="POST" action="/controller?action="
-                              class="form-horizontal">
+                        <form id="modal_form" class="form-horizontal">
                             <div>
-                                <input type="text" name="category" class="form-control" placeholder="Group name">
+                                <input id="ownerUrlEdit" type="text" class="form-control" placeholder="Group name">
                             </div>
                             <div style="position: relative; top: 10px; left: 497px;">
-                                <button type="submit" class="btn btn-primary">Add</button>
+                                <a type="submit" onclick="addNewOwner()" class="btn btn-primary">Add</a>
                             </div>
+                            <script>
+                                function addNewOwner() {
+                                    var ownerUrl = $("#ownerUrlEdit").val();
+                                    var xmlhttp = new XMLHttpRequest();
+                                    xmlhttp.open('GET', '/owner?action=add&ownerUrl=' + ownerUrl, true);
+                                    xmlhttp.onreadystatechange = function () {
+                                        if (xmlhttp.readyState == 4) {
+                                            var response = JSON.parse(xmlhttp.responseText);
+                                            toastrNotification(response.status, response.msg);
+                                            if (response.status === 'success') {
+                                                $('#ownersTable').DataTable().draw();
+                                                $('#modal_owner').modal('hide');
+                                                $("#ownerUrlEdit").val("");
+                                            }
+                                        }
+                                    };
+                                    xmlhttp.send(null);
+                                }
+                            </script>
                         </form>
                     </div>
                 </div>
@@ -426,14 +451,13 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form id="modal_form1" method="POST" action=""
-                              class="form-horizontal">
+                        <form id="modal_form1" class="form-horizontal">
                             <div>
                                 <input id="group_name" type="text" name="category" class="form-control"
                                        placeholder="Group name">
                             </div>
                             <div style="position: relative; top: 10px; left: 497px;">
-                                <button id="submit_edit" type="submit" class="btn btn-primary">Edit</button>
+                                <a id="submit_edit" class="btn btn-primary">Edit</a>
                             </div>
                         </form>
                     </div>
@@ -455,11 +479,11 @@
                     },
                     onAjaxSuccess
             );
-            function onAjaxSuccess(data) {
-                var responce = JSON.parse(data);
-                if (responce.status === 'success') {
-                    alert('good');
-//                    location.href = "/post?action=queued";
+            function onAjaxSuccess(response) {
+                toastrNotification(response.status, response.msg);
+                if (response.status === 'success') {
+                    $('#ownersTable').DataTable().draw(false);
+                    $('#edit_group').modal('hide');
                 }
             }
         });

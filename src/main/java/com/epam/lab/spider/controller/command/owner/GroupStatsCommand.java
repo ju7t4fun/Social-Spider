@@ -25,8 +25,8 @@ import java.util.*;
  */
 public class GroupStatsCommand implements ActionCommand {
 
-    private static final String[] COLOR = new String[]{"#F38630", "#E0E4CC", "#69D2E7", "#D97041", "#C7604C",
-            "#21323D"};
+    private static final String[] COLOR = new String[]{"#E05500", "#59FF12", "#008000", "#008B8B",
+            "#0000CD", "#C71585", "#A0522D", "#00FA9A", "#FF0000", "#008080"};
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static WallService wallService = factory.create(WallService.class);
 
@@ -66,7 +66,11 @@ public class GroupStatsCommand implements ActionCommand {
         try {
             periods = vk.stats().get(param);
         } catch (VKException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            result.put("statuc", "error");
+            result.put("msg", "Нет прав доступа");
+            response.getWriter().write(result.toString());
+            return;
         }
         // Діаграма відвідування
         {
@@ -154,19 +158,31 @@ public class GroupStatsCommand implements ActionCommand {
                 }
             }
             JSONArray array = new JSONArray();
-            int i = 0;
-            for (String name : countryVisitors.keySet()) {
+            List<Map.Entry<String, Integer>> entries = new ArrayList<>(countryVisitors.entrySet());
+            Collections.sort(entries, new Comparator<Map.Entry<String, Integer>>() {
+                @Override
+                public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                    return -o1.getValue().compareTo(o2.getValue());
+                }
+            });
+
+            for (int i = 0; i < 5; i++) {
+                String name = entries.get(i).getKey();
                 JSONObject item = new JSONObject();
                 item.put("name", name);
                 item.put("value", countryVisitors.get(name));
                 item.put("color", COLOR[i]);
                 array.put(item);
-                i++;
-                if (i >= COLOR.length)
-                    break;
             }
+            int count = 0;
+            for (int i = 5; i < entries.size(); i++)
+                count = count + entries.get(i).getValue();
+            JSONObject item = new JSONObject();
+            item.put("name", "Решта");
+            item.put("value", count);
+            item.put("color", "#000000");
+            array.put(item);
             result.put("pie", array);
-
         }
         response.getWriter().write(result.toString());
     }

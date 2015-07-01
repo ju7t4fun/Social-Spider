@@ -28,6 +28,10 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
     private static final String SQL_GET_BY_USER_ID_LIMIT_QUERY = "SELECT * FROM owner WHERE user_id = ? AND deleted =" +
             " 0 ORDER BY id DESC LIMIT ?, ?";
     private static final String SQL_GET_COUNT_BY_USER_ID = "SELECT COUNT(*) FROM owner WHERE user_id=? AND deleted = 0";
+    private static final String SQL_SEARCH_BY_USER_ID_QUERY = "SELECT * FROM owner WHERE user_id = ? AND MATCH (name," +
+            " domain) AGAINST (?) ORDER BY id DESC LIMIT ?,?";
+    private static final String SQL_COUNT_SEARCH_BY_USER_ID_QUERY = "SELECT * FROM owner WHERE user_id = ? AND MATCH " +
+            "(name, domain) AGAINST (?)";
 
     @Override
     public boolean insert(Connection connection, Owner owner) throws SQLException {
@@ -107,6 +111,20 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
     @Override
     public int getCountByUserId(Connection connection, Integer id) throws SQLException {
         ResultSet rs = selectQuery(connection, SQL_GET_COUNT_BY_USER_ID, id);
+        if (rs.next())
+            return rs.getInt("COUNT(*)");
+        return -1;
+    }
+
+    @Override
+    public List<Owner> searchByUserId(Connection connection, Integer id, String q, int page, int size) throws
+            SQLException {
+        return select(connection, SQL_SEARCH_BY_USER_ID_QUERY, id, q, page, size);
+    }
+
+    @Override
+    public int getCountSearchByUserId(Connection connection, Integer id, String q) throws SQLException {
+        ResultSet rs = selectQuery(connection, SQL_COUNT_SEARCH_BY_USER_ID_QUERY, id, q);
         if (rs.next())
             return rs.getInt("COUNT(*)");
         return -1;

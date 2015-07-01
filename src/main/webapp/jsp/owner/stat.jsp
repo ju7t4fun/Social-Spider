@@ -76,7 +76,7 @@
                                                 </div>
                                             </section>
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-6" style="margin-left: 5px">
                                             <section class="panel" style="margin-top: 31px">
                                                 <ul class="list-group" id="country_list">
                                                 </ul>

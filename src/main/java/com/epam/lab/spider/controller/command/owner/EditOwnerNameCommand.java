@@ -24,19 +24,19 @@ public class EditOwnerNameCommand implements ActionCommand {
         int ownerId = Integer.parseInt(request.getParameter("id"));
         User user = (User) request.getSession().getAttribute("user");
         String name = request.getParameter("name");
-        JSONObject result = new JSONObject();
-        try {
-            Owner owner = service.getById(ownerId);
-            owner.setName(name);
-            owner.setUserId(user.getId());
-            System.out.println(owner);
-            service.update(ownerId, owner);
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.put("status", "error");
-            result.put("msg", "");
-            response.getWriter().write(result.toString());
-            return;
+        JSONObject json = new JSONObject();
+        Owner owner = service.getById(ownerId);
+        owner.setName(name);
+        owner.setUserId(user.getId());
+        if (service.update(ownerId, owner)) {
+            json.put("status", "success");
+            json.put("msg", "Delete post");
+        } else {
+            json.put("status", "error");
+            json.put("msg", "Error");
         }
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json.toString());
     }
 }
