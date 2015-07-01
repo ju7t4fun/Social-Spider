@@ -49,7 +49,7 @@ public class GetWallsCommand implements ActionCommand {
         {
             List<Wall> walls = wallService.getAllByUserID(user.getId());
             for(Wall wall:walls){
-                wall.getOwner().getVk_id();
+                wall.getOwner().getVkId();
                 if(activeFilter){
                     if(wall.getOwner().getName().contains(search) ||
                             wall.getOwner().getDomain().contains(search));

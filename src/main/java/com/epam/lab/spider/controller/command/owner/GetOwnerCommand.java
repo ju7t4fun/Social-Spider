@@ -43,7 +43,7 @@ public class GetOwnerCommand implements ActionCommand {
         JSONArray table = new JSONArray();
         for (Owner owner : owners) {
             JSONArray row = new JSONArray();
-            row.put(owner.getVk_id());
+            row.put(owner.getVkId());
             row.put(owner.getName());
             row.put(owner.getId());
             row.put(owner.getId());

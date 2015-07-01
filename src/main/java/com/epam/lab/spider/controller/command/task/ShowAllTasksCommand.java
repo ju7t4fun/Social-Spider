@@ -47,7 +47,7 @@ public class ShowAllTasksCommand implements ActionCommand {
                 List<Wall> sourceWalls = wallService.getSourceByTaskId(task.getId());
                 for (Wall wall : sourceWalls) {
                     String vkOwnerId =
-                            wall.getOwner().getVk_id().toString();
+                            wall.getOwner().getVkId().toString();
                     sourceStringBuilder.append(vkOwnerId).append(", ");
                 }
                 String source = "";
@@ -61,7 +61,7 @@ public class ShowAllTasksCommand implements ActionCommand {
                 List<Wall> destinationWalls = wallService.getDestinationByTaskId(task.getId());
                 for (Wall wall : destinationWalls) {
                     String vkOwnerId =
-                    wall.getOwner().getVk_id().toString();
+                    wall.getOwner().getVkId().toString();
                     destinationStringBuilder.append(vkOwnerId).append(", ");
                 }
                 String destination = "";
