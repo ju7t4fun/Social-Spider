@@ -8,7 +8,6 @@ import com.epam.lab.spider.model.db.entity.Owner;
 import com.epam.lab.spider.model.vk.Post;
 import org.apache.log4j.Logger;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -24,7 +23,7 @@ public class GrabbingTypeUtil {
         postGrabbingAndFiltering:
         for(int loopsCount = 0,currentPostCount = 0;true;loopsCount++) {
             parameters = new Parameters();
-            parameters.add("owner_id", owner.getVk_id());
+            parameters.add("owner_id", owner.getVkId());
             parameters.add("filter", "owner");
             parameters.add("count", grabbingSize);
             parameters.add("offset", loopsCount*grabbingSize);
@@ -51,7 +50,7 @@ public class GrabbingTypeUtil {
             for (com.epam.lab.spider.model.vk.Post vkPost : postsOnTargetWall) {
                 boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));
                 if (alreadyProceededPost) {
-                    LOG.debug("Post " + owner.getVk_id() + "_" + vkPost.getId() + " already processed.");
+                    LOG.debug("Post " + owner.getVkId() + "_" + vkPost.getId() + " already processed.");
                 } else {
                     boolean qualityCondition = true;
                     if(filter.getLikes()!=null)     qualityCondition &= vkPost.getLikes().getCount() >= filter.getLikes().intValue();
@@ -63,12 +62,12 @@ public class GrabbingTypeUtil {
                         currentPostCount++;
                         if(currentPostCount>=countOfPosts)break postGrabbingAndFiltering;
                     }else {
-                        LOG.debug("Post " + owner.getVk_id() + "_" + vkPost.getId() + " has failed filter.");
+                        LOG.debug("Post " + owner.getVkId() + "_" + vkPost.getId() + " has failed filter.");
                     }
                 }
             }
             if(postsOnTargetWall.size()<grabbingSize){
-                LOG.debug("End of post at owner#"+owner.getVk_id());
+                LOG.debug("End of post at owner#"+owner.getVkId());
                 break postGrabbingAndFiltering;
             }
         }
@@ -80,7 +79,7 @@ public class GrabbingTypeUtil {
         postGrabbingAndFiltering:
         for(int loopsCount = 0,currentPostCount = 0;true;loopsCount++) {
             parameters = new Parameters();
-            parameters.add("owner_id", owner.getVk_id());
+            parameters.add("owner_id", owner.getVkId());
             parameters.add("filter", "owner");
             parameters.add("count", grabbingSize);
             parameters.add("offset", loopsCount*grabbingSize);
@@ -107,7 +106,7 @@ public class GrabbingTypeUtil {
             for (com.epam.lab.spider.model.vk.Post vkPost : postsOnTargetWall) {
                 boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));
                 if (alreadyProceededPost) {
-                    LOG.debug("Post " + owner.getVk_id() + "_" + vkPost.getId() + " already processed.");
+                    LOG.debug("Post " + owner.getVkId() + "_" + vkPost.getId() + " already processed.");
                 } else {
                     boolean qualityCondition = true;
                     if(filter.getLikes()!=null)     qualityCondition &= vkPost.getLikes().getCount() >= filter.getLikes().intValue();
@@ -119,12 +118,12 @@ public class GrabbingTypeUtil {
                         currentPostCount++;
                         if(currentPostCount>=countOfPosts)break postGrabbingAndFiltering;
                     }else {
-                        LOG.debug("Post " + owner.getVk_id() + "_" + vkPost.getId() + " has failed filter.");
+                        LOG.debug("Post " + owner.getVkId() + "_" + vkPost.getId() + " has failed filter.");
                     }
                 }
             }
             if(postsOnTargetWall.size()<grabbingSize){
-                LOG.debug("End of post at owner#"+owner.getVk_id());
+                LOG.debug("End of post at owner#"+owner.getVkId());
                 break postGrabbingAndFiltering;
             }
         }

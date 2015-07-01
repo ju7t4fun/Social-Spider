@@ -9,27 +9,12 @@ import com.epam.lab.spider.job.util.PostAttachmentUtil;
 import com.epam.lab.spider.model.db.entity.*;
 import com.epam.lab.spider.model.db.service.*;
 import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
-import com.epam.lab.spider.model.vk.Photo;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,7 +84,7 @@ public class OnePostJob implements Job {
                 List<String> attachmentsList = new ArrayList<>();
                 for (Attachment attachment : newPost.getPost().getAttachments()) {
                     if (attachment.getType() == Attachment.Type.PHOTO && attachment.getMode() == Attachment.Mode.URL) {
-                        String att = PostAttachmentUtil.uploadPhoto(vk, attachment.getPayload().toString(), owner.getVk_id());
+                        String att = PostAttachmentUtil.uploadPhoto(vk, attachment.getPayload().toString(), owner.getVkId());
                         if (att != null) attachmentsList.add(att);
                     }
                     if (attachment.getType() == Attachment.Type.PHOTO && attachment.getMode() == Attachment.Mode.CODE) {
@@ -115,7 +100,7 @@ public class OnePostJob implements Job {
                         if (att != null) attachmentsList.add(att);
                     }
                     if (attachment.getType() == Attachment.Type.VIDEO && attachment.getMode() == Attachment.Mode.URL) {
-                        String att = PostAttachmentUtil.uploadVideo(vk, attachment.getPayload().toString(), owner.getVk_id());
+                        String att = PostAttachmentUtil.uploadVideo(vk, attachment.getPayload().toString(), owner.getVkId());
                         if (att != null) attachmentsList.add(att);
                     }
                     if (attachment.getType() == Attachment.Type.VIDEO && attachment.getMode() == Attachment.Mode.CODE) {
@@ -140,10 +125,10 @@ public class OnePostJob implements Job {
                 LOG.debug("Attachments: " + attachmentsStringBuilder.toString());
 
                 Parameters parameters = new Parameters();
-                parameters.add("owner_id", owner.getVk_id());
+                parameters.add("owner_id", owner.getVkId());
                 parameters.add("attachments", attachmentsStringBuilder.toString());
                 parameters.add("message", newPost.getPost().getMessage());
-                if (owner.getVk_id() < 0) {
+                if (owner.getVkId() < 0) {
                     parameters.add("from_group", 1);
                 }
 
@@ -182,7 +167,7 @@ public class OnePostJob implements Job {
                 newPost.setVkPostId(Integer.parseInt(response.toString()));
                 SavableServiceUtil.safeSave(newPost);
 
-                LOG.debug("new post success : " + owner.getVk_id() + "_" + response);
+                LOG.debug("new post success : " + owner.getVkId() + "_" + response);
             } catch (VKException x) {
                 switch (x.getExceptionCode()) {
                     case VKException.VK_CAPTCHA_NEEDED: {

@@ -132,7 +132,7 @@ public class NewPost {
             accessToken.setExpirationMoment(profile.getExtTime().getTime());
             vk.setAccessToken(accessToken);
             Parameters param = new Parameters();
-            param.add("posts", "" + wall.getOwner().getVk_id() + "_" + this.vkPostId);
+            param.add("posts", "" + wall.getOwner().getVkId() + "_" + this.vkPostId);
 //            param.add("extended", 1);
             try {
                 final com.epam.lab.spider.model.vk.Post post = vk.wall().getById(param).get(0);
@@ -186,7 +186,7 @@ public class NewPost {
             accessToken.setExpirationMoment(profile.getExtTime().getTime());
             vk.setAccessToken(accessToken);
             Parameters param = new Parameters();
-            param.add("owner_id", wall.getOwner().getVk_id());
+            param.add("owner_id", wall.getOwner().getVkId());
             param.add("post_id", wallId);
             try {
                 return vk.stats().getPostReach(param);
