@@ -133,4 +133,40 @@ public class CategoryService implements BaseService<Category> {
         return null;
     }
 
+    public List<Category> getAllWithLimit(int start, int ammount) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return cdao.getAllWithLimit(connection, start, ammount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Category> getAllWithSearchLimited(String nameToSearch, int start, int ammount) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return cdao.getAllWithSearchLimited(connection,nameToSearch,start,ammount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getCountAll() {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return cdao.getCount(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getCountAllWithSearch(String categoryToSearch) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return cdao.getCountWithSearch(connection,categoryToSearch);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 }

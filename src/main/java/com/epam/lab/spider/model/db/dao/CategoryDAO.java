@@ -13,4 +13,12 @@ public interface CategoryDAO extends CRUD<Category> {
 
     List<Category> getAllWithSearch(Connection connection, String nameToSearch) throws SQLException;
 
+    List<Category> getAllWithLimit(Connection connection, int start, int ammount) throws SQLException;
+
+    List<Category> getAllWithSearchLimited(Connection connection, String nameToSearch, int start, int ammount) throws SQLException;
+
+    int getCountWithSearch(Connection connection, String categoryToSearch) throws SQLException;
+
+    int getCount(Connection connection) throws SQLException;
+
 }
