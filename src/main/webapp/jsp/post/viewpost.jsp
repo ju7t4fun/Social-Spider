@@ -60,10 +60,9 @@
         function onAjaxSuccess(data) {
             var response = data;
             $("#post_text").html(response.postText);
-
-            var div_gallery = $("#gallery");
-
+            $("#gallery").empty();
             if (response.attachments.length != 0) {
+                var div_gallery = $("#gallery");
                 for (var i = 0; i < response.attachments.length; i++) {
                     var image = $('<img>');
                     if (response.attachments[i].payload.includes("image")) {
