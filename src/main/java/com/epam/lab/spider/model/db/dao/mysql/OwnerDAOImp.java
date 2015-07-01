@@ -16,7 +16,7 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
 
     private static final String SQL_INSERT_QUERY = "INSERT INTO owner (vk_id, name, domain, deleted, user_id) " +
             "VALUES (?, ?, ?, ?, ?)";
-    private static final String SQL_UPDATE_QUERY = "UPDATE owner SET vk_id = ?, name = ?, domain = ?, deleted = ? " +
+    private static final String SQL_UPDATE_QUERY = "UPDATE owner SET vk_id = ?, name = ?, domain = ?, deleted = ?, " +
             "user_id = ? WHERE id = ?";
     // private static final String SQL_DELETE_QUERY = "DELETE * FROM owner WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE owner SET deleted = true WHERE id = ?";

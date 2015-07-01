@@ -138,7 +138,8 @@
                     }
                 }, {
                     "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<a class="btn btn-default" onclick="PopUpShow(' + cellData + ')"><span class="fa fa-users"></span></a>');
+                        $(td).html('<a class="btn btn-default" onclick="PopUpShow(' + cellData +
+                                ');"><span class="fa fa-users"></span></a>');
                     }
                 }, {
                     "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
@@ -147,7 +148,9 @@
                     }
                 }, {
                     "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<div class="btn-group"><a class="btn btn-success" href="#"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removeOwner(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
+                        $(td).html('<div class="btn-group"><a onclick="getGroupName(\'' + rowData[1]
+                                + '\', ' + cellData
+                                + ')" class="btn btn-success" data-toggle="modal" data-target="#edit_group"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removeOwner(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
                     }
                 }, {
                     "width": "60%", "targets": 1
@@ -412,6 +415,55 @@
         </div>
     </div>
 </div>
-
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="edit_group"
+     class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content" style="height: 150px;">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
+                <h4 class="modal-title">Edit group name</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="modal_form1" method="POST" action=""
+                              class="form-horizontal">
+                            <div>
+                                <input id="group_name" type="text" name="category" class="form-control"
+                                       placeholder="Group name">
+                            </div>
+                            <div style="position: relative; top: 10px; left: 497px;">
+                                <button id="submit_edit" type="submit" class="btn btn-primary">Edit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function getGroupName(name, id) {
+        $("#group_name").val(name);
+        $("#submit_edit").click(function () {
+            var ownerText = $("#group_name").val();
+            $.post(
+                    "/owner?action=editowner",
+                    {
+                        id: id,
+                        name: ownerText,
+                    },
+                    onAjaxSuccess
+            );
+            function onAjaxSuccess(data) {
+                var responce = JSON.parse(data);
+                if (responce.status === 'success') {
+                    alert('good');
+//                    location.href = "/post?action=queued";
+                }
+            }
+        });
+    }
+</script>
 </body>
 </html>

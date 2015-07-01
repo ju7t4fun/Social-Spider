@@ -36,6 +36,7 @@ public class OwnerServlet extends HttpServlet {
             commands.put("optionFilling", new OptionFillingCommand());
             commands.put("bind", new BindOwnerCommand());
             commands.put("stat", new GroupStatsCommand());
+            commands.put("editowner", new EditOwnerNameCommand());
         }
     }
 }
