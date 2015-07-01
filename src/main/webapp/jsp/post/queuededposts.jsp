@@ -77,6 +77,8 @@
     <jsp:include page="../pagecontent/header.jsp"/>
     <jsp:include page="../pagecontent/sidebar.jsp"/>
 
+    <jsp:include page="../post/viewpost.jsp"/>
+
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
@@ -137,18 +139,11 @@
 <!-- container section end -->
 <script>
     function myFunc() {
-        if (document.getElementById("showAllBtnId").style.visibility = "visible") {
-            alert("LOL I was visible");
-            document.getElementById("showAllBtnId").style.visibility = "hidden";
-        } else {
-            alert("LOL I was hidden");
-            document.getElementById("showAllBtnId").style.visibility = "visible";
-        }
         var newUrl = path + "/post?action=fillqueuededposts";
         table.api().ajax.url(newUrl).load();
 
-        alert("dd");
-//        document.getElementById("showAllBtnId").style.visibility = "hidden";
+
+        document.getElementById("showAllBtnId").style.visibility = "hidden";
     };
 </script>
 </body>

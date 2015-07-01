@@ -21,10 +21,19 @@ import java.util.List;
 public class GetCategoryCommand implements ActionCommand {
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static CategoryService service = factory.create(CategoryService.class);
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Category> categories = service.getAll();
-        System.out.println(categories);
+
+        String toSearch = request.getParameter("sSearch");
+        List<Category> categories;
+        if (toSearch == null || toSearch == "") {
+            categories = service.getAll();
+        } else {
+            toSearch = "%" + toSearch + "%";
+            System.out.println("toSearch: " + toSearch);
+            categories = service.getAllWithSearch(toSearch);
+        }
         JSONObject result = new JSONObject();
         JSONArray table = new JSONArray();
         for (Category category : categories) {
@@ -34,7 +43,7 @@ public class GetCategoryCommand implements ActionCommand {
             row.put(category.getId());
             table.put(row);
         }
-      result.put("iTotalDisplayRecords", categories.size());
+        result.put("iTotalDisplayRecords", categories.size());
         result.put("aaData", table);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

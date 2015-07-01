@@ -6,20 +6,14 @@
  */
 var table;
 
+
 function reloadData(grName) {
 
-    if (document.getElementById("showAllBtnId").style.visibility = "visible") {
-        alert("LOL I was visible");
-        document.getElementById("showAllBtnId").style.visibility = "hidden";
-    } else {
-        alert("LOL I was hidden");
-        document.getElementById("showAllBtnId").style.visibility = "visible";
-    }
-    //document.getElementById("showAllBtnId").style.visibility = "visible";
+    document.getElementById("showAllBtnId").style.visibility = "visible";
     var newUrl = path + "/post?action=fillqueuededposts&groupNameToGroup="+grName;
     table.api().ajax.url(newUrl).load();
-    alert("dd");
 
+    document.getElementById("showAllBtnId").style.visibility = "visible";
 };
 
 jQuery(document).ready(function () {
@@ -65,11 +59,8 @@ jQuery(document).ready(function () {
             {
                 "aTargets": [0], "createdCell": function (td, cellData, rowData, row, col) {
 
-                var strCellValue =
-                    "<a href=\"javascript:ShowDialog(" + rowData[6] + ")\">" +
-                    cellData +
-                    "</a>";
-                $(td).html(strCellValue);
+                $(td).html('<a href="#" onclick="viewPost(' + rowData[4] + ')" data-toggle="modal" data-target="#myModal">' +
+                    cellData + '</a>');
 
             }
             },
@@ -114,13 +105,6 @@ jQuery(document).ready(function () {
 });
 
 
-function reloadData(grName) {
-
-    var newUrl = path + "/post?action=fillqueuededposts&groupNameToGroup="+grName;
-
-    table.api().ajax.url(newUrl).load();
-
-}
 function removePost(i) {
 
     var xmlhttp = new  XMLHttpRequest();

@@ -124,7 +124,7 @@
                     "bVisible": false, "aTargets": [0]
                 }, {
                     "aTargets": [1], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<a onclick="viewPost(' + rowData[0] + ')" data-toggle="modal" data-target="#myModal">' +
+                        $(td).html('<a href="#" onclick="viewPost(' + rowData[0] + ')" data-toggle="modal" data-target="#myModal">' +
                                 cellData + '</a>');
                     }
                 }, {

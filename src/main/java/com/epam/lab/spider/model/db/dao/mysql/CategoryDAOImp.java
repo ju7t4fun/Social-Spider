@@ -17,7 +17,9 @@ public class CategoryDAOImp extends BaseDAO implements CategoryDAO {
     private static final String SQL_INSERT_QUERY = "INSERT INTO category (name) VALUES (?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE category SET name = ?";
     private static final String SQL_DELETE_QUERY = "DELETE FROM category WHERE id = ?";
-    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM category";
+    private static final String SQL_GET_ALL_QUERY = "SELECT * FROM category ORDER BY id desc ";
+    private static final String SQL_GET_ALL_WITH_SEARCH_QUERY = "SELECT * FROM category WHERE name LIKE ? " +
+            " ORDER BY id desc ";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM category WHERE id = ?";
 
     @Override
@@ -56,6 +58,11 @@ public class CategoryDAOImp extends BaseDAO implements CategoryDAO {
     @Override
     public List<Category> getAll(Connection connection) throws SQLException {
         return select(connection, SQL_GET_ALL_QUERY);
+    }
+
+    @Override
+    public List<Category> getAllWithSearch(Connection connection, String nameToSearch) throws SQLException {
+        return select(connection, SQL_GET_ALL_WITH_SEARCH_QUERY, nameToSearch);
     }
 
     @Override

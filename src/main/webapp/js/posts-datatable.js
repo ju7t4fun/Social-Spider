@@ -65,11 +65,8 @@ jQuery(document).ready(function () {
             {
                 "aTargets": [0], "createdCell": function (td, cellData, rowData, row, col) {
 
-                var strCellValue =
-                    "<a href=\"javascript:ShowDialog(" + rowData[5] + ")\">" +
-                    cellData +
-                    "</a>";
-                $(td).html(strCellValue);
+                $(td).html('<a href="#" onclick="viewPost(' + rowData[5] + ')" data-toggle="modal" data-target="#myModal">' +
+                    cellData + '</a>');
 
             }
             },

@@ -44,7 +44,7 @@
 <script>
     function viewPost(id) {
         $.post(
-                "/controller?action=getpostbyid",
+                "http://localhost:8080/controller?action=getpostbyid",
                 {
                     post_id: id
                 },

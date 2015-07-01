@@ -81,10 +81,12 @@ public class CategoryService implements BaseService<Category> {
         try {
             Connection connection = PoolConnection.getConnection();
             try {
-                connection.setAutoCommit(false);
-                assertTransaction(chtdao.deleteByCategoryId(connection, id));
-                assertTransaction(cdao.delete(connection, id));
-                connection.commit();
+//                connection.setAutoCommit(false);
+//                assertTransaction(chtdao.deleteByCategoryId(connection, id));
+//                assertTransaction(cdao.delete(connection, id));
+//                connection.commit();
+                chtdao.deleteByCategoryId(connection, id);
+                cdao.delete(connection, id);
             } catch (SQLTransactionException e) {
                 connection.rollback();
                 return false;
@@ -110,10 +112,21 @@ public class CategoryService implements BaseService<Category> {
         return null;
     }
 
+
     @Override
     public Category getById(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
             return cdao.getById(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public List<Category> getAllWithSearch(String nameToSearch) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return cdao.getAllWithSearch(connection,nameToSearch);
         } catch (SQLException e) {
             e.printStackTrace();
         }
