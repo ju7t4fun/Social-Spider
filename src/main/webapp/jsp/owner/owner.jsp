@@ -81,6 +81,7 @@
             }
         }, 500);
 
+        // Видалення групи
         function removeOwner(id) {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open('GET', '/owner?action=remove&id=' + id, true);
@@ -90,7 +91,7 @@
                     toastrNotification(response.status, response.msg);
                     if (response.status === 'success') {
                         $('#ownersTable').DataTable().row($(this).parents('tr'))
-                                .remove().draw();
+                                .remove().draw(false);
                     }
                 }
             };
@@ -142,12 +143,18 @@
                     }
                 }, {
                     "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<a class="btn btn-primary" onclick="showGroupStat(' + cellData +
-                                ')" data-toggle="modal" data-target="#modal_stat"><span class="fa fa-bar-chart"></span></a>');
+                        if (rowData[0] < 0) {
+                            $(td).html('<a class="btn btn-primary" onclick="showGroupStat(' + cellData +
+                                    ')" ><span class="fa fa-bar-chart"></span></a>');
+                        } else {
+                            $(td).html('<a class="btn btn-primary" disabled><span class="fa fa-bar-chart"></span></a>');
+                        }
                     }
                 }, {
                     "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<div class="btn-group"><a class="btn btn-success" href="#"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removeOwner(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
+                        $(td).html('<div class="btn-group"><a onclick="getGroupName(\'' + rowData[1]
+                                + '\', ' + cellData
+                                + ')" class="btn btn-success" data-toggle="modal" data-target="#edit_group"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removeOwner(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
                     }
                 }, {
                     "width": "60%", "targets": 1
@@ -254,17 +261,21 @@
         var ownerId;
 
         function showGroupStat(id) {
-            ownerId = 1;
+            ownerId = id;
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/owner?action=stat&id=1', true);
+            xmlhttp.open('GET', '/owner?action=stat&id=' + id, true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
-                    new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
-                    new Chart(document.getElementById("bar").getContext("2d")).Bar(response.bar);
-                    new Chart(document.getElementById("pie").getContext("2d")).Pie(response.pie);
-                    for (var i = 0; i < response.pie.length; i++) {
-                        $("#country_list").append('<li class="list-group-item">' + response.pie[i].name + '</li>');
+                    if (response.status == 'error')
+                        toastrNotification(response.status, response.msg);
+                    else {
+                        $('#modal_stat').modal('show');
+                        drawChart(response);
+                        $('#startDate').attr("max", response.max);
+                        $('#startDate').attr("value", response.date_from);
+                        $('#endDate').attr("max", response.max);
+                        $('#endDate').attr("value", response.date_to);
                     }
                 }
             };
@@ -279,15 +290,27 @@
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
-                    new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
-                    new Chart(document.getElementById("bar").getContext("2d")).Bar(response.bar);
-                    new Chart(document.getElementById("pie").getContext("2d")).Pie(response.pie);
-                    for (var i = 0; i < response.pie.length; i++) {
-                        $("#country_list").append('<li class="list-group-item">' + response.pie[i].name + '</li>');
-                    }
+                    if (response.status == 'error')
+                        toastrNotification(response.status, response.msg);
+                    else
+                        drawChart(response);
                 }
             };
             xmlhttp.send();
+        }
+
+        function drawChart(response) {
+            new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
+            new Chart(document.getElementById("bar").getContext("2d")).Bar(response.bar);
+            new Chart(document.getElementById("pie").getContext("2d")).Pie(response.pie);
+            $("#country_list").empty();
+            for (var i = 0; i < response.pie.length; i++) {
+                $("#country_list").append('<li class="list-group-item row"><div style="border-radius: 4px; width: 20px; height: 20px; background: ' + response.pie[i].color + '"><span style="margin-left: 30px">  ' + response.pie[i].name + '</span></div></li>');
+            }
+            $("#day1").html(response.day);
+            $("#day2").html(response.day);
+            $("#visitors").html(response.visitors);
+            $("#dayVisitors").html(response.dayVisitors);
         }
 
     </script>
@@ -307,16 +330,14 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header" style="width: 80%"><i class="fa fa-list-alt"></i><l:resource key="created"/>
-                    </h3>
+                    <h3 class="page-header" style="width: 80%"><i class="fa fa-list-alt"></i> <l:resource key="owner"/></h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
-                        <li><i class="fa fa-desktop"></i><l:resource key="charts.uniquevisitsdaily"/></li>
-                        <li><i class="fa fa-list-alt"></i><l:resource key="created"/></li>
+                        <li><i class="fa fa-list-alt"></i><l:resource key="owner"/></li>
                     </ol>
                 </div>
             </div>
@@ -324,7 +345,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left"><l:resource key="created"/></div>
+                            <div class="pull-left"><l:resource key="owner"/></div>
                             <div class="clearfix"></div>
                         </div>
 
@@ -353,6 +374,8 @@
                                     <a href="javascript:PopUpHide()">
                                         <button class="btn btn-info" style="margin-right: 14px"><l:resource
                                                 key="newpost.save"/></button>
+                                        <button class="btn btn-danger" style="margin-right: 14px"><l:resource
+                                                key="cancel"/></button>
                                     </a>
                                 </div>
 
@@ -392,18 +415,61 @@
         <div class="modal-content" style="height: 150px;">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h4 class="modal-title">Add group</h4>
+                <h4 class="modal-title"><l:resource key="owner.addgroup"/></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form id="modal_form" method="POST" action="/controller?action="
-                              class="form-horizontal">
+                        <form id="modal_form" class="form-horizontal">
                             <div>
-                                <input type="text" name="category" class="form-control" placeholder="Group name">
+                                <l:resource key="owner.groupname"><input id="ownerUrlEdit" type="text" class="form-control" placeholder=""></l:resource>
                             </div>
                             <div style="position: relative; top: 10px; left: 497px;">
-                                <button type="submit" class="btn btn-primary">Add</button>
+                                <a type="submit" onclick="addNewOwner()" class="btn btn-primary"><l:resource key="add"/></a>
+                            </div>
+                            <script>
+                                function addNewOwner() {
+                                    var ownerUrl = $("#ownerUrlEdit").val();
+                                    var xmlhttp = new XMLHttpRequest();
+                                    xmlhttp.open('GET', '/owner?action=add&ownerUrl=' + ownerUrl, true);
+                                    xmlhttp.onreadystatechange = function () {
+                                        if (xmlhttp.readyState == 4) {
+                                            var response = JSON.parse(xmlhttp.responseText);
+                                            toastrNotification(response.status, response.msg);
+                                            if (response.status === 'success') {
+                                                $('#ownersTable').DataTable().draw();
+                                                $('#modal_owner').modal('hide');
+                                                $("#ownerUrlEdit").val("");
+                                            }
+                                        }
+                                    };
+                                    xmlhttp.send(null);
+                                }
+                            </script>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="edit_group"
+     class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content" style="height: 150px;">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
+                <h4 class="modal-title"><l:resource key="owner.editgroupname"/></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="modal_form1" class="form-horizontal">
+                                <l:resource key="owner.groupname"><input id="group_name" type="text" name="category" class="form-control"
+                                       placeholder=""></l:resource>
+                            </div>
+                            <div style="position: relative; top: 10px; left: 497px;">
+                                <a id="submit_edit" class="btn btn-primary"><l:resource key="edit"/></a>
                             </div>
                         </form>
                     </div>
@@ -412,6 +478,28 @@
         </div>
     </div>
 </div>
-
+<script>
+    function getGroupName(name, id) {
+        $("#group_name").val(name);
+        $("#submit_edit").click(function () {
+            var ownerText = $("#group_name").val();
+            $.post(
+                    "/owner?action=editowner",
+                    {
+                        id: id,
+                        name: ownerText,
+                    },
+                    onAjaxSuccess
+            );
+            function onAjaxSuccess(response) {
+                toastrNotification(response.status, response.msg);
+                if (response.status === 'success') {
+                    $('#ownersTable').DataTable().draw(false);
+                    $('#edit_group').modal('hide');
+                }
+            }
+        });
+    }
+</script>
 </body>
 </html>

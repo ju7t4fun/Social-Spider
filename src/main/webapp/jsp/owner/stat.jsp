@@ -8,7 +8,7 @@
         <div class="modal-content" style="width: 1000px; margin-left: -200px;">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h4 class="modal-title"><l:resource key="charts" /></h4>
+                <h4 class="modal-title"><l:resource key="charts"/></h4>
             </div>
 
             <div class="modal-body">
@@ -18,22 +18,23 @@
                     <div class="col-lg-12">
                         <section class="panel">
                             <%--<header class="panel-heading" style="position: fixed; left: 300px; top:300px;">--%>
-                                <%--<Char>General Chart</Char>--%>
+                            <%--<Char>General Chart</Char>--%>
                             <%--</header>--%>
                             <div style="position: fixed; top: 100px; left: 30px;">
 
-                                <label for="startDate" style="position: fixed; left: 20px; top: 105px"><l:resource key="charts.from" /></label>
-                                <l:resource key="charts.startdate"><input id="startDate" name="date" type="date" max="2015-06-30" value="2015-06-30"
-                                       placeholder="" class="form-control"
-                                       style="width: 200px;  position: fixed; left: 60px; top: 100px;"></l:resource>
+                                <label for="startDate" style="position: fixed; left: 20px; top: 105px"><l:resource
+                                        key="charts.from"/></label>
+                                <l:resource key="charts.startdate"><input id="startDate" name="date" type="date"
+                                                                          class="form-control"
+                                                                          style="width: 200px;  position: fixed; left: 60px; top: 100px;"></l:resource>
                                 <label for="endDate" style="position:
-                                       fixed; left: 280px; top: 105px"><l:resource key="charts.to" /></label>
-                                <l:resource key="charts.enddate"><input id="endDate" name="date" type="date" max="2015-06-30" value="2015-06-30"
-                                       placeholder="" class="form-control" style="width: 200px;  position:
-                                       fixed; left: 305px; top: 100px;"></l:resource>
+                                       fixed; left: 280px; top: 105px"><l:resource key="charts.to"/></label>
+                                <l:resource key="charts.enddate"><input id="endDate" name="date" type="date"
+                                                                        class="form-control" style="width: 200px; position: fixed; left: 305px; top: 100px;
+                                                                         "></l:resource>
 
                                 <a onclick="redrawChart()" style="position:fixed; left: 530px;
-                                top: 100px;" class="btn btn-default"><l:resource key="charts.update" /></a>
+                                top: 100px;" class="btn btn-default"><l:resource key="charts.update"/></a>
                             </div>
                             <div class="panel-body" style="margin-top: 50px;">
                                 <div class="tab-pane" id="chartjs">
@@ -42,9 +43,16 @@
                                         <div class="col-lg-6" style="margin-left: -150px;">
                                             <section class="panel">
                                                 <header class="panel-heading" style="margin-left: 50px;">
-                                                    <l:resource key="charts.uniquevisitsdaily" />: 10
-                                                    <l:resource key="charts.uniquevisits" /> 30 <l:resource key="charts.days" />: 300
+                                                    Unique visitors and views
                                                 </header>
+                                                <div style="margin-left: 50px; width: 600px">
+                                                    <l:resource key="charts.uniquevisitsdaily"/>
+                                                    <span id="day1"></span> <l:resource key="charts.days"/>:
+                                                    <span id="dayVisitors"></span><br>
+                                                    <l:resource key="charts.uniquevisits"/>
+                                                    <span id="day2"></span> <l:resource key="charts.days"/>:
+                                                    <span id="visitors"></span>
+                                                </div>
                                                 <div class="panel-body text-center">
                                                     <canvas id="line" height="500" width="930"></canvas>
                                                 </div>
@@ -76,7 +84,7 @@
                                                 </div>
                                             </section>
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-6" style="margin-left: 5px">
                                             <section class="panel" style="margin-top: 31px">
                                                 <ul class="list-group" id="country_list">
                                                 </ul>

@@ -25,9 +25,30 @@ public class Utils extends Methods {
     /**
      * Определяет тип объекта (пользователь, сообщество, приложение) и его идентификатор по короткому имени screen_name.
      */
-    public int resolveScreenName(Parameters param) throws VKException {
+    public ScreenName resolveScreenName(Parameters param) throws VKException {
         final Response response = request("utils.resolveScreenName", param).execute();
-        return response.root().child("object_id").get(0).value().toInt();
+//        return response.root().child("object_id").get(0).value().toInt();
+        return new ScreenName() {
+            @Override
+            public Type getType() {
+                return Type.valueOf(response.root().child("type").get(0).value().toString().toUpperCase());
+            }
+
+            @Override
+            public int getObjectId() {
+                return response.root().child("object_id").get(0).value().toInt();
+            }
+        };
+    }
+
+    public interface ScreenName {
+        enum Type {
+            USER, GROUP, APPLICATION, PAGE
+        }
+
+        Type getType();
+
+        int getObjectId();
     }
 
     /**
@@ -35,13 +56,13 @@ public class Utils extends Methods {
      * для груп -id
      * для пользователей id
      */
-    public int resolveScreenNameEx(String  domain) throws VKException {
+    public int resolveScreenNameEx(String domain) throws VKException {
         Parameters param = new Parameters();
         param.add("screen_name", domain);
         final Response response = request("utils.resolveScreenName", param).execute();
         Integer id = response.root().child("object_id").get(0).value().toInt();
         boolean isGroup = response.root().child("type").get(0).value().toString().equals("group");
-        return isGroup?-id:id;
+        return isGroup ? -id : id;
     }
 
     /**

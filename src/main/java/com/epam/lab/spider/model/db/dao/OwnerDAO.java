@@ -24,4 +24,9 @@ public interface OwnerDAO extends CRUD<Owner> {
     List<Owner> getByUserId(Connection connection, Integer id, int page, int size) throws SQLException;
 
     int getCountByUserId(Connection connection, Integer id) throws SQLException;
+
+    List<Owner> searchByUserId(Connection connection, Integer id, String q, int page, int size) throws SQLException;
+
+    int getCountSearchByUserId(Connection connection, Integer id, String q) throws SQLException;
+
 }

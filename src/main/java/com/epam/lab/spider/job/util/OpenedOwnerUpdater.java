@@ -29,7 +29,7 @@ public class OpenedOwnerUpdater {
         List<Owner> usersWall = new ArrayList<>();
         List<Owner> groupsWall = new ArrayList<>();
         for(Owner owner:owners){
-            Integer id = owner.getVk_id();
+            Integer id = owner.getVkId();
             if(id>0){
                 usersWall.add(owner);
                 usersStringBuilder.append(id).append(",");
@@ -57,7 +57,7 @@ public class OpenedOwnerUpdater {
                 User user = users.get(i);
                 Owner owner = usersWall.get(i);
 
-                if(user.getId() != owner.getVk_id().intValue()){
+                if(user.getId() != owner.getVkId().intValue()){
                     LOG.error("Unequals vk.id's!");
                 }else{
                     boolean change = false;
@@ -92,7 +92,7 @@ public class OpenedOwnerUpdater {
                     Owner owner = groupsWall.get(i);
                     Integer groupId = - group.get("id").toInt();
 
-                    if(groupId.intValue() != owner.getVk_id().intValue()){
+                    if(groupId.intValue() != owner.getVkId().intValue()){
                         LOG.error("Unequals vk.id's!");
                     }else{
                         boolean change = false;

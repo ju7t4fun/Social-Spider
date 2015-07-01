@@ -72,27 +72,27 @@
             <div class="login-wrap">
                 <p class="login-img"><i class="icon_house_alt"></i></p>
 
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="icon_profile"></i></span>
+                <div class="form-group">
+                    <!--<span class="input-group-addon"><i class="icon_profile"></i></span>-->
                     <l:resource key="reg.name"><input type="text" class="form-control" id="name" name="name"
                                                       maxlength="45"
                                                       value="${name}" placeholder=""
                                                       pattern="^[a-zA-Z\u0400-\u04ff]+$"/></l:resource>
                 </div>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="icon_profile"></i></span>
+                <div class="form-group">
+                    <!--<span class="input-group-addon"><i class="icon_profile"></i></span>-->
                     <l:resource key="reg.surname"><input type="text" class="form-control" id="surname" name="surname"
                                                          maxlength="45" value="${surname}" placeholder=""
                                                          pattern="^[a-zA-Z\u0400-\u04ff]+$"/></l:resource>
                 </div>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
+                <div class="form-group">
+                   <!-- <span class="input-group-addon"><i class="icon_mail_alt"></i></span>-->
                     <l:resource key="login.email"><input type="email" class="form-control" id="email" name="email"
                                                          maxlength="255" value="${email}" placeholder=""
                                                          style="border-color:#ffffff;"/></l:resource>
                 </div>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                <div class="form-group">
+                   <!-- <span class="input-group-addon"><i class="icon_key_alt"></i></span>-->
                     <l:resource key="login.password"><input type="password" class="form-control" id="password"
                                                             name="password" placeholder=""
                                                             pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"/></l:resource>

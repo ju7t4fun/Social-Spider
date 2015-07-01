@@ -1,3 +1,11 @@
+<%--<script type='text/javascript' src='${pageContext.request.contextPath}/js/jquery-11.0.min.js'></script>--%>
+<script type='text/javascript' src='${pageContext.request.contextPath}/js/unitegallery.min.js'></script>
+
+<link rel='stylesheet' href='${pageContext.request.contextPath}/css/unite-gallery.css' type='text/css'/>
+
+<script type='text/javascript' src='${pageContext.request.contextPath}/js/ug-theme-default.js'></script>
+<link rel='stylesheet' href='${pageContext.request.contextPath}/css/ug-theme-default.css' type='text/css'/>
+
 <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content" style="width: 840px; position: relative; left: -100px;">
@@ -13,23 +21,22 @@
                                 <ul style="margin-left:-30px;">
                                     <li>
                                         <br>
-                                        <table width="100%" style="padding:0 50px;">
-                                            <tr>
-                                                <td style="text-align:left;padding-left:-300px;"><img
-                                                        src="${pageContext.request.contextPath}/img/post.png"
-                                                        style="margin:0px;"><strong
-                                                        id="group_name"></strong>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="text-align:justify;">
-                                                    <span id="post_text"></span>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <br>
-                                        <table width="100%" style="padding:0 50px;" id="attachments_table"></table>
-
+                                        <tr>
+                                            <td style="text-align:left;padding-left:-300px;"><img
+                                                    src="${pageContext.request.contextPath}/img/post.png"
+                                                    style="margin:0px;"><strong
+                                                    id="group_name"></strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:justify;">
+                                                <span id="post_text"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <div id="gallery" style="display:none;">
+                                            </div>
+                                        </tr>
                                     </li>
                                     <hr>
                                 </ul>
@@ -53,40 +60,45 @@
         function onAjaxSuccess(data) {
             var response = data;
             $("#post_text").html(response.postText);
-            function checkType(i) {
-                var atr;
-                if (response.attachments[i].payload.includes("video")) {
-                    atr = "video controls";
-                } else if (response.attachments[i].payload.includes("music")) {
-                    atr = "video controls";
-                } else if (response.attachments[i].payload.includes("image")) {
-                    atr = "img";
-                }
-                return atr;
-            }
-            var table = $("#attachments_table");
-            table.empty();
+            $("#gallery").empty();
             if (response.attachments.length != 0) {
-                var row = $("<tr></tr>");
-                if (response.attachments.length == 1) {
-                    var atr = checkType(0);
-                    row.append('<td><' + atr + ' width="620" height="400" src="' +
-                            response.attachments[0].payload +
-                            '"></' + atr + '></td>');
-                } else {
-                    for (var i = 0; i < response.attachments.length; i++) {
-                        var atr = checkType(i);
-                        row.append('<td><' + atr + ' width="320" height="240" src="' +
-                                response.attachments[i].payload +
-                                '"></' + atr + '><td>');
-                        if (i % 2 != 0) {
-                            table.append(row);
-                            row = $('<tr></tr>');
-                        }
+                var div_gallery = $("#gallery");
+                for (var i = 0; i < response.attachments.length; i++) {
+                    var image = $('<img>');
+                    if (response.attachments[i].payload.includes("image")) {
+                        image.attr("src", "http://localhost:8080" + response.attachments[i].payload);
+                        image.attr("data-image", "http://localhost:8080" + response.attachments[i].payload);
+                        image.attr("data-description", response.attachments[i].payload);
+                    } else {
+                        image.attr("src", "../img/poster.jpg");
+                        image.attr("data-type", "html5video");
+                        image.attr("data-image", "../img/poster.jpg");
+                        image.attr("data-videomp4", "http://localhost:8080" + response.attachments[i].payload);
+                        image.attr("data-description", response.attachments[i].payload);
                     }
+                    div_gallery.append(image);
                 }
-                table.append(row);
+                initGallery();
             }
         }
+    }
+</script>
+<script type="text/javascript">
+    function initGallery() {
+        jQuery("#gallery").unitegallery({
+
+            theme_enable_fullscreen_button: true,
+            //show, hide the theme fullscreen button. The position in the theme is constant
+            theme_enable_play_button: true,			//show, hide the theme play button. The position in the theme is constant
+            theme_enable_hidepanel_button: true,	//show, hide the hidepanel button
+            theme_enable_text_panel: true,			//enable the panel text panel.
+
+            theme_text_padding_left: 20,			//left padding of the text in the textpanel
+            theme_text_padding_right: 5,			//right paddin of the text in the textpanel
+            theme_text_align: "left",				//left, center, right - the align of the text in the textpanel
+            theme_text_type: "title",				//title, description - text that will be shown on the text panel, title or description
+
+            theme_hide_panel_under_width: 480		//hide panel under certain browser width, if null, don't hide
+        });
     }
 </script>
