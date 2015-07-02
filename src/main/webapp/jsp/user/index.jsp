@@ -30,9 +30,12 @@
     <!-- Custom styles -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
+
+<%--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>--%>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
+
 
     <script>
         var feedWebSocket = new WebSocket("ws://localhost:8080/websocket/feed");
@@ -63,99 +66,25 @@
 
     <jsp:include page="../pagecontent/header.jsp"/>
     <jsp:include page="../pagecontent/sidebar.jsp"/>
+    <jsp:include page="../post/viewpost.jsp"/>
 
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-home"></i> Home</h3>
+                    <h3 class="page-header" style="position: fixed"><i class="fa fa-home"></i> Home</h3>
                 </div>
             </div>
             <div style="position: fixed; top: 127px; left: 195px;">
-                <p>
-                    <img src="${pageContext.request.contextPath}/img/filter.png" data-toggle="modal"
-                         data-target="#myModal"
-                         width="30px"
-                         height="30px">
-                </p>
-                <input type="button" value="Click" onclick="createFeed(42);">
+                <input type="button" value="Click" onclick="createFeed(41);">
             </div>
             <section class="wrapper" style="margin-left: 180px; margin-top: -30px;">
                 <div class="row">
                     <div class="col-md-8 portlets">
                         <div class="panel panel-default">
                             <div class="panel-body" id="feed">
-                                <%--<ul style="margin-left:-30px;">--%>
-                                    <%--<table width="100%" style="padding:0 50px;">--%>
-                                        <%--<tr>--%>
-                                            <%--<td style="text-align:left;"><strong>POST #1</strong></td>--%>
-                                        <%--</tr>--%>
-                                        <%--<tr>--%>
-                                            <%--<td style="text-align:justify;">--%>
-                                                <%--<br>--%>
-                                                <%--Vivamus tincidunt eleifend congue. Sed lacinia ullamcorper--%>
-                                                <%--fringilla.--%>
-                                                <%--Suspendisse mi nisi, molestie eget varius quis, cursus nec felis.--%>
-                                                <%--Quisque mi tortor, accumsan vitae tempus a, placerat et est. Mauris--%>
-                                                <%--eu--%>
-                                                <%--mauris urna.--%>
-                                            <%--</td>--%>
-                                        <%--</tr>--%>
-                                        <%--<tr>--%>
-                                            <%--<td style="text-align:left;padding-left:20px;">--%>
-                                                <%--<br>--%>
 
-                                                <%--<div style="color:blue;">#lorem #ipsum #dolor</div>--%>
-                                            <%--</td>--%>
-                                        <%--</tr>--%>
-                                    <%--</table>--%>
-                                    <%--<div class="btn-group" style="margin-left: 450px;">--%>
-                                        <%--<a class="btn btn-default" href="">View</a>--%>
-                                        <%--<a class="btn btn-default" href="">Publish</a>--%>
-                                        <%--<a class="btn btn-default" href="">Save</a>--%>
-                                    <%--</div>--%>
-                                <%--</ul>--%>
-
-                                <%--<div style="width: 90%; height: 3px;margin:25px auto 25px;border-radius: 4px;--%>
-                                       <%--background:  lightslategray;"></div>--%>
-
-                                <%--<ul style="margin-left:-30px;">--%>
-                                    <%--<table width="100%" style="padding:0 50px;">--%>
-                                        <%--<tr>--%>
-                                            <%--<td style="text-align:left;"><strong>POST #2</strong></td>--%>
-                                        <%--</tr>--%>
-
-                                        <%--<tr>--%>
-                                            <%--<td style="text-align:justify;">--%>
-                                                <%--<br>--%>
-                                                <%--Vivamus tincidunt eleifend congue. Sed lacinia ullamcorper--%>
-                                                <%--fringilla.--%>
-                                                <%--Suspendisse mi nisi, molestie eget varius quis, cursus nec felis.--%>
-                                                <%--Quisque mi tortor, accumsan vitae tempus a, placerat et est..--%>
-                                            <%--</td>--%>
-                                        <%--</tr>--%>
-                                        <%--<tr>--%>
-                                            <%--<td style="text-align:left;padding-left:20px;">--%>
-                                                <%--<br>--%>
-
-                                                <%--<div style="color:blue;">#lorem #ipsum #dolor</div>--%>
-                                            <%--</td>--%>
-                                        <%--</tr>--%>
-                                        <%--<tr>--%>
-                                            <%--<td>--%>
-                                                <%--<img src="${pageContext.request.contextPath}/img/bg-1.jpg"--%>
-                                                     <%--width="600"--%>
-                                                     <%--style="margin:20px;">--%>
-                                            <%--</td>--%>
-                                        <%--</tr>--%>
-                                    <%--</table>--%>
-                                    <%--<div class="btn-group" style="margin-left: 450px;">--%>
-                                        <%--<a class="btn btn-default" href="">View</a>--%>
-                                        <%--<a class="btn btn-default" href="">Publish</a>--%>
-                                        <%--<a class="btn btn-default" href="">Save</a>--%>
-                                    <%--</div>--%>
-                                <%--</ul>--%>
                             </div>
                         </div>
 
@@ -167,45 +96,7 @@
     <!--main content end-->
 </section>
 <!-- container section end -->
-<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h3 class="modal-title">Filter by</h3>
-            </div>
-            <div class="modal-body" style="position: relative; left: 70px; top: -21px;">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel-body">
-                            <h3 style="margin-left: 125px;">Categories:</h3>
-                            <ul>
-                                <li>
-                                    <select id="tokenize_focus" name="filter_select" multiple="multiple"
-                                            class="tokenize-sample"
-                                            style="width:250px; height: 250px;">
-                                    </select>
 
-                                    <script type="text/javascript">
-                                        $('select#tokenize_focus').tokenize({displayDropdownOnFocus: true});
-                                    </script>
-                                </li>
-                                <li>
-                                    <div class="col-lg-offset-2 col-lg-9" style="margin:20px auto;">
-                                        <button type="submit" style="margin-left: 330px; margin-bottom: -50px;"
-                                                class="btn btn-primary">
-                                            Filter
-                                        </button>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <script>
     $.getJSON("/controller?action=categories", function (data) {
         $.each(data, function (key, val) {
@@ -228,15 +119,15 @@
             post += '<tr><td style="text-align:left;"><strong>'+'POST #'+ (postCounter++) +'</strong></td> </tr>';
             post += '<tr><td style="text-align:justify;"> <br>'+ jsonResponse.postText +' </td> </tr>';
             for (var i = 0; i < jsonResponse.attachments.length; i++) {
-                if (jsonResponse.attachments[i].payload.includes("jpg")) {
-                    imgsrc = jsonResponse.attachments[i].payload;
+                if (jsonResponse.attachments[i].payload.includes("image")) {
+                    imgsrc = "http://localhost:8080" + jsonResponse.attachments[i].payload;
                     break;
                 }
             }
             if (imgsrc != null) {
-                 post += '<tr><td><img src="' + imgsrc +'" width="600"style="margin:25px;"> </td> </tr>';
+                 post += '<tr><td><img src="' + imgsrc +'" width="600" height="450" style="margin:25px;"> </td> </tr>';
             }
-            post += '</table><div class="btn-group" style="margin-left: 450px;"> <a class="btn btn-default" href="">View</a> <a class="btn btn-default" href="">Publish</a> <a class="btn btn-default" href="">Save</a></div></ul>';
+            post += '</table><div class="btn-group" style="margin-left: 450px;"> <a class="btn btn-default" onclick="viewPost('+ postID +');" data-toggle="modal" data-target="#myModal">View</a> <a class="btn btn-default" href="">Publish</a> <a class="btn btn-default" href="">Save</a></div></ul>';
             post += '<div style="width: 90%; height: 3px;margin:25px auto 25px;border-radius: 4px;background:  lightslategray;"></div>';
             feed.prepend(post); // .prepend(post); - to begin
             $('html, body').css({
@@ -248,7 +139,7 @@
     }
 </script>
 <!-- javascripts -->
-<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
+<%--<script src="${pageContext.request.contextPath}/js/jquery.js"></script>--%>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <!-- nice scroll -->
 <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
