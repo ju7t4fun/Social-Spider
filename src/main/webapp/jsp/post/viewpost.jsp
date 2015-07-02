@@ -65,7 +65,7 @@
                 var div_gallery = $("#gallery");
                 for (var i = 0; i < response.attachments.length; i++) {
                     var image = $('<img>');
-                    if (response.attachments[i].payload.includes("jpg")) {
+                    if ((/\.(gif|jpg|jpeg|png)$/i).test(response.attachments[i].payload)) {
                         image.attr("src", response.attachments[i].payload);
                         image.attr("data-image", response.attachments[i].payload);
                         image.attr("data-description", response.attachments[i].payload);
