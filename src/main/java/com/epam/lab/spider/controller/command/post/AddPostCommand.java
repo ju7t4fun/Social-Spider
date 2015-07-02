@@ -37,7 +37,6 @@ public class AddPostCommand implements ActionCommand {
         response.setContentType("UTF-8");
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-
         Map<String, String> urlType = (Map<String, String>) request.getSession().getAttribute("files_url");
         String message = request.getParameter("message");
         String title = request.getParameter("title");
@@ -59,7 +58,7 @@ public class AddPostCommand implements ActionCommand {
         Set<Attachment> attachments = new HashSet<>();
         for (Map.Entry<String, String> entry : urlType.entrySet()) {
             attachment = new Attachment();
-            attachment.setPayload(entry.getKey());
+            attachment.setPayload("http://localhost:8080" + entry.getKey());
             attachment.setType(Attachment.Type.valueOf(entry.getValue()));
             attachment.setDeleted(false);
             attachments.add(attachment);

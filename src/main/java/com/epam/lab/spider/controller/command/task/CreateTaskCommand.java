@@ -39,7 +39,7 @@ public class CreateTaskCommand implements ActionCommand {
         Map<String, String> wallMap;
         List<Map<String,String>> sourceWalls = new ArrayList<>();
         for (Wall wall : walls) {
-//            if(wall.getPermission()!= Wall.Permission.READ)continue;
+            if(wall.getPermission()!= Wall.Permission.READ)continue;
             wallMap = new HashMap<>();
             wallMap.put("id", wall.getId().toString());
             wallMap.put("text", wall.getOwner().getName());

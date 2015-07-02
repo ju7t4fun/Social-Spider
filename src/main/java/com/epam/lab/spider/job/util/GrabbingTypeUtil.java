@@ -46,6 +46,7 @@ public class GrabbingTypeUtil {
                     Thread.sleep(500);
                 }
             }while (manyRequest);
+            Thread.sleep(300);
             long unixTime = vk.utils().getServerTime().getTime();
             for (com.epam.lab.spider.model.vk.Post vkPost : postsOnTargetWall) {
                 boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));

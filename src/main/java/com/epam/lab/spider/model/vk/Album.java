@@ -22,7 +22,7 @@ public class Album extends Model implements Attachment {
 
     public Album(Node root) {
         super(root, Album.class);
-        thumb = new Photo(root.child("thumb").get(0).child("photo").get(0));
+        thumb = new Photo(root.child("thumb").get(0));
     }
 
     @Override
