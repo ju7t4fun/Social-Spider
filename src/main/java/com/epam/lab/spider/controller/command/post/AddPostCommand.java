@@ -37,6 +37,7 @@ public class AddPostCommand implements ActionCommand {
         response.setContentType("UTF-8");
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
+
         Map<String, String> urlType = (Map<String, String>) request.getSession().getAttribute("files_url");
         String message = request.getParameter("message");
         String title = request.getParameter("title");
