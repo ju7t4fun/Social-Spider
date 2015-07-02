@@ -33,7 +33,6 @@ import java.util.List;
  */
 public class PostAttachmentUtil {
     public static final Logger LOG = Logger.getLogger(PostAttachmentUtil.class);
-
     public static String uploadPhoto(Vkontakte vk, String file, Integer wall) {
         boolean manyRequest = false;
         do {
@@ -83,13 +82,14 @@ public class PostAttachmentUtil {
                 x.printStackTrace();
             }// фікс кривої архітектури
             // перехоплення NullPointerException by UnknownHostException
-            catch (NullPointerException x) {
+            catch (NullPointerException x){
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            } catch (InterruptedException | IOException | ParseException e) {
+            }
+            catch (InterruptedException | IOException | ParseException e) {
                 e.printStackTrace();
             }
         } while (manyRequest);
@@ -137,14 +137,14 @@ public class PostAttachmentUtil {
                 x.printStackTrace();
             }// фікс кривої архітектури
             // перехоплення NullPointerException by UnknownHostException
-            catch (NullPointerException x) {
-                System.out.println("--------");
+            catch (NullPointerException x){
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            } catch (MalformedURLException e) {
+            }
+            catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -158,7 +158,6 @@ public class PostAttachmentUtil {
         } while (manyRequest);
         return null;
     }
-
     public static String uploadVideo(Vkontakte vk, String file, Integer wall) {
         boolean manyRequest = false;
         do {
@@ -167,36 +166,43 @@ public class PostAttachmentUtil {
                     Thread.sleep(400);
                     manyRequest = false;
                 }
-                Parameters parameters;
-                parameters = new Parameters();
-                if (wall < 0) parameters.add("group_id", -wall);
-                URL uri = new URL("https://api.vk.com/method/video.save?access_token=" + vk.getAccessToken()
-                        .getAccessToken());
+//                Parameters parameters;
+//                parameters = new Parameters();
+                String groupId;
+                String customParameters = "";
+                if (wall < 0) {
+//                    parameters.add("group_id", -wall);
+                    groupId = "group_id"+"="+-wall;
+                    customParameters = groupId+"&";
+                }
+
+
+                URL uri = new URL("https://api.vk.com/method/video.save?"+customParameters+"access_token="+vk.getAccessToken().getAccessToken());
                 LOG.debug("Begin upload video with url: " + file);
                 CloseableHttpClient client = HttpClients.createDefault();
 
                 HttpPost httpPost = new HttpPost(uri.toString());
-                List<NameValuePair> param = new ArrayList<NameValuePair>();
-                for (String name : parameters.getKeys()) {
-                    param.add(new BasicNameValuePair(name, parameters.get(name)));
-                }
-                try {
-                    httpPost.setEntity(new UrlEncodedFormEntity(param));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+//                List<NameValuePair> param = new ArrayList<NameValuePair>();
+//                for (String name : parameters.getKeys()) {
+//                    param.add(new BasicNameValuePair(name, parameters.get(name)));
+//                }
+//                try {
+//                    httpPost.setEntity(new UrlEncodedFormEntity(param));
+//                } catch (UnsupportedEncodingException e) {
+//                    e.printStackTrace();
+//                }
                 String response = EntityUtils.toString(client.execute(httpPost).getEntity(), "UTF-8");
 
                 JSONParser parser = new JSONParser();
                 JSONObject jsonObject = (JSONObject) parser.parse(response);
                 JSONObject responseJson = (JSONObject) jsonObject.get("response");
                 String uploadUrl = responseJson.get("upload_url").toString();
-                uri = new URL(uploadUrl);
+                uri =  new URL(uploadUrl);
 
                 httpPost = new HttpPost(uri.toString());
                 HttpEntity entity = MultipartEntityBuilder.create()
-                        .addBinaryBody("video_file", new URL(file).openStream(), ContentType.create("video/mp4"),
-                                "video" + ".mp4").build();
+                        .addBinaryBody("video_file", new URL(file).openStream(), ContentType.create("video/mp4"), "video" +
+                                ".mp4").build();
                 httpPost.setEntity(entity);
                 response = EntityUtils.toString(client.execute(httpPost).getEntity(), "UTF-8");
 
@@ -204,13 +210,14 @@ public class PostAttachmentUtil {
                 LOG.debug("RESPONSE FROM FILE SERVER: " + response);
                 jsonObject = (JSONObject) parser.parse(response);
 
-                return "video" + responseJson.get("owner_id") + "_" + jsonObject.get("video_id").toString();
+                return "video"+responseJson.get("owner_id")+"_"+jsonObject.get("video_id").toString();
 
 
             } catch (NullPointerException x) {
-                manyRequest = true;
+                 manyRequest = true;
                 x.printStackTrace();
-            } catch (InterruptedException | IOException | ParseException e) {
+            }
+            catch (InterruptedException | IOException | ParseException e) {
                 e.printStackTrace();
             }
         } while (manyRequest);

@@ -33,6 +33,13 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
     private static final String SQL_COUNT_SEARCH_BY_USER_ID_QUERY = "SELECT * FROM owner WHERE user_id = ? AND MATCH " +
             "(name, domain) AGAINST (?)";
 
+    private static final String SQL_GET_ALL_UNIQUE_VKID = "SELECT  * FROM owner Group BY vk_id ORDER BY id LIMIT ?, ?";
+    private static final String SQL_GET_ALL_UNIQUE_WITH_SEARCH__VKID = "SELECT * FROM owner WHERE name LIKE ? Group BY vk_id ORDER BY id LIMIT ?, ?";
+    private static final String SQL_UPDATE_BAN = "UPDATE  owner SET  banned=1 WHERE vk_id=?";
+    private static final String SQL_UPDATE_UNBAN = "UPDATE  owner SET  banned=0 WHERE vk_id=?";
+    private static final String SQL_GET_COUNT_ALL_UNIQUE_VKID = "SELECT  COUNT(*) FROM (  SELECT * FROM owner Group BY vk_id) AS t";
+    private static final String SQL_GET_COUNT_ALL_UNIQUE_WITH_SEARCH__VKID = "SELECT  COUNT(*) FROM ( SELECT * FROM owner WHERE name LIKE ? Group BY vk_id ) AS t";
+
     @Override
     public boolean insert(Connection connection, Owner owner) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
@@ -73,6 +80,7 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
             owner.setName(rs.getString("name"));
             owner.setDomain((rs.getString("domain")));
             owner.setDeleted(rs.getBoolean("deleted"));
+            owner.setBanned(rs.getBoolean("banned"));
             ownerList.add(owner);
         }
         return ownerList;
@@ -159,5 +167,35 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
         return -322;
     }
 
+    @Override
+    public List<Owner> getAllGroups(Connection connection, int start, int ammount) throws SQLException {
+        return select(connection, SQL_GET_ALL_UNIQUE_VKID,start,ammount);
+    }
 
+    @Override
+    public List<Owner> getAllGroupsWithSearch(Connection connection, String nameToSearch, int start, int ammount) throws SQLException {
+        return select(connection, SQL_GET_ALL_UNIQUE_WITH_SEARCH__VKID,nameToSearch,start,ammount);
+    }
+
+    public boolean updateBan(Connection connection, int vk_id) throws SQLException {
+        return changeQuery(connection, SQL_UPDATE_BAN, vk_id);
+    }
+
+    public boolean updateUnBan(Connection connection, int vk_id) throws SQLException {
+        return changeQuery(connection, SQL_UPDATE_UNBAN, vk_id);
+    }
+    @Override
+    public int getCountAllUnique(Connection connection) throws SQLException {
+        ResultSet rs = selectQuery(connection, SQL_GET_COUNT_ALL_UNIQUE_VKID);
+        if (rs.next())
+            return rs.getInt("COUNT(*)");
+        return -1;
+    }
+    @Override
+    public int getCountAllUniqueWithSearch(Connection connection, String nameToSearch) throws SQLException {
+        ResultSet rs = selectQuery(connection, SQL_GET_COUNT_ALL_UNIQUE_WITH_SEARCH__VKID, nameToSearch);
+        if (rs.next())
+            return rs.getInt("COUNT(*)");
+        return -1;
+    }
 }
