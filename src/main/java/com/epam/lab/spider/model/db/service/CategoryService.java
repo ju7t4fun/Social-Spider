@@ -126,7 +126,7 @@ public class CategoryService implements BaseService<Category> {
 
     public List<Category> getAllWithSearch(String nameToSearch) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return cdao.getAllWithSearch(connection,nameToSearch);
+            return cdao.getAllWithSearch(connection, nameToSearch);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -144,7 +144,7 @@ public class CategoryService implements BaseService<Category> {
 
     public List<Category> getAllWithSearchLimited(String nameToSearch, int start, int ammount) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return cdao.getAllWithSearchLimited(connection,nameToSearch,start,ammount);
+            return cdao.getAllWithSearchLimited(connection, nameToSearch, start, ammount);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -162,11 +162,29 @@ public class CategoryService implements BaseService<Category> {
 
     public int getCountAllWithSearch(String categoryToSearch) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return cdao.getCountWithSearch(connection,categoryToSearch);
+            return cdao.getCountWithSearch(connection, categoryToSearch);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public List<Category> getByTaskId(int taskId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return cdao.getByTaskId(connection, taskId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Category> getByUserId(int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return cdao.getByUserId(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

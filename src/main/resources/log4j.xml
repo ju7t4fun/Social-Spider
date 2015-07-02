@@ -9,12 +9,12 @@
     <category name="org.apache.http">
         <priority value="info" />
     </category>
-    <!--<category name="com.epam.lab.spider.job">-->
-        <!--<priority value="off" />-->
-    <!--</category>-->
-    <!--<category name="org.quartz">-->
-        <!--<priority value="off" />-->
-    <!--</category>-->
+    <category name="com.epam.lab.spider.job">
+        <priority value="debug" />
+    </category>
+    <category name="org.quartz">
+        <priority value="debug" />
+    </category>
     <root>
         <priority value="debug"/>
         <appender-ref ref="console"/>

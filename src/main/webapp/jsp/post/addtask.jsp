@@ -117,7 +117,7 @@
                     <input type="radio" name="grabbing_mode" value="total" checked> For each source group give full count of posts. <br>
                     <input type="radio" name="grabbing_mode" value="per_group"> Give count of posts from random group. <br>
                     <span>Counts of post per one task grabbing action:  </span>
-                    <input type="number" name="post_count" style="width:40px;border: none;-webkit-appearance: none; ">
+                    <input type="number" name="post_count" style="width:40px;border: none;-webkit-appearance: none; " value="1">
                   </div>
 
                   <div class="col-lg-6">
@@ -250,7 +250,7 @@
                   <div class="col-lg-6">
                     <h4>Hash Tags</h4>
 
-                    <input name="wordsinput" id="tagsinput" class="tagsinput" value="Tag1, Tag2, Tag3, Tag4, Tag5" />
+                    <input name="wordsinput" id="tagsinput" class="tagsinput" value="socialspider, posting" />
                     <!--
                     <br>
                     <input type="radio" name="stop_words" value="1"> Skip

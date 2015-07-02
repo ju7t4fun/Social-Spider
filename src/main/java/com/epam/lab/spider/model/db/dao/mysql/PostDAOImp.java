@@ -32,10 +32,11 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
     private static final String SQL_GET_COUNT_BY_USER_ID = "SELECT COUNT(*) FROM post WHERE user_id=? AND deleted = 0";
 
     private static final String SQL_GET_BY_USER_ID_LIMIT_WITH_SEARCH_QUERY = "SELECT * FROM post WHERE user_id = ? " +
-            " AND message LIKE ?  AND deleted = " +
-            "0 LIMIT ?, ?";
-    private static final String SQL_GET_COUNT_BY_USER_ID_WITH_SEARCH = "SELECT COUNT(*) FROM post WHERE user_id=? AND " +
+            " AND message LIKE ?  AND deleted = 0 LIMIT ?, ?";
+    private static final String SQL_GET_COUNT_BY_USER_ID_WITH_SEARCH = "SELECT COUNT(*) FROM post WHERE user_id=? AND" +
             " message LIKE ? AND deleted = 0";
+    private static final String SQL_GET_BY_CATEGORY_ID_QUERY = "SELECT post.* FROM  post JOIN category_has_post ON " +
+            "post.id = category_has_post.post_id WHERE category_id = ? ORDER BY id DESC LIMIT ?, ?";
 
     @Override
     public boolean insert(Connection connection, Post post) throws SQLException {
@@ -117,16 +118,25 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
     }
 
     @Override
-    public List<Post> getByUserIdWithSearch(Connection connection, Integer id, int page, int size, String messageToSearch) throws SQLException {
+    public List<Post> getByUserIdWithSearch(Connection connection, Integer id, int page, int size, String
+            messageToSearch) throws SQLException {
         return select(connection, SQL_GET_BY_USER_ID_LIMIT_WITH_SEARCH_QUERY, id, messageToSearch, page, size);
     }
 
     @Override
-    public int getCountByUserIdWithSearch(Connection connection, Integer id, String messageToSearch) throws SQLException {
+    public int getCountByUserIdWithSearch(Connection connection, Integer id, String messageToSearch) throws
+            SQLException {
         ResultSet rs = selectQuery(connection, SQL_GET_COUNT_BY_USER_ID_WITH_SEARCH, id, messageToSearch);
         if (rs.next()) {
             return rs.getInt("COUNT(*)");
         }
         return 0;
     }
+
+    @Override
+    public List<Post> getByCategoryId(Connection connection, int categoryId, int offset, int limit) throws
+            SQLException {
+        return select(connection, SQL_GET_BY_CATEGORY_ID_QUERY, categoryId, offset, limit);
+    }
+
 }
