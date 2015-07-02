@@ -1,5 +1,6 @@
 package com.epam.lab.spider.job;
 
+import com.epam.lab.spider.controller.utils.EventLogger;
 import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
@@ -91,7 +92,16 @@ public class OnePostJob implements Job {
                         if (att != null) attachmentsList.add(att);
                     }
                     if (attachment.getType() == Attachment.Type.AUDIO && attachment.getMode() == Attachment.Mode.URL) {
-                        String att = PostAttachmentUtil.uploadAudio(vk, attachment.getPayload().toString());
+                        String att = null;
+                        try {
+                            att = PostAttachmentUtil.uploadAudio(vk, attachment.getPayload().toString());
+                        }catch (VKException x){
+                            if (x.getExceptionCode() == VKException.VK_AUDIO_HOLDER_WAIN) {
+                                EventLogger eventLogger = EventLogger.getLogger(wall.getProfile().getUserId());
+                                // TODO переписати так, щоб в тест повідомлення записувалось до якого поста не вдалось завантажити аудіо
+                                eventLogger.warn("Audio Cannot Upload", x.getMessage());
+                            }else throw x;
+                        }
                         if (att != null) attachmentsList.add(att);
                     }
                     if (attachment.getType() == Attachment.Type.AUDIO && attachment.getMode() == Attachment.Mode.CODE) {
@@ -99,7 +109,9 @@ public class OnePostJob implements Job {
                         if (att != null) attachmentsList.add(att);
                     }
                     if (attachment.getType() == Attachment.Type.VIDEO && attachment.getMode() == Attachment.Mode.URL) {
-                        String att = PostAttachmentUtil.uploadVideo(vk, attachment.getPayload().toString(), owner.getVkId());
+                        String att;
+
+                        att = PostAttachmentUtil.uploadVideo(vk, attachment.getPayload().toString(), owner.getVkId());
                         if (att != null) attachmentsList.add(att);
                     }
                     if (attachment.getType() == Attachment.Type.VIDEO && attachment.getMode() == Attachment.Mode.CODE) {
