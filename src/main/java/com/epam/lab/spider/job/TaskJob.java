@@ -3,10 +3,7 @@ package com.epam.lab.spider.job;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.job.util.GrabbingTypeUtil;
-import com.epam.lab.spider.job.util.Locker;
-import com.epam.lab.spider.job.util.RepostUtil;
-import com.epam.lab.spider.job.util.TaskUtil;
+import com.epam.lab.spider.job.util.*;
 import com.epam.lab.spider.model.db.entity.*;
 
 
@@ -38,7 +35,7 @@ public class TaskJob implements Job {
         Post post = new Post();
         StringBuilder messageBuilder = new StringBuilder();
         messageBuilder.append(vkPost.getText());
-        if(task.getContentType().hasText()) {
+        if (task.getContentType().hasText()) {
             messageBuilder.append(" ").append(task.getHashTags());
         }
         post.setMessage(messageBuilder.toString().trim());
@@ -103,7 +100,8 @@ public class TaskJob implements Job {
             switch (task.getGrabbingType()) {
 
                 case BEGIN:
-                    postsPrepareToPosting = GrabbingTypeUtil.grabbingBegin(owner, vk, filter, alreadyAddSet, grabbingSize, countOfPosts);
+                    postsPrepareToPosting = GrabbingTypeUtil.grabbingBegin(owner, vk, filter, alreadyAddSet,
+                            grabbingSize, countOfPosts);
                     break;
                 case RANDOM:
                     break;
@@ -195,18 +193,32 @@ public class TaskJob implements Job {
                         List<com.epam.lab.spider.model.vk.Post> postsPrepareToPosting = entity.getValue();
                         LinkedList<Integer> addedToProcessingBlocks = new LinkedList<>();
                         for (com.epam.lab.spider.model.vk.Post vkPost : postsPrepareToPosting) {
-                            // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
-                            if(task.getType() == Task.Type.COPY){
-                                Post post = processingPost(vkPost, task);
-                                addedToProcessingPosts.addFirst(post);
+
+                            switch (task.getType()) {
+                                // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
+                                case COPY: {
+                                    Post post = processingPost(vkPost, task);
+                                    addedToProcessingPosts.addFirst(post);
+                                    break;
+                                }
+                                // інакше якщо тип - репост - додаємо пост в чергу до опрацювання та ріпостимо його
+                                // якщо таск завершиться аварійно - можлива втрата репосту даного поста
+                                case REPOST: {
+                                    postToRepost.add(vkPost);
+                                    break;
+                                }
+                                case FAVORITE: {
+                                    Post post = processingPost(vkPost, task);
+                                    System.out.println("-------------" + post);
+                                    Feed feed = new Feed();
+                                    feed.processing(post, task);
+                                    break;
+                                }
                             }
-                            // інакше якщо тип - репост - додаємо пост в чергу до опрацювання та ріпостимо його
-                            // якщо таск завершиться аварійно - можлива втрата репосту даного поста
-                            else if(task.getType() == Task.Type.REPOST){
-                                postToRepost.add(vkPost);
-                            }
+
                             addedToProcessingBlocks.addFirst(vkPost.getId());
-                            LOG.debug("Post wall" + vkPost.getOwnerId() + "_" + vkPost.getId() + " has added to processing.");
+                            LOG.debug("Post wall" + vkPost.getOwnerId() + "_" + vkPost.getId() + " has added to " +
+                                    "processing.");
                         }
                         blockMap.put(entity.getKey(), addedToProcessingBlocks);
                     }
@@ -232,17 +244,30 @@ public class TaskJob implements Job {
                         int postIndex = random.nextInt(basketOfPreparePost.size());
                         // витягаємо та видаляємо з корзини вибраний пост
                         com.epam.lab.spider.model.vk.Post vkPost = basketOfPreparePost.remove(postIndex);
-                        // опрацьовуємо пост за правилами заданими в таску
-                        // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
-                        if(task.getType() == Task.Type.COPY){
-                            Post post = processingPost(vkPost, task);
-                            addedToProcessingPosts.addFirst(post);
+
+                        switch (task.getType()) {
+                            // опрацьовуємо пост за правилами заданими в таску
+                            // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
+                            case COPY: {
+                                Post post = processingPost(vkPost, task);
+                                addedToProcessingPosts.addFirst(post);
+                                break;
+                            }
+                            // інакше якщо тип - репост - додаємо пост в чергу до опрацювання та ріпостимо його
+                            // якщо таск завершиться аварійно - можлива втрата репосту даного поста
+                            case REPOST: {
+                                postToRepost.add(vkPost);
+                                break;
+                            }
+                            case FAVORITE: {
+                                Post post = processingPost(vkPost, task);
+                                System.out.println("-------------" + post);
+                                Feed feed = new Feed();
+                                feed.processing(post, task);
+                                break;
+                            }
                         }
-                        // інакше якщо тип - репост - додаємо пост в чергу до опрацювання та ріпостимо його
-                        // якщо таск завершиться аварійно - можлива втрата репосту даного поста
-                        else if(task.getType() == Task.Type.REPOST){
-                            postToRepost.add(vkPost);
-                        }
+
                         // ставимо пост до потингу та заблоковуємо його
                         LinkedList<Integer> addedToProcessingBlocks = blockMap.get(currentEntry.getKey());
                         if (addedToProcessingBlocks == null) {
@@ -276,9 +301,9 @@ public class TaskJob implements Job {
                     newPosts.addFirst(newPost);
                 }
                 // моментальний ріпостинг
-                for(com.epam.lab.spider.model.vk.Post vkPost:postToRepost){
+                for (com.epam.lab.spider.model.vk.Post vkPost : postToRepost) {
                     String wallEntityCode = "wall" + vkPost.getOwnerId() + "_" + vkPost.getId();
-                    RepostUtil.makeRepost(wall.getProfile(),wallEntityCode, wall.getOwner());
+                    RepostUtil.makeRepost(wall.getProfile(), wallEntityCode, wall.getOwner());
                 }
 
             }

@@ -43,12 +43,14 @@
 
         // Опрацювання команд
         feedWebSocket.onmessage = function (event) {
-            alert("onMessage");
+//            alert("onMessage " + event.data);
             var args = event.data.split("|");
+            createFeed(args[1]);
+
         };
 
         feedWebSocket.onclose = function (event) {
-            alert('onClose');
+//            alert('onClose');
         };
 
     </script>
@@ -226,8 +228,9 @@
             post += '<tr><td style="text-align:left;"><strong>'+'POST #'+ (postCounter++) +'</strong></td> </tr>';
             post += '<tr><td style="text-align:justify;"> <br>'+ jsonResponse.postText +' </td> </tr>';
             for (var i = 0; i < jsonResponse.attachments.length; i++) {
-                if (jsonResponse.attachments[i].payload.includes("image")) {
-                    imgsrc = "http://localhost:8080" + jsonResponse.attachments[i].payload;
+                if (jsonResponse.attachments[i].payload.includes("jpg")) {
+                    imgsrc = jsonResponse.attachments[i].payload;
+                    break;
                 }
             }
             if (imgsrc != null) {
