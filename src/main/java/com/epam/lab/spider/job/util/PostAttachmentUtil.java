@@ -166,23 +166,31 @@ public class PostAttachmentUtil {
                     Thread.sleep(400);
                     manyRequest = false;
                 }
-                Parameters parameters;
-                parameters = new Parameters();
-                if (wall < 0) parameters.add("group_id", -wall);
-                URL uri = new URL("https://api.vk.com/method/video.save?access_token="+vk.getAccessToken().getAccessToken());
+//                Parameters parameters;
+//                parameters = new Parameters();
+                String groupId;
+                String customParameters = "";
+                if (wall < 0) {
+//                    parameters.add("group_id", -wall);
+                    groupId = "group_id"+"="+-wall;
+                    customParameters = groupId+"&";
+                }
+
+
+                URL uri = new URL("https://api.vk.com/method/video.save?"+customParameters+"access_token="+vk.getAccessToken().getAccessToken());
                 LOG.debug("Begin upload video with url: " + file);
                 CloseableHttpClient client = HttpClients.createDefault();
 
                 HttpPost httpPost = new HttpPost(uri.toString());
-                List<NameValuePair> param = new ArrayList<NameValuePair>();
-                for (String name : parameters.getKeys()) {
-                    param.add(new BasicNameValuePair(name, parameters.get(name)));
-                }
-                try {
-                    httpPost.setEntity(new UrlEncodedFormEntity(param));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+//                List<NameValuePair> param = new ArrayList<NameValuePair>();
+//                for (String name : parameters.getKeys()) {
+//                    param.add(new BasicNameValuePair(name, parameters.get(name)));
+//                }
+//                try {
+//                    httpPost.setEntity(new UrlEncodedFormEntity(param));
+//                } catch (UnsupportedEncodingException e) {
+//                    e.printStackTrace();
+//                }
                 String response = EntityUtils.toString(client.execute(httpPost).getEntity(), "UTF-8");
 
                 JSONParser parser = new JSONParser();
