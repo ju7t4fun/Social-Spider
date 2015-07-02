@@ -32,7 +32,6 @@ public class OnePostJob implements Job {
     AttachmentService attachmentService = new AttachmentService();
 
 
-
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         JobDataMap dataMap = jobExecutionContext.getJobDetail().getJobDataMap();

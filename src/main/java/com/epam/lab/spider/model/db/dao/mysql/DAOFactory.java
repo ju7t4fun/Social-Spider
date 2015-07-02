@@ -41,10 +41,11 @@ public class DAOFactory {
         daoByEntity.put(Wall.class, new WallDAOImp());
         dao.put(MessageDAO.class, new MessageDAOImp());
 
-
         dao.put(CategoryHasTaskDAO.class, new CategoryHasTaskDAOImp());
         dao.put(TaskSourceDAO.class, new TaskSourceDAOImp());
         dao.put(TaskDestinationDAO.class, new TaskDestinationDAOImp());
+        dao.put(CategoryHasPostDAO.class, new CategoryHasPostDAOImp());
+        dao.put(UserHasCategotyDAOImp.class, new UserHasCategotyDAOImp());
 
         dao.put(TaskSynchronizedDataDAO.class, new TaskSynchronizedDataDAOImpl());
         dao.put(DataLockDAO.class, new DataLockDAOImpl());
@@ -59,13 +60,14 @@ public class DAOFactory {
     public <T> T create(Class<T> daoClass) {
         return (T) dao.get(daoClass);
     }
-    public <E> CRUD<E> getCrudDAOByEntity(Class<E> entityClass){
+
+    public <E> CRUD<E> getCrudDAOByEntity(Class<E> entityClass) {
         return (CRUD<E>) daoByEntity.get(entityClass);
     }
 
     public <E> SavableDAO<E> getSavableDAO(Class<E> clazz) {
         CRUD localDAO = this.getCrudDAOByEntity(clazz);
-        if(localDAO instanceof SavableDAO){
+        if (localDAO instanceof SavableDAO) {
             return (SavableDAO<E>) localDAO;
         }
         return null;
