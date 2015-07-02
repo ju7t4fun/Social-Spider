@@ -38,7 +38,7 @@
         var feedWebSocket = new WebSocket("ws://localhost:8080/websocket/feed");
 
         feedWebSocket.onopen = function (event) {
-            alert("onOpen");
+//            alert("onOpen");
         };
 
         // Опрацювання команд
@@ -77,100 +77,83 @@
                          width="30px"
                          height="30px">
                 </p>
+                <input type="button" value="Click" onclick="createFeed(42);">
             </div>
             <section class="wrapper" style="margin-left: 180px; margin-top: -30px;">
                 <div class="row">
                     <div class="col-md-8 portlets">
                         <div class="panel panel-default">
-                            <div class="panel-body">
-                                <ul style="margin-left:-30px;">
-                                    <li>
-                                        <table width="100%" style="padding:0 50px;">
-                                            <tr>
-                                                <td style="text-align:left;padding-left:20px;"><img
-                                                        src="${pageContext.request.contextPath}/img/post.png"
-                                                        style="margin:15px;"><strong>GROUP NAME</strong></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="text-align:justify;">
-                                                    Vivamus tincidunt eleifend congue. Sed lacinia ullamcorper
-                                                    fringilla.
-                                                    Suspendisse mi nisi, molestie eget varius quis, cursus nec felis.
-                                                    Quisque mi tortor, accumsan vitae tempus a, placerat et est. Mauris
-                                                    eu
-                                                    mauris urna. Quisque ipsum purus, iaculis nec libero vel, euismod
-                                                    lacinia est. Proin quis mi et velit scelerisque feugiat. Nunc
-                                                    porttitor,
-                                                    nunc et ultricies scelerisque, velit est sollicitudin tortor, ut
-                                                    condimentum dolor nulla id sem. In suscipit urna a nibh bibendum
-                                                    cursus.
-                                                    Sed ex orci, rhoncus at convallis quis, bibendum ac ex. Proin
-                                                    vulputate
-                                                    lacus tellus, nec sollicitudin nisl congue eget.
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="text-align:left;padding-left:20px;">
-                                                    <br>
+                            <div class="panel-body" id="feed">
+                                <%--<ul style="margin-left:-30px;">--%>
+                                    <%--<table width="100%" style="padding:0 50px;">--%>
+                                        <%--<tr>--%>
+                                            <%--<td style="text-align:left;"><strong>POST #1</strong></td>--%>
+                                        <%--</tr>--%>
+                                        <%--<tr>--%>
+                                            <%--<td style="text-align:justify;">--%>
+                                                <%--<br>--%>
+                                                <%--Vivamus tincidunt eleifend congue. Sed lacinia ullamcorper--%>
+                                                <%--fringilla.--%>
+                                                <%--Suspendisse mi nisi, molestie eget varius quis, cursus nec felis.--%>
+                                                <%--Quisque mi tortor, accumsan vitae tempus a, placerat et est. Mauris--%>
+                                                <%--eu--%>
+                                                <%--mauris urna.--%>
+                                            <%--</td>--%>
+                                        <%--</tr>--%>
+                                        <%--<tr>--%>
+                                            <%--<td style="text-align:left;padding-left:20px;">--%>
+                                                <%--<br>--%>
 
-                                                    <div style="color:blue;">#lorem #ipsum #dolor</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <img src="${pageContext.request.contextPath}/img/bg-1.jpg"
-                                                         width="600"
-                                                         style="margin:20px;">
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </li>
-                                    <hr>
-                                    <li>
-                                        <table width="100%" style="padding:0 50px;">
-                                            <tr>
-                                                <td style="text-align:left;padding-left:20px;"><img
-                                                        src="${pageContext.request.contextPath}/img/post.png"
-                                                        style="margin:15px;"><strong>GROUP NAME</strong></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="text-align:justify;">
-                                                    Vivamus tincidunt eleifend congue. Sed lacinia ullamcorper
-                                                    fringilla.
-                                                    Suspendisse mi nisi, molestie eget varius quis, cursus nec felis.
-                                                    Quisque mi tortor, accumsan vitae tempus a, placerat et est. Mauris
-                                                    eu
-                                                    mauris urna. Quisque ipsum purus, iaculis nec libero vel, euismod
-                                                    lacinia est. Proin quis mi et velit scelerisque feugiat. Nunc
-                                                    porttitor,
-                                                    nunc et ultricies scelerisque, velit est sollicitudin tortor, ut
-                                                    condimentum dolor nulla id sem. In suscipit urna a nibh bibendum
-                                                    cursus.
-                                                    Sed ex orci, rhoncus at convallis quis, bibendum ac ex. Proin
-                                                    vulputate
-                                                    lacus tellus, nec sollicitudin nisl congue eget.
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="text-align:left;padding-left:20px;">
-                                                    <br>
+                                                <%--<div style="color:blue;">#lorem #ipsum #dolor</div>--%>
+                                            <%--</td>--%>
+                                        <%--</tr>--%>
+                                    <%--</table>--%>
+                                    <%--<div class="btn-group" style="margin-left: 450px;">--%>
+                                        <%--<a class="btn btn-default" href="">View</a>--%>
+                                        <%--<a class="btn btn-default" href="">Publish</a>--%>
+                                        <%--<a class="btn btn-default" href="">Save</a>--%>
+                                    <%--</div>--%>
+                                <%--</ul>--%>
 
-                                                    <div style="color:blue;">#lorem #ipsum #dolor</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <img src="${pageContext.request.contextPath}/img/sample-img-1.jpg"
-                                                         style="margin:20px;">
-                                                    <img src="${pageContext.request.contextPath}/img/sample-img-2.png"
-                                                         style="margin:20px;">
-                                                    <img src="${pageContext.request.contextPath}/img/sample-img-3.png"
-                                                         style="margin:20px;">
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </li>
-                                </ul>
+                                <%--<div style="width: 90%; height: 3px;margin:25px auto 25px;border-radius: 4px;--%>
+                                       <%--background:  lightslategray;"></div>--%>
+
+                                <%--<ul style="margin-left:-30px;">--%>
+                                    <%--<table width="100%" style="padding:0 50px;">--%>
+                                        <%--<tr>--%>
+                                            <%--<td style="text-align:left;"><strong>POST #2</strong></td>--%>
+                                        <%--</tr>--%>
+
+                                        <%--<tr>--%>
+                                            <%--<td style="text-align:justify;">--%>
+                                                <%--<br>--%>
+                                                <%--Vivamus tincidunt eleifend congue. Sed lacinia ullamcorper--%>
+                                                <%--fringilla.--%>
+                                                <%--Suspendisse mi nisi, molestie eget varius quis, cursus nec felis.--%>
+                                                <%--Quisque mi tortor, accumsan vitae tempus a, placerat et est..--%>
+                                            <%--</td>--%>
+                                        <%--</tr>--%>
+                                        <%--<tr>--%>
+                                            <%--<td style="text-align:left;padding-left:20px;">--%>
+                                                <%--<br>--%>
+
+                                                <%--<div style="color:blue;">#lorem #ipsum #dolor</div>--%>
+                                            <%--</td>--%>
+                                        <%--</tr>--%>
+                                        <%--<tr>--%>
+                                            <%--<td>--%>
+                                                <%--<img src="${pageContext.request.contextPath}/img/bg-1.jpg"--%>
+                                                     <%--width="600"--%>
+                                                     <%--style="margin:20px;">--%>
+                                            <%--</td>--%>
+                                        <%--</tr>--%>
+                                    <%--</table>--%>
+                                    <%--<div class="btn-group" style="margin-left: 450px;">--%>
+                                        <%--<a class="btn btn-default" href="">View</a>--%>
+                                        <%--<a class="btn btn-default" href="">Publish</a>--%>
+                                        <%--<a class="btn btn-default" href="">Save</a>--%>
+                                    <%--</div>--%>
+                                <%--</ul>--%>
                             </div>
                         </div>
 
@@ -230,6 +213,36 @@
             }));
         });
     });
+</script>
+
+<script>
+    var postCounter = 1;
+    function createFeed(postID) {
+        var feed = $("#feed");
+        var post = "";
+        var imgsrc;
+        $.getJSON("/controller?action=getpostbyid&post_id=" + postID, function (jsonResponse) {
+            post += '<ul style="margin-left:-30px;"> <table width="100%" style="padding:0 50px;">';
+            post += '<tr><td style="text-align:left;"><strong>'+'POST #'+ (postCounter++) +'</strong></td> </tr>';
+            post += '<tr><td style="text-align:justify;"> <br>'+ jsonResponse.postText +' </td> </tr>';
+            for (var i = 0; i < jsonResponse.attachments.length; i++) {
+                if (jsonResponse.attachments[i].payload.includes("image")) {
+                    imgsrc = "http://localhost:8080" + jsonResponse.attachments[i].payload;
+                }
+            }
+            if (imgsrc != null) {
+                 post += '<tr><td><img src="' + imgsrc +'" width="600"style="margin:25px;"> </td> </tr>';
+            }
+            post += '</table><div class="btn-group" style="margin-left: 450px;"> <a class="btn btn-default" href="">View</a> <a class="btn btn-default" href="">Publish</a> <a class="btn btn-default" href="">Save</a></div></ul>';
+            post += '<div style="width: 90%; height: 3px;margin:25px auto 25px;border-radius: 4px;background:  lightslategray;"></div>';
+            feed.prepend(post); // .prepend(post); - to begin
+            $('html, body').css({
+                'overflow-y': 'auto',
+                'height': 'auto'
+            });
+        });
+
+    }
 </script>
 <!-- javascripts -->
 <script src="${pageContext.request.contextPath}/js/jquery.js"></script>

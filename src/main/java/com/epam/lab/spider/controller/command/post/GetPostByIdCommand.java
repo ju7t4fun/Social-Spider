@@ -21,11 +21,11 @@ import java.util.regex.Pattern;
 public class GetPostByIdCommand implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String postID = request.getParameter("post_id");
+        int postID = Integer.parseInt(request.getParameter("post_id"));
         PostService postService = new PostService();
         Post post = null;
         try {
-            post = postService.getById(Integer.parseInt(postID));
+            post = postService.getById(postID);
         } catch (Exception e) {
             e.printStackTrace();
         }
