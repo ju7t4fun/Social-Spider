@@ -1,6 +1,8 @@
 package com.epam.lab.spider.controller.servlet.admin;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
+import com.epam.lab.spider.controller.command.admin.GroupBanUnbanCommand;
+import com.epam.lab.spider.controller.command.admin.GroupUniqueCommand;
 import com.epam.lab.spider.controller.command.admin.GroupsCommand;
 
 import javax.servlet.ServletException;
@@ -21,6 +23,8 @@ public class GroupsServlet extends HttpServlet {
         public GroupsFactory() {
             commands = new HashMap<>();
             commands.put("default", new GroupsCommand());
+            commands.put("banunban", new GroupBanUnbanCommand());
+            commands.put("loadunique", new GroupUniqueCommand());
         }
     }
 
