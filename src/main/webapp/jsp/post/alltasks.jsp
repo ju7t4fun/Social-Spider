@@ -33,12 +33,17 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
+
+
+    <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
+    <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
     <script src="js/lte-ie7.js"></script>
     <![endif]-->
+
 </head>
 
 <body>
@@ -143,6 +148,16 @@
                                             </c:forEach>
                                         </table>
                                         <script type="text/javascript">
+
+                                            function delayResultPrint(result){
+                                                setTimeout(function () {
+                                                    if (${toastr_notification!=null}) {
+//                                                        toastrNotification(result,result);
+                                                        toastr.info(result);
+                                                    }
+                                                }, 500);
+                                            }
+
                                             $(document).ready(function () {
                                                 $(" div.task-switch").change(function () {
                                                     $(this).children(".switch-on").each(function () {
@@ -153,10 +168,12 @@
                                                                 .done(function (data) {
 //                                                                    $(row).css("background-color", "green");
                                                                     alert(data.alert + id);
+                                                                    delayResultPrint(data.alert + id);
                                                                 })
                                                                 .fail(function (jqXHR, textStatus, errorThrown) {
 //                                                                    $(row).css("background-color", "red");
                                                                     alert(textStatus + id);
+                                                                    delayResultPrint(textStatus + id);
 
 
                                                                 });
@@ -169,10 +186,12 @@
                                                                 .done(function (data) {
 //                                                                    $(row).css("background-color", "green");
                                                                     alert(data.alert + id);
+                                                                    delayResultPrint(data.alert + id);
                                                                 })
                                                                 .fail(function (jqXHR, textStatus, errorThrown) {
 //                                                                    $(row).css("background-color", "red");
                                                                     alert(textStatus + id);
+                                                                    delayResultPrint(textStatus + id);
                                                                 });
                                                     });
 
@@ -214,6 +233,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ga.js"></script>
 <!--custom switch-->
 <script src="${pageContext.request.contextPath}/js/bootstrap-switch.js"></script>
+
+
 
 </body>
 </html>

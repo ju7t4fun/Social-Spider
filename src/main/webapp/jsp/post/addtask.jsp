@@ -43,7 +43,18 @@
   <![endif]-->
 
 
+  <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
+  <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
+  <script type="text/javascript">
 
+    // При завантаженні сторінки
+    setTimeout(function () {
+      if (${toastr_notification!=null}) {
+        var args = "${toastr_notification}".split("|");
+        toastrNotification(args[0], args[1]);
+      }
+    }, 500);
+  </script>
 
 
 </head>
