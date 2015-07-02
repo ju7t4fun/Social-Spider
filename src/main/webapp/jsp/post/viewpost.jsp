@@ -51,7 +51,7 @@
 <script>
     function viewPost(id) {
         $.post(
-                "http://localhost:8080/controller?action=getpostbyid",
+                "http://localhost:8080/post?action=getPostById",
                 {
                     post_id: id
                 },
@@ -65,15 +65,15 @@
                 var div_gallery = $("#gallery");
                 for (var i = 0; i < response.attachments.length; i++) {
                     var image = $('<img>');
-                    if (response.attachments[i].payload.includes("image")) {
-                        image.attr("src", "http://localhost:8080" + response.attachments[i].payload);
-                        image.attr("data-image", "http://localhost:8080" + response.attachments[i].payload);
+                    if (response.attachments[i].payload.includes("jpg")) {
+                        image.attr("src", response.attachments[i].payload);
+                        image.attr("data-image", response.attachments[i].payload);
                         image.attr("data-description", response.attachments[i].payload);
                     } else {
                         image.attr("src", "../img/poster.jpg");
                         image.attr("data-type", "html5video");
                         image.attr("data-image", "../img/poster.jpg");
-                        image.attr("data-videomp4", "http://localhost:8080" + response.attachments[i].payload);
+                        image.attr("data-videomp4", response.attachments[i].payload);
                         image.attr("data-description", response.attachments[i].payload);
                     }
                     div_gallery.append(image);

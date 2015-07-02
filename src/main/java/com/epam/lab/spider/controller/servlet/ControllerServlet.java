@@ -41,7 +41,6 @@ public class ControllerServlet extends HttpServlet {
             commands.put("upload", new UploadFileCommand());
             commands.put("uploadurl", new UploadFileFromURLCommand());
             commands.put("categories", new CategoriesCommand());
-            commands.put("getpostbyid", new GetPostByIdCommand());
             commands.put("getcategory", new GetCategoryCommand());
             commands.put("addcategory", new AddCategoryCommand());
         }

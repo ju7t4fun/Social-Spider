@@ -44,7 +44,6 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
         return SavableServiceUtil.customSave(conn, entity, new Object[]{}, new Object[]{entity.getAttachments()});
     }
 
-    @Deprecated
     @Override
     public boolean insert(Post post) {
         try {
