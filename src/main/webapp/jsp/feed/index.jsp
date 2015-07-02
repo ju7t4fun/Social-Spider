@@ -114,13 +114,13 @@
         var feed = $("#feed");
         var post = "";
         var imgsrc;
-        $.getJSON("/controller?action=getpostbyid&post_id=" + postID, function (jsonResponse) {
+        $.getJSON("/post?action=getPostById&post_id=" + postID, function (jsonResponse) {
             post += '<ul style="margin-left:-30px;"> <table width="100%" style="padding:0 50px;">';
-            post += '<tr><td style="text-align:left;"><strong>'+'POST #'+ (postCounter++) +'</strong></td> </tr>';
-            post += '<tr><td style="text-align:justify;"> <br>'+ jsonResponse.postText +' </td> </tr>';
+            post += '<tr><td style="text-align:left;"><strong>' + 'POST #' + (postCounter++) + '</strong></td> </tr>';
+            post += '<tr><td style="text-align:justify;"> <br>' + jsonResponse.postText + ' </td> </tr>';
             for (var i = 0; i < jsonResponse.attachments.length; i++) {
-                if (jsonResponse.attachments[i].payload.includes("image")) {
-                    imgsrc = "http://localhost:8080" + jsonResponse.attachments[i].payload;
+                if (jsonResponse.attachments[i].payload.includes("jpg")) {
+                    imgsrc = jsonResponse.attachments[i].payload;
                     break;
                 }
             }
