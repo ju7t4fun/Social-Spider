@@ -7,6 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,6 +37,9 @@
 <%--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>--%>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
+
+    <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
+    <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
 
 
     <script>
@@ -77,7 +82,7 @@
                 </div>
             </div>
             <div style="position: fixed; top: 127px; left: 195px;">
-                <input type="button" value="Click" onclick="createFeed(41);">
+                <input type="button" value="Click" onclick="createFeed(1);">
             </div>
             <section class="wrapper" style="margin-left: 180px; margin-top: -30px;">
                 <div class="row">
@@ -98,7 +103,7 @@
 <!-- container section end -->
 
 <script>
-    $.getJSON("/controller?action=categories", function (data) {
+    $.getJSON("/controller?action=getowner", function (data) {
         $.each(data, function (key, val) {
             $('#tokenize_focus').append($('<option>', {
                 value: val.id,
@@ -125,9 +130,10 @@
                 }
             }
             if (imgsrc != null) {
-                 post += '<tr><td><img src="' + imgsrc +'" width="600" height="450" style="margin:25px;"> </td> </tr>';
+                post += '<tr><td><img src="' + imgsrc +'" width="600" height="450" style="margin:25px;"> </td> </tr>';
             }
-            post += '</table><div class="btn-group" style="margin-left: 450px;"> <a class="btn btn-default" onclick="viewPost('+ postID +');" data-toggle="modal" data-target="#myModal">View</a> <a class="btn btn-default" href="">Publish</a> <a class="btn btn-default" href="">Save</a></div></ul>';
+            post +=
+                    '</table><div class="btn-group" style="margin-left: 450px;"> <a class="btn btn-default" onclick="viewPost('+ postID +');" data-toggle="modal" data-target="#myModal">View</a> <a class="btn btn-default" data-toggle="modal" data-target="#publish_modal">Publish</a> <a class="btn btn-default" onclick="savePost('+ postID +');">Save</a></div></ul>';
             post += '<div style="width: 90%; height: 3px;margin:25px auto 25px;border-radius: 4px;background:  lightslategray;"></div>';
             feed.prepend(post); // .prepend(post); - to begin
             $('html, body').css({
@@ -138,6 +144,143 @@
 
     }
 </script>
+<script>
+    function savePost(postID) {
+            $.post(
+                    "/post?action=savePostFromFeed",
+                    {
+                       id: postID
+                    },
+                    onAjaxSuccess
+            );
+            function onAjaxSuccess(data) {
+                var response = JSON.parse(data);
+               toastrNotification(response.status, response.message);
+            }
+    }
+</script>
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="publish_modal"
+     class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
+                <h4 class="modal-title"><l:resource key="newpost.dateandtime"/></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="modal_form" method="POST" action="/post?action=addPost" class="form-horizontal">
+                            <input type="hidden" name="typePost" value="new">
+
+                            <div style="position: relative; left: -130px; top:30px;">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="date"><l:resource
+                                            key="newpost.date"/></label>
+
+                                    <div class="col-md-4">
+                                        <l:resource key="newpost.postdate"><input id="date" name="date" type="date"
+                                                                                  min="${date}" value="${date}"
+                                                                                  placeholder=""
+                                                                                  class="form-control input-md"></l:resource>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="time"><l:resource
+                                            key="newpost.time"/></label>
+
+                                    <div class="col-md-4">
+                                        <l:resource key="newpost.posttime"><input id="time" name="time" type="time"
+                                                                                  value="${time}" placeholder=""
+                                                                                  class="form-control input-md"></l:resource>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="position: relative; left: 250px; top:-109px;">
+                                <div class="form-group" style="">
+                                    <div class="col-lg-6">
+                                        <h4><l:resource key="newpost.selectgroup"/>:</h4>
+                                        <select name="groups" id="tokenize_focus" multiple="multiple"
+                                                class="tokenize-sample">
+
+                                        </select>
+
+                                        <script type="text/javascript">
+                                            $('select#tokenize_focus').tokenize({displayDropdownOnFocus: true});
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="position: relative; left:-58px; top:-100px;">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="check"><l:resource
+                                            key="newpost.removingdate"/></label>
+                                    <input id="check" type="checkbox">
+                                </div>
+                            </div>
+                            <div style="position: relative; left:54px; top:-90px; width: 600px;">
+                                <div id="time3" class="col-md-4">
+                                    <l:resource key="newpost.date"><input id="time1" name="date_delete" min="${date}"
+                                                                          value="${del_date}" type="date"
+                                                                          placeholder=""
+                                                                          class="form-control input-md"></l:resource>
+                                </div>
+
+                            </div>
+                            <div style="position: relative; left:-146px; top:-50px; width: 600px;">
+                                <div id="time4" class="col-md-4">
+                                    <l:resource key="newpost.time"><input id="time5" name="time_delete" type="time"
+                                                                          placeholder="Time"
+                                                                          class="form-control input-md"
+                                                                          value="${del_time}"></l:resource>
+                                </div>
+                            </div>
+                            <button id="submit_modal3" type="button" style="margin-left: 455px;margin-top: -80px;"
+                                    class="btn btn-primary"
+                                    data-dismiss="modal">
+                                <l:resource key="newpost.save"/>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $("#time3, #time4").hide();
+        $('#check').click(function () {
+            $("#time3, #time4").toggle(this.checked);
+        });
+        $(document).ready(function () {
+            $("#submit_modal3").click(function () {
+                $.post(
+                        "/post?action=addPost",
+                        {
+                            typePost: "new",
+                            title: $("#title").val(),
+                            message: $("#content").val(),
+                            tags: $("#tagsinput").val(),
+                            date: $("#date").val(),
+                            time: $("#time").val(),
+                            date_delete: $("#time1").val(),
+                            time_delete: $("#time5").val(),
+                            checked: $("#check").prop('checked'),
+                            groups: $("#tokenize_focus").val().toString()
+                        },
+                        onAjaxSuccess
+                );
+                function onAjaxSuccess(data) {
+                    alert(1);
+                    var responce = JSON.parse(data);
+                    if (responce.status === 'success') {
+                        location.href = "/post?action=queued";
+                    }
+                }
+            });
+        });
+    </script>
+
 <!-- javascripts -->
 <%--<script src="${pageContext.request.contextPath}/js/jquery.js"></script>--%>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
@@ -158,6 +301,10 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ga.js"></script>
 <!--custom switch-->
 <script src="${pageContext.request.contextPath}/js/bootstrap-switch.js"></script>
+    <!--custom tagsinput-->
+    <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
+    <script src="${pageContext.request.contextPath}/js/form-component.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
 
 </body>
 </html>
