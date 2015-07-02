@@ -33,12 +33,26 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.js"></script>
-    <script src="js/respond.min.js"></script>
-    <script src="js/lte-ie7.js"></script>
-    <![endif]-->
+
+    <script>
+        var feedWebSocket = new WebSocket("ws://localhost:8080/websocket/feed");
+
+        feedWebSocket.onopen = function (event) {
+            alert("onOpen");
+        };
+
+        // Опрацювання команд
+        feedWebSocket.onmessage = function (event) {
+            alert("onMessage");
+            var args = event.data.split("|");
+        };
+
+        feedWebSocket.onclose = function (event) {
+            alert('onClose');
+        };
+
+    </script>
+
 
 </head>
 <body>
@@ -208,8 +222,8 @@
     </div>
 </div>
 <script>
-    $.getJSON( "/controller?action=categories", function( data ) {
-        $.each( data, function( key, val ) {
+    $.getJSON("/controller?action=categories", function (data) {
+        $.each(data, function (key, val) {
             $('#tokenize_focus').append($('<option>', {
                 value: val.id,
                 text: val.name

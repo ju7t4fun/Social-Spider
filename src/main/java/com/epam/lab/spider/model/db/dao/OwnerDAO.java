@@ -29,4 +29,16 @@ public interface OwnerDAO extends CRUD<Owner> {
 
     int getCountSearchByUserId(Connection connection, Integer id, String q) throws SQLException;
 
+    List<Owner> getAllGroups(Connection connection, int start, int ammount) throws SQLException;
+
+    boolean updateBan(Connection connection, int vk_id) throws SQLException;
+
+    boolean updateUnBan(Connection connection, int vk_id) throws SQLException;
+
+    int getCountAllUnique(Connection connection) throws SQLException;
+
+    List<Owner> getAllGroupsWithSearch(Connection connection, String nameToSearch, int start, int ammount) throws SQLException;
+
+    int getCountAllUniqueWithSearch(Connection connection, String nameToSearch) throws SQLException;
+
 }

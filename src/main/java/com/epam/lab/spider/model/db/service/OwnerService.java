@@ -147,4 +147,58 @@ public class OwnerService implements BaseService<Owner> {
         }
         return -1;
     }
+
+    public List<Owner> getAllGroups(int start, int ammount) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.getAllGroups(connection, start, ammount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Owner> getAllGroupsWithSearch(String nameToSearch, int start, int ammount) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.getAllGroupsWithSearch(connection, nameToSearch, start, ammount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean updateBan(int vk_id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.updateBan(connection,vk_id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateUnBan(int vk_id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.updateUnBan(connection,vk_id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public int getCountAllUnique() {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.getCountAllUnique(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getCountAllUniqueWithSearch(String nameToSearch) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.getCountAllUniqueWithSearch(connection,nameToSearch);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

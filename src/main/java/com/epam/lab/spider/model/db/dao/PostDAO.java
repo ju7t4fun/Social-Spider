@@ -20,7 +20,10 @@ public interface PostDAO extends CRUD<Post>, SavableDAO<Post> {
 
     int getCountByUserId(Connection connection, Integer id) throws SQLException;
 
-    List<Post> getByUserIdWithSearch(Connection connection, Integer id, int page, int size, String messageToSearch) throws SQLException;
+    List<Post> getByUserIdWithSearch(Connection conn, Integer id, int page, int size, String q) throws SQLException;
 
     int getCountByUserIdWithSearch(Connection connection, Integer id, String messageToSearch) throws SQLException;
+
+    List<Post> getByCategoryId(Connection connection, int categoryId, int offset, int limit) throws SQLException;
+
 }

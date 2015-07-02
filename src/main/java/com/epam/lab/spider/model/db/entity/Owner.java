@@ -11,6 +11,15 @@ public class Owner {
     private String domain;
     private Boolean deleted = false;
     private Integer userId;
+    private Boolean banned = false;
+
+    public Boolean getBanned() {
+        return banned;
+    }
+
+    public void setBanned(Boolean banned) {
+        this.banned = banned;
+    }
 
     public Integer getUserId() {
         return userId;
