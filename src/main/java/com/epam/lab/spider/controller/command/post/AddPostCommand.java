@@ -59,7 +59,7 @@ public class AddPostCommand implements ActionCommand {
         Set<Attachment> attachments = new HashSet<>();
         for (Map.Entry<String, String> entry : urlType.entrySet()) {
             attachment = new Attachment();
-            attachment.setPayload(entry.getKey());
+            attachment.setPayload("http://localhost:8080"+entry.getKey());
             attachment.setType(Attachment.Type.valueOf(entry.getValue()));
             attachment.setDeleted(false);
             attachments.add(attachment);
