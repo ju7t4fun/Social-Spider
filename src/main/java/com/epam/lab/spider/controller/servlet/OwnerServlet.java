@@ -38,6 +38,7 @@ public class OwnerServlet extends HttpServlet {
             commands.put("stat", new GroupStatsCommand());
             commands.put("add", new AddNewOwnewCommand());
             commands.put("editowner", new EditOwnerNameCommand());
+            commands.put("getownerwall", new GetOwnerWallCommand());
         }
     }
 }

@@ -224,6 +224,10 @@
             $("#popup_bind").hide();
         }
 
+        function PopUpHideS() {
+            $("#popup_bind").hide();
+        }
+
         function sendSelectedField(id) {
             var selectionRead = document.getElementById("tokenize_read").options;
             var selectionWrite = document.getElementById("tokenize_write").options;
@@ -374,6 +378,8 @@
                                     <a href="javascript:PopUpHide()">
                                         <button class="btn btn-info" style="margin-right: 14px"><l:resource
                                                 key="newpost.save"/></button>
+                                    </a>
+                                    <a href="javascript:PopUpHideS()">
                                         <button class="btn btn-danger" style="margin-right: 14px"><l:resource
                                                 key="cancel"/></button>
                                     </a>
