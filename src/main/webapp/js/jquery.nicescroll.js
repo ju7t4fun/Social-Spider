@@ -445,15 +445,15 @@
             if (!b.ispage || !g.cantouch && !g.isieold && !g.isie9mobile) {
                 var d = b.docscroll;
                 b.ispage && (d = b.haswrapper ? b.win : b.doc);
-                g.isie9mobile || b.css(d, {"overflow-y": "hidden"});
-                b.ispage && g.isie7 && ("BODY" == b.doc[0].nodeName ? b.css(e("html"), {"overflow-y": "hidden"}) : "HTML" == b.doc[0].nodeName && b.css(e("body"), {"overflow-y": "hidden"}));
+                g.isie9mobile || b.css(d, {"overflow-y": "auto"});
+                b.ispage && g.isie7 && ("BODY" == b.doc[0].nodeName ? b.css(e("html"), {"overflow-y": "auto"}) : "HTML" == b.doc[0].nodeName && b.css(e("body"), {"overflow-y": "auto"}));
                 g.isios && (!b.ispage && !b.haswrapper) && b.css(e("body"), {"-webkit-overflow-scrolling": "touch"});
                 var c = e(document.createElement("div"));
                 c.css({
                     position: "relative",
                     top: 0,
                     "float": "right",
-                    width: "12px",
+                    width: "0px",
                     height: "0px",
                     "background-color": "rgb(66, 77, 95)",
                     border: b.opt.cursorborder,
@@ -493,7 +493,7 @@
                     c.css({
                         position: "relative",
                         top: 0,
-                        height: b.opt.cursorwidth,
+                        height: "0px",
                         width: "0px",
                         "background-color": b.opt.cursorcolor,
                         border: b.opt.cursorborder,
@@ -508,7 +508,7 @@
                     m.attr("id", b.id + "-hr");
                     m.addClass("nicescroll-rails");
                     m.height = Math.max(parseFloat(b.opt.cursorwidth), c.outerHeight());
-                    m.css({height: m.height + "px", zIndex: b.zindex, background: b.opt.background});
+                    m.css({height:   "0px", zIndex: b.zindex, background: b.opt.background});
                     m.append(c);
                     m.visibility = !0;
                     m.scrollable = !0;
@@ -934,8 +934,8 @@
                     }, b.docscroll = e(b.iframe.body));
                     !g.isios && (b.opt.iframeautoresize && !b.isiframe) && (b.win.scrollTop(0), b.doc.height(""), d = Math.max(c.getElementsByTagName("html")[0].scrollHeight, c.body.scrollHeight), b.doc.height(d));
                     b.lazyResize(30);
-                    g.isie7 && b.css(e(b.iframe.html), {"overflow-y": "hidden"});
-                    b.css(e(b.iframe.body), {"overflow-y": "hidden"});
+                    g.isie7 && b.css(e(b.iframe.html), {"overflow-y": "auto"});
+                    b.css(e(b.iframe.body), {"overflow-y": "auto"});
                     g.isios && b.haswrapper && b.css(e(c.body), {"-webkit-transform": "translate3d(0,0,0)"});
                     "contentWindow"in
                     this ? b.bind(this.contentWindow, "scroll", b.onscroll) : b.bind(c, "scroll", b.onscroll);

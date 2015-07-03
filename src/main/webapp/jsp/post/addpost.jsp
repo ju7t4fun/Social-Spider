@@ -103,7 +103,7 @@
                         <div class="panel-body">
                             <div class="padd">
 
-                                <div class="form quick-post">
+                                <div class="form quick-post" style="width: 90%;">
                                     <!-- Edit profile form (not working)-->
                                     <form id="post_form" class="form-horizontal"
                                           action="/post" method="GET">
@@ -130,7 +130,7 @@
                                         <!-- Tags -->
 
                                         <div class="form-group">
-                                            <div style="width:1100px;">
+                                            <div style="width:963px; margin-left: -4px;">
                                                 <label class="control-label col-lg-2" for="tagsinput"
                                                        style="margin-right:20px;"><l:resource
                                                         key="newpost.tags"/></label>
@@ -147,7 +147,7 @@
                                                     key="newpost.addfile"/></label>
 
                                             <div id="upload-from">
-                                                <div class="btn-group">
+                                                <div class="btn-group" style="margin-left: -15px;">
                                                     <button type="button" class="btn btn-primary"><l:resource
                                                             key="newpost.upload"/></button>
                                                     <button type="button" class="btn btn-primary dropdown-toggle"
@@ -264,7 +264,7 @@
                                             $('#fl').hide();
                                         </script>
                                         <!-- Buttons -->
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin-left: -13px;">
                                             <br>
                                             <!-- Buttons -->
                                             <div id="scrl" class="col-lg-offset-2 col-lg-9">
@@ -420,7 +420,6 @@
             });
         });
     </script>
-
     <!-- javascripts -->
 
     <%--<script src="${pageContext.request.contextPath}/js/jquery.js"></script>--%>
@@ -433,7 +432,7 @@
     <!-- nice scroll -->
     <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js"
-            type="text/javascript"></script>
+            <%--type="text/javascript"></script>--%>
     <!--script for this page only-->
     <script src="${pageContext.request.contextPath}/js/calendar-custom.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.rateit.min.js"></script>

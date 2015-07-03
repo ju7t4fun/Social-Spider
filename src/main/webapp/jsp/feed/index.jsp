@@ -135,10 +135,6 @@
             post += '</table><div class="btn-group" style="margin-left: 450px;"> <a class="btn btn-default" onclick="viewPost('+ postID +');" data-toggle="modal" data-target="#myModal">View</a> <a class="btn btn-default" data-toggle="modal" data-target="#publish_modal">Publish</a> <a class="btn btn-default" onclick="savePost('+ postID +');">Save</a></div></ul>';
             post += '<div style="width: 90%; height: 3px;margin:25px auto 25px;border-radius: 4px;background:  lightslategray;"></div>';
             feed.prepend(post); // .prepend(post); - to begin
-            $('html, body').css({
-                'overflow-y': 'auto',
-                'height': 'auto'
-            });
         });
 
     }
