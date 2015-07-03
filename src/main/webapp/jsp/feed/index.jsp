@@ -82,7 +82,7 @@
                 </div>
             </div>
             <div style="position: fixed; top: 127px; left: 195px;">
-                <input type="button" value="Click" onclick="createFeed(196);">
+                <input type="button" value="Click" onclick="createFeed(1);">
             </div>
             <section class="wrapper">
                 <div class="row">
@@ -120,9 +120,10 @@
         var post = "";
         var imgsrc;
         $.getJSON("/post?action=getPostById&post_id=" + postID, function (jsonResponse) {
+            var text = showMoreText(jsonResponse.postText);
             post += '<ul style="margin-left:-30px;"> <table width="100%" style="padding:0 50px;">';
             post += '<tr><td style="text-align:left;"><strong>' + 'POST #' + (postCounter++) + '</strong></td> </tr>';
-            post += '<tr><td style="text-align:justify;"> <br>' + jsonResponse.postText + ' </td> </tr>';
+            post += '<tr><td style="text-align:justify;" class="smore"> <br>' + text + ' </td> </tr>';
             for (var i = 0; i < jsonResponse.attachments.length; i++) {
                 if (jsonResponse.attachments[i].type == 'photo') {
                     imgsrc = jsonResponse.attachments[i].url;
@@ -281,7 +282,26 @@
             });
         });
     </script>
-
+    <span id="temp" style="display: none;"></span>
+    <script>
+        function showMore() {
+            $('.smore').click(function() {
+             $(this).html($("#temp").text());
+            });
+        }
+        function showMoreText(text) {
+            var showChar = 300;
+            var ellipsestext = "...";
+          if (text.length <= showChar) {
+                return text;
+            } else {
+                var c = text.substr(0, showChar);
+                var html = c +  ellipsestext + '<a onclick="showMore();">show all text</a>';
+                $("#temp").text(text);
+                return html;
+            }
+        }
+    </script>
     <!-- javascripts -->
     <%--<script src="${pageContext.request.contextPath}/js/jquery.js"></script>--%>
     <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
