@@ -21,12 +21,12 @@ public class PoolConnection {
     }
 
     public static Connection getConnection() throws SQLException {
-        try{
+        try {
             if (dataSource == null) {
                 dataSource = init();
             }
             return dataSource.getConnection();
-        }catch (SQLException|RuntimeException x) {
+        } catch (SQLException | RuntimeException x) {
             LOG.error("Незнайдено налаштувань пулу. Повернуто нульовий обєкт. Створення одиночного зєднання!");
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/vk_spider", "root", "root");
         }
@@ -38,7 +38,7 @@ public class PoolConnection {
             InitialContext ctx = new InitialContext();
             ds = (DataSource) ctx.lookup("java:comp/env/jdbc/vk_spider");
         } catch (NamingException e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage());
         }
         return ds;
     }

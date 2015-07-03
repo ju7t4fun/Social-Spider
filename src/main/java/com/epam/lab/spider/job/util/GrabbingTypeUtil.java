@@ -63,7 +63,7 @@ public class GrabbingTypeUtil {
                         currentPostCount++;
                         if(currentPostCount>=countOfPosts)break postGrabbingAndFiltering;
                     }else {
-                        LOG.debug("Post " + owner.getVkId() + "_" + vkPost.getId() + " has failed filter.");
+                        LOG.trace("Post " + owner.getVkId() + "_" + vkPost.getId() + " has failed filter.");
                     }
                 }
             }

@@ -34,7 +34,7 @@
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
     <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
 
-<%--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>--%>
+    <%--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>--%>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
 
@@ -67,7 +67,7 @@
 </head>
 <body>
 
-<section id="container" class="">
+<section id="container">
 
     <jsp:include page="../pagecontent/header.jsp"/>
     <jsp:include page="../pagecontent/sidebar.jsp"/>
@@ -82,11 +82,11 @@
                 </div>
             </div>
             <div style="position: fixed; top: 127px; left: 195px;">
-                <input type="button" value="Click" onclick="createFeed(1);">
+                <input type="button" value="Click" onclick="createFeed(196);">
             </div>
-            <section class="wrapper" style="margin-left: 180px; margin-top: -30px;">
+            <section class="wrapper">
                 <div class="row">
-                    <div class="col-md-8 portlets">
+                    <div class="col-md-8 portlets" style="margin-left: 190px">
                         <div class="panel panel-default">
                             <div class="panel-body" id="feed">
 
@@ -124,15 +124,15 @@
             post += '<tr><td style="text-align:left;"><strong>' + 'POST #' + (postCounter++) + '</strong></td> </tr>';
             post += '<tr><td style="text-align:justify;"> <br>' + jsonResponse.postText + ' </td> </tr>';
             for (var i = 0; i < jsonResponse.attachments.length; i++) {
-                if ((/\.(gif|jpg|jpeg|png)$/i).test(jsonResponse.attachments[i].payload)) {
-                    imgsrc = jsonResponse.attachments[i].payload;
+                if (jsonResponse.attachments[i].type == 'photo') {
+                    imgsrc = jsonResponse.attachments[i].url;
                     break;
                 }
             }
             if (imgsrc != null) {
-                post += '<tr><td><img src="' + imgsrc +'" width="600" height="450" style="margin:25px;"> </td> </tr>';
+                post += '<tr><td><img src="' + imgsrc + '" width="600" height="450" style="margin:25px;"> </td> </tr>';
             }
-            post += '</table><div class="btn-group" style="margin-left: 450px;"> <a class="btn btn-default" onclick="viewPost('+ postID +');" data-toggle="modal" data-target="#myModal">View</a> <a class="btn btn-default" data-toggle="modal" data-target="#publish_modal">Publish</a> <a class="btn btn-default" onclick="savePost('+ postID +');">Save</a></div></ul>';
+            post += '</table><div class="btn-group" style="margin-left: 450px;"> <a class="btn btn-default" onclick="viewPost(' + postID + ');" data-toggle="modal" data-target="#myModal">View</a> <a class="btn btn-default" data-toggle="modal" data-target="#publish_modal">Publish</a> <a class="btn btn-default" onclick="savePost(' + postID + ');">Save</a></div></ul>';
             post += '<div style="width: 90%; height: 3px;margin:25px auto 25px;border-radius: 4px;background:  lightslategray;"></div>';
             feed.append(post); // .prepend(post); - to begin
         });
@@ -141,17 +141,17 @@
 </script>
 <script>
     function savePost(postID) {
-            $.post(
-                    "/post?action=savePostFromFeed",
-                    {
-                       id: postID
-                    },
-                    onAjaxSuccess
-            );
-            function onAjaxSuccess(data) {
-                var response = JSON.parse(data);
-               toastrNotification(response.status, response.message);
-            }
+        $.post(
+                "/post?action=savePostFromFeed",
+                {
+                    id: postID
+                },
+                onAjaxSuccess
+        );
+        function onAjaxSuccess(data) {
+            var response = JSON.parse(data);
+            toastrNotification(response.status, response.message);
+        }
     }
 </script>
 <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="publish_modal"
@@ -246,7 +246,7 @@
 //        load feed while scroll bottom
         $(window).scroll(function() {
             if($(window).scrollTop() + $(window).height() == $(document).height()) {
-                createFeed(1);
+                createFeed(196);
             }
         });
 //        end
@@ -282,26 +282,26 @@
         });
     </script>
 
-<!-- javascripts -->
-<%--<script src="${pageContext.request.contextPath}/js/jquery.js"></script>--%>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-<!-- nice scroll -->
-<script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
-<!-- gritter -->
+    <!-- javascripts -->
+    <%--<script src="${pageContext.request.contextPath}/js/jquery.js"></script>--%>
+    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+    <!-- nice scroll -->
+    <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <!-- gritter -->
 
-<!-- custom gritter script for this page only-->
-<script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>
-<!--custome script for all page-->
-<script src="${pageContext.request.contextPath}/js/scripts.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
-<!--custom tagsinput-->
-<script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
-<script src="${pageContext.request.contextPath}/js/form-component.js"></script>
-<!--custom checkbox & radio-->
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/ga.js"></script>
-<!--custom switch-->
-<script src="${pageContext.request.contextPath}/js/bootstrap-switch.js"></script>
+    <!-- custom gritter script for this page only-->
+    <script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>
+    <!--custome script for all page-->
+    <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
+    <!--custom tagsinput-->
+    <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
+    <script src="${pageContext.request.contextPath}/js/form-component.js"></script>
+    <!--custom checkbox & radio-->
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/ga.js"></script>
+    <!--custom switch-->
+    <script src="${pageContext.request.contextPath}/js/bootstrap-switch.js"></script>
     <!--custom tagsinput-->
     <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
     <script src="${pageContext.request.contextPath}/js/form-component.js"></script>

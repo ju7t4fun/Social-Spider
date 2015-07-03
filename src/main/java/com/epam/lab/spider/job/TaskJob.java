@@ -70,7 +70,7 @@ public class TaskJob implements Job {
                 String attachString = "video" + video.getOwnerId() + "_" + video.getId();
                 attachment.setPayload(attachString);
                 attachment.setMode(Attachment.Mode.CODE);
-                attachment.setType(Attachment.Type.DOC);
+                attachment.setType(Attachment.Type.VIDEO);
                 post.addAttachment(attachment);
             }
         }
