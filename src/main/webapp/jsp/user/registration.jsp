@@ -118,7 +118,7 @@
         });
     });
 </script>
-<jsp:include page="../pagecontent/simple_footer.jsp"/>
+ <jsp:include page="../pagecontent/simple_footer.jsp"/>
 
 <!-- javascripts -->
 <script src="js/jquery.js"></script>

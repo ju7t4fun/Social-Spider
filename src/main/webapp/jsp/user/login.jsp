@@ -20,7 +20,7 @@
     <link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">
     <!--external css-->
     <!-- Plugin CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.min.css" type="text/css">
+    <!--<link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.min.css" type="text/css">-->
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/creative.css" type="text/css">
@@ -122,23 +122,43 @@
 <jsp:include page="../pagecontent/simple_footer.jsp"/>
 
 <!-- javascripts -->
-<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+<!--<script src="${pageContext.request.contextPath}/js/jquery.js"></script>-->
+<!--<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>-->
 <!-- nice scroll -->
-<script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
+<!--<script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
+<!--<script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
 <!-- jquery validate js -->
-<script type="${pageContext.request.contextPath}/text/javascript" src="js/jquery.validate.min.js"></script>
+<!--<script type="${pageContext.request.contextPath}/text/javascript" src="js/jquery.validate.min.js"></script>
 
 <!-- custom form validation script for this page-->
-<script src="${pageContext.request.contextPath}/js/form-validation-script.js"></script>
+<!--<script src="${pageContext.request.contextPath}/js/form-validation-script.js"></script>
 <!--custome script for all page-->
-<script src="${pageContext.request.contextPath}/js/scripts.js"></script>
+<!--<script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 
+<!-- EASING SCROLL SCRIPTS PLUGIN -->
+<!--<script src="${pageContext.request.contextPath}/js/jquery.vegas.min.js"></script>
+<!-- VEGAS SLIDESHOW SCRIPTS -->
+<!--<script src="${pageContext.request.contextPath}/js/jquery.easing.min.js"></script>
+
+
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- nice scroll -->
+<script src="js/jquery.scrollTo.min.js"></script>
+<script src="js/jquery.nicescroll.js" type="text/javascript"></script>
+<!-- jquery validate js -->
+<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+
+<!-- custom form validation script for this page-->
+<script src="js/form-validation-script.js"></script>
+<!--custome script for all page-->
+<script src="js/scripts.js"></script>
 <!-- EASING SCROLL SCRIPTS PLUGIN -->
 <script src="${pageContext.request.contextPath}/js/jquery.vegas.min.js"></script>
 <!-- VEGAS SLIDESHOW SCRIPTS -->
 <script src="${pageContext.request.contextPath}/js/jquery.easing.min.js"></script>
 
 </body>
+
 </html>

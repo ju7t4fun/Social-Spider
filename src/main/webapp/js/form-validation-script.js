@@ -11,7 +11,7 @@ var Script = function () {
                 name: {
                     required: true,
                     minlength: 1,
-                    pattern: /^[a-zA-Z\u0400-\u04ff]+$/
+                   // pattern: /^[a-zA-Z\u0400-\u04ff]+$/
                 },
                 address: {
                     required: true,

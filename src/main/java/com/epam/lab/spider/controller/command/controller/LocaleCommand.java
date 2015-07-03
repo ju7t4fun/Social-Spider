@@ -62,3 +62,4 @@ public class LocaleCommand implements ActionCommand {
     }
 
 }
+
