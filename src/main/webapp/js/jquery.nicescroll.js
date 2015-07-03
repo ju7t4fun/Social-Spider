@@ -472,7 +472,7 @@
                     0;
                 f.append(c);
                 f.width = Math.max(parseFloat(b.opt.cursorwidth), c.outerWidth()) + b.opt.railpadding.left + b.opt.railpadding.right;
-                f.css({width: f.width + "px", zIndex: b.zindex, background: b.opt.background, cursor: "default"});
+                f.css({width: "0px", zIndex: b.zindex, background: b.opt.background, cursor: "default"});
                 f.visibility = !0;
                 f.scrollable = !0;
                 f.align = "left" == b.opt.railalign ? 0 : 1;
@@ -1509,7 +1509,7 @@
             if (b.zoomactive) {
                 var c = b.getScrollTop();
                 b.win.css({
-                    width: e(window).width() - b.zoomrestore.padding.w + "px",
+                    width:  "0px",
                     height: e(window).height() - b.zoomrestore.padding.h + "px"
                 });
                 b.onResize();
