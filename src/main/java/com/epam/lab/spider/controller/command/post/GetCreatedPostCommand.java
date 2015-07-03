@@ -14,10 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Boyarsky Vitaliy on 28.06.2015.
@@ -33,8 +30,21 @@ public class GetCreatedPostCommand implements ActionCommand {
         User user = (User) session.getAttribute("user");
         int page = Integer.parseInt(request.getParameter("iDisplayStart"));
         int size = Integer.parseInt(request.getParameter("iDisplayLength"));
-        List<Post> posts = service.getByUserId(user.getId(), page, size);
-        int postCount = service.getCountByUserId(user.getId());
+
+        List<Post> posts;
+        int postCount;
+        String nameToSearch = request.getParameter("sSearch");
+        if (nameToSearch != null && nameToSearch !="" ) {
+            nameToSearch = "%" + nameToSearch + "%";
+            postCount = service.getCountByUserIdWithSearch(user.getId(),nameToSearch);
+            posts = service.getByUserIdWithSearch(user.getId(), page, size,nameToSearch);
+
+        } else {
+            posts = service.getByUserId(user.getId(), page, size);
+            postCount = service.getCountByUserId(user.getId());
+
+        }
+
 
         JSONObject result = new JSONObject();
         JSONArray array = new JSONArray();

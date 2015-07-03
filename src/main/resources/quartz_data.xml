@@ -8,29 +8,29 @@
 
     <schedule>
 
-        <!--<job>-->
-            <!--<name>PostJob</name>-->
-            <!--<job-class>com.epam.lab.spider.job.PostJob</job-class>-->
-        <!--</job>-->
-        <!--<trigger>-->
-            <!--<simple>-->
-                <!--<name>PostJob</name>-->
-                <!--<job-name>PostJob</job-name>-->
-                <!--<start-time-seconds-in-future>15</start-time-seconds-in-future>-->
-            <!--</simple>-->
-        <!--</trigger>-->
-        <!--<job>-->
-            <!--<name>TaskJob</name>-->
-            <!--<job-class>com.epam.lab.spider.job.TaskJob</job-class>-->
-        <!--</job>-->
-        <!--<trigger>-->
-            <!--<simple>-->
-                <!--<name>TaskJob</name>-->
-                <!--<job-name>TaskJob</job-name>-->
-                <!--<start-time-seconds-in-future>5</start-time-seconds-in-future>-->
-            <!--</simple>-->
+        <job>
+            <name>PostJob</name>
+            <job-class>com.epam.lab.spider.job.PostJob</job-class>
+        </job>
+        <trigger>
+            <simple>
+                <name>PostJob</name>
+                <job-name>PostJob</job-name>
+                <start-time-seconds-in-future>15</start-time-seconds-in-future>
+            </simple>
+        </trigger>
+        <job>
+            <name>TaskJob</name>
+            <job-class>com.epam.lab.spider.job.TaskJob</job-class>
+        </job>
+        <trigger>
+            <simple>
+                <name>TaskJob</name>
+                <job-name>TaskJob</job-name>
+                <start-time-seconds-in-future>5</start-time-seconds-in-future>
+            </simple>
 
-        <!--</trigger>-->
+        </trigger>
 
     </schedule>
 

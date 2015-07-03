@@ -49,10 +49,10 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     private static final String GET_WRITE_BY_USER_ID_QUERY = "SELECT wall.* FROM wall WHERE wall.profile_id IN " +
             "(SELECT profile.id FROM user JOIN profile ON user.id = profile.user_id  WHERE user.id = ?) AND " +
             "permission = 'write' AND deleted = 0";
-    private static final String SQL_GET_BY_OWNER_ID_QUERY = "SELECT * FROM wall WHERE owner_id = ? AND deleted = 0";
-    private static final String SQL_GET_WRITE_BY_OWNER_ID = "SELECT * FROM wall WHERE owner_id = ? AND deleted = 0 AND" +
+    private static final String SQL_GET_BY_OWNER_ID_QUERY = "SELECT * FROM wall WHERE owner_id = ? AND deleted = false";
+    private static final String SQL_GET_WRITE_BY_OWNER_ID = "SELECT * FROM wall WHERE owner_id = ? AND deleted = false AND" +
             " permission = 'write'";
-    private static final String SQL_GET_READ_BY_OWNER_ID = "SELECT * FROM wall WHERE owner_id = ? AND deleted = 0 AND" +
+    private static final String SQL_GET_READ_BY_OWNER_ID = "SELECT * FROM wall WHERE owner_id = ? AND deleted = false AND" +
             " permission = 'read'";
 
 

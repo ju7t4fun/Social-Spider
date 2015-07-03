@@ -3,9 +3,7 @@ package com.epam.lab.spider.job;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.job.util.GrabbingTypeUtil;
-import com.epam.lab.spider.job.util.Locker;
-import com.epam.lab.spider.job.util.TaskUtil;
+import com.epam.lab.spider.job.util.*;
 import com.epam.lab.spider.model.db.entity.*;
 
 
@@ -32,17 +30,23 @@ public class TaskJob implements Job {
     TaskService taskService = new TaskService();
     TaskSynchronizedDataService synchronizedService = new TaskSynchronizedDataService();
 
+
     public Post processingPost(com.epam.lab.spider.model.vk.Post vkPost, Task task) {
         Post post = new Post();
-        post.setMessage(vkPost.getText());
+        StringBuilder messageBuilder = new StringBuilder();
+        messageBuilder.append(vkPost.getText());
+        if (task.getContentType().hasText()) {
+            messageBuilder.append(" ").append(task.getHashTags());
+        }
+        post.setMessage(messageBuilder.toString().trim());
         for (com.epam.lab.spider.model.vk.Attachment vkAttachment : vkPost.getAttachments()) {
-            if (vkAttachment instanceof Photo) {
+            if (task.getContentType().hasPhoto() && vkAttachment instanceof Photo) {
                 Attachment attachment = new Attachment();
                 attachment.setType(Attachment.Type.PHOTO);
                 attachment.setPayload(((Photo) vkAttachment).getPhoto604().toString());
                 post.addAttachment(attachment);
             }
-            if (vkAttachment instanceof Audio) {
+            if (task.getContentType().hasAudio() && vkAttachment instanceof Audio) {
                 Attachment attachment = new Attachment();
                 Audio audio = (Audio) vkAttachment;
                 String attachString = "audio" + audio.getOwnerId() + "_" + audio.getId();
@@ -51,7 +55,7 @@ public class TaskJob implements Job {
                 attachment.setType(Attachment.Type.AUDIO);
                 post.addAttachment(attachment);
             }
-            if (vkAttachment instanceof Doc) {
+            if (task.getContentType().hasDoc() && vkAttachment instanceof Doc) {
                 Attachment attachment = new Attachment();
                 Doc doc = (Doc) vkAttachment;
                 String attachString = "doc" + doc.getOwnerId() + "_" + doc.getId();
@@ -60,7 +64,7 @@ public class TaskJob implements Job {
                 attachment.setType(Attachment.Type.DOC);
                 post.addAttachment(attachment);
             }
-            if (vkAttachment instanceof Video) {
+            if (task.getContentType().hasVideo() && vkAttachment instanceof Video) {
                 Attachment attachment = new Attachment();
                 Video video = (Video) vkAttachment;
                 String attachString = "video" + video.getOwnerId() + "_" + video.getId();
@@ -96,7 +100,8 @@ public class TaskJob implements Job {
             switch (task.getGrabbingType()) {
 
                 case BEGIN:
-                    postsPrepareToPosting = GrabbingTypeUtil.grabbingBegin(owner, vk, filter, alreadyAddSet, grabbingSize, countOfPosts);
+                    postsPrepareToPosting = GrabbingTypeUtil.grabbingBegin(owner, vk, filter, alreadyAddSet,
+                            grabbingSize, countOfPosts);
                     break;
                 case RANDOM:
                     break;
@@ -181,16 +186,39 @@ public class TaskJob implements Job {
                 list = this.grabbingWall(wall, task);
                 postByWallMap.put(wall, list);
             }
+            List<com.epam.lab.spider.model.vk.Post> postToRepost = new ArrayList<>();
             {
                 if (task.getGrabbingMode() == Task.GrabbingMode.TOTAL) {
                     for (Map.Entry<Wall, List<com.epam.lab.spider.model.vk.Post>> entity : postByWallMap.entrySet()) {
                         List<com.epam.lab.spider.model.vk.Post> postsPrepareToPosting = entity.getValue();
                         LinkedList<Integer> addedToProcessingBlocks = new LinkedList<>();
                         for (com.epam.lab.spider.model.vk.Post vkPost : postsPrepareToPosting) {
-                            Post post = processingPost(vkPost, task);
-                            addedToProcessingPosts.addFirst(post);
+
+                            switch (task.getType()) {
+                                // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
+                                case COPY: {
+                                    Post post = processingPost(vkPost, task);
+                                    addedToProcessingPosts.addFirst(post);
+                                    break;
+                                }
+                                // інакше якщо тип - репост - додаємо пост в чергу до опрацювання та ріпостимо його
+                                // якщо таск завершиться аварійно - можлива втрата репосту даного поста
+                                case REPOST: {
+                                    postToRepost.add(vkPost);
+                                    break;
+                                }
+                                case FAVORITE: {
+                                    Post post = processingPost(vkPost, task);
+                                    System.out.println("-------------" + post);
+                                    Feed feed = new Feed();
+                                    feed.processing(post, task);
+                                    break;
+                                }
+                            }
+
                             addedToProcessingBlocks.addFirst(vkPost.getId());
-                            LOG.debug("Post " + vkPost.getOwnerId() + "_" + vkPost.getId() + " has added to processing.");
+                            LOG.debug("Post wall" + vkPost.getOwnerId() + "_" + vkPost.getId() + " has added to " +
+                                    "processing.");
                         }
                         blockMap.put(entity.getKey(), addedToProcessingBlocks);
                     }
@@ -216,15 +244,36 @@ public class TaskJob implements Job {
                         int postIndex = random.nextInt(basketOfPreparePost.size());
                         // витягаємо та видаляємо з корзини вибраний пост
                         com.epam.lab.spider.model.vk.Post vkPost = basketOfPreparePost.remove(postIndex);
-                        // опрацьовуємо пост за правилами заданими в таску
-                        Post post = processingPost(vkPost, task);
+
+                        switch (task.getType()) {
+                            // опрацьовуємо пост за правилами заданими в таску
+                            // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
+                            case COPY: {
+                                Post post = processingPost(vkPost, task);
+                                addedToProcessingPosts.addFirst(post);
+                                break;
+                            }
+                            // інакше якщо тип - репост - додаємо пост в чергу до опрацювання та ріпостимо його
+                            // якщо таск завершиться аварійно - можлива втрата репосту даного поста
+                            case REPOST: {
+                                postToRepost.add(vkPost);
+                                break;
+                            }
+                            case FAVORITE: {
+                                Post post = processingPost(vkPost, task);
+                                System.out.println("-------------" + post);
+                                Feed feed = new Feed();
+                                feed.processing(post, task);
+                                break;
+                            }
+                        }
+
                         // ставимо пост до потингу та заблоковуємо його
                         LinkedList<Integer> addedToProcessingBlocks = blockMap.get(currentEntry.getKey());
                         if (addedToProcessingBlocks == null) {
                             addedToProcessingBlocks = new LinkedList<>();
                             blockMap.put(currentEntry.getKey(), addedToProcessingBlocks);
                         }
-                        addedToProcessingPosts.addFirst(post);
                         addedToProcessingBlocks.addFirst(vkPost.getId());
                     }
 
@@ -233,14 +282,13 @@ public class TaskJob implements Job {
 
 
             LinkedList<NewPost> newPosts = new LinkedList<>();
-            Random random = new Random();
 
             long timeToPost = task.getNextTaskRunDate().getTime();
             for (Wall wall : destinationWalls) {
-                // якщо профіль заблокований для припинити опрацювання стіни для нього
+                // якщо профіль заблокований для запису припинити опрацювання стіни для нього
                 boolean writeBlocked = Locker.getInstance().isLock(wall);
                 if (writeBlocked) break;
-
+                // відкладений постинг
                 for (Post post : addedToProcessingPosts) {
                     NewPost newPost = new NewPost();
                     newPost.setPost(post);
@@ -251,6 +299,11 @@ public class TaskJob implements Job {
 
                     newPost.setState(NewPost.State.CREATED);
                     newPosts.addFirst(newPost);
+                }
+                // моментальний ріпостинг
+                for (com.epam.lab.spider.model.vk.Post vkPost : postToRepost) {
+                    String wallEntityCode = "wall" + vkPost.getOwnerId() + "_" + vkPost.getId();
+                    RepostUtil.makeRepost(wall.getProfile(), wallEntityCode, wall.getOwner());
                 }
 
             }

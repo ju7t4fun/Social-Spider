@@ -3,12 +3,15 @@ package com.epam.lab.spider.model.db.service;
 import com.epam.lab.spider.model.db.PoolConnection;
 import com.epam.lab.spider.model.db.SQLTransactionException;
 import com.epam.lab.spider.model.db.dao.AttachmentDAO;
+import com.epam.lab.spider.model.db.dao.CategoryHasPostDAO;
 import com.epam.lab.spider.model.db.dao.PostDAO;
+import com.epam.lab.spider.model.db.dao.UserHasCategotyDAO;
 import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
 import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
 import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
 import com.epam.lab.spider.model.db.entity.Attachment;
+import com.epam.lab.spider.model.db.entity.Category;
 import com.epam.lab.spider.model.db.entity.Post;
 import com.epam.lab.spider.model.db.service.savable.SavableService;
 import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
@@ -41,7 +44,6 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
         return SavableServiceUtil.customSave(conn, entity, new Object[]{}, new Object[]{entity.getAttachments()});
     }
 
-    @Deprecated
     @Override
     public boolean insert(Post post) {
         try {
@@ -185,4 +187,45 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
         }
         return -1;
     }
+
+    public List<Post> getByUserIdWithSearch(int userId, int page, int size, String messageToSearch) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getByUserIdWithSearch(connection, userId, page, size, messageToSearch);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getCountByUserIdWithSearch(Integer id, String messageToSearch) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getCountByUserIdWithSearch(connection, id, messageToSearch);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public List<Post> getByCategoryId(int categoryId, int offset, int limit) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getByCategoryId(connection, categoryId, offset, limit);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean bindWithCategories(int postId, List<Category> categories) {
+        CategoryHasPostDAO chpdao = factory.create(CategoryHasPostDAO.class);
+        try (Connection connection = PoolConnection.getConnection()) {
+            for (Category category : categories) {
+                chpdao.insert(connection, category.getId(), postId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 }

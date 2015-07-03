@@ -330,14 +330,14 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header" style="width: 80%"><i class="fa fa-list-alt"></i> Owner</h3>
+                    <h3 class="page-header" style="width: 80%"><i class="fa fa-list-alt"></i> <l:resource key="owner"/></h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
-                        <li><i class="fa fa-list-alt"></i>Owner</li>
+                        <li><i class="fa fa-list-alt"></i><l:resource key="owner"/></li>
                     </ol>
                 </div>
             </div>
@@ -345,7 +345,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left">Owner</div>
+                            <div class="pull-left"><l:resource key="owner"/></div>
                             <div class="clearfix"></div>
                         </div>
 
@@ -374,6 +374,8 @@
                                     <a href="javascript:PopUpHide()">
                                         <button class="btn btn-info" style="margin-right: 14px"><l:resource
                                                 key="newpost.save"/></button>
+                                        <button class="btn btn-danger" style="margin-right: 14px"><l:resource
+                                                key="cancel"/></button>
                                     </a>
                                 </div>
 
@@ -413,17 +415,17 @@
         <div class="modal-content" style="height: 150px;">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h4 class="modal-title">Add group</h4>
+                <h4 class="modal-title"><l:resource key="owner.addgroup"/></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
                         <form id="modal_form" class="form-horizontal">
                             <div>
-                                <input id="ownerUrlEdit" type="text" class="form-control" placeholder="Group name">
+                                <l:resource key="owner.groupname"><input id="ownerUrlEdit" type="text" class="form-control" placeholder=""></l:resource>
                             </div>
                             <div style="position: relative; top: 10px; left: 497px;">
-                                <a type="submit" onclick="addNewOwner()" class="btn btn-primary">Add</a>
+                                <a type="submit" onclick="addNewOwner()" class="btn btn-primary"><l:resource key="add"/></a>
                             </div>
                             <script>
                                 function addNewOwner() {
@@ -457,18 +459,17 @@
         <div class="modal-content" style="height: 150px;">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h4 class="modal-title">Edit group name</h4>
+                <h4 class="modal-title"><l:resource key="owner.editgroupname"/></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
                         <form id="modal_form1" class="form-horizontal">
-                            <div>
-                                <input id="group_name" type="text" name="category" class="form-control"
-                                       placeholder="Group name">
+                                <l:resource key="owner.groupname"><input id="group_name" type="text" name="category" class="form-control"
+                                       placeholder=""></l:resource>
                             </div>
                             <div style="position: relative; top: 10px; left: 497px;">
-                                <a id="submit_edit" class="btn btn-primary">Edit</a>
+                                <a id="submit_edit" class="btn btn-primary"><l:resource key="edit"/></a>
                             </div>
                         </form>
                     </div>

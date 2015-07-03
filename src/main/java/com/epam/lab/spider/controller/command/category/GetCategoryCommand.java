@@ -26,13 +26,36 @@ public class GetCategoryCommand implements ActionCommand {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String toSearch = request.getParameter("sSearch");
+        String pageNo = request.getParameter("iDisplayStart");
+        String pageSize = request.getParameter("iDisplayLength");
+
+        int start = 0;
+        int ammount = 5;
+
+        if (pageNo!=null) {
+            start = Integer.parseInt(pageNo);
+            if (start < 0) {
+                start = 0;
+            }
+        }
+
+        if (pageSize!=null) {
+            ammount = Integer.parseInt(pageSize);
+            if (ammount < 5) {
+                ammount = 5;
+            }
+        }
+
+        int totalCount = 0;
         List<Category> categories;
         if (toSearch == null || toSearch == "") {
-            categories = service.getAll();
+            categories = service.getAllWithLimit(start,ammount);
+            totalCount = service.getCountAll();
         } else {
             toSearch = "%" + toSearch + "%";
             System.out.println("toSearch: " + toSearch);
-            categories = service.getAllWithSearch(toSearch);
+            categories = service.getAllWithSearchLimited(toSearch, start, ammount);
+            totalCount = service.getCountAllWithSearch(toSearch);
         }
         JSONObject result = new JSONObject();
         JSONArray table = new JSONArray();
@@ -43,7 +66,9 @@ public class GetCategoryCommand implements ActionCommand {
             row.put(category.getId());
             table.put(row);
         }
-        result.put("iTotalDisplayRecords", categories.size());
+        System.out.println(categories.size());
+
+        result.put("iTotalDisplayRecords", totalCount);
         result.put("aaData", table);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.owner;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.model.db.entity.Wall;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
 import com.epam.lab.spider.model.db.service.WallService;
@@ -10,10 +11,12 @@ import org.json.JSONObject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created by Boyarsky Vitaliy on 30.06.2015.
@@ -25,6 +28,8 @@ public class BindOwnerCommand implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         // Парсимо JSON
         StringBuffer sb = new StringBuffer();
         try {
@@ -49,11 +54,11 @@ public class BindOwnerCommand implements ActionCommand {
             if (service.delete(wallId)) {
                 obj = new JSONObject();
                 obj.put("status", "success");
-                obj.put("msg", "Видалено");
+                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.success")));
             } else {
                 obj = new JSONObject();
                 obj.put("status", "error");
-                obj.put("msg", "Помилка видалення");
+                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.error")));
             }
             array.put(obj);
         }
@@ -69,11 +74,11 @@ public class BindOwnerCommand implements ActionCommand {
             if (service.insert(wall)) {
                 obj = new JSONObject();
                 obj.put("status", "success");
-                obj.put("msg", "Успішно створено");
+                obj.put("msg", UTF8.encoding(bundle.getString("notification.bind.account.success")));
             } else {
                 obj = new JSONObject();
                 obj.put("status", "error");
-                obj.put("msg", "Помилка звязування");
+                obj.put("msg", UTF8.encoding(bundle.getString("notification.bind.account.error")));
             }
             array.put(obj);
         }
@@ -87,11 +92,11 @@ public class BindOwnerCommand implements ActionCommand {
             if (service.insert(wall)) {
                 obj = new JSONObject();
                 obj.put("status", "success");
-                obj.put("msg", "Успішно створено");
+                obj.put("msg", UTF8.encoding(bundle.getString("notification.bind.account.success")));
             } else {
                 obj = new JSONObject();
                 obj.put("status", "error");
-                obj.put("msg", "Помилка звязування");
+                obj.put("msg", UTF8.encoding(bundle.getString("notification.bind.account.error")));
             }
             array.put(obj);
         }

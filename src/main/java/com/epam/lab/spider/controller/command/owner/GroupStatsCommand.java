@@ -32,6 +32,7 @@ public class GroupStatsCommand implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         int ownerId = Integer.parseInt(request.getParameter("id"));
         List<Wall> writeByOwnerId = wallService.getWriteByOwnerId(ownerId);
         JSONObject result = new JSONObject();

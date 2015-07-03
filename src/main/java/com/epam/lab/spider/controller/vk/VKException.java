@@ -27,6 +27,7 @@ public class VKException extends Exception {
     public static final int VK_ACCESS_ALBUM_DENIED = 200;
     public static final int VK_ACCESS_AUDIO_DENIED = 201;
     public static final int VK_ACCESS_GROUP_DENIED = 203;
+    public static final int VK_AUDIO_HOLDER_WAIN = 270;
     public static final int VK_ALBUM_IS_FULL = 300;
 
     private int exceptionCode = VK_UNKNOWN_ERROR;
@@ -94,6 +95,8 @@ public class VKException extends Exception {
                 return "Доступ к группе запрещён.";
             case VK_ALBUM_IS_FULL:
                 return "Альбом переполнен.";
+            case VK_AUDIO_HOLDER_WAIN:
+                return "Аудиозапись была изъята по запросу правообладателя и не может быть загружена. ";
             default:
                 return msg;
         }

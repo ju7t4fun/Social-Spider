@@ -98,6 +98,12 @@ jQuery(document).ready(function () {
 
     //$(".dataTables_length").attr("hidden", "");
 
+    //            $(".dataTables_filter").attr("hidden", "");
+    $(".dataTables_length").attr("hidden", "");
+    var dataTables_filter_input = $(".dataTables_filter").find("input");
+    dataTables_filter_input.attr("class", "form-control");
+    dataTables_filter_input.attr("style", "width: 500px")
+
     $('#refreshbtn').click(function () {
         table.fnStandingRedraw();
     });
