@@ -104,16 +104,22 @@ public class TaskJob implements Job {
                             grabbingSize, countOfPosts);
                     break;
                 case RANDOM:
+                    postsPrepareToPosting = GrabbingTypeUtil.grabbingRandom(owner, vk, filter, alreadyAddSet,
+                            countOfPosts, null);
                     break;
                 case END:
+                    postsPrepareToPosting = GrabbingTypeUtil.grabbingEnd(owner, vk, filter, alreadyAddSet,
+                            grabbingSize, countOfPosts);
                     break;
                 case NEW:
+                    postsPrepareToPosting = GrabbingTypeUtil.grabbingEnd(owner, vk, null, alreadyAddSet,
+                            grabbingSize, countOfPosts);
                     break;
             }
 
             // !Work Body
 
-            LOG.info("TaskJob has succesed grab wall#" + wall.getId());
+            LOG.info("TaskJob has successes grab wall#" + wall.getId());
         } catch (RuntimeException x) {
             x.printStackTrace();
         } catch (VKException e) {

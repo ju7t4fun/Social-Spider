@@ -31,6 +31,7 @@
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!-- Tokenizer Script -->
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
 
@@ -149,12 +150,10 @@
                                         </table>
                                         <script type="text/javascript">
 
-                                            function delayResultPrint(result){
+                                            function delayResultPrint(result,type ){
+                                                type = typeof type !== 'undefined' ? type : "success";
                                                 setTimeout(function () {
-                                                    if (${toastr_notification!=null}) {
-//                                                        toastrNotification(result,result);
-                                                        toastr.info(result);
-                                                    }
+                                                    toastrNotification(type, result);
                                                 }, 500);
                                             }
 
@@ -167,13 +166,13 @@
                                                         $.post("task?action=stateChange&toState=RUNNING&taskId=".concat(id))
                                                                 .done(function (data) {
 //                                                                    $(row).css("background-color", "green");
-                                                                    alert(data.alert + id);
-                                                                    delayResultPrint(data.alert + id);
+//                                                                    alert(data.alert + id);
+                                                                    delayResultPrint(data.alert + " #" + id);
                                                                 })
                                                                 .fail(function (jqXHR, textStatus, errorThrown) {
 //                                                                    $(row).css("background-color", "red");
-                                                                    alert(textStatus + id);
-                                                                    delayResultPrint(textStatus + id);
+//                                                                    alert(textStatus + id);
+                                                                    delayResultPrint(textStatus + " #" + id, "error");
 
 
                                                                 });
@@ -185,13 +184,13 @@
                                                         $.post("task?action=stateChange&toState=STOPPED&taskId=".concat(id))
                                                                 .done(function (data) {
 //                                                                    $(row).css("background-color", "green");
-                                                                    alert(data.alert + id);
-                                                                    delayResultPrint(data.alert + id);
+//                                                                    alert(data.alert + id);
+                                                                    delayResultPrint(data.alert  + " #" + id);
                                                                 })
                                                                 .fail(function (jqXHR, textStatus, errorThrown) {
 //                                                                    $(row).css("background-color", "red");
-                                                                    alert(textStatus + id);
-                                                                    delayResultPrint(textStatus + id);
+//                                                                    alert(textStatus + id);
+                                                                    delayResultPrint(textStatus + " #" + id, "error");
                                                                 });
                                                     });
 

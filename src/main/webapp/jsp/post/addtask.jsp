@@ -30,11 +30,22 @@
   <!-- Custom styles -->
   <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <%--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>--%>
+
+  <!-- javascripts -->
+  <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
   <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.task.js"></script>
   <script type="text/javascript" src="${pageContext.request.contextPath}/js/save.task.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
+
+
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css" />
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/just4fun.fix.css" />
+
+  <!-- Range Slider styles -->
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/ionRangeSlider/css/normalize.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/ionRangeSlider/css/ion.rangeSlider.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/ionRangeSlider/css/ion.rangeSlider.skinFlat.css" />
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
   <!--[if lt IE 9]>
   <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
@@ -127,8 +138,73 @@
                     <br>
                     <input type="radio" name="grabbing_mode" value="total" checked> For each source group give full count of posts. <br>
                     <input type="radio" name="grabbing_mode" value="per_group"> Give count of posts from random group. <br>
+                    <div class="post_count_number_group">
                     <span>Counts of post per one task grabbing action:  </span>
                     <input type="number" name="post_count" style="width:40px;border: none;-webkit-appearance: none; " value="1">
+                      </div>
+                    <div>
+                      <input type="text" id="post_count_slider" value="" name="interval" />
+                    </div>
+                    <script type="text/javascript">
+                      $(document).ready(function () {
+                        var slider;
+                        var $range_post_count = $("#post_count_slider"),
+                                $post_count_input = $("[name='post_count']");
+                        $(".post_count_number_group").hide();
+
+                        var oldFrom = 0;
+                        var oldFromPostfix = " post.";
+                        var track = function (data) {
+                          $post_count_input.val(data.from);
+
+//                          var from = data.from;
+//                          var needChange = false;
+//                          if(from != oldFrom){
+//                            oldFrom = from;
+//                            needChange = true;
+//                          }
+//
+//                          if(needChange){
+//                            var newPostfix;
+//                            if(from > 1){
+//                              newPostfix = "  posts.";
+//                            }
+//                            else{
+//                              newPostfix = "  post.";
+//                            }
+//                            if(oldFromPostfix != newPostfix){
+//                              oldFromPostfix = newPostfix;
+//                              slider.update({
+//                                postfix: newPostfix
+//                              });
+//                            }
+//
+//                          }
+                        };
+
+
+                        $range_post_count.ionRangeSlider({
+                          hide_min_max: true,
+                          keyboard: true,
+                          min: 0,
+                          max: 10,
+                          from_min: 1,
+                          from_max: 8,
+                          from: 1,
+                          step: 1,
+                          prefix: "Get ",
+                          postfix: "  post.",
+                          decorate_both: false,
+                          onStart: track,
+                          onChange: track,
+                          onFinish: track,
+                          onUpdate: track
+                        });
+                        slider = $range_post_count.data("ionRangeSlider");
+                      });
+                    </script>
+
+
                   </div>
 
                   <div class="col-lg-6">
@@ -184,28 +260,104 @@
                     <h4>Start Time: </h4>
                     <input type="radio" name="start_time" value="INTERVAL" checked> Interval
                     <input type="radio" name="start_time" value="SCHEDULE" style="margin-left:15px;" disabled > Schedule
-                    <br>
-                    <br>
+                    <div class="interval_number_group">
+                      <br>
+                      <br>
                     <%--[INTERVAL_SLIDER]--%>
                       <span>Between </span>
                       <input type="number" name="interval_min" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="3" />
                       <span> and </span>
                       <input type="number" name="interval_max" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="10" />
                       <span> minutes.</span>
+                    </div>
+                    <div>
+                      <input type="text" id="interval_slider" value="" name="interval" />
+                    </div>
+                    <script type="text/javascript">
+                      $(document).ready(function () {
+                        var $range = $("#interval_slider"),
+                                $result_min = $("[name='interval_min']"),
+                                $result_max = $("[name='interval_max']");
+                        $(".interval_number_group").hide();
+//                        $result_max.hide();
+
+                        var track = function (data) {
+                          $result_min.val(data.from);
+                          $result_max.val(data.to);
+                        };
+
+                        $range.ionRangeSlider({
+                          hide_min_max: true,
+                          keyboard: true,
+                          min: 0,
+                          max: 120,
+                          from: 5,
+                          to: 15,
+                          type: 'double',
+                          step: 1,
+//                          grid: true,
+                          prefix: "Interval: ",
+                          postfix: " minute",
+                          decorate_both: false,
+                          onStart: track,
+                          onChange: track,
+                          onFinish: track,
+                          onUpdate: track
+                        });
+                      });
+                    </script>
 
                     <br>
                     <h4>Work Time: </h4>
                     <input type="radio" name="work_time" value="ROUND_DAILY" checked> Around the Clock
                     <input type="radio" name="work_time" value="DAY_PERIOD" style="margin-left:15px;" disabled> Select Time
+
                     <br>
                     <br>
                     <%--[TIME_SELECT]--%>
                     <h4>Post delay: </h4>
-                    <span>Between </span>
-                    <input type="number" name="post_delay_min" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="10" />
-                    <span> and </span>
-                    <input type="number" name="post_delay_max" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="25" />
-                    <span> seconds.</span>
+                    <div class="post_delay_number_group">
+                      <span>Between </span>
+                      <input type="number" name="post_delay_min" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="10" />
+                      <span> and </span>
+                      <input type="number" name="post_delay_max" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="25" />
+                      <span> seconds.</span>
+                    </div>
+                    <div>
+                      <input type="text" id="post_delay_slider" value="" name="interval" />
+                    </div>
+                    <script type="text/javascript">
+                      $(document).ready(function () {
+                        var $range = $("#post_delay_slider"),
+                                $result_min = $("[name='post_delay_min']"),
+                                $result_max = $("[name='post_delay_max']");
+                        $(".post_delay_number_group").hide();
+
+                        var track = function (data) {
+                          $result_min.val(data.from);
+                          $result_max.val(data.to);
+                        };
+
+                        $range.ionRangeSlider({
+                          hide_min_max: true,
+                          keyboard: true,
+                          min: 0,
+                          max: 120,
+                          from: 5,
+                          to: 15,
+                          type: 'double',
+                          step: 1,
+//                          grid: true,
+                          prefix: "Delay: ",
+                          postfix: " second",
+                          decorate_both: false,
+                          onStart: track,
+                          onChange: track,
+                          onFinish: track,
+                          onUpdate: track
+                        });
+                      });
+                    </script>
                   </div>
                 </div>
               </div>
@@ -296,7 +448,6 @@
 <!-- container section end -->
 
 <!-- javascripts -->
-<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <!-- nice scroll -->
 <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
