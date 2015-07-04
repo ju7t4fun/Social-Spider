@@ -26,6 +26,8 @@
     <!-- bootstrap theme -->
     <link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">
     <!--external css-->
+    <link href="${pageContext.request.contextPath}/css/core.css" rel="stylesheet">
+
     <!-- font icon -->
     <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet"/>
@@ -73,7 +75,6 @@
     <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
 
     <script type="text/javascript">
-
         // При завантаженні сторінки
         setTimeout(function () {
             if (${toastr_notification!=null}) {
@@ -83,20 +84,7 @@
         }, 500);
 
         function removePost(id, elm) {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/post?action=remove&id=' + id, true);
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4) {
-                    var response = JSON.parse(xmlhttp.responseText);
-                    toastrNotification(response.status, response.msg);
-                    if (response.status === 'success') {
-                        $('#postsTable').DataTable().row($(this).parents('tr'))
-                                .remove()
-                                .draw();
-                    }
-                }
-            };
-            xmlhttp.send(null);
+            deleteConfirm(id);
         }
     </script>
 
@@ -228,6 +216,9 @@
     <jsp:include page="../pagecontent/sidebar.jsp"/>
 
     <jsp:include page="../post/viewpost.jsp"/>
+
+    <%--for confirm delete modal window(include script and css)--%>
+    <jsp:include page="../pagecontent/confirm-delete.jsp"/>
 
     <section id="main-content">
         <section class="wrapper">

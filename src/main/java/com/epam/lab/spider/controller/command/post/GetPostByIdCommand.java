@@ -55,7 +55,6 @@ public class GetPostByIdCommand implements ActionCommand {
             String formated = "<a href=\"" + matcher.group() + "\">" + "reference" + "</a>";
             postText = postText.replace(matcher.group(), formated);
         }
-        System.out.println(postText);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("postText", postText);
         jsonObject.put("attachments", getUrlForAttachment(attachmentSet));
