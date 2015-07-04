@@ -60,6 +60,7 @@
         function onAjaxSuccess(data) {
             var response = data;
             $("#post_text").html(response.postText);
+//            showMoreText(response.postText); for view more details text in window
             $("#gallery").empty();
             if (response.attachments.length != 0) {
                 var div_gallery = $("#gallery");

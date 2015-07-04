@@ -40,13 +40,21 @@ public class GetPostByIdCommand implements ActionCommand {
         Set<Attachment> attachmentSet = post.getAttachments();
         System.out.println(attachmentSet);
         String postText = post.getMessage();
-        Pattern pattern = Pattern.compile("(?:^|\\s|[\\p{Punct}&&[^/]])(#[\\p{L}0-9-_]+)");
-        Matcher matcher = pattern.matcher(postText);
+        Pattern pattern;
+        Matcher matcher;
+        pattern = Pattern.compile("(?:^|\\s|[\\p{Punct}&&[^/]])(#[\\p{L}0-9-_]+)"); // regex for hastag #tag
+        matcher = pattern.matcher(postText);
         while (matcher.find()) {
             String formated = "<span style=\"color:blue\">" + matcher.group() + "</span>";
             postText = postText.replace(matcher.group(), formated);
         }
         postText = postText.replaceAll("\n", "<br>");
+        pattern = Pattern.compile("(?i)\\b((?:[a-z][\\w-]+:(?:\\/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}\\/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?«»“”‘’]))"); // url        matcher = pattern.matcher(postText);
+        matcher = pattern.matcher(postText);
+        while (matcher.find()) {
+            String formated = "<a href=\"" + matcher.group() + "\">" + "reference" + "</a>";
+            postText = postText.replace(matcher.group(), formated);
+        }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("postText", postText);
         jsonObject.put("attachments", getUrlForAttachment(attachmentSet));
