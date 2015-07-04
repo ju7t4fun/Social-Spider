@@ -83,6 +83,8 @@ public class FeedWebSocket implements Receiver {
                 List<Category> categories = categoriesUser.get(id);
                 if (compareByCategoryId(categories, categoryId)) {
                     Session session = sessions.get(id);
+                    System.out.println(id + " ============================ " + message);
+
                     session.getBasicRemote().sendText(message);
                 }
             }
