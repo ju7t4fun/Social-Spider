@@ -20,10 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,10 +41,15 @@ public class GetPostByIdCommand implements ActionCommand {
         Matcher matcher;
         pattern = Pattern.compile("(?i)\\b((?:[a-z][\\w-]+:(?:\\/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}\\/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?«»“”‘’]))"); // url        matcher = pattern.matcher(postText);
         matcher = pattern.matcher(postText);
+        Set<String> setUrls = new HashSet<>();
         while (matcher.find()) {
             String url = matcher.group();
-            String formated = "<a href=\"" + (url.contains("http://") ? url : "http://" + url) + "\"> reference</a>";
-            postText = postText.replace(matcher.group(), formated);
+            setUrls.add(url);
+        }
+
+        for (String url : setUrls) {
+            String formated = "<a target=\"_blank\" href=\"" + (url.contains("http://") ? url : "http://" + url) + "\"> reference</a>";
+            postText = postText.replace(url, formated);
         }
 
         pattern = Pattern.compile("(?:^|\\s|[\\p{Punct}&&[^/]])(#[\\p{L}0-9-_]+)"); // regex for hastag #tag
