@@ -20,25 +20,21 @@ public class AddCategoryCommand implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+
         String name = request.getParameter("category");
         JSONObject json = new JSONObject();
-        try {
-            Category category = new Category();
-            category.setName(name);
 
-            if (service.insert(category)) {
-                json.put("status", "success");
-                json.put("msg", "Inserted category");
-            } else {
-                json.put("status", "error");
-                json.put("msg", "Error");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Category category = new Category();
+        category.setName(name);
+        category.setImageUrl((String) request.getSession().getAttribute("urlCat"));
+        service.insert(category);
+
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(json.toString());
     }
+
+
 }

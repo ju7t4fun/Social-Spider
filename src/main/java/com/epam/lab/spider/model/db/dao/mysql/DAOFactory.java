@@ -45,7 +45,7 @@ public class DAOFactory {
         dao.put(TaskSourceDAO.class, new TaskSourceDAOImp());
         dao.put(TaskDestinationDAO.class, new TaskDestinationDAOImp());
         dao.put(CategoryHasPostDAO.class, new CategoryHasPostDAOImp());
-        dao.put(UserHasCategotyDAOImp.class, new UserHasCategotyDAOImp());
+        dao.put(UserHasCategoryDAO.class, new UserHasCategoryDAOImp());
 
         dao.put(TaskSynchronizedDataDAO.class, new TaskSynchronizedDataDAOImpl());
         dao.put(DataLockDAO.class, new DataLockDAOImpl());
