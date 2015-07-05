@@ -291,12 +291,11 @@
         }
         function showMoreText(text) {
             var showChar = 300;
-            var ellipsestext = "...";
           if (text.length <= showChar) {
                 return text;
             } else {
                 var c = text.substr(0, showChar);
-                var html = c +  ellipsestext + '<a onclick="showMore();">show all text</a>';
+                var html = c + '<a style="color: blue" onclick="showMore();">...show all text</a>';
                 $("#temp").text(text);
                 return html;
             }

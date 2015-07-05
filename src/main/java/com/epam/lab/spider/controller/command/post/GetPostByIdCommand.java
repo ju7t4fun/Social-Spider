@@ -20,10 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,19 +39,27 @@ public class GetPostByIdCommand implements ActionCommand {
         String postText = post.getMessage();
         Pattern pattern;
         Matcher matcher;
+        pattern = Pattern.compile("(?i)\\b((?:[a-z][\\w-]+:(?:\\/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}\\/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?«»“”‘’]))"); // url        matcher = pattern.matcher(postText);
+        matcher = pattern.matcher(postText);
+        Set<String> setUrls = new HashSet<>();
+        while (matcher.find()) {
+            String url = matcher.group();
+            setUrls.add(url);
+        }
+
+        for (String url : setUrls) {
+            String formated = "<a target=\"_blank\" href=\"" + (url.contains("http://") ? url : "http://" + url) + "\"> reference</a>";
+            postText = postText.replace(url, formated);
+        }
+
         pattern = Pattern.compile("(?:^|\\s|[\\p{Punct}&&[^/]])(#[\\p{L}0-9-_]+)"); // regex for hastag #tag
         matcher = pattern.matcher(postText);
         while (matcher.find()) {
-            String formated = "<span style=\"color:blue\">" + matcher.group() + "</span>";
+            String formated = "<span style=\"color: blue\">" + matcher.group() + "</span>";
             postText = postText.replace(matcher.group(), formated);
         }
         postText = postText.replaceAll("\n", "<br>");
-        pattern = Pattern.compile("(?i)\\b((?:[a-z][\\w-]+:(?:\\/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}\\/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?«»“”‘’]))"); // url        matcher = pattern.matcher(postText);
-        matcher = pattern.matcher(postText);
-        while (matcher.find()) {
-            String formated = "<a href=\"" + matcher.group() + "\">" + "reference" + "</a>";
-            postText = postText.replace(matcher.group(), formated);
-        }
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("postText", postText);
         jsonObject.put("attachments", getUrlForAttachment(attachmentSet));
