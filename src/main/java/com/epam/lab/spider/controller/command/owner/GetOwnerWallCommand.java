@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,14 +58,31 @@ public class GetOwnerWallCommand implements ActionCommand {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         JSONObject obj = new JSONObject();
+        {
+            // Формування дати
+            SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat time = new SimpleDateFormat("HH:mm");
+            Date now = new Date();
+            String currentDate = date.format(now);
+            String currentTime = time.format(now);
+            obj.put("date", currentDate);
+            obj.put("time", currentTime);
+
+            now = new Date(now.getTime() + 60 * 60 * 1000);
+            currentDate = date.format(now);
+            currentTime = time.format(now);
+            obj.put("del_date", currentDate);
+            obj.put("del_time", currentTime);
+        }
         obj.put("owner", row);
         System.out.println(obj);
         response.getWriter().write(obj.toString());
     }
 
-        public interface OwnerWall {
+    public interface OwnerWall {
 
         int getWallId();
+
         String getName();
 
     }

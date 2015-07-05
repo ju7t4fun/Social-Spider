@@ -1,8 +1,5 @@
 /**
- * Created by ����� on 6/28/2015.
- */
-/**
- * Created by ����� on 6/27/2015.
+ * Created by Орест on 6/28/2015.
  */
 var table;
 

@@ -104,7 +104,8 @@
                     break;
                 }
             }
-            post += '</table><div class="btn-group" style="margin-left: 450px;"> <a class="btn btn-default" onclick="viewPost(' + postId + ');" data-toggle="modal" data-target="#myModal">View</a> <a class="btn btn-default" data-toggle="modal" data-target="#publish_modal">Publish</a> <a class="btn btn-default" onclick="savePost(' + postId + ');">Save</a></div></ul>';
+            post +=
+                    '</table><div class="btn-group" style="margin-left: 450px;"> <a class="btn btn-default" onclick="viewPost(' + postId + ');" data-toggle="modal" data-target="#myModal">View</a> <a class="btn btn-default" onclick="openPublishWindows(' + postId + ');"  data-toggle="modal" data-target="#publish_modal">Publish</a> <a class="btn btn-default" onclick="savePost(' + postId + ');">Save</a></div></ul>';
             post += '<div style="width: 90%; height: 3px;margin:25px auto 25px;border-radius: 4px;background:  lightslategray;"></div>';
             if (isBegin) {
                 var pos = $(document).height() - $(window).scrollTop();
@@ -115,14 +116,12 @@
         });
     }
 
-</script>
-
-<script>
-    function savePost(postID) {
+    // Зберігаємо пост
+    function savePost(postId) {
         $.post(
                 "/post?action=savePostFromFeed",
                 {
-                    id: postID
+                    id: postId
                 },
                 onAjaxSuccess
         );
@@ -131,15 +130,39 @@
             toastrNotification(response.status, response.message);
         }
     }
+
+    var publishPostId = 0;
+
+    function openPublishWindows(id) {
+        publishPostId = id;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('GET', '/owner?action=getOwnerWall&id=' + id, true);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                var response = JSON.parse(xmlhttp.responseText);
+                var list = $("#tokenize_focus");
+                list.empty();
+                list.data('tokenize').clear();
+                for (var i = 0; i < response.owner.length; i++) {
+                    list.append('<option value="' + response.owner[i].id + '">' + response.owner[i].name + '</option>');
+                }
+                $("#date").val(response.date);
+                $("#time").val(response.time);
+                $("#time1").val(response.del_date);
+                $("#time5").val(response.del_time);
+            }
+        };
+        xmlhttp.send();
+    }
+
 </script>
 <style>
-    /* Image style */
     #scrollUp {
         background-image: url("${pageContext.request.contextPath}/img/icons/top.png");
         bottom: 20px;
         right: 20px;
-        width: 38px; /* Width of image */
-        height: 38px; /* Height of image */
+        width: 38px;
+        height: 38px;
     }
 
 </style>
@@ -154,8 +177,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form id="modal_form" method="POST" action="/post?action=addPost" class="form-horizontal">
-                            <input type="hidden" name="typePost" value="new">
+                        <form id="modal_form" class="form-horizontal">
 
                             <div style="position: relative; left: -130px; top:30px;">
                                 <div class="form-group">
@@ -221,7 +243,7 @@
                             </div>
                             <button id="submit_modal3" type="button" style="margin-left: 455px;margin-top: -80px;"
                                     class="btn btn-primary"
-                                    data-dismiss="modal">
+                                    >
                                 <l:resource key="newpost.save"/>
                             </button>
                         </form>
@@ -232,27 +254,24 @@
     </div>
 
     <script>
-        //        load feed while scroll bottom
-        $(window).scroll(function () {
-            if ($(window).scrollTop() + $(window).height() == $(document).height()) {
-//                createFeed(196);
-                feedWebSocket.send("on_scroll|" + ${user.id} +"|" + countInFeed + "|" + 5);
-            }
-        });
-        //        end
+
+        // Скриваємо видалення
         $("#time3, #time4").hide();
         $('#check').click(function () {
             $("#time3, #time4").toggle(this.checked);
         });
+
+        // Опрацювання публікування поста
         $(document).ready(function () {
             $("#submit_modal3").click(function () {
+                if ($("#tokenize_focus").val() == null) {
+                    toastrNotification('warning', "Не вибрано груп");
+                    return;
+                }
                 $.post(
-                        "/post?action=addPost",
+                        "/post?action=publishPostId",
                         {
-                            typePost: "new",
-                            title: $("#title").val(),
-                            message: $("#content").val(),
-                            tags: $("#tagsinput").val(),
+                            postId: publishPostId,
                             date: $("#date").val(),
                             time: $("#time").val(),
                             date_delete: $("#time1").val(),
@@ -262,21 +281,27 @@
                         },
                         onAjaxSuccess
                 );
-                function onAjaxSuccess(data) {
-                    var responce = JSON.parse(data);
-                    if (responce.status === 'success') {
-                        location.href = "/post?action=queued";
-                    }
+                function onAjaxSuccess(response) {
+                    for (var i = 0; i < response.length; i++)
+                        toastrNotification(response[i].status, response[i].msg);
+                    $("#publish_modal").modal('toggle');
                 }
             });
         });
-    </script>
-    <script>
+
+        // Завантаження при прокрутці
+        $(window).scroll(function () {
+            if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+                feedWebSocket.send("on_scroll|" + ${user.id} +"|" + countInFeed + "|" + 5);
+            }
+        });
+
         function showMore(postId) {
             $.getJSON("/post?action=getPostById&post_id=" + postId, function (response) {
                 $("#showalltext" + postId).html("<br>" + response.postText);
             });
         }
+
         function showMoreText(text, postId) {
             var showChar = 300;
             if (text.length <= showChar) {
@@ -294,34 +319,7 @@
                 activeOverlay: '#00FFFF'
             });
         });
-    </script>
-    <!-- javascripts -->
-    <%--<script src="${pageContext.request.contextPath}/js/jquery.js"></script>--%>
-    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-    <!-- nice scroll -->
-    <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
-    <script src="${pageContext.request.contextPath}/js/jquery.scrollUp.js"></script>
-    <!-- gritter -->
 
-    <!-- custom gritter script for this page only-->
-    <script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>
-    <!--custome script for all page-->
-    <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
-    <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
-    <!--custom tagsinput-->
-    <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
-    <script src="${pageContext.request.contextPath}/js/form-component.js"></script>
-    <!--custom checkbox & radio-->
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/ga.js"></script>
-    <!--custom switch-->
-    <script src="${pageContext.request.contextPath}/js/bootstrap-switch.js"></script>
-    <!--custom tagsinput-->
-    <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
-    <script src="${pageContext.request.contextPath}/js/form-component.js"></script>
-    <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
-
-    <script>
         var feedWebSocket = new WebSocket("ws://localhost:8080/websocket/feed");
 
         feedWebSocket.onopen = function (event) {
@@ -352,6 +350,32 @@
         };
 
     </script>
+    <!-- javascripts -->
+    <%--<script src="${pageContext.request.contextPath}/js/jquery.js"></script>--%>
+    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+    <!-- nice scroll -->
+    <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.scrollUp.js"></script>
+    <!-- gritter -->
+
+    <!-- custom gritter script for this page only-->
+    <script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>
+    <!--custome script for all page-->
+    <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
+    <!--custom tagsinput-->
+    <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
+    <script src="${pageContext.request.contextPath}/js/form-component.js"></script>
+    <!--custom checkbox & radio-->
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/ga.js"></script>
+    <!--custom switch-->
+    <script src="${pageContext.request.contextPath}/js/bootstrap-switch.js"></script>
+    <!--custom tagsinput-->
+    <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
+    <script src="${pageContext.request.contextPath}/js/form-component.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
+
 </body>
 </html>
 

@@ -177,7 +177,7 @@
         function PopUpShow(id) {
             postId = id;
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/owner?action=getownerwall&id=' + id, true);
+            xmlhttp.open('GET', '/owner?action=getOwnerWall&id=' + id, true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
