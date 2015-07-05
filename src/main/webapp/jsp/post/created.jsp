@@ -121,7 +121,7 @@
                     }
                 }, {
                     "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<div class="btn-group"><a class="btn btn-primary" data-toggle="modal"  data-target="#create_dialog"  onclick="PopUpShow(' + cellData + ')"><i class="icon_plus_alt2"></i></a><a class="btn btn-danger" onclick="removePost(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
+                        $(td).html('<div class="btn-group"><a class="btn btn-primary" data-toggle="modal"  data-target="#create_dialog1"  onclick="PopUpShow(' + cellData + ')"><i class="icon_plus_alt2"></i></a><a class="btn btn-danger" onclick="removePost(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
                     }
                 }, {
                     "width": "60%", "targets": 1
@@ -182,10 +182,10 @@
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
                     var list = $("#tokenize_focus");
-                    for (var i=0; i<response.owner.length; i++) {
-                        list.append('<option value="'+ response.owner[i].id +'">'+ response.owner[i].name +'</option>');
+                    for (var i = 0; i < response.owner.length; i++) {
+                        list.append('<option value="' + response.owner[i].id + '">' + response.owner[i].name + '</option>');
                     }
-                    $("#create_dialog").show();
+                    $("#create_dialog1").show();
                 }
 
             };
@@ -255,7 +255,7 @@
 </section>
 </section>
 
-<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="create_dialog"
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="create_dialog1"
      class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -298,7 +298,6 @@
                                         <h4><l:resource key="newpost.selectgroup"/>:</h4>
                                         <select name="groups" id="tokenize_focus" multiple="multiple"
                                                 class="tokenize-sample">
-
                                             <c:forEach items="${owners}" var="owner">
                                                 <option value="${owner.wallId}">${owner.name}</option>
                                             </c:forEach>
