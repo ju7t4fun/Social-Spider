@@ -192,19 +192,6 @@
             xmlhttp.send();
         }
 
-        function setOption(response) {
-            $('#tokenize_focus').empty();
-            $('#tokenize_focus').multiSelect('refresh');
-            for (var i = 0; i < response.read.length; i++) {
-                $('#tokenize_focus').multiSelect('addOption', {
-                    value: '' + response.read[i].id,
-                    text: response.read[i].name, index: 0,
-                });
-                if (response.read[i].select == true) {
-                    $('#tokenize_focus').multiSelect('select', '' + response.read[i].id);
-                }
-            }
-        }
     </script>
 </head>
 <body>

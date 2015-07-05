@@ -26,4 +26,6 @@ public interface PostDAO extends CRUD<Post>, SavableDAO<Post> {
 
     List<Post> getByCategoryId(Connection connection, int categoryId, int offset, int limit) throws SQLException;
 
+    List<Integer> getByCategoryFromUser(Connection connection, int userId, int offset, int limit) throws SQLException;
+
 }

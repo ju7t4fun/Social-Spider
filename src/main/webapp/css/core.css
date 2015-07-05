@@ -1,6 +1,7 @@
 .mod {
     background: #f3f3f3;
     font-family: 'Ubuntu', serif;
+    font-weight:bold;
     color: #555;
     font-size: 1.6em;
 }
@@ -61,8 +62,8 @@ label {
 }
 
 .mod-content {
-    color: #000;
-    background: #3299FF;;
+    color: #FFFFFF;
+    background: #8B0000;/*#3299FF;;*/
     position: relative;
     border-radius: 3px;
     margin: 0 auto;
@@ -75,7 +76,7 @@ label {
     font-size: 2.4em;
     font-weight: 300;
     opacity: 0.8;
-    background: #3299FF;;
+    background: #8B0000;/*#3299FF;;*/
     border-radius: 3px 3px 0 0;
 }
 
@@ -100,7 +101,7 @@ label {
 .mod-content button {
     border: none;
     padding: 0.6em 1.2em;
-    background: #3399ff;
+    background: #8B0000;/*#3299FF;;*/
     color: #fff;
     font-family: 'Lato', Calibri, Arial, sans-serif;
     font-size: 1em;

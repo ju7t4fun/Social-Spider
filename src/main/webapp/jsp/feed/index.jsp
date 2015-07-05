@@ -34,35 +34,11 @@
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
     <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
 
-    <%--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>--%>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
 
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
-
-
-    <script>
-        var feedWebSocket = new WebSocket("ws://localhost:8080/websocket/feed");
-
-        feedWebSocket.onopen = function (event) {
-//            alert("onOpen");
-        };
-
-        // Опрацювання команд
-        feedWebSocket.onmessage = function (event) {
-//            alert("onMessage " + event.data);
-            var args = event.data.split("|");
-            createFeed(args[1]);
-
-        };
-
-        feedWebSocket.onclose = function (event) {
-//            alert('onClose');
-        };
-
-    </script>
-
 
 </head>
 <body>
@@ -73,7 +49,6 @@
     <jsp:include page="../pagecontent/sidebar.jsp"/>
     <jsp:include page="../post/viewpost.jsp"/>
 
-    <!--main content start-->
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
@@ -82,64 +57,69 @@
                 </div>
             </div>
             <div style="position: fixed; top: 127px; left: 195px;">
-                <input type="button" value="Click" onclick="createFeed(1);">
+                <input type="button" value="Click" onclick="createFeedPost(196, false);">
             </div>
             <section class="wrapper">
                 <div class="row">
-                    <div class="col-md-8 portlets" style="margin-left: 190px">
+                    <div class="col-md-8 portlets" style="margin-left: 190px; margin-top: -50px">
                         <div class="panel panel-default">
                             <div class="panel-body" id="feed">
-
+                                <div align="center">
+                                    <p>Триває завантаження даних ...</p>
+                                </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </section>
         </section>
     </section>
-    <!--main content end-->
 </section>
-<!-- container section end -->
 
 <script>
-    $.getJSON("/controller?action=getowner", function (data) {
-        $.each(data, function (key, val) {
-            $('#tokenize_focus').append($('<option>', {
-                value: val.id,
-                text: val.name
-            }));
-        });
-    });
-</script>
 
-<script>
-    var postCounter = 1;
-    function createFeed(postID) {
+    var countInFeed = 0;
+
+    // Вставка в початок стрічки
+    function appendInBeginningFeed(args) {
+        createFeedPost(args[1], args[2], true);
+    }
+
+    // Вставка в кінець
+    function appendInEndFeed(args) {
+        createFeedPost(args[1], args[2], false);
+    }
+
+    // Завантаження вмісту поста
+    function createFeedPost(postId, categoties, isBegin) {
+        countInFeed++;
         var feed = $("#feed");
         var post = "";
-        var imgsrc;
-        $.getJSON("/post?action=getPostById&post_id=" + postID, function (jsonResponse) {
-            var text = showMoreText(jsonResponse.postText);
-            post += '<ul style="margin-left:-30px;"> <table width="100%" style="padding:0 50px;">';
-            post += '<tr><td style="text-align:left;"><strong>' + 'POST #' + (postCounter++) + '</strong></td> </tr>';
-            post += '<tr><td style="text-align:justify;" class="smore"> <br>' + text + ' </td> </tr>';
-            for (var i = 0; i < jsonResponse.attachments.length; i++) {
-                if (jsonResponse.attachments[i].type == 'photo') {
-                    imgsrc = jsonResponse.attachments[i].url;
+        $.getJSON("/post?action=getPostById&post_id=" + postId, function (response) {
+            var text = showMoreText(response.postText);
+            post += '<ul style="margin-left:-30px;"><table width="100%" style="padding:0 50px;">';
+            post += '<tr><td style="text-align:left;"><strong> POST #' + postId + ' ' + categoties + '</strong></td></tr>';
+            post += '<tr><td style="text-align:justify;" class="smore"><br>' + text + ' </td></tr>';
+            for (var i = 0; i < response.attachments.length; i++) {
+                if (response.attachments[i].type == 'photo') {
+                    post += '<tr><td><div width="600" height="450"><img src="' + response.attachments[i].url +
+                            '"  style="margin:25px;"></div></td> </tr>';
                     break;
                 }
             }
-            if (imgsrc != null) {
-                post += '<tr><td><img src="' + imgsrc + '" width="600" height="450" style="margin:25px;"> </td> </tr>';
-            }
-            post += '</table><div class="btn-group" style="margin-left: 450px;"> <a class="btn btn-default" onclick="viewPost(' + postID + ');" data-toggle="modal" data-target="#myModal">View</a> <a class="btn btn-default" data-toggle="modal" data-target="#publish_modal">Publish</a> <a class="btn btn-default" onclick="savePost(' + postID + ');">Save</a></div></ul>';
+            post += '</table><div class="btn-group" style="margin-left: 450px;"> <a class="btn btn-default" onclick="viewPost(' + postId + ');" data-toggle="modal" data-target="#myModal">View</a> <a class="btn btn-default" data-toggle="modal" data-target="#publish_modal">Publish</a> <a class="btn btn-default" onclick="savePost(' + postId + ');">Save</a></div></ul>';
             post += '<div style="width: 90%; height: 3px;margin:25px auto 25px;border-radius: 4px;background:  lightslategray;"></div>';
-            feed.append(post); // .prepend(post); - to begin
+            if (isBegin) {
+                var pos = $(document).height() - $(window).scrollTop();
+                feed.prepend(post);
+                $(window).scrollTop($(document).height() - pos);
+            } else
+                feed.append(post);
         });
-
     }
+
 </script>
+
 <script>
     function savePost(postID) {
         $.post(
@@ -155,6 +135,17 @@
         }
     }
 </script>
+<style>
+    /* Image style */
+    #scrollUp {
+        background-image: url("${pageContext.request.contextPath}/img/icons/top.png");
+        bottom: 20px;
+        right: 20px;
+        width: 38px;    /* Width of image */
+        height: 38px;   /* Height of image */
+    }
+
+</style>
 <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="publish_modal"
      class="modal fade">
     <div class="modal-dialog">
@@ -244,13 +235,14 @@
     </div>
 
     <script>
-//        load feed while scroll bottom
-        $(window).scroll(function() {
-            if($(window).scrollTop() + $(window).height() == $(document).height()) {
-                createFeed(196);
+        //        load feed while scroll bottom
+        $(window).scroll(function () {
+            if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+//                createFeed(196);
+                feedWebSocket.send("on_scroll|" + ${user.id} +"|" + countInFeed + "|" + 5);
             }
         });
-//        end
+        //        end
         $("#time3, #time4").hide();
         $('#check').click(function () {
             $("#time3, #time4").toggle(this.checked);
@@ -285,13 +277,13 @@
     <span id="temp" style="display: none;"></span>
     <script>
         function showMore() {
-            $('.smore').click(function() {
-             $(this).html($("#temp").text());
+            $('.smore').click(function () {
+                $(this).html($("#temp").text());
             });
         }
         function showMoreText(text) {
             var showChar = 300;
-          if (text.length <= showChar) {
+            if (text.length <= showChar) {
                 return text;
             } else {
                 var c = text.substr(0, showChar);
@@ -300,6 +292,13 @@
                 return html;
             }
         }
+
+        $(function () {
+            $.scrollUp({
+                animation: 'fade',
+                activeOverlay: '#00FFFF'
+            });
+        });
     </script>
     <!-- javascripts -->
     <%--<script src="${pageContext.request.contextPath}/js/jquery.js"></script>--%>
@@ -307,6 +306,7 @@
     <!-- nice scroll -->
     <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.scrollUp.js"></script>
     <!-- gritter -->
 
     <!-- custom gritter script for this page only-->
@@ -326,6 +326,37 @@
     <script src="${pageContext.request.contextPath}/js/form-component.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
 
+    <script>
+        var feedWebSocket = new WebSocket("ws://localhost:8080/websocket/feed");
+
+        feedWebSocket.onopen = function (event) {
+//            alert("onOpen");
+        };
+
+        // Опрацювання команд
+        feedWebSocket.onmessage = function (event) {
+//            alert("onMessage " + event.data);
+            var args = event.data.split("|");
+            switch (args[0]) {
+                case "new":
+                    appendInBeginningFeed(args);
+                    break;
+                case "on_scroll":
+                    appendInEndFeed(args);
+                    break;
+                case "history":
+                    if (countInFeed == 0)
+                        $("#feed").empty();
+                    appendInEndFeed(args);
+                    break;
+            }
+        };
+
+        feedWebSocket.onclose = function (event) {
+//            alert('onClose');
+        };
+
+    </script>
 </body>
 </html>
 
