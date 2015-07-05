@@ -45,9 +45,11 @@ public class PublishPostByIdCommand implements ActionCommand {
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         User user = (User) session.getAttribute("user");
         Post post = postService.getById(postId);
-        post.getAttachments();
-        post.setUserId(user.getId());
-        postService.insert(post);
+        if (post.getUserId() < 0) {
+            post.getAttachments();
+            post.setUserId(user.getId());
+            postService.insert(post);
+        }
         // Створюємо new post
         NewPost newPost = new NewPost();
         newPost.setUserId(user.getId());
