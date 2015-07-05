@@ -20,21 +20,13 @@
                             <div class="panel-body" style="width: 700px; margin-left: -15px;">
                                 <ul style="margin-left:-30px;">
                                     <li>
-                                        <br>
-                                        <tr>
-                                            <td style="text-align:left;padding-left:-300px;"><img
-                                                    src="${pageContext.request.contextPath}/img/post.png"
-                                                    style="margin:0px;"><strong
-                                                    id="group_name"></strong>
-                                            </td>
-                                        </tr>
                                         <tr>
                                             <td style="text-align:justify;">
                                                 <span id="post_text"></span>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <div id="gallery" style="display:none;">
+                                            <div id="gallery" style="display:none; margin-top: 20px;">
                                             </div>
                                         </tr>
                                     </li>
@@ -60,7 +52,6 @@
         function onAjaxSuccess(data) {
             var response = data;
             $("#post_text").html(response.postText);
-//            showMoreText(response.postText); for view more details text in window
             $("#gallery").empty();
             if (response.attachments.length != 0) {
                 var div_gallery = $("#gallery");

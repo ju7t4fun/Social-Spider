@@ -84,7 +84,7 @@
         }, 500);
 
         function removePost(id, elm) {
-            deleteConfirm(id);
+            deleteConfirmCreatedPost(id);
         }
     </script>
 

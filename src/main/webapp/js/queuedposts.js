@@ -112,17 +112,7 @@ jQuery(document).ready(function () {
 
 
 function removePost(i) {
-
-    var xmlhttp = new  XMLHttpRequest();
-    xmlhttp.open("POST",path + "/post?action=deletenewpost",true);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send("newPostId="+i);
-
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4) {
-            table.fnStandingRedraw();
-        }
-    }
+    deleteConfirmQueuedPost(i);
 }
 
 

@@ -1,4 +1,4 @@
-function deleteConfirm(id) {
+function deleteConfirmCreatedPost(id) {
     $('#mod-delete').addClass('mod-show');
     $('#delete_butt').click(function () {
         $('#mod-delete').removeClass('mod-show');
@@ -16,6 +16,26 @@ function deleteConfirm(id) {
             }
         };
         xmlhttp.send(null);
+    });
+    $('#cancel_butt').click(function () {
+        $('#mod-delete').removeClass('mod-show');
+    });
+}
+
+function deleteConfirmQueuedPost(id) {
+    $('#mod-delete').addClass('mod-show');
+    $('#delete_butt').click(function () {
+        $('#mod-delete').removeClass('mod-show');
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("POST", "http://localhost:8080/post?action=deletenewpost", true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send("newPostId=" + id);
+
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                table.fnStandingRedraw();
+            }
+        }
     });
     $('#cancel_butt').click(function () {
         $('#mod-delete').removeClass('mod-show');
