@@ -56,9 +56,6 @@
                     <h3 class="page-header" style="position: fixed"><i class="fa fa-home"></i> Home</h3>
                 </div>
             </div>
-            <div style="position: fixed; top: 127px; left: 195px;">
-                <input type="button" value="Click" onclick="createFeedPost(196, false);">
-            </div>
             <section class="wrapper">
                 <div class="row">
                     <div class="col-md-8 portlets" style="margin-left: 190px; margin-top: -50px">
@@ -96,10 +93,10 @@
         var feed = $("#feed");
         var post = "";
         $.getJSON("/post?action=getPostById&post_id=" + postId, function (response) {
-            var text = showMoreText(response.postText);
-            post += '<ul style="margin-left:-30px;"><table width="100%" style="padding:0 50px;">';
+            var text = showMoreText(response.postText, postId);
+            post += '<ul style="margin-left:-40px;"><table width="100%" style="padding:0 50px;">';
             post += '<tr><td style="text-align:left;"><strong> POST #' + postId + ' ' + categoties + '</strong></td></tr>';
-            post += '<tr><td style="text-align:justify;" class="smore"><br>' + text + ' </td></tr>';
+            post += '<tr><td style="text-align:justify;" id="showalltext' + postId + '"><br>' + text + ' </td></tr>';
             for (var i = 0; i < response.attachments.length; i++) {
                 if (response.attachments[i].type == 'photo') {
                     post += '<tr><td><div width="600" height="450"><img src="' + response.attachments[i].url +
@@ -141,8 +138,8 @@
         background-image: url("${pageContext.request.contextPath}/img/icons/top.png");
         bottom: 20px;
         right: 20px;
-        width: 38px;    /* Width of image */
-        height: 38px;   /* Height of image */
+        width: 38px; /* Width of image */
+        height: 38px; /* Height of image */
     }
 
 </style>
@@ -274,21 +271,19 @@
             });
         });
     </script>
-    <span id="temp" style="display: none;"></span>
     <script>
-        function showMore() {
-            $('.smore').click(function () {
-                $(this).html($("#temp").text());
+        function showMore(postId) {
+            $.getJSON("/post?action=getPostById&post_id=" + postId, function (response) {
+                $("#showalltext" + postId).html("<br>" + response.postText);
             });
         }
-        function showMoreText(text) {
+        function showMoreText(text, postId) {
             var showChar = 300;
             if (text.length <= showChar) {
                 return text;
             } else {
                 var c = text.substr(0, showChar);
-                var html = c + '<a style="color: blue" onclick="showMore();">...show all text</a>';
-                $("#temp").text(text);
+                var html = c + ' <a style="color: blue" onclick="showMore(' + postId + ');">...show all text</a>';
                 return html;
             }
         }
