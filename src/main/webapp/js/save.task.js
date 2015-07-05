@@ -28,8 +28,7 @@ $(document).ready(function () {
         options.actions = $("input[name=actions][type='radio']:checked").val();
         options.hashtags = $("input[name=wordsinput]").val();
         options.signature = $("textarea[name=addtext]").val();
-
-
+        //group
         options.interval_min = $("input[name=interval_min][type='number']").val();
         options.interval_max = $("input[name=interval_max][type='number']").val();
         options.post_count = $("input[name=post_count][type='number']").val();
@@ -45,29 +44,22 @@ $(document).ready(function () {
         filter.min_time = 3600;
         filter.max_time = 7*24*3600;
 
-
-
         var myJsonString = JSON.stringify({source:source,destination:destination,options:options,content_type:content_type,filter:filter});
-
-
-
         $.post("task?action=save", {data: myJsonString})
             .done(function(data) {
                 if (data.warning != null) {
                     setTimeout(function () {
-                    alert(data.warning);
-                        toastrNotification("Succeed Saved. But...", data.warning);
+                        toastrNotification("success", "Succeed Saved. But..."+data.warning);
                     }, 500);
                 }
                 else {
                     setTimeout(function () {
-                    alert("done");
-                        toastrNotification("Succeed Saved", "All Saved Correctly!");
+                        toastrNotification("success", "Succeed Saved. All Saved Correctly!");
                     }, 500);
                 }
             })
             .fail(function() {
-                alert( "error" );
+                toastrNotification("error", "Saved have error.");
             });
 
     });

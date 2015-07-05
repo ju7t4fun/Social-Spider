@@ -25,4 +25,5 @@ public interface CategoryDAO extends CRUD<Category> {
     List<Category> getByUserId(Connection connection, int userId) throws SQLException;
 
 
+    List<Category> getByPostId(Connection connection, int postId) throws SQLException;
 }

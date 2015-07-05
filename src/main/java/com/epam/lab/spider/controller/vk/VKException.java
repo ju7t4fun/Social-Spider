@@ -13,6 +13,8 @@ public class VKException extends Exception {
     public static final int VK_FLOOD_CONTROL = 9;
     public static final int VK_SERVER_ERROR = 10;
     public static final int VK_TEST_MODE_NOT_LOGGED = 11;
+    public static final int VK_EXECUTE_COMPILE_ERROR = 12;
+    public static final int VK_EXECUTE_RUNTIME_ERROR = 13;
     public static final int VK_CAPTCHA_NEEDED = 14;
     public static final int VK_ACCESS_DENIED = 15;
     public static final int VK_HTTP_AUTHORIZATION_FAILED = 16;

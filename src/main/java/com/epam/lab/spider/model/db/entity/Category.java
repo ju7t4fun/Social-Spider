@@ -20,6 +20,22 @@ public class Category {
 
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Category category = (Category) o;
+
+        return !(id != null ? !id.equals(category.id) : category.id != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
     private Set<Task> tasks = null;
 
     public Integer getId() {
@@ -68,13 +84,10 @@ public class Category {
         return getTasks().remove(task);
     }
 
+
     @Override
     public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", tasks=" + tasks +
-                '}';
+        return name;
     }
 
 }

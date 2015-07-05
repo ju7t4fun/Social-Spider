@@ -43,6 +43,7 @@ public class PostServlet extends HttpServlet {
             commands.put("deletenewpost", new DeleteNewPostCommand());
             commands.put("getPostById", new GetPostByIdCommand());
             commands.put("savePostFromFeed", new SavePostFromFeedCommand());
+            commands.put("publishPostId", new PublishPostByIdCommand());
         }
     }
 }

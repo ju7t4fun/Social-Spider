@@ -67,6 +67,21 @@
     <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
     <![endif]-->
+
+    <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
+    <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
+
+    <script type="text/javascript">
+        // При завантаженні сторінки
+        setTimeout(function () {
+            if (${toastr_notification!=null}) {
+                var args = "${toastr_notification}".split("|");
+                toastrNotification(args[0], args[1]);
+            }
+        }, 500);
+
+    </script>
+
 </head>
 
 <body>
@@ -78,6 +93,8 @@
     <jsp:include page="../pagecontent/sidebar.jsp"/>
 
     <jsp:include page="../post/viewpost.jsp"/>
+    <%--for confirm delete modal window(include script and css)--%>
+    <jsp:include page="../pagecontent/confirm-delete.jsp"/>
 
     <section id="main-content">
         <section class="wrapper">

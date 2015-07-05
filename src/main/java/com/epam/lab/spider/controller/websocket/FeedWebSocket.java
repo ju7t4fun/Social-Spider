@@ -6,6 +6,7 @@ import com.epam.lab.spider.job.util.Feed;
 import com.epam.lab.spider.model.db.entity.Category;
 import com.epam.lab.spider.model.db.entity.User;
 import com.epam.lab.spider.model.db.service.CategoryService;
+import com.epam.lab.spider.model.db.service.PostService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
 import org.apache.log4j.Logger;
 
@@ -13,10 +14,7 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Boyarsky Vitaliy on 01.07.2015.
@@ -25,10 +23,11 @@ import java.util.Map;
 public class FeedWebSocket implements Receiver {
 
     private static final Logger LOG = Logger.getLogger(FeedWebSocket.class);
-    private static ServiceFactory factory = ServiceFactory.getInstance();
+    private static final List<Sender> senders = new ArrayList<>();
+    private static final ServiceFactory factory = ServiceFactory.getInstance();
+
     private static CategoryService service = factory.create(CategoryService.class);
     private static Map<Integer, Session> sessions = new HashMap<>();
-    private static final List<Sender> senders = new ArrayList<>();
     private static Map<Integer, List<Category>> categoriesUser = new HashMap<>();
     private User user;
 
@@ -45,19 +44,31 @@ public class FeedWebSocket implements Receiver {
         user = (User) httpSession.getAttribute("user");
         sessions.put(user.getId(), session);
         categoriesUser.put(user.getId(), service.getByUserId(user.getId()));
+        history(session, user.getId());
         if (LOG.isDebugEnabled())
             LOG.debug("onOpen (clientId=" + user.getId() + ")");
     }
 
     @OnMessage
     public void onMessage(String message, Session session) {
+        String[] args = message.split("\\|");
         if (LOG.isDebugEnabled())
-            LOG.debug("onMessage (clientId=" + user.getId() + ")");
+            LOG.debug("onMessage. Execute command " + Command.valueOf(args[0].toUpperCase()) + " params " + Arrays
+                    .toString(args));
+        switch (Command.valueOf(args[0].toUpperCase())) {
+            case ON_SCROLL: {
+                onScroll(session, args);
+                break;
+            }
+            case HISTORY:
+                history(session, Integer.parseInt(args[1]));
+        }
     }
 
     @OnClose
     public void onClose(Session session, CloseReason closeReason) {
         sessions.remove(user.getId());
+        categoriesUser.remove(user.getId());
         if (LOG.isDebugEnabled())
             LOG.debug("onClose (clientId=" + user.getId() + ")");
     }
@@ -76,13 +87,16 @@ public class FeedWebSocket implements Receiver {
         sender.accept(this);
     }
 
+    private static CategoryService categoryService = factory.create(CategoryService.class);
+
     @Override
-    public boolean send(int categoryId, String message) {
+    public boolean send(int postId, String message) {
+        List<Category> postCategories = categoryService.getByPostId(postId);
         try {
-            for (Integer id : sessions.keySet()) {
-                List<Category> categories = categoriesUser.get(id);
-                if (compareByCategoryId(categories, categoryId)) {
-                    Session session = sessions.get(id);
+            for (Integer userId : sessions.keySet()) {
+                List<Category> userCategories = categoriesUser.get(userId);
+                if (compareByCategoryId(userCategories, postCategories)) {
+                    Session session = sessions.get(userId);
                     session.getBasicRemote().sendText(message);
                 }
             }
@@ -92,11 +106,44 @@ public class FeedWebSocket implements Receiver {
         return false;
     }
 
-    private boolean compareByCategoryId(List<Category> categories, int id) {
-        for (Category category : categories) {
-            if (category.getId() == id)
+    private boolean compareByCategoryId(List<Category> categoriesAll, List<Category> categoriesUser) {
+        for (Category userCategory : categoriesUser)
+            if (categoriesAll.contains(userCategory))
                 return true;
-        }
         return false;
     }
+
+    PostService postService = factory.create(PostService.class);
+
+    private void onScroll(Session session, String[] args) {
+        int userId = Integer.parseInt(args[1]);
+        int offset = Integer.parseInt(args[2]);
+        int limit = Integer.parseInt(args[3]);
+        List<Integer> postIds = postService.getByCategoryFromUser(userId, offset, limit);
+        try {
+            for (Integer id : postIds) {
+                List<Category> categories = service.getByPostId(id);
+                session.getBasicRemote().sendText("on_scroll|" + id + "|" + categories);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void history(Session session, int userId) {
+        List<Integer> postIds = postService.getByCategoryFromUser(userId, 0, 5);
+        try {
+            for (Integer id : postIds) {
+                List<Category> categories = service.getByPostId(id);
+                session.getBasicRemote().sendText("history|" + id + "|" + categories);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private enum Command {
+        ON_SCROLL, HISTORY
+    }
+
 }

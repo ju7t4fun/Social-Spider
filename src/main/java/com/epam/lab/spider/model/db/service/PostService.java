@@ -227,4 +227,13 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
         return true;
     }
 
+    public List<Integer> getByCategoryFromUser(int userId, int offset, int limit) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getByCategoryFromUser(connection, userId, offset, limit);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

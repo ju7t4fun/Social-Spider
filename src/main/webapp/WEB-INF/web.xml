@@ -105,10 +105,6 @@
         <servlet-class>com.epam.lab.spider.controller.servlet.OwnerServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>PostBindingFillingTableServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.owner.ajax.PostBindingFillingTableServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ProfileServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.user.ProfileServlet</servlet-class>
     </servlet>
@@ -117,29 +113,9 @@
         <url-pattern>/profile</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>OptionFillingServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.owner.ajax.OptionFillingServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UpdateWallServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.owner.ajax.UpdateWallServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UpdateWallServlet</servlet-name>
-        <url-pattern>/jsonhandler</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>NotificationServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.NotificationServlet</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>AddNewOwnerServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.owner.ajax.AddNewOwnerServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AddNewOwnerServlet</servlet-name>
-        <url-pattern>/AddNewOwnerServlet</url-pattern>
-    </servlet-mapping>
     <servlet>
         <servlet-name>FeedsServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.FeedsServlet</servlet-class>
@@ -181,18 +157,9 @@
         <servlet-name>FeedsServlet</servlet-name>
         <url-pattern>/feeds</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
         <servlet-name>NotificationServlet</servlet-name>
         <url-pattern>/notification</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>OptionFillingServlet</servlet-name>
-        <url-pattern>/OptionFillingServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PostBindingFillingTableServlet</servlet-name>
-        <url-pattern>/PostBindingFillingTableServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SupportServlet</servlet-name>

@@ -26,6 +26,8 @@
     <!-- bootstrap theme -->
     <link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">
     <!--external css-->
+    <link href="${pageContext.request.contextPath}/css/core.css" rel="stylesheet">
+
     <!-- font icon -->
     <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet"/>
@@ -73,7 +75,6 @@
     <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
 
     <script type="text/javascript">
-
         // При завантаженні сторінки
         setTimeout(function () {
             if (${toastr_notification!=null}) {
@@ -83,20 +84,7 @@
         }, 500);
 
         function removePost(id, elm) {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/post?action=remove&id=' + id, true);
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4) {
-                    var response = JSON.parse(xmlhttp.responseText);
-                    toastrNotification(response.status, response.msg);
-                    if (response.status === 'success') {
-                        $('#postsTable').DataTable().row($(this).parents('tr'))
-                                .remove()
-                                .draw();
-                    }
-                }
-            };
-            xmlhttp.send(null);
+            deleteConfirmCreatedPost(id);
         }
     </script>
 
@@ -133,7 +121,7 @@
                     }
                 }, {
                     "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<div class="btn-group"><a class="btn btn-primary" data-toggle="modal"  data-target="#create_dialog"  onclick="PopUpShow(' + cellData + ')"><i class="icon_plus_alt2"></i></a><a class="btn btn-danger" onclick="removePost(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
+                        $(td).html('<div class="btn-group"><a class="btn btn-primary" data-toggle="modal"  data-target="#create_dialog1"  onclick="PopUpShow(' + cellData + ')"><i class="icon_plus_alt2"></i></a><a class="btn btn-danger" onclick="removePost(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
                     }
                 }, {
                     "width": "60%", "targets": 1
@@ -189,34 +177,21 @@
         function PopUpShow(id) {
             postId = id;
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/owner?action=getownerwall&id=' + id, true);
+            xmlhttp.open('GET', '/owner?action=getOwnerWall&id=' + id, true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
                     var list = $("#tokenize_focus");
-                    for (var i=0; i<response.owner.length; i++) {
-                        list.append('<option value="'+ response.owner[i].id +'">'+ response.owner[i].name +'</option>');
+                    for (var i = 0; i < response.owner.length; i++) {
+                        list.append('<option value="' + response.owner[i].id + '">' + response.owner[i].name + '</option>');
                     }
-                    $("#create_dialog").show();
+                    $("#create_dialog1").show();
                 }
 
             };
             xmlhttp.send();
         }
 
-        function setOption(response) {
-            $('#tokenize_focus').empty();
-            $('#tokenize_focus').multiSelect('refresh');
-            for (var i = 0; i < response.read.length; i++) {
-                $('#tokenize_focus').multiSelect('addOption', {
-                    value: '' + response.read[i].id,
-                    text: response.read[i].name, index: 0,
-                });
-                if (response.read[i].select == true) {
-                    $('#tokenize_focus').multiSelect('select', '' + response.read[i].id);
-                }
-            }
-        }
     </script>
 </head>
 <body>
@@ -228,6 +203,9 @@
     <jsp:include page="../pagecontent/sidebar.jsp"/>
 
     <jsp:include page="../post/viewpost.jsp"/>
+
+    <%--for confirm delete modal window(include script and css)--%>
+    <jsp:include page="../pagecontent/confirm-delete.jsp"/>
 
     <section id="main-content">
         <section class="wrapper">
@@ -277,7 +255,7 @@
 </section>
 </section>
 
-<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="create_dialog"
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="create_dialog1"
      class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -320,7 +298,6 @@
                                         <h4><l:resource key="newpost.selectgroup"/>:</h4>
                                         <select name="groups" id="tokenize_focus" multiple="multiple"
                                                 class="tokenize-sample">
-
                                             <c:forEach items="${owners}" var="owner">
                                                 <option value="${owner.wallId}">${owner.name}</option>
                                             </c:forEach>

@@ -5,11 +5,10 @@ import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.Response;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
+import com.epam.lab.spider.model.db.entity.Filter;
+import com.epam.lab.spider.model.vk.Post;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Execute extends Methods {
 
@@ -46,6 +45,23 @@ public class Execute extends Methods {
         }
         return url;
     }
+    /**
+     * Возвращает список случайних записей со стены пользователя или сообщества. Работает для последних 2^15 постов.
+     */
+    public List<Post> getRandomPostFromWall(Integer ownerId, Integer count, Filter filter, Integer maxLoopCount, int seed) throws VKException {
+        Parameters param = new Parameters();
+        param.add("owner_id",ownerId);
+        param.add("count",count);
+        param.add("exclude_post",0);
+        if(maxLoopCount!=null)param.add("max_loops",maxLoopCount);
+        param.add("random_seed",seed);
+        if(filter!=null && filter.getLikes()!=null)param.add("likes",filter.getLikes());
+        if(filter!=null && filter.getReposts()!=null)param.add("reposts",filter.getReposts());
+        if(filter!=null && filter.getComments()!=null)param.add("comments",filter.getComments());
 
+
+        Response response = request("execute.getRandomPostFromWall", param).execute();
+        return Post.parseItem(response.root().child("items").get(0));
+    }
 
 }

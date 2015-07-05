@@ -30,6 +30,8 @@ public class CategoryDAOImp extends BaseDAO implements CategoryDAO {
             "ON category.id = category_has_task.category_id WHERE task_id = ?";
     private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT category.* FROM category JOIN user_has_category ON" +
             " category.id = user_has_category.category_id WHERE user_id = ?";
+    private static final String SQL_GET_BY_POST_ID_QUERY = "SELECT category.* FROM category JOIN category_has_post ON" +
+            " category.id = category_has_post.category_id WHERE post_id = ?";
 
 
     @Override
@@ -113,6 +115,11 @@ public class CategoryDAOImp extends BaseDAO implements CategoryDAO {
     @Override
     public List<Category> getByUserId(Connection connection, int userId) throws SQLException {
         return select(connection, SQL_GET_BY_USER_ID_QUERY, userId);
+    }
+
+    @Override
+    public List<Category> getByPostId(Connection connection, int postId) throws SQLException {
+        return select(connection, SQL_GET_BY_POST_ID_QUERY, postId);
     }
 
 

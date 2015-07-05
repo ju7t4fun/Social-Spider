@@ -241,4 +241,12 @@ public class CategoryService implements BaseService<Category> {
         return true;
     }
 
+    public List<Category> getByPostId(int postId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return cdao.getByPostId(connection, postId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

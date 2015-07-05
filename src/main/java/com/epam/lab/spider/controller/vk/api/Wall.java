@@ -22,6 +22,18 @@ public class Wall extends Methods {
         Response response = request("wall.get", param).execute();
         return Post.parsePost(response.root().child("items").get(0));
     }
+    /**
+     * Возвращает список записей со стены пользователя или сообщества.
+     */
+    public Integer getCount(Integer ownerId) throws VKException {
+        Parameters param = new Parameters();
+        param.add("owner_id", ownerId);
+        param.add("filter", "owner");
+        param.add("count", 1);
+        Response response = request("wall.get", param).execute();
+//        Post.parsePost(response.root().child("items").get(0));
+        return response.root().child("count").get(0).value().toInt();
+    }
 
     /**
      * Метод, позволяющий осуществлять поиск по стенам пользователей.
