@@ -1,0 +1,109 @@
+var owner_id = Args.owner_id;
+var count = Args.count;
+var exclude_post = Args.exclude_post;
+var exclude_post_array = [];
+
+var likes = parseInt(Args.likes);
+var reposts = parseInt(Args.reposts);
+var comments = parseInt(Args.comments);
+
+var total_loops = parseInt(Args.max_loops);
+
+var i = 0;
+var start = 0;
+var length = 0;
+while(i<exclude_post.length){
+    var c = exclude_post.substr(i,1);
+    if(c == "," || c == " "){
+        var tmp_part_str = exclude_post.substr(start, length);
+        var id = parseInt(tmp_part_str);
+        if(id!=0)exclude_post_array.push(id);
+        start = i + 1;
+        length = 0;
+    }else{
+        length = length +1;
+    }    
+    i = i + 1;
+}
+if(length!=0){
+            var tmp_part_str = exclude_post.substr(start, length);
+        var id = parseInt(tmp_part_str);
+        exclude_post_array.push(id);
+}
+var api_call_count = 1;
+var responses = [];
+var response = API.wall.get({
+    "owner_id" : owner_id,
+    "filter": "owner",
+    "count": 100
+});
+var total_count = response.count;
+responses.push({init:1, item: response.items});
+i = 1;
+while (i < total_count / 100){
+    responses.push({init:0});
+    i = i + 1;
+}
+
+var total_count = response.count;
+api_call_count = api_call_count + 1;
+var serverTime = API.utils.getServerTime();
+
+var random = Args.random_seed * (serverTime % 255);
+if(total_loops<1)total_loops = 30;
+var result_set = [];
+var compare_set = [];
+var j = 0, t = 0;
+while(j < count && t < total_loops){
+    t = t + 1;
+    random = (random * 214013 + 2531011) % 32768;
+    var random_post =  random % total_count;
+    if(random_post<0)random_post = - random_post;
+    var basket = (random_post - random_post % 100) / 100;
+    if(responses[basket].init == 0 && api_call_count < 25){
+        var query_offset = 100*basket;
+        api_call_count = api_call_count + 1;
+        var response_item = API.wall.get({
+            "owner_id" : owner_id,
+            "filter": "owner",
+            "count": 100,
+            "offset": query_offset
+        });
+        responses.splice(basket,1,{init:1, item: response_item.items});
+    }
+    if(responses[basket].init == 1){
+        var offset_in_basket = random_post % 100;
+        var post = responses[basket].item[offset_in_basket];
+        var k = 0, needAdd = true;
+        if(needAdd){
+            var post_likes = post.likes.count;
+            if(post_likes < likes )needAdd = false;
+        }
+        if(needAdd){
+            if(post.reposts.count < reposts )needAdd = false;
+        } 
+        if(needAdd){
+            if(post.comments.count < comments )needAdd = false;
+        } 
+        while(needAdd && k<exclude_post_array.length){
+            k = k + 1;
+            var post_id = parseInt(""+post.id);
+            //return post_id;
+            var str_post_id = ""+post_id;
+            var str_exclude_post_id = ""+exclude_post_array[k];
+            //return {id:str_post_id,eid:str_exclude_post_id};
+            if( str_post_id == str_exclude_post_id){
+                needAdd = false;
+            }
+        }
+        if(needAdd){
+            exclude_post_array.push( parseInt(post.id));
+            result_set.push(post);
+            j = j + 1;
+        }
+    }
+}
+return  {
+    count:total_count,
+    items:result_set 
+};

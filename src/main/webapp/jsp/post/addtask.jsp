@@ -382,10 +382,10 @@
                     </div>
 
                     <div class="col-lg-3">
-                      <input type="checkbox" name="content_type" value="repost"> Reposts <br>
+                      <input type="checkbox" name="content_type" value="repost" checked> Deep Repost Copy <br>
                       <input type="checkbox" name="content_type" value="link"> Links <br>
                       <input type="checkbox" name="content_type" value="hashtag"> Hashtags <br>
-                      <input type="checkbox" name="content_type" value="docs"> Documents <br>
+                      <input type="checkbox" name="content_type" value="docs" checked> Documents <br>
                       <input type="checkbox" name="content_type" value="page"> Pages <br>
                     </div>
 

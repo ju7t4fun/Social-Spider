@@ -13,8 +13,8 @@ import java.util.*;
 /**
  * Created by shell on 6/28/2015.
  */
-public class GrabbingTypeUtil {
-    public static final Logger LOG = Logger.getLogger(GrabbingTypeUtil.class);
+public class GrabbingTypeServerUtil {
+    public static final Logger LOG = Logger.getLogger(GrabbingTypeServerUtil.class);
 
     public static boolean checkFilterPass(Post vkPost, Filter filter, Long timeOnServer) {
         if(filter==null) return true;
@@ -25,7 +25,8 @@ public class GrabbingTypeUtil {
         return  qualityCondition;
     }
 
-    public static List<Post> grabbingBegin(Owner owner, Vkontakte vk, Filter filter, Set<Integer> alreadyAddSet, int grabbingSize, int countOfPosts) throws InterruptedException, VKException {
+    public static List<Post> grabbingBegin(Owner owner, Vkontakte vk, Filter filter, Set<Integer> alreadyAddSet, int countOfPosts, int grabbingSize) throws InterruptedException, VKException {
+        long unixTime = vk.utils().getServerTime().getTime();
         List<Post> postsPrepareToPosting = new ArrayList<>();
         Parameters parameters;
         postGrabbingAndFiltering:
@@ -55,7 +56,7 @@ public class GrabbingTypeUtil {
                 }
             }while (manyRequest);
             Thread.sleep(300);
-            long unixTime = vk.utils().getServerTime().getTime();
+
             for (com.epam.lab.spider.model.vk.Post vkPost : postsOnTargetWall) {
                 boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));
                 if (alreadyProceededPost) {
@@ -78,7 +79,8 @@ public class GrabbingTypeUtil {
         }
         return postsPrepareToPosting;
     }
-    public static List<Post> grabbingEnd(Owner owner, Vkontakte vk, Filter filter, Set<Integer> alreadyAddSet, int grabbingSize, int countOfPosts) throws InterruptedException, VKException {
+    public static List<Post> grabbingEnd(Owner owner, Vkontakte vk, Filter filter, Set<Integer> alreadyAddSet, int countOfPosts, int grabbingSize) throws InterruptedException, VKException {
+        long unixTime = vk.utils().getServerTime().getTime();
        // TODO: BIND LOCAL GRABBING SIZE AND GRABBING SIZE
         int localGrabbingSize = 90;
         boolean endOfContent = false;
@@ -136,7 +138,7 @@ public class GrabbingTypeUtil {
                     badExecution = true;
                 }
             }while (manyRequest || badExecution);
-            long unixTime = vk.utils().getServerTime().getTime();
+
 
             for (int i = postsOnTargetWall.size(); i > 0; i--) {
                 com.epam.lab.spider.model.vk.Post vkPost = postsOnTargetWall.get(i-1);
@@ -166,7 +168,8 @@ public class GrabbingTypeUtil {
      * Увага дана реалізація може стягнути максимум 80% постів
      * Дане обмеження встановлене з метою швидкодії по методу паретто
      */
-    public static List<Post> grabbingRandom(Owner owner, Vkontakte vk, Filter filter, Set<Integer> alreadyAddSet, int countOfPosts, Set<Integer> randomSaved) throws InterruptedException, VKException {
+    public static List<Post> grabbingRandom(Owner owner, Vkontakte vk, Filter filter, Set<Integer> alreadyAddSet, int countOfPosts, int grabbingSize, Set<Integer> randomSaved) throws InterruptedException, VKException {
+        long unixTime = vk.utils().getServerTime().getTime();
         int parrettoPostCount = 0;
         Set<Integer> alreadyRandom;
         if(randomSaved != null){
@@ -234,7 +237,6 @@ public class GrabbingTypeUtil {
                     badExecution = true;
                 }
             }while (manyRequest || badExecution);
-            long unixTime = vk.utils().getServerTime().getTime();
 
             for (int i = postsOnTargetWall.size(); i > 0; i--) {
                 com.epam.lab.spider.model.vk.Post vkPost = postsOnTargetWall.get(i-1);

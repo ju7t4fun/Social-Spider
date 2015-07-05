@@ -1,8 +1,10 @@
 package com.epam.lab.spider.job;
 
+import com.epam.lab.spider.controller.utils.EventLogger;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
+import com.epam.lab.spider.job.exception.PostContentException;
 import com.epam.lab.spider.job.util.*;
 import com.epam.lab.spider.model.db.entity.*;
 
@@ -30,23 +32,50 @@ public class TaskJob implements Job {
     TaskService taskService = new TaskService();
     TaskSynchronizedDataService synchronizedService = new TaskSynchronizedDataService();
 
+    public Post processingPost(com.epam.lab.spider.model.vk.Post vkPost,  Task task)throws PostContentException {
+        return processingPost(vkPost, task.getContentType(), task.getHashTags());
+    }
 
-    public Post processingPost(com.epam.lab.spider.model.vk.Post vkPost, Task task) {
+    public Post processingPost(com.epam.lab.spider.model.vk.Post vkPost,  Task.ContentType contentType) throws PostContentException {
+        return processingPost(vkPost, contentType, null);
+    }
+    public Post processingPost(com.epam.lab.spider.model.vk.Post vkPost,  Task.ContentType contentType, String hashTags) throws PostContentException {
         Post post = new Post();
+        Task.ContentType newPostContentType = new Task.ContentType();
         StringBuilder messageBuilder = new StringBuilder();
-        messageBuilder.append(vkPost.getText());
-        if (task.getContentType().hasText()) {
-            messageBuilder.append(" ").append(task.getHashTags());
+        String pureText = vkPost.getText().trim();
+        //TODO: REMOVE ALL HASH TAGS FROM SOURCE TEXT
+        if(!contentType.hasHashtags()){
+
         }
-        post.setMessage(messageBuilder.toString().trim());
+        if (contentType.hasText()) {
+            if(!pureText.isEmpty()) {
+                messageBuilder.append(pureText).append("\n");
+                newPostContentType.setType(Task.ContentType.TEXT);
+            }
+        }
+        if(contentType.hasReposts()){
+            List<com.epam.lab.spider.model.vk.Post> copyHistoryList = vkPost.getCopyHistory();
+            if(!copyHistoryList.isEmpty()){
+                post = processingPost(copyHistoryList.get(0),  contentType);
+                String innerMessage = post.getMessage();
+                messageBuilder.append(innerMessage).append("\n");
+                newPostContentType.setType(Task.ContentType.REPOSTS);
+            }
+        }
+        {
+            if(hashTags!=null)messageBuilder.append(hashTags);
+            post.setMessage(messageBuilder.toString().trim());
+        }
         for (com.epam.lab.spider.model.vk.Attachment vkAttachment : vkPost.getAttachments()) {
-            if (task.getContentType().hasPhoto() && vkAttachment instanceof Photo) {
+            if (contentType.hasPhoto() && vkAttachment instanceof Photo) {
                 Attachment attachment = new Attachment();
                 attachment.setType(Attachment.Type.PHOTO);
                 attachment.setPayload(((Photo) vkAttachment).getPhoto604().toString());
                 post.addAttachment(attachment);
+                newPostContentType.setType(Task.ContentType.PHOTO);
             }
-            if (task.getContentType().hasAudio() && vkAttachment instanceof Audio) {
+            if (contentType.hasAudio() && vkAttachment instanceof Audio) {
                 Attachment attachment = new Attachment();
                 Audio audio = (Audio) vkAttachment;
                 String attachString = "audio" + audio.getOwnerId() + "_" + audio.getId();
@@ -54,8 +83,9 @@ public class TaskJob implements Job {
                 attachment.setMode(Attachment.Mode.CODE);
                 attachment.setType(Attachment.Type.AUDIO);
                 post.addAttachment(attachment);
+                newPostContentType.setType(Task.ContentType.AUDIO);
             }
-            if (task.getContentType().hasDoc() && vkAttachment instanceof Doc) {
+            if (contentType.hasDoc() && vkAttachment instanceof Doc) {
                 Attachment attachment = new Attachment();
                 Doc doc = (Doc) vkAttachment;
                 String attachString = "doc" + doc.getOwnerId() + "_" + doc.getId();
@@ -63,8 +93,9 @@ public class TaskJob implements Job {
                 attachment.setMode(Attachment.Mode.CODE);
                 attachment.setType(Attachment.Type.DOC);
                 post.addAttachment(attachment);
+                newPostContentType.setType(Task.ContentType.DOCUMENTS);
             }
-            if (task.getContentType().hasVideo() && vkAttachment instanceof Video) {
+            if (contentType.hasVideo() && vkAttachment instanceof Video) {
                 Attachment attachment = new Attachment();
                 Video video = (Video) vkAttachment;
                 String attachString = "video" + video.getOwnerId() + "_" + video.getId();
@@ -72,9 +103,13 @@ public class TaskJob implements Job {
                 attachment.setMode(Attachment.Mode.CODE);
                 attachment.setType(Attachment.Type.VIDEO);
                 post.addAttachment(attachment);
+                newPostContentType.setType(Task.ContentType.VIDEO);
             }
         }
-        return post;
+        if(newPostContentType.getType().intValue()==0){
+            throw new PostContentException();
+//            return null;
+        }else return post;
     }
 
     public List<com.epam.lab.spider.model.vk.Post> grabbingWall(Wall wall, Task task) {
@@ -83,7 +118,7 @@ public class TaskJob implements Job {
         Profile profile = wall.getProfile();
         Filter filter = task.getFilter();
         Set<Integer> alreadyAddSet = synchronizedService.getProcessedPost(task, wall, 10000);
-        int grabbingSize = task.getGrabbingSize();
+        Integer grabbingSize = task.getGrabbingSize();
         int countOfPosts = task.getPostCount();
         try {
             Integer appId = profile.getAppId();
@@ -100,20 +135,21 @@ public class TaskJob implements Job {
             switch (task.getGrabbingType()) {
 
                 case BEGIN:
-                    postsPrepareToPosting = GrabbingTypeUtil.grabbingBegin(owner, vk, filter, alreadyAddSet,
-                            grabbingSize, countOfPosts);
+                    postsPrepareToPosting = GrabbingTypeServerUtil.grabbingBegin(owner, vk, filter, alreadyAddSet,
+                            countOfPosts, grabbingSize);
                     break;
                 case RANDOM:
-                    postsPrepareToPosting = GrabbingTypeUtil.grabbingRandom(owner, vk, filter, alreadyAddSet,
-                            countOfPosts, null);
+                    postsPrepareToPosting = GrabbingTypeVkSavedUtil.grabbingRandom(owner, vk, filter, alreadyAddSet,
+                            countOfPosts, grabbingSize);
+                    LOG.info("New grabbingSize:" + grabbingSize);
                     break;
                 case END:
-                    postsPrepareToPosting = GrabbingTypeUtil.grabbingEnd(owner, vk, filter, alreadyAddSet,
-                            grabbingSize, countOfPosts);
+                    postsPrepareToPosting = GrabbingTypeServerUtil.grabbingEnd(owner, vk, filter, alreadyAddSet,
+                            countOfPosts, grabbingSize);
                     break;
                 case NEW:
-                    postsPrepareToPosting = GrabbingTypeUtil.grabbingEnd(owner, vk, null, alreadyAddSet,
-                            grabbingSize, countOfPosts);
+                    postsPrepareToPosting = GrabbingTypeServerUtil.grabbingEnd(owner, vk, null, alreadyAddSet,
+                            countOfPosts, grabbingSize);
                     break;
             }
 
@@ -199,32 +235,37 @@ public class TaskJob implements Job {
                         List<com.epam.lab.spider.model.vk.Post> postsPrepareToPosting = entity.getValue();
                         LinkedList<Integer> addedToProcessingBlocks = new LinkedList<>();
                         for (com.epam.lab.spider.model.vk.Post vkPost : postsPrepareToPosting) {
-
-                            switch (task.getType()) {
-                                // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
-                                case COPY: {
-                                    Post post = processingPost(vkPost, task);
-                                    addedToProcessingPosts.addFirst(post);
-                                    break;
+                            try {
+                                switch (task.getType()) {
+                                    // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
+                                    case COPY: {
+                                        Post post = processingPost(vkPost, task);
+                                        addedToProcessingPosts.addFirst(post);
+                                        break;
+                                    }
+                                    // якщо тип - репост - додаємо пост в чергу до опрацювання та ріпостимо його
+                                    // якщо таск завершиться аварійно - можлива втрата репосту даного поста
+                                    case REPOST: {
+                                        postToRepost.add(vkPost);
+                                        break;
+                                    }
+                                    case FAVORITE: {
+                                        Post post = processingPost(vkPost, task);
+                                        System.out.println("-------------" + post);
+                                        Feed feed = new Feed();
+                                        feed.processing(post, task);
+                                        break;
+                                    }
                                 }
-                                // інакше якщо тип - репост - додаємо пост в чергу до опрацювання та ріпостимо його
-                                // якщо таск завершиться аварійно - можлива втрата репосту даного поста
-                                case REPOST: {
-                                    postToRepost.add(vkPost);
-                                    break;
-                                }
-                                case FAVORITE: {
-                                    Post post = processingPost(vkPost, task);
-                                    System.out.println("-------------" + post);
-                                    Feed feed = new Feed();
-                                    feed.processing(post, task);
-                                    break;
-                                }
+                                LOG.debug("Post wall" + vkPost.getOwnerId() + "_" + vkPost.getId() + " has added to " +
+                                        "processing.");
+                            } catch (PostContentException x) {
+                                LOG.error("Post Content Type Fail. Object: post" + vkPost.getOwnerId() + "_" + vkPost.getId());
                             }
-
+                            // заблоковуємо пост
+                            // виконується якщо пост додато до потингу
+                            // або для поста сталась помилка контенту
                             addedToProcessingBlocks.addFirst(vkPost.getId());
-                            LOG.debug("Post wall" + vkPost.getOwnerId() + "_" + vkPost.getId() + " has added to " +
-                                    "processing.");
                         }
                         blockMap.put(entity.getKey(), addedToProcessingBlocks);
                     }
@@ -250,31 +291,35 @@ public class TaskJob implements Job {
                         int postIndex = random.nextInt(basketOfPreparePost.size());
                         // витягаємо та видаляємо з корзини вибраний пост
                         com.epam.lab.spider.model.vk.Post vkPost = basketOfPreparePost.remove(postIndex);
-
-                        switch (task.getType()) {
-                            // опрацьовуємо пост за правилами заданими в таску
-                            // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
-                            case COPY: {
-                                Post post = processingPost(vkPost, task);
-                                addedToProcessingPosts.addFirst(post);
-                                break;
+                        try {
+                            switch (task.getType()) {
+                                // опрацьовуємо пост за правилами заданими в таску
+                                // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
+                                case COPY: {
+                                    Post post = processingPost(vkPost, task);
+                                    addedToProcessingPosts.addFirst(post);
+                                    break;
+                                }
+                                // якщо тип - репост - додаємо пост в чергу до опрацювання та ріпостимо його
+                                // якщо таск завершиться аварійно - можлива втрата репосту даного поста
+                                case REPOST: {
+                                    postToRepost.add(vkPost);
+                                    break;
+                                }
+                                case FAVORITE: {
+                                    Post post = processingPost(vkPost, task);
+                                    System.out.println("-------------" + post);
+                                    Feed feed = new Feed();
+                                    feed.processing(post, task);
+                                    break;
+                                }
                             }
-                            // інакше якщо тип - репост - додаємо пост в чергу до опрацювання та ріпостимо його
-                            // якщо таск завершиться аварійно - можлива втрата репосту даного поста
-                            case REPOST: {
-                                postToRepost.add(vkPost);
-                                break;
-                            }
-                            case FAVORITE: {
-                                Post post = processingPost(vkPost, task);
-                                System.out.println("-------------" + post);
-                                Feed feed = new Feed();
-                                feed.processing(post, task);
-                                break;
-                            }
+                        } catch (PostContentException x) {
+                            LOG.error("Post Content Type Fail. Object: post"+ vkPost.getOwnerId() + "_" + vkPost.getId());
                         }
-
-                        // ставимо пост до потингу та заблоковуємо його
+                        // заблоковуємо пост
+                        // виконується якщо пост додато до потингу
+                        // або для поста сталась помилка контенту
                         LinkedList<Integer> addedToProcessingBlocks = blockMap.get(currentEntry.getKey());
                         if (addedToProcessingBlocks == null) {
                             addedToProcessingBlocks = new LinkedList<>();
@@ -321,6 +366,22 @@ public class TaskJob implements Job {
                 synchronizedService.markIdLastProcessedPost(task, entry.getKey(), entry.getValue());
             }
             TaskUtil.setNewTaskRunTime(task);
+            {
+                int countGrabMax = task.getPostCount();
+                switch (task.getGrabbingMode()) {
+                    case TOTAL:
+                        countGrabMax = activeSourceInTask * task.getPostCount();
+                        break;
+                    case PER_GROUP:
+                        countGrabMax = task.getPostCount();
+                        break;
+                }
+                int countGrabSuccess = addedToProcessingPosts.size();
+                String title = "Task #" + task.getId() + " have grabbed post " + countGrabSuccess + "/" + countGrabMax+".";
+                String info = title+" Planned Post Action Count: "+newPosts.size();
+                EventLogger eventLogger = EventLogger.getLogger(task.getUserId());
+                eventLogger.info(title, info);
+            }
         }
 
         long finishTime = System.currentTimeMillis();

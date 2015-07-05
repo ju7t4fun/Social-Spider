@@ -76,6 +76,13 @@ public class Post extends Model {
             posts.add(new Post(node));
         return posts;
     }
+    public static List<Post> parseItem(Node root) {
+        List<Post> posts = new ArrayList<Post>();
+        List<Node> nodes = root.child("item");
+        for (Node node : nodes)
+            posts.add(new Post(node));
+        return posts;
+    }
 
     public int getId() {
         return get(ID).toInt();
