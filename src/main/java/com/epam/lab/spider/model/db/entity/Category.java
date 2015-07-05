@@ -16,6 +16,9 @@ public class Category {
 
     private Integer id;
     private String name;
+    private String imageUrl;
+
+
 
     private Set<Task> tasks = null;
 
@@ -33,6 +36,14 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String image_url) {
+        this.imageUrl = image_url;
     }
 
     public Set<Task> getTasks() {

@@ -11,7 +11,6 @@ import java.util.List;
  */
 public interface CategoryDAO extends CRUD<Category> {
 
-    List<Category> getAllWithSearch(Connection connection, String nameToSearch) throws SQLException;
 
     List<Category> getAllWithLimit(Connection connection, int start, int ammount) throws SQLException;
 
@@ -24,5 +23,6 @@ public interface CategoryDAO extends CRUD<Category> {
     List<Category> getByTaskId(Connection connection, int taskId) throws SQLException;
 
     List<Category> getByUserId(Connection connection, int userId) throws SQLException;
+
 
 }
