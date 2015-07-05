@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE taglib
+        PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+        "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+<taglib>
+    <tlib-version>1.0</tlib-version>
+    <jsp-version>1.2</jsp-version>
+    <short-name>lg</short-name>
+    <uri>http://lab.epam.com/spider/logger</uri>
+    <description>Logger custom tag</description>
+    <tag>
+        <name>log</name>
+        <tag-class>com.epam.lab.spider.model.tag.LoggerTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>This tag uses log4j to log a message.</description>
+
+        <attribute>
+            <name>configFile</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                This attribute provides any configuration filename for the logger.
+            </description>
+        </attribute>
+
+        <attribute>
+            <name>level</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                This attribute provides the level for the log request.
+            </description>
+        </attribute>
+    </tag>
+</taglib>
