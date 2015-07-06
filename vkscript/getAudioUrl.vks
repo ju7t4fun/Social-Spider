@@ -1,0 +1,2 @@
+var audio = API.audio.getById({"audios": Args.audios});
+return audio@.url;

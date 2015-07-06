@@ -1,0 +1,6 @@
+var post = API.wall.getById({"posts" : Args.posts});
+return {
+    "likes": post@.likes@.count,
+    "reposts" : post@.reposts@.count,
+    "comments": post@.comments@.count,
+};

@@ -121,7 +121,7 @@
                     }
                 }, {
                     "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<div class="btn-group"><a class="btn btn-primary" data-toggle="modal" data-target="#publish_modal" onclick="openPublishWindows(' + cellData + ')" ><i class="icon_plus_alt2"></i></a><a class="btn btn-danger" onclick="removePost(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
+                        $(td).html('<div class="btn-group"><a class="btn btn-primary" data-toggle="modal" data-target="#publish_modal" onclick="openPublishWindows(' + cellData + ')" ><i class="icon_plus_alt2"></i></a><a data-toggle="modal" data-target="#edit_post" onclick="editPost(' + cellData + ')" class="btn btn-success"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removePost(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
                     }
                 }, {
                     "width": "60%", "targets": 1
@@ -246,9 +246,6 @@
                                     </table>
                                 </div>
                             </div>
-                            <a class="btn btn-primary" id="post_edit" onclick="editPost(7);" data-toggle="modal"
-                               data-target="#edit_post">
-                                Click</a>
                         </div>
                     </div>
                 </div>

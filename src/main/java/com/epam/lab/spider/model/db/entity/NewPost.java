@@ -28,6 +28,7 @@ public class NewPost {
     private Integer userId = 1;
     private Integer vkPostId;
 
+    private Stats stats;
     private Post post;
 
     public Integer getId() {
@@ -105,6 +106,14 @@ public class NewPost {
         this.vkPostId = vkPostId;
     }
 
+    public Stats getStats() {
+        return stats;
+    }
+
+    public void setStats(Stats stats) {
+        this.stats = stats;
+    }
+
     public Post getPost() {
         if (post == null) {
             if (postId == null)
@@ -119,60 +128,6 @@ public class NewPost {
         this.post = post;
     }
 
-    public Stats getStats() {
-        System.out.println("VK_POST_ID " + vkPostId);
-        if (vkPostId != null) {
-            WallService wallService = new WallService();
-            Wall wall = wallService.getById(wallId);
-            Profile profile = wall.getProfile();
-            Vkontakte vk = new Vkontakte(profile.getAppId());
-            AccessToken accessToken = new AccessToken();
-            accessToken.setAccessToken(profile.getAccessToken());
-            accessToken.setUserId(profile.getVkId());
-            accessToken.setExpirationMoment(profile.getExtTime().getTime());
-            vk.setAccessToken(accessToken);
-            Parameters param = new Parameters();
-            param.add("posts", "" + wall.getOwner().getVkId() + "_" + this.vkPostId);
-//            param.add("extended", 1);
-            try {
-                final com.epam.lab.spider.model.vk.Post post = vk.wall().getById(param).get(0);
-                return new Stats() {
-                    @Override
-                    public int getLikes() {
-                        return post.getLikes().getCount();
-                    }
-
-                    @Override
-                    public int getReposts() {
-                        return post.getReposts().getCount();
-                    }
-
-                    @Override
-                    public int getComments() {
-                        return post.getComments().getCount();
-                    }
-                };
-            } catch (VKException e) {
-                e.printStackTrace();
-            }
-        }
-        return new Stats() {
-            @Override
-            public int getLikes() {
-                return 0;
-            }
-
-            @Override
-            public int getReposts() {
-                return 0;
-            }
-
-            @Override
-            public int getComments() {
-                return 0;
-            }
-        };
-    }
 
     public com.epam.lab.spider.controller.vk.api.Stats.Reach getPostReach() {
         if (vkPostId != null) {

@@ -51,6 +51,6 @@ public class ShowAccountsCommand implements ActionCommand {
         }
         request.setAttribute("profiles", profiles);
         request.setAttribute("fullNames", fullName);
-        request.getRequestDispatcher("jsp/user/user_accounts.jsp").forward(request, response);
+        request.getRequestDispatcher("jsp/user/accounts.jsp").forward(request, response);
     }
 }

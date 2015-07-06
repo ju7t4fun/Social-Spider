@@ -140,9 +140,7 @@
                     }
                 }, {
                     "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<div class="btn-group"><a onclick="getGroupName(\'' + rowData[1]
-                                + '\', ' + cellData
-                                + ')" class="btn btn-success" data-toggle="modal" data-target="#edit_group"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removeOwner(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
+                        $(td).html('<div class="btn-group"><a onclick="getGroupName(\'' + rowData[1] + '\', ' + cellData +')" class="btn btn-success" data-toggle="modal" data-target="#edit_group"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removeOwner(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
                     }
                 }, {
                     "width": "60%", "targets": 1

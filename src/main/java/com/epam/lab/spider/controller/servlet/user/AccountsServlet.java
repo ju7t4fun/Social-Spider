@@ -1,10 +1,7 @@
 package com.epam.lab.spider.controller.servlet.user;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.user.accounts.AddAccountCommand;
-import com.epam.lab.spider.controller.command.user.accounts.RefreshAccountCommand;
-import com.epam.lab.spider.controller.command.user.accounts.RemoveAccountCommand;
-import com.epam.lab.spider.controller.command.user.accounts.ShowAccountsCommand;
+import com.epam.lab.spider.controller.command.user.accounts.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,6 +35,7 @@ public class AccountsServlet extends HttpServlet {
             commands.put("add", new AddAccountCommand());
             commands.put("refresh", new RefreshAccountCommand());
             commands.put("remove", new RemoveAccountCommand());
+            commands.put("get", new GetAccountsCommand());
         }
 
     }

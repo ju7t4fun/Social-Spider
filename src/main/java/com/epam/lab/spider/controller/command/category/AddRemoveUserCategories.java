@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.command.userhascategories;
+package com.epam.lab.spider.controller.command.category;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;

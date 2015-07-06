@@ -1,11 +1,8 @@
 package com.epam.lab.spider.controller.servlet;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.notf.GetNotificationCommand;
-import com.epam.lab.spider.controller.command.notf.RemoveNotificationCommand;
-import com.epam.lab.spider.controller.command.notf.ShowNotificationCommand;
-import com.epam.lab.spider.controller.command.userhascategories.AddRemoveUserCategories;
-import com.epam.lab.spider.controller.command.userhascategories.ShowUserHsCategoriesCommand;
+import com.epam.lab.spider.controller.command.category.AddRemoveUserCategories;
+import com.epam.lab.spider.controller.command.category.ShowUserHsCategoriesCommand;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

@@ -15,9 +15,9 @@ import java.util.List;
 public class ProfileDAOImp extends BaseDAO implements ProfileDAO {
 
     private static final String SQL_INSERT_QUERY = "INSERT INTO profile (user_id, vk_id, access_token, ext_time, " +
-            "app_id, deleted) VALUES (?, ?, ?, ?, ?, ?)";
+            "app_id, deleted, name) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE profile SET user_id = ?, vk_id = ?, access_token = ?, " +
-            "ext_time = ?, app_id = ?, deleted = ? WHERE id = ?";
+            "ext_time = ?, app_id = ?, deleted = ?, name = ? WHERE id = ?";
     // private static final String SQL_DELETE_QUERY = "DELETE FROM vk_profile WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE profile SET deleted = true WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM profile WHERE deleted = false";
@@ -37,6 +37,9 @@ public class ProfileDAOImp extends BaseDAO implements ProfileDAO {
                     " (wall JOIN owner " +
                     "ON wall.owner_id=owner.id AND wall.deleted=false )" +
                     " WHERE owner.vk_id=? ) AS T)";
+    private static final String SQL_GET_BY_USER_ID_LIMIT_QUERY = "SELECT * FROM profile WHERE user_id = ? LIMIT ?, ?";
+    private static final String SQL_GET_COUNT_BY_USER_ID = "SELECT COUNT(*) FROM profile WHERE user_id = ?";
+
     @Override
     public boolean insert(Connection connection, Profile profile) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
@@ -45,7 +48,8 @@ public class ProfileDAOImp extends BaseDAO implements ProfileDAO {
                 profile.getAccessToken(),
                 profile.getExtTime(),
                 profile.getAppId(),
-                profile.getDeleted());
+                profile.getDeleted(),
+                profile.getName());
         profile.setId(getLastInsertId(connection));
         return res;
     }
@@ -59,6 +63,7 @@ public class ProfileDAOImp extends BaseDAO implements ProfileDAO {
                 profile.getExtTime(),
                 profile.getAppId(),
                 profile.getDeleted(),
+                profile.getName(),
                 id);
     }
 
@@ -81,6 +86,7 @@ public class ProfileDAOImp extends BaseDAO implements ProfileDAO {
             profile.setExtTime(rs.getTimestamp("ext_time"));
             profile.setAppId(rs.getInt("app_id"));
             profile.setDeleted(rs.getBoolean("deleted"));
+            profile.setName(rs.getString("name"));
             profiles.add(profile);
         }
         return profiles;
@@ -96,7 +102,19 @@ public class ProfileDAOImp extends BaseDAO implements ProfileDAO {
         return select(connection, SQL_GET_ALL_IN_WALL_QUERY, owner_id);
     }
 
+    @Override
+    public List<Profile> getByUserId(Connection connection, Integer id, int page, int size) throws SQLException {
+        return select(connection, SQL_GET_BY_USER_ID_LIMIT_QUERY, id, page, size);
+    }
 
+    @Override
+    public int getCountByUserId(Connection connection, Integer id) throws SQLException {
+        ResultSet rs = selectQuery(connection, SQL_GET_COUNT_BY_USER_ID, id);
+        if (rs.next()) {
+            return rs.getInt("COUNT(*)");
+        }
+        return 0;
+    }
 
     @Override
     public List<Profile> getAll(Connection connection) throws SQLException {

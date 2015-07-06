@@ -19,7 +19,6 @@ public class Category {
     private String imageUrl;
 
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,10 +83,9 @@ public class Category {
         return getTasks().remove(task);
     }
 
-
     @Override
     public String toString() {
-        return name;
+        return name.replace("\\|", "-");
     }
 
 }

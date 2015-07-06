@@ -1,13 +1,12 @@
 package com.epam.lab.spider.controller.command.user.accounts;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.controller.vk.Authorization;
-import com.epam.lab.spider.controller.vk.Scope;
-import com.epam.lab.spider.controller.vk.Vkontakte;
+import com.epam.lab.spider.controller.vk.*;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
 import com.epam.lab.spider.model.db.entity.Profile;
 import com.epam.lab.spider.model.db.service.ProfileService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.vk.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +27,8 @@ public class AddAccountCommand implements ActionCommand {
 
     public AddAccountCommand() {
         vk = new Vkontakte(APP_ID);
-        vk.conf().setPermissions(Scope.WALL, Scope.GROUPS, Scope.PHOTOS, Scope.AUDIO, Scope.VIDEO, Scope.DOCS, Scope.STATS);
+        vk.conf().setPermissions(Scope.WALL, Scope.GROUPS, Scope.PHOTOS, Scope.AUDIO, Scope.VIDEO, Scope.DOCS, Scope
+                .STATS);
         vk.createOAuth(Authorization.Type.CLIENT);
     }
 
@@ -50,6 +50,14 @@ public class AddAccountCommand implements ActionCommand {
             profile.setAccessToken(token.getAccessToken());
             profile.setExtTime(token.getExpirationMoment());
             profile.setUserId(1);
+            try {
+                Parameters param = new Parameters();
+                param.add("user_ids", token.getUserId());
+                User user = vk.users().get(param).get(0);
+                profile.setName(user.getFirstName() + " " + user.getLastName());
+            } catch (VKException e) {
+                e.printStackTrace();
+            }
             profile.setAppId(APP_ID);
 
             // Перевіряємо чи такий профіль існує в базі
