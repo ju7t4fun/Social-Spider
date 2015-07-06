@@ -5,7 +5,6 @@ import com.epam.lab.spider.model.db.SQLTransactionException;
 import com.epam.lab.spider.model.db.dao.AttachmentDAO;
 import com.epam.lab.spider.model.db.dao.CategoryHasPostDAO;
 import com.epam.lab.spider.model.db.dao.PostDAO;
-import com.epam.lab.spider.model.db.dao.UserHasCategotyDAO;
 import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
 import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
@@ -226,6 +225,15 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
             return false;
         }
         return true;
+    }
+
+    public List<Integer> getByCategoryFromUser(int userId, int offset, int limit) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getByCategoryFromUser(connection, userId, offset, limit);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

@@ -83,19 +83,7 @@
 
         // Видалення групи
         function removeOwner(id) {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/owner?action=remove&id=' + id, true);
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4) {
-                    var response = JSON.parse(xmlhttp.responseText);
-                    toastrNotification(response.status, response.msg);
-                    if (response.status === 'success') {
-                        $('#ownersTable').DataTable().row($(this).parents('tr'))
-                                .remove().draw(false);
-                    }
-                }
-            };
-            xmlhttp.send(null);
+          deleteConfirmOwner(id);
         }
     </script>
 
@@ -329,6 +317,9 @@
     <jsp:include page="../pagecontent/sidebar.jsp"/>
 
     <jsp:include page="../owner/stat.jsp"/>
+
+    <%--for confirm delete modal window(include script and css)--%>
+    <jsp:include page="../pagecontent/confirm-delete.jsp"/>
 
     <section id="main-content">
         <section class="wrapper">

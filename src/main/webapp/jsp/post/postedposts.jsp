@@ -78,6 +78,9 @@
 
     <jsp:include page="../post/viewpost.jsp"/>
 
+    <%--for confirm delete modal window(include script and css)--%>
+    <jsp:include page="../pagecontent/confirm-delete.jsp"/>
+
     <section id="main-content">
         <section class="wrapper">
             <div class="row">

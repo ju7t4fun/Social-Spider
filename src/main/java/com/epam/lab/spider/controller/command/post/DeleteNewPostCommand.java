@@ -24,14 +24,14 @@ public class DeleteNewPostCommand implements ActionCommand {
         JSONObject json = new JSONObject();
         if (service.delete(id)) {
             json.put("status", "success");
-            json.put("msg", "Delete post");
+            json.put("msg", "Post has been successfully deleted!");
         } else {
             json.put("status", "error");
             json.put("msg", "Error");
         }
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(json.toString());
+        response.getWriter().print(json.toString());
     }
 }
 

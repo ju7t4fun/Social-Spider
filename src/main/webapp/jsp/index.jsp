@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
+<%@ taglib prefix="lg" uri="http://lab.epam.com/spider/logger" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,6 +49,8 @@
 </head>
 
 <body id="page-top">
+
+<lg:log level="info">INFO MESSAGE FROM INDEX.JSP</lg:log>
 
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
 

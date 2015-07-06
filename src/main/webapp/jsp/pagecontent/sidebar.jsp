@@ -39,6 +39,11 @@
                             <span>Owner</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="" href="/userhascategories"> <i class="icon_piechart"></i>
+                            <span>Choose Categories</span>
+                        </a>
+                    </li>
                 </ul>
             </c:when>
             <c:when test="${user.role =='ADMIN'}">

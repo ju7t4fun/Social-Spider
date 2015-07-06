@@ -84,7 +84,7 @@
         }, 500);
 
         function removePost(id, elm) {
-            deleteConfirm(id);
+            deleteConfirmCreatedPost(id);
         }
     </script>
 
@@ -121,7 +121,7 @@
                     }
                 }, {
                     "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<div class="btn-group"><a class="btn btn-primary" data-toggle="modal"  data-target="#create_dialog"  onclick="PopUpShow(' + cellData + ')"><i class="icon_plus_alt2"></i></a><a class="btn btn-danger" onclick="removePost(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
+                        $(td).html('<div class="btn-group"><a class="btn btn-primary" data-toggle="modal" data-target="#publish_modal" onclick="openPublishWindows(' + cellData + ')" ><i class="icon_plus_alt2"></i></a><a class="btn btn-danger" onclick="removePost(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
                     }
                 }, {
                     "width": "60%", "targets": 1
@@ -177,34 +177,21 @@
         function PopUpShow(id) {
             postId = id;
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/owner?action=getownerwall&id=' + id, true);
+            xmlhttp.open('GET', '/owner?action=getOwnerWall&id=' + id, true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
                     var list = $("#tokenize_focus");
-                    for (var i=0; i<response.owner.length; i++) {
-                        list.append('<option value="'+ response.owner[i].id +'">'+ response.owner[i].name +'</option>');
+                    for (var i = 0; i < response.owner.length; i++) {
+                        list.append('<option value="' + response.owner[i].id + '">' + response.owner[i].name + '</option>');
                     }
-                    $("#create_dialog").show();
+                    $("#create_dialog1").show();
                 }
 
             };
             xmlhttp.send();
         }
 
-        function setOption(response) {
-            $('#tokenize_focus').empty();
-            $('#tokenize_focus').multiSelect('refresh');
-            for (var i = 0; i < response.read.length; i++) {
-                $('#tokenize_focus').multiSelect('addOption', {
-                    value: '' + response.read[i].id,
-                    text: response.read[i].name, index: 0,
-                });
-                if (response.read[i].select == true) {
-                    $('#tokenize_focus').multiSelect('select', '' + response.read[i].id);
-                }
-            }
-        }
     </script>
 </head>
 <body>
@@ -268,9 +255,10 @@
 </section>
 </section>
 
-<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="create_dialog"
+<%--Вікно публікації--%>
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="publish_modal"
      class="modal fade">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="margin-left: 35%; margin-top: 110px">
         <div class="modal-content">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
@@ -279,77 +267,79 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form id="modal_form" method="POST" action="/post?action=addPost" class="form-horizontal">
-                            <input type="hidden" name="typePost" value="new">
-
-                            <div style="position: relative; left: -130px; top:30px;">
+                        <form id="modal_form" class="form-horizontal">
+                            <%--Дата і час--%>
+                            <div style="position: relative; left: -130px; top:4px;">
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="date"><l:resource
                                             key="newpost.date"/></label>
 
                                     <div class="col-md-4">
-                                        <l:resource key="newpost.postdate"><input id="date" name="date" type="date"
-                                                                                  min="${date}" value="${date}"
-                                                                                  placeholder=""
-                                                                                  class="form-control input-md"></l:resource>
+                                        <l:resource key="newpost.postdate">
+                                            <input id="date" name="date" type="date"
+                                                   min="${date}" value="${date}"
+                                                   class="form-control input-md">
+                                        </l:resource>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="time"><l:resource
-                                            key="newpost.time"/></label>
+                                    <label class="col-md-4 control-label" for="time" style="margin-top: -24px">
+                                        <l:resource key="newpost.time"/></label>
 
-                                    <div class="col-md-4">
-                                        <l:resource key="newpost.posttime"><input id="time" name="time" type="time"
-                                                                                  value="${time}" placeholder=""
-                                                                                  class="form-control input-md"></l:resource>
+                                    <div class="col-md-4" style="margin-top: -24px">
+                                        <l:resource key="newpost.posttime">
+                                            <input id="time" name="time" type="time" value="${time}"
+                                                   class="form-control input-md">
+                                        </l:resource>
                                     </div>
                                 </div>
                             </div>
+                            <%--Вибір груп--%>
                             <div style="position: relative; left: 250px; top:-109px;">
                                 <div class="form-group" style="">
                                     <div class="col-lg-6">
                                         <h4><l:resource key="newpost.selectgroup"/>:</h4>
                                         <select name="groups" id="tokenize_focus" multiple="multiple"
                                                 class="tokenize-sample">
-
                                             <c:forEach items="${owners}" var="owner">
                                                 <option value="${owner.wallId}">${owner.name}</option>
                                             </c:forEach>
                                         </select>
-
                                         <script type="text/javascript">
                                             $('select#tokenize_focus').tokenize({displayDropdownOnFocus: true});
                                         </script>
                                     </div>
                                 </div>
                             </div>
-                            <div style="position: relative; left:-58px; top:-100px;">
+                            <%--Включення автовидалення поста--%>
+                            <div style="position: relative; left:-67px; top:-100px;">
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="check"><l:resource
                                             key="newpost.removingdate"/></label>
-                                    <input id="check" type="checkbox">
+                                    <input id="check" type="checkbox" style="margin-top: 11px">
                                 </div>
                             </div>
-                            <div style="position: relative; left:54px; top:-90px; width: 600px;">
+                            <%--Дата видалення--%>
+                            <div style="position: relative; left:48px; top:-90px; width: 600px;">
                                 <div id="time3" class="col-md-4">
-                                    <l:resource key="newpost.date"><input id="time1" name="date_delete" min="${date}"
-                                                                          value="${del_date}" type="date"
-                                                                          placeholder=""
-                                                                          class="form-control input-md"></l:resource>
+                                    <l:resource key="newpost.date">
+                                        <input id="time1" name="date_delete" style="width:162px;" type="date"
+                                               class="form-control input-md" value="${del_date}">
+                                    </l:resource>
                                 </div>
-
                             </div>
-                            <div style="position: relative; left:-146px; top:-50px; width: 600px;">
+                            <%--Час видалення--%>
+                            <div style="position: relative; left:-152px; top:-50px; width: 600px;">
                                 <div id="time4" class="col-md-4">
-                                    <l:resource key="newpost.time"><input id="time5" name="time_delete" type="time"
-                                                                          placeholder="Time"
-                                                                          class="form-control input-md"
-                                                                          value="${del_time}"></l:resource>
+                                    <l:resource key="newpost.time">
+                                        <input id="time5" name="time_delete" type="time" style="width:162px;"
+                                               class="form-control input-md" value="${del_time}">
+                                    </l:resource>
                                 </div>
                             </div>
-                            <button id="submit_modal" type="button" style="margin-left: 455px;margin-top: -80px;"
-                                    class="btn btn-primary"
-                                    data-dismiss="modal">
+                            <%--Кнопка публікування--%>
+                            <button id="submit_modal" type="button" style="float:right; margin-top: -51px;"
+                                    class="btn btn-primary" <%--data-dismiss="modal" --%>>
                                 <l:resource key="newpost.save"/>
                             </button>
                         </form>
@@ -358,39 +348,71 @@
             </div>
         </div>
     </div>
-</div>
-<script>
-    $("#time3, #time4").hide();
-    $('#check').click(function () {
-        $("#time3, #time4").toggle(this.checked);
-    });
-    $(document).ready(function () {
-        $("#submit_modal").click(function () {
-            $.post(
-                    "/post?action=addPost",
-                    {
-                        typePost: "new",
-                        title: $("#title").val(),
-                        message: $("#content").val(),
-                        tags: $("#tagsinput").val(),
-                        date: $("#date").val(),
-                        time: $("#time").val(),
-                        date_delete: $("#time1").val(),
-                        time_delete: $("#time5").val(),
-                        checked: $("#check").prop('checked'),
-                        groups: $("#tokenize_focus").val().toString()
-                    },
-                    onAjaxSuccess
-            );
-            function onAjaxSuccess(data) {
-                var responce = JSON.parse(data);
-                if (responce.status === 'success') {
-                    location.href = "/post?action=queued";
+
+    <script>
+
+        var publishPostId = 0;
+
+        // Завантажуємо дані для вікна
+        function openPublishWindows(id) {
+            publishPostId = id;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('GET', '/owner?action=getOwnerWall&id=' + id, true);
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    var response = JSON.parse(xmlhttp.responseText);
+                    var list = $("#tokenize_focus");
+                    list.empty();
+                    list.data('tokenize').clear();
+                    for (var i = 0; i < response.owner.length; i++) {
+                        list.append('<option value="' + response.owner[i].id + '">' + response.owner[i].name + '</option>');
+                    }
+                    $("#date").val(response.date);
+                    $("#time").val(response.time);
+                    $("#time1").val(response.del_date);
+                    $("#time5").val(response.del_time);
                 }
-            }
+            };
+            xmlhttp.send();
+        }
+
+        // Скриваємо видалення
+        $("#time3, #time4").hide();
+        $('#check').click(function () {
+            $("#time3, #time4").toggle(this.checked);
         });
-    });
-</script>
+
+        // Опрацювання публікування поста
+        $(document).ready(function () {
+            $("#submit_modal").click(function () {
+                if ($("#tokenize_focus").val() == null) {
+                    toastrNotification('warning', "Не вибрано груп");
+                    return;
+                }
+                $.post(
+                        "/post?action=publishPostId",
+                        {
+                            postId: publishPostId,
+                            date: $("#date").val(),
+                            time: $("#time").val(),
+                            date_delete: $("#time1").val(),
+                            time_delete: $("#time5").val(),
+                            checked: $("#check").prop('checked'),
+                            groups: $("#tokenize_focus").val().toString()
+                        },
+                        onAjaxSuccess
+                );
+                function onAjaxSuccess(response) {
+                    for (var i = 0; i < response.length; i++)
+                        toastrNotification(response[i].status, response[i].msg);
+                    $("#publish_modal").modal('toggle');
+                }
+            });
+        });
+
+    </script>
+
+</div>
 </body>
 </html>
 
