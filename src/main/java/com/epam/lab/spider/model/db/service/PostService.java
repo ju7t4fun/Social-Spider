@@ -20,6 +20,7 @@ import com.epam.lab.spider.model.db.service.savable.exception.UnsupportedServise
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 import static com.epam.lab.spider.model.db.SQLTransactionException.assertTransaction;
 
@@ -86,7 +87,10 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                assertTransaction(adao.deleteByPostId(connection, id));
+                Set<Attachment> attachments = pdao.getById(connection, id).getAttachments();
+                if (attachments.size() > 0) {
+                    assertTransaction(adao.deleteByPostId(connection, id));
+                }
                 for (Attachment attachment : post.getAttachments()) {
                     assertTransaction(adao.insert(connection, attachment));
                 }

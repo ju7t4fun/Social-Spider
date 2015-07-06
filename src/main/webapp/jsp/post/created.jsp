@@ -203,7 +203,7 @@
     <jsp:include page="../pagecontent/sidebar.jsp"/>
 
     <jsp:include page="../post/viewpost.jsp"/>
-
+    <jsp:include page="../post/editpost.jsp"/>
     <%--for confirm delete modal window(include script and css)--%>
     <jsp:include page="../pagecontent/confirm-delete.jsp"/>
 
@@ -246,6 +246,9 @@
                                     </table>
                                 </div>
                             </div>
+                            <a class="btn btn-primary" id="post_edit" onclick="editPost(4);" data-toggle="modal"
+                               data-target="#edit_post">
+                                Click</a>
                         </div>
                     </div>
                 </div>
