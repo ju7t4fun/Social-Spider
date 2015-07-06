@@ -105,7 +105,7 @@
                     break;
                 }
             }
-            post += '</table><div class="btn-group" style="margin-left: 450px;"> <a class="btn btn-default" onclick="viewPost(' + postId + ');" data-toggle="modal" data-target="#myModal"><l:resource key="view" /></a> <a class="btn btn-default" onclick="openPublishWindows(' + postId + ');"  data-toggle="modal" data-target="#publish_modal"><l:resource key="newpost.publish" /></a> <a class="btn btn-default" onclick="savePost(' + postId + ');"><l:resource key="newpost.save" /></a></div></ul>';
+            post += '<tr><td style="text-align:right;"><div class="btn-group"> <a class="btn btn-default" onclick="viewPost(' + postId + ');" data-toggle="modal" data-target="#myModal"><l:resource key="view" /></a> <a class="btn btn-default" onclick="openPublishWindows(' + postId + ');"  data-toggle="modal" data-target="#publish_modal"><l:resource key="newpost.publish" /></a> <a class="btn btn-default" onclick="savePost(' + postId + ');"><l:resource key="newpost.save" /></a></div></td></tr></table></ul>';
             post += '<div style="width: 90%; height: 3px;margin:25px auto 25px;border-radius: 4px;background:  lightslategray;"></div>';
             if (isBegin) {
                 var pos = $(document).height() - $(window).scrollTop();
