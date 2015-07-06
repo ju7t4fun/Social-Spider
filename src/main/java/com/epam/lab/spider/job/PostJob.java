@@ -6,6 +6,7 @@ import com.epam.lab.spider.model.db.service.NewPostService;
 import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
 import org.apache.log4j.Logger;
 import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
 
 import java.text.DateFormat;
 import java.util.Date;

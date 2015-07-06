@@ -32,6 +32,10 @@ public class VKException extends Exception {
     public static final int VK_AUDIO_HOLDER_WAIN = 270;
     public static final int VK_ALBUM_IS_FULL = 300;
 
+    public static final int VK_PROTOCOL_ERROR = 5000;
+    public static final int VK_MANY_REQUESTS_ATTEMPT_LIMITED = 6000;
+    public static final int VK_NETWORK_CONNECT_ERROR = 7000;
+
     private int exceptionCode = VK_UNKNOWN_ERROR;
 
     public VKException() {
@@ -40,6 +44,10 @@ public class VKException extends Exception {
 
     public VKException(int code, String msg) {
         super(generationMessage(code, msg));
+        this.exceptionCode = code;
+    }
+    public VKException(int code, String msg, Throwable x) {
+        super(generationMessage(code, msg), x);
         this.exceptionCode = code;
     }
 
@@ -99,6 +107,18 @@ public class VKException extends Exception {
                 return "Альбом переполнен.";
             case VK_AUDIO_HOLDER_WAIN:
                 return "Аудиозапись была изъята по запросу правообладателя и не может быть загружена. ";
+            case VK_EXECUTE_COMPILE_ERROR:
+                return "Невозможно скомпилировать код.";
+            case VK_EXECUTE_RUNTIME_ERROR:
+                return "Ошибка выполнения кода.";
+            case VK_NETWORK_CONNECT_ERROR:
+                return "Сервак Вконтактика або наше мрежеве зєднання Впройобі. Пофіксіть негайно проблему!";
+            case VK_MANY_REQUESTS_ATTEMPT_LIMITED:
+                return "Сервак Вконтактика видавав нам \"Слишком много запросов в секунду.\" " +
+                        "Були спроби почечати і повторити запит. Але кожного разу щось ішло не так...";
+            case VK_PROTOCOL_ERROR:
+                return "Під час виконання методу щось пішло не так. Автроматичне відновлення неможливе. " +
+                        "Повтроріть будь ласка знову в ручному режимі.";
             default:
                 return msg;
         }

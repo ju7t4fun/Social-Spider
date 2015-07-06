@@ -2,6 +2,7 @@ package com.epam.lab.spider.job;
 
 import com.epam.lab.spider.controller.utils.EventLogger;
 import com.epam.lab.spider.controller.vk.Parameters;
+import com.epam.lab.spider.controller.vk.Request;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
@@ -139,11 +140,10 @@ public class OnePostJob implements Job {
                 parameters.add("owner_id", owner.getVkId());
                 parameters.add("attachments", attachmentsStringBuilder.toString());
                 parameters.add("message", newPost.getPost().getMessage());
+                parameters.setRequestMethod(Request.Method.POST);
                 if (owner.getVkId() < 0) {
                     parameters.add("from_group", 1);
                 }
-
-
                 Long response = null;
                 if (true) {
                     boolean manyRequest = false;
@@ -179,6 +179,7 @@ public class OnePostJob implements Job {
                 SavableServiceUtil.safeSave(newPost);
 
                 LOG.debug("new post success : " + owner.getVkId() + "_" + response);
+                return;
             } catch (VKException x) {
                 switch (x.getExceptionCode()) {
                     case VKException.VK_CAPTCHA_NEEDED: {
@@ -205,6 +206,10 @@ public class OnePostJob implements Job {
         } catch (NullPointerException x) {
             LOG.error("Posting has failed. Nullable object has founded. Corrupted new_post #" + newPost.getId());
             x.printStackTrace();
+        } catch (Throwable t){
+            LOG.error(t);
         }
+        newPost.setState(NewPost.State.ERROR);
+        newPostService.updateStage(newPost);
     }
 }

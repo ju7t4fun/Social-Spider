@@ -47,7 +47,7 @@ public class SavableCRUDUtil {
     }
     public static boolean  safeSave(Connection conn,Object entity,BaseDAO dao){
         try {
-            save(conn,entity,dao);
+            return save(conn,entity,dao);
         } catch (InvalidEntityException e) {
             e.printStackTrace();
             return false;
@@ -58,7 +58,6 @@ public class SavableCRUDUtil {
             e.printStackTrace();
             return false;
         }
-        return true;
     }
 
     public static boolean save(Connection conn,Object entity, BaseDAO dao) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException {
@@ -87,15 +86,15 @@ public class SavableCRUDUtil {
             Integer index = getId(entity);
             //if(entity.id!=null)
             if (index != null) {
-                crudDAO.update(conn, index, entity);
+                return crudDAO.update(conn, index, entity);
             } else {
                 result = crudDAO.insert(conn, entity);
                 if(!result)throw new SavableTransactionException();
+                return result;
             }
         }catch (SQLException x){
             throw new ResolvableDAOException(x);
         }
-        return false;
     }
 
 
