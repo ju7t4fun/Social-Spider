@@ -83,10 +83,10 @@ public class AlphaLimitVKExecutor  {
                 int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
                 if( statusCode !=200 ){
                     String title, message, resultMessage;
-                    title = "РУКОЖОПА ТВАРЬ!!!! НЕГАЙНО ФІКСИТЬ КОД! ";
+                    title = "VK INVALIDED RESPONSE. STATUS CODE: "+statusCode+". ButtHandsCritter, НЕГАЙНО ФІКСИТЬ КОД! ";
                     resultMessage = title;
                     if(statusCode == 400 && vkHttpRequestBase.getURI().toString().length() > 4098){
-                        message = "МОЖЛИВО ПРИЧИНА РУКОЖОПНОСТІ В НАМАГАННІ ЗАПИХНУТИ В GET ЗАПИТ ЗАДОХУЯ. СЕРВАКУ ВК ПОХ URL > 4098. ЮЗАЙ POST ТВАРЬ!";
+                        message = "IS POSSIBLE CAUSE ButtHands IN THE ATTEMPT TO CREATE A TOO LONG GET-REQUEST. VK server not care URL > 4098. Use POST-method, ButtHandsCritter!";
                         resultMessage += message;
                     }
                     LOG.fatal(resultMessage);
