@@ -57,7 +57,6 @@
             var response = data;
             var attach = $("#attachments");
             attach.empty();
-            var post = "";
             $("#post_tarea").val(response.postText);
             $("#id").val(id);
 
@@ -75,43 +74,43 @@
 
             if (response.attachments.length != 0) {
                 var row = $("<tr></tr>");
-                if (response.attachments.length == 1) {
-                    var atr = checkType(0);
-                    row.append('<td><' + atr + ' width="620" height="400" src="' +
-                            response.attachments[0].payload +
-                            '"></' + atr + '></td>');
-                } else {
-                    for (var i = 0; i < response.attachments.length; i++) {
-                        var atr = checkType(i);
-                        row.append('<td><div style="margin: 0px 20px;"><' + atr +
-                                ' width="240" height="200" src="' +
-                                response.attachments[i].payload +
-                                '"></' + atr + '></div><td>');
-                        if (i % 2 != 0) {
-                            attach.append(row);
-                            row = $('<tr></tr>');
-                        }
-                    }
-                }
-                $( "td:empty").remove();
-            }
-//            $(function() {
-//                $('td').click(function() {
-//                    alert(this);
-////                    $(this).remove();
-//                })
-//            })
-            $(function () {
-                $('#attachments td')
-                        .on("mouseenter", function () {
-                            $(this).addClass("delete-img");
-                        })
-                        .on("mouseleave", function () {
-                            $(this).removeClass("delete-img");
-//                            $(this).remove();
-                        });
 
-            })
+                for (var i = 0; i < response.attachments.length; i++) {
+                    var atr = checkType(i);
+                    row.append('<td id="' + response.attachments[i].id + '"><div style="margin: 0px 20px;"><' + atr +
+                            ' width="240" height="200"  src="' + response.attachments[i].payload + '"></' + atr + '></div><td>');
+                    if (i % 2 != 0) {
+                        row = $('<tr></tr>');
+                    }
+                    attach.append(row);
+                }
+                $("td:empty").remove();
+            }
+
+            $('#attachments td')
+                    .on("mouseenter", function () {
+                        $(this).addClass("delete-img");
+                    })
+                    .on("mouseleave", function () {
+                        $(this).removeClass("delete-img");
+//                            $(this).remove();
+                    });
+
+            $('td').on("click", function () {
+                var elemID = $(this).closest('td').attr('id');
+                $.post(
+                        "http://localhost:8080/post?action=deleteattach",
+                        {
+                            attachId: elemID
+                        },
+                        onAjaxSuccess
+                );
+                function onAjaxSuccess(data) {
+                    $('#' + elemID).remove();
+                    var response = data;
+                    toastrNotification(response.status, response.message);
+                }
+            });
         }
     }
     function saveEditedPost() {

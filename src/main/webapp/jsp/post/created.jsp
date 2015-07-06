@@ -246,7 +246,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <a class="btn btn-primary" id="post_edit" onclick="editPost(4);" data-toggle="modal"
+                            <a class="btn btn-primary" id="post_edit" onclick="editPost(7);" data-toggle="modal"
                                data-target="#edit_post">
                                 Click</a>
                         </div>
