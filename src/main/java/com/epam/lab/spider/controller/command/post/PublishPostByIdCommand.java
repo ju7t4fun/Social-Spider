@@ -69,6 +69,7 @@ public class PublishPostByIdCommand implements ActionCommand {
         JSONObject obj;
         newPost.setDeleted(false);
         String[] groupsId = groups.split(",");
+
         // Створюємо пост для кожної стіни
         for (String id : groupsId) {
             newPost.setWallId(Integer.parseInt(id));

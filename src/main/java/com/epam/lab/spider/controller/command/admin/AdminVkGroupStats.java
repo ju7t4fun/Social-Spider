@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.admin;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
@@ -19,6 +20,7 @@ import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -33,7 +35,8 @@ public class AdminVkGroupStats implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        HttpSession session = request.getSession();
+        ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         JSONObject result = new JSONObject();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -203,7 +206,7 @@ public class AdminVkGroupStats implements ActionCommand {
             return;
         }
         result.put("status", "error");
-        result.put("msg", "У вас немає прав доступу до даного додатку");
+        result.put("msg", UTF8.encoding(bundle.getString("notification.have.no.access.rights")));
         System.out.println("PO PEZDI");
         response.getWriter().write(result.toString());
     }
