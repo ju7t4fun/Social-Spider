@@ -132,6 +132,15 @@
         <servlet-name>CategoriesServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.admin.CategoriesServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserHasCategoriesServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.UserHasCategoriesServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UserHasCategoriesServlet</servlet-name>
+        <url-pattern>/categories</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CategoriesServlet</servlet-name>
         <url-pattern>/admin/categories</url-pattern>

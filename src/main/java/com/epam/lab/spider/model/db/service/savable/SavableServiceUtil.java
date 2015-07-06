@@ -65,7 +65,7 @@ public class SavableServiceUtil<E> {
 
     public static boolean customSave(Connection connection,Object entity, Object[]before, Object[] after, CustomizeSavableAction[] actions)
             throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
-        boolean result = false;
+        boolean result = true;
         List beforeEntityList = null;
         List afterEntityList = null;
         if(before!=null)

@@ -1,0 +1,95 @@
+var owner_id = parseInt(Args.owner_id);
+var count = parseInt(Args.count);
+if(count <= 0) count = -1;
+if(count > 50) count = 50;
+var last_post_id = parseInt(Args.last_post_id);
+if(last_post_id < 0) last_post_id = 0;
+var total_loops = parseInt(Args.max_loops);
+if(total_loops<1) total_loops = 30;
+
+var api_call_count = 1;
+var responses = [];
+var response = API.wall.get({
+    "owner_id" : owner_id,
+    "filter": "owner",
+    "count": 100
+});
+var total_count = response.count;
+// заповнюємо початок таблиці результатами вибірки
+responses.push({init:1, item: response.items});
+// заповнюємо решту таблиці неініціалізованими даними
+var i = 1;
+while (i < total_count / 100){
+    responses.push({init:0});
+    i = i + 1;
+}
+// загальна кількість постів
+var total_count = response.count;
+
+var result_set = [];
+
+if(last_post_id == 0){
+    if(count == -1)count=1;
+    if( count >= total_count &&  total_count < 100){
+        return response;
+    }
+} 
+// TODO: last_post_id == 0 && 
+// count > total_count &&  total_count > 100
+var begin = 0, end=0;
+
+if(last_post_id == 0){
+    last_post_id=responses[0].item[count].id;
+    //return last_post_id;
+
+}
+
+var j = 0, loop = 0;
+var searching = true;
+while(loop < total_loops && searching){
+    var basket = (loop - loop % 100) / 100;
+    if(responses[basket].init == 0){ 
+        if (api_call_count < 25){
+            var query_offset = 100*basket;
+            api_call_count = api_call_count + 1;
+            var response_item = API.wall.get({
+                "owner_id" : owner_id,
+                "filter": "owner",
+                "count": 100,
+                "offset": query_offset
+            });
+            responses.splice(basket,1,{init:1, item: response_item.items});
+        }
+        else{
+            searching = false;
+        }
+    }
+    if(responses[basket].init == 1){
+        var offset_in_basket = loop % 100;
+        var post_id = responses[basket].item[offset_in_basket].id;
+        if(post_id <= last_post_id)
+        searching = false;
+        //return post_id;
+    }
+    if(searching)loop = loop + 1;
+}
+loop = loop - 1;
+end = loop ;
+if(count == -1)count=50;
+begin = end - (count - 1);
+if(begin < 0)begin = 0;
+//return {begin:begin,end:end,loop:loop};
+var k = 0, needAdd = true;
+while(loop>= begin ) {
+    var basket = (loop - loop % 100) / 100;
+    var offset_in_basket = loop % 100;
+    var post = responses[basket].item[offset_in_basket];
+    result_set.push(post);
+    loop = loop - 1;
+}
+return  {
+    count:total_count,
+    length:result_set.length,
+//    begin:begin,end:end,loop:loop,
+    items:result_set 
+};

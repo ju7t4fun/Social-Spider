@@ -44,6 +44,10 @@
     <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
     <%--<script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>--%>
 
+    <link href="${pageContext.request.contextPath}/css/fileinput.css" media="all" rel="stylesheet"
+          type="text/css"/>
+    <script src="${pageContext.request.contextPath}/js/fileinput.min.js" type="text/javascript"></script>
+
     <%--for table--%>
     <script>
         var path = '${pageContext.request.contextPath}';
@@ -197,7 +201,7 @@
 <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modal_category"
      class="modal fade">
     <div class="modal-dialog">
-        <div class="modal-content"  style="height: 150px;">
+        <div class="modal-content"  style="height: 520px; width: 820px">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
                 <h4 class="modal-title"  >Add category</h4>
@@ -205,12 +209,27 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form id="modal_form" method="POST" action="" onsubmit="addCat(document.getElementById('catName').value)"
+                        <form id="modal_form" method="POST"  action="" onsubmit="addCat(document.getElementById('catName').value)"
                               class="form-horizontal">
                             <div>
                                 <input type="text" name="category" class="form-control" id="catName" placeholder="Category name">
                             </div>
-                            <div style="position: relative; top: 10px; left: 497px;">
+
+                            <div id="compForm" class="container kv-main" style="width:800px;  margin-top:20px;">
+                                <input id="input-dim-2" type="file"
+                                       multiple="true" method="post"
+                                       enctype="multipart/form-data" value=""
+                                       accept="image/*">
+                                <script>
+                                    $("#input-dim-2").fileinput({
+                                        uploadUrl: "/admin/categories?action=upCat",
+                                        allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg'],
+                                        maxFileCount: 1
+                                    });
+                                </script>
+                            </div>
+
+                            <div style="position: absolute; top: 420px;right: 2% ">
                                 <button type="submit" class="btn btn-primary" >Add</button>
                             </div>
                         </form>

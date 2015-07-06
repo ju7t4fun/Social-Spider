@@ -5,7 +5,6 @@ import com.epam.lab.spider.model.db.SQLTransactionException;
 import com.epam.lab.spider.model.db.dao.AttachmentDAO;
 import com.epam.lab.spider.model.db.dao.CategoryHasPostDAO;
 import com.epam.lab.spider.model.db.dao.PostDAO;
-import com.epam.lab.spider.model.db.dao.UserHasCategotyDAO;
 import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
 import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;

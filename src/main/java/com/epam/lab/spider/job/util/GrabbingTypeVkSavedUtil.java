@@ -5,6 +5,7 @@ import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.model.db.entity.Filter;
 import com.epam.lab.spider.model.db.entity.Owner;
 import com.epam.lab.spider.model.vk.Post;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -70,6 +71,38 @@ public class GrabbingTypeVkSavedUtil {
                 break postGrabbingAndFiltering;
             }
             //grabbingLimitSize = 999;
+        }
+        return postsPrepareToPosting;
+    }
+    public static List<Post> grabbingNew(Owner owner, Vkontakte vk, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException {
+        List<Post> postsPrepareToPosting = new ArrayList<>();
+        SortedSet<Integer> sortedAlreadyAddSet = new TreeSet<>();
+        sortedAlreadyAddSet.addAll(alreadyAddSet);
+        List<Post> postsOnTargetWall = null;
+        boolean badExecution = false;
+        do {
+            try {
+                if (badExecution) {
+                    Thread.sleep(400);
+                    badExecution = false;
+                }
+                postsOnTargetWall = vk.execute().getNewPostFromWall(owner.getVkId(), countOfPosts, sortedAlreadyAddSet.last(), null);
+            } catch (VKException x) {
+                if (x.getExceptionCode() == VKException.VK_EXECUTE_RUNTIME_ERROR) {
+                    badExecution = false;
+                } else throw x;
+            } catch (NullPointerException x) {
+                badExecution = true;
+            }
+        } while (badExecution);
+
+        for (com.epam.lab.spider.model.vk.Post vkPost : postsOnTargetWall) {
+            boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));
+            if (alreadyProceededPost) {
+                LOG.debug("Post wall" + owner.getVkId() + "_" + vkPost.getId() + " already processed.");
+            } else {
+                postsPrepareToPosting.add(vkPost);
+            }
         }
         return postsPrepareToPosting;
     }

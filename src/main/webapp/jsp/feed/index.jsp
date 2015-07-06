@@ -53,7 +53,7 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header" style="position: fixed"><i class="fa fa-home"></i> Home</h3>
+                    <h3 class="page-header" style="position: fixed"><i class="fa fa-home"></i><l:resource key="home" /></h3>
                 </div>
             </div>
             <section class="wrapper">
@@ -63,7 +63,7 @@
                             <div style="margin-left: 15px; margin-right: 15px">
                                 <div class="panel-body" id="feed">
                                     <div align="center">
-                                        <p>Триває завантаження даних ...</p>
+                                        <p><l:resource key="dataloading" /></p>
                                     </div>
                                 </div>
                             </div>
@@ -105,7 +105,7 @@
                     break;
                 }
             }
-            post += '</table><div class="btn-group" style="margin-left: 450px;"> <a class="btn btn-default" onclick="viewPost(' + postId + ');" data-toggle="modal" data-target="#myModal">View</a> <a class="btn btn-default" onclick="openPublishWindows(' + postId + ');"  data-toggle="modal" data-target="#publish_modal">Publish</a> <a class="btn btn-default" onclick="savePost(' + postId + ');">Save</a></div></ul>';
+            post += '<tr><td style="text-align:right;"><div class="btn-group"> <a class="btn btn-default" onclick="viewPost(' + postId + ');" data-toggle="modal" data-target="#myModal"><l:resource key="view" /></a> <a class="btn btn-default" onclick="openPublishWindows(' + postId + ');"  data-toggle="modal" data-target="#publish_modal"><l:resource key="newpost.publish" /></a> <a class="btn btn-default" onclick="savePost(' + postId + ');"><l:resource key="newpost.save" /></a></div></td></tr></table></ul>';
             post += '<div style="width: 90%; height: 3px;margin:25px auto 25px;border-radius: 4px;background:  lightslategray;"></div>';
             if (isBegin) {
                 var pos = $(document).height() - $(window).scrollTop();

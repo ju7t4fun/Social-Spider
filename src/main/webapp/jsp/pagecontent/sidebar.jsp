@@ -35,8 +35,13 @@
                         </ul>
                     </li>
                     <li>
-                        <a class="" href="/owner"> <i class="icon_piechart"></i>
+                        <a class="" href="/owner"> <i class="fa fa-users"></i>
                             <span>Owner</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/categories"> <i class="fa fa-bookmark"></i>
+                            <span>Categories</span>
                         </a>
                     </li>
                 </ul>

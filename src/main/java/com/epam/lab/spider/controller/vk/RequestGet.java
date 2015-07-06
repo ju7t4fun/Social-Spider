@@ -1,17 +1,19 @@
 package com.epam.lab.spider.controller.vk;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 public class RequestGet implements Request {
 
     private static final Logger logger = Logger.getLogger(RequestGet.class);
 
-    private CloseableHttpClient client = HttpClients.createDefault();
+//    private CloseableHttpClient client = HttpClients.createDefault();
     private HttpGet httpGet;
     private Response.Type type;
 
@@ -33,7 +35,8 @@ public class RequestGet implements Request {
     @Override
     public Response execute() throws VKException {
         try {
-            return ResponseFactory.getInstance(type, client.execute(httpGet).getEntity());
+            return AlphaLimitVKExecutor.getInstance().execute(httpGet, type);
+            //return ResponseFactory.getInstance(type, client.execute(httpGet).getEntity());
         } catch (IOException e) {
             e.printStackTrace();
         }
