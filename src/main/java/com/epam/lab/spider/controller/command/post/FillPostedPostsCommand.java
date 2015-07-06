@@ -159,7 +159,6 @@ public class FillPostedPostsCommand implements ActionCommand {
                 NewPost currPost = resList.get(i);
                 if (currPost != null) {
 
-
                     //message
                     try {
                         String msg;
@@ -173,7 +172,6 @@ public class FillPostedPostsCommand implements ActionCommand {
                         ex.printStackTrace();
                         ja.put("No MESSAGE!");
                     }
-
 
                     //group name
                     try {

@@ -59,35 +59,42 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-list-alt"></i> Created</h3>
+                    <h3 class="page-header"><i class="fa fa-bookmark"></i> Category</h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-desktop"></i>Post</li>
-                        <li><i class="fa fa-list-alt"></i>Created</li>
+                        <li><i class="fa fa-bookmark"></i>Category</li>
                     </ol>
                 </div>
             </div>
             <div class="row">
-                <table >
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="pull-left">Category</div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-body">
+
+                <table>
                     <c:set var="amm" value="${chosen.size()}"/>
-                    <c:set var="perrow" value="4"/>
+                    <c:set var="perrow" value="5"/>
                     <tr>
 
                         <c:forEach items="${chosen}" var="chosenItem" varStatus="status">
 
                         <c:choose>
                         <c:when test="${( (status.count) % perrow  == 0) }">
-                        <td >
+                        <td>
                             <div class="background" onclick="changeIm(this)" id="${chosenItem.id}"
-                                 style="background: url(${chosenItem.imageUrl})  no-repeat; background-size: 300px 200px "  >
+                                 style="background: url(${chosenItem.imageUrl})  no-repeat; background-size: 200px 120px ">
                                 <div class="imgtitle">${chosenItem.name}</div>
                                 <div class="xbox" id="cover${chosenItem.id}" style="visibility: visible">
-                                    <img src="${pageContext.request.contextPath}/img/OkChoose.jpg" width="300"
-                                         height="200"/>
+                                    <img src="${pageContext.request.contextPath}/img/categories/selected.png" width="200"
+                                         height="100"/>
                                 </div>
                             </div>
                         </td>
@@ -95,15 +102,14 @@
                     <tr>
                         </c:when>
 
-
                         <c:otherwise>
-                            <td >
+                            <td>
                                 <div class="background" onclick="changeIm(this)" id="${chosenItem.id}"
-                                     style="background: url(${chosenItem.imageUrl}) no-repeat; background-size: 300px 200px">
+                                     style="background: url(${chosenItem.imageUrl}) no-repeat; background-size: 200px 120px">
                                     <div class="imgtitle">${chosenItem.name}</div>
                                     <div class="xbox" id="cover${chosenItem.id}" style="visibility: visible">
-                                        <img src="${pageContext.request.contextPath}/img/OkChoose.jpg" width="300"
-                                             height="200"/>
+                                        <img src="${pageContext.request.contextPath}/img/categories/selected.png" width="200"
+                                             height="100"/>
                                     </div>
                                 </div>
                             </td>
@@ -117,13 +123,13 @@
 
                         <c:choose>
                         <c:when test="${( (amm + status.count) % perrow == 0) && !status.last}">
-                        <td  >
+                        <td>
                             <div class="background" onclick="changeIm(this)" id="${nonChosenItem.id}"
-                                 style="background: url('${nonChosenItem.imageUrl}') no-repeat; background-size: 300px 200px">
+                                 style="background: url('${nonChosenItem.imageUrl}') no-repeat; background-size: 200px 120px">
                                 <div class="imgtitle">${nonChosenItem.name}</div>
                                 <div class="xbox" id="cover${nonChosenItem.id}" style="visibility: hidden">
-                                    <img src="${pageContext.request.contextPath}/img/OkChoose.jpg" width="300"
-                                         height="200"/>
+                                    <img src="${pageContext.request.contextPath}/img/categories/selected.png" width="200"
+                                         height="100"/>
                                 </div>
                             </div>
                         </td>
@@ -132,13 +138,13 @@
                         </c:when>
 
                         <c:otherwise>
-                            <td >
+                            <td>
                                 <div class="background" onclick="changeIm(this)" id="${nonChosenItem.id}"
-                                     style="background: url('${nonChosenItem.imageUrl}') no-repeat; background-size: 300px 200px">
+                                     style="background: url('${nonChosenItem.imageUrl}') no-repeat; background-size: 200px 120px">
                                     <div class="imgtitle">${nonChosenItem.name}</div>
                                     <div class="xbox" id="cover${nonChosenItem.id}" style="visibility: hidden">
-                                        <img src="${pageContext.request.contextPath}/img/OkChoose.jpg" width="300"
-                                             height="200"/>
+                                        <img src="${pageContext.request.contextPath}/img/categories/selected.png" width="200"
+                                             height="100"/>
                                     </div>
                                 </div>
                             </td>
@@ -147,6 +153,10 @@
                         </c:forEach>
                     </tr>
                 </table>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </section>
@@ -158,7 +168,7 @@
         if (element.style.visibility === "hidden") {
 
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/userhascategories?action=addremove&id=' + el.id + "&tochosen=yes", true);
+            xmlhttp.open('GET', '/categories?action=addremove&id=' + el.id + "&tochosen=yes", true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
@@ -171,7 +181,7 @@
 
         } else {
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/userhascategories?action=addremove&id=' + el.id + "&tochosen=no", true);
+            xmlhttp.open('GET', '/categories?action=addremove&id=' + el.id + "&tochosen=no", true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
@@ -186,20 +196,20 @@
 </script>
 <style>
     div.background {
-        width: 300px;
-        height: 200px;
-        background-size: 300px 200px;
+        width: 200px;
+        height: 120px;
+        background-size: 200px 120px;
     }
 
     div.xbox {
-        width: 300px;
-        height: 200px;
+        width: 200px;
+        height: 100px;
         background-color: #000000;
-        opacity: 0.85;
+        opacity: 0.7;
     }
 
     div.imgtitle {
-        width: 300px;
+        width: 200px;
         height: 20px;
         background-color: #000000;
         opacity: 0.7;
@@ -210,7 +220,29 @@
         padding: 10px 10px 10px 10px;
     }
 
-
 </style>
+<script>
+    $(".btn").click(function () {
+        var lang = $(this).attr("change");
+        var names = [];
+        i = 0;
+        $(".loc-t, .loc-p").each(function () {
+            names[i++] = $(this).attr("locres")
+        });
+
+        var myJsonString = JSON.stringify(names);
+        $.post("controller?action=locale&lang=".concat(lang), {names: myJsonString})
+                .done(function (data) {
+                    var map = data;
+                    $(".loc-t").each(function () {
+                        $(this).text(map[$(this).attr("locres")]);
+                    });
+                    $(".loc-p").each(function () {
+                        $(this).attr("placeholder", map[$(this).attr("locres")]);
+                    })
+                    location.reload();
+                });
+    })
+</script>
 </body>
 </html>
