@@ -50,7 +50,7 @@ public class TaskJob implements Job {
         }
         if (contentType.hasText()) {
             if(!pureText.isEmpty()) {
-                messageBuilder.append(pureText).append("\n");
+                messageBuilder.append(pureText);
                 newPostContentType.setType(Task.ContentType.TEXT);
             }
         }
@@ -59,12 +59,13 @@ public class TaskJob implements Job {
             if(!copyHistoryList.isEmpty()){
                 post = processingPost(copyHistoryList.get(0),  contentType);
                 String innerMessage = post.getMessage();
-                messageBuilder.append(innerMessage).append("\n");
+                messageBuilder.append("\n").append(innerMessage);
                 newPostContentType.setType(Task.ContentType.REPOSTS);
+
             }
         }
         {
-            if(hashTags!=null)messageBuilder.append(hashTags);
+            if(hashTags!=null)messageBuilder.append("\n").append(hashTags);
             post.setMessage(messageBuilder.toString().trim());
         }
         for (com.epam.lab.spider.model.vk.Attachment vkAttachment : vkPost.getAttachments()) {
@@ -148,8 +149,7 @@ public class TaskJob implements Job {
                             countOfPosts, grabbingSize);
                     break;
                 case NEW:
-                    postsPrepareToPosting = GrabbingTypeServerUtil.grabbingEnd(owner, vk, null, alreadyAddSet,
-                            countOfPosts, grabbingSize);
+                    postsPrepareToPosting = GrabbingTypeVkSavedUtil.grabbingNew(owner, vk, alreadyAddSet,countOfPosts);
                     break;
             }
 
@@ -177,66 +177,125 @@ public class TaskJob implements Job {
         List<Task> tasks = taskService.getRunnableByNextRunDate(nextRunDate);
         taskProcessing:
         for (Task task : tasks) {
-            // якщо таск не активний то не запускаємо
-            if (task.getState() != Task.State.RUNNING) continue taskProcessing;
-            LOG.info("Task#" + task.getId() + " start to work.");
-            // кількість активних(незаблокованих) джерел для таску
-            // якщо кількість нульова на момент опрацювання стін призначення
-            // то опрацювання таску на цьому завершується
-            int activeSourceInTask = 0;
-            int activeDestinationInTask = 0;
-            List<Wall> sourceWalls = wallService.getSourceByTaskId(task.getId());
-            List<Wall> destinationWalls = wallService.getDestinationByTaskId(task.getId());
+            try {
+                // якщо таск не активний то не запускаємо
+                if (task.getState() != Task.State.RUNNING) continue taskProcessing;
+                LOG.info("Task#" + task.getId() + " start to work.");
+                // кількість активних(незаблокованих) джерел для таску
+                // якщо кількість нульова на момент опрацювання стін призначення
+                // то опрацювання таску на цьому завершується
+                int activeSourceInTask = 0;
+                int activeDestinationInTask = 0;
+                List<Wall> sourceWalls = wallService.getSourceByTaskId(task.getId());
+                List<Wall> destinationWalls = wallService.getDestinationByTaskId(task.getId());
 
-            LinkedList<Post> addedToProcessingPosts = new LinkedList<>();
-            Map<Wall, LinkedList<Integer>> blockMap = new HashMap<>();
-            // перевірка кількості незаблокованих стін з незаблокованими профіліми
-            for (Wall wall : destinationWalls) {
-                // перевірка чи стіна заблокована
-                boolean writeBlocked = Locker.getInstance().isLock(wall);
-                if (!writeBlocked) activeDestinationInTask++;
-            }
-            // якщо кількість стін призначення нульова
-            // то принипини працювання завдання
-            if (activeDestinationInTask == 0) {
-                LOG.info("TASK#" + task.getId() + " has hot active destination wall!");
-                continue taskProcessing;
-            }
-            // перевірка кількості незаблокованих джерел з незаблокованими профілями
-            for (Wall wall : sourceWalls) {
-                Profile profile = wall.getProfile();
-                // перевірка чи профіль заблокований на читання
-                boolean readBlocked = Locker.getInstance().isProfileReadableLock(profile.getId());
-                if (!readBlocked) activeSourceInTask++;
-            }
-            // якщо кількість стін-джерел нульова
-            // то принипини працювання завдання
-            if (activeSourceInTask == 0) {
-                LOG.info("TASK#" + task.getId() + " has hot active source wall!");
-                continue taskProcessing;
-            }
+                LinkedList<Post> addedToProcessingPosts = new LinkedList<>();
+                Map<Wall, LinkedList<Integer>> blockMap = new HashMap<>();
+                // перевірка кількості незаблокованих стін з незаблокованими профіліми
+                for (Wall wall : destinationWalls) {
+                    // перевірка чи стіна заблокована
+                    boolean writeBlocked = Locker.getInstance().isLock(wall);
+                    if (!writeBlocked) activeDestinationInTask++;
+                }
+                // якщо кількість стін призначення нульова
+                // то принипини працювання завдання
+                if (activeDestinationInTask == 0) {
+                    LOG.info("TASK#" + task.getId() + " has hot active destination wall!");
+                    continue taskProcessing;
+                }
+                // перевірка кількості незаблокованих джерел з незаблокованими профілями
+                for (Wall wall : sourceWalls) {
+                    Profile profile = wall.getProfile();
+                    // перевірка чи профіль заблокований на читання
+                    boolean readBlocked = Locker.getInstance().isProfileReadableLock(profile.getId());
+                    if (!readBlocked) activeSourceInTask++;
+                }
+                // якщо кількість стін-джерел нульова
+                // то принипини працювання завдання
+                if (activeSourceInTask == 0) {
+                    LOG.info("TASK#" + task.getId() + " has hot active source wall!");
+                    continue taskProcessing;
+                }
 
 
-            LinkedHashMap<Wall, List<com.epam.lab.spider.model.vk.Post>> postByWallMap = new LinkedHashMap<>();
+                LinkedHashMap<Wall, List<com.epam.lab.spider.model.vk.Post>> postByWallMap = new LinkedHashMap<>();
 
-            //random N-posts from begin wall
-            for (Wall wall : sourceWalls) {
-                Profile profile = wall.getProfile();
-                boolean readBlocked = Locker.getInstance().isProfileReadableLock(profile.getId());
-                if (!readBlocked) activeSourceInTask++;
-                List<com.epam.lab.spider.model.vk.Post> list;
-                list = this.grabbingWall(wall, task);
-                postByWallMap.put(wall, list);
-            }
-            List<com.epam.lab.spider.model.vk.Post> postToRepost = new ArrayList<>();
-            {
-                if (task.getGrabbingMode() == Task.GrabbingMode.TOTAL) {
-                    for (Map.Entry<Wall, List<com.epam.lab.spider.model.vk.Post>> entity : postByWallMap.entrySet()) {
-                        List<com.epam.lab.spider.model.vk.Post> postsPrepareToPosting = entity.getValue();
-                        LinkedList<Integer> addedToProcessingBlocks = new LinkedList<>();
-                        for (com.epam.lab.spider.model.vk.Post vkPost : postsPrepareToPosting) {
+                // grabbing wall
+                for (Wall wall : sourceWalls) {
+                    Profile profile = wall.getProfile();
+                    boolean readBlocked = Locker.getInstance().isProfileReadableLock(profile.getId());
+                    if (!readBlocked) {
+                        List<com.epam.lab.spider.model.vk.Post> list;
+                        list = this.grabbingWall(wall, task);
+                        postByWallMap.put(wall, list);
+                    }
+                }
+                List<com.epam.lab.spider.model.vk.Post> postToRepost = new ArrayList<>();
+                {
+                    if (task.getGrabbingMode() == Task.GrabbingMode.TOTAL) {
+                        for (Map.Entry<Wall, List<com.epam.lab.spider.model.vk.Post>> entity : postByWallMap.entrySet()) {
+                            List<com.epam.lab.spider.model.vk.Post> postsPrepareToPosting = entity.getValue();
+                            LinkedList<Integer> addedToProcessingBlocks = new LinkedList<>();
+                            for (com.epam.lab.spider.model.vk.Post vkPost : postsPrepareToPosting) {
+                                try {
+                                    switch (task.getType()) {
+                                        // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
+                                        case COPY: {
+                                            Post post = processingPost(vkPost, task);
+                                            addedToProcessingPosts.addFirst(post);
+                                            break;
+                                        }
+                                        // якщо тип - репост - додаємо пост в чергу до опрацювання та ріпостимо його
+                                        // якщо таск завершиться аварійно - можлива втрата репосту даного поста
+                                        case REPOST: {
+                                            postToRepost.add(vkPost);
+                                            break;
+                                        }
+                                        case FAVORITE: {
+                                            Post post = processingPost(vkPost, task);
+                                            System.out.println("-------------" + post);
+                                            Feed feed = new Feed();
+                                            feed.processing(post, task);
+                                            break;
+                                        }
+                                    }
+                                    LOG.debug("Post wall" + vkPost.getOwnerId() + "_" + vkPost.getId() + " has added to " +
+                                            "processing.");
+                                } catch (PostContentException x) {
+                                    LOG.error("Post Content Type Fail. Object: post" + vkPost.getOwnerId() + "_" + vkPost.getId());
+                                }
+                                // заблоковуємо пост
+                                // виконується якщо пост додато до потингу
+                                // або для поста сталась помилка контенту
+                                addedToProcessingBlocks.addFirst(vkPost.getId());
+                            }
+                            blockMap.put(entity.getKey(), addedToProcessingBlocks);
+                        }
+                    } else if (task.getGrabbingMode() == Task.GrabbingMode.PER_GROUP) {
+                        Random random = new Random();
+                        int currentPostCount = 0;
+                        while (currentPostCount < task.getPostCount() && !postByWallMap.isEmpty()) {
+                            int basket = random.nextInt(postByWallMap.size());
+
+                            // перебір мапи
+                            int j = 0;
+                            Map.Entry<Wall, List<com.epam.lab.spider.model.vk.Post>> currentEntry = null;
+                            for (Map.Entry<Wall, List<com.epam.lab.spider.model.vk.Post>> entry : postByWallMap.entrySet())
+                                if (j++ == basket) currentEntry = entry;
+                            // !перебір мапи
+                            List<com.epam.lab.spider.model.vk.Post> basketOfPreparePost = currentEntry.getValue();
+                            // видалення корзини з постами, якщо вона порожня
+                            if (basketOfPreparePost.isEmpty()) {
+                                postByWallMap.remove(currentEntry.getKey());
+                                continue;
+                            }
+                            // вибір випадкового поста з корзини
+                            int postIndex = random.nextInt(basketOfPreparePost.size());
+                            // витягаємо та видаляємо з корзини вибраний пост
+                            com.epam.lab.spider.model.vk.Post vkPost = basketOfPreparePost.remove(postIndex);
                             try {
                                 switch (task.getType()) {
+                                    // опрацьовуємо пост за правилами заданими в таску
                                     // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
                                     case COPY: {
                                         Post post = processingPost(vkPost, task);
@@ -257,130 +316,77 @@ public class TaskJob implements Job {
                                         break;
                                     }
                                 }
-                                LOG.debug("Post wall" + vkPost.getOwnerId() + "_" + vkPost.getId() + " has added to " +
-                                        "processing.");
                             } catch (PostContentException x) {
                                 LOG.error("Post Content Type Fail. Object: post" + vkPost.getOwnerId() + "_" + vkPost.getId());
                             }
                             // заблоковуємо пост
                             // виконується якщо пост додато до потингу
                             // або для поста сталась помилка контенту
+                            LinkedList<Integer> addedToProcessingBlocks = blockMap.get(currentEntry.getKey());
+                            if (addedToProcessingBlocks == null) {
+                                addedToProcessingBlocks = new LinkedList<>();
+                                blockMap.put(currentEntry.getKey(), addedToProcessingBlocks);
+                            }
                             addedToProcessingBlocks.addFirst(vkPost.getId());
                         }
-                        blockMap.put(entity.getKey(), addedToProcessingBlocks);
-                    }
-                } else if (task.getGrabbingMode() == Task.GrabbingMode.PER_GROUP) {
-                    Random random = new Random();
-                    int currentPostCount = 0;
-                    while (currentPostCount < task.getPostCount() && !postByWallMap.isEmpty()) {
-                        int basket = random.nextInt(postByWallMap.size());
 
-                        // перебір мапи
-                        int j = 0;
-                        Map.Entry<Wall, List<com.epam.lab.spider.model.vk.Post>> currentEntry = null;
-                        for (Map.Entry<Wall, List<com.epam.lab.spider.model.vk.Post>> entry : postByWallMap.entrySet())
-                            if (j++ == basket) currentEntry = entry;
-                        // !перебір мапи
-                        List<com.epam.lab.spider.model.vk.Post> basketOfPreparePost = currentEntry.getValue();
-                        // видалення корзини з постами, якщо вона порожня
-                        if (basketOfPreparePost.isEmpty()) {
-                            postByWallMap.remove(currentEntry.getKey());
-                            continue;
-                        }
-                        // вибір випадкового поста з корзини
-                        int postIndex = random.nextInt(basketOfPreparePost.size());
-                        // витягаємо та видаляємо з корзини вибраний пост
-                        com.epam.lab.spider.model.vk.Post vkPost = basketOfPreparePost.remove(postIndex);
-                        try {
-                            switch (task.getType()) {
-                                // опрацьовуємо пост за правилами заданими в таску
-                                // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
-                                case COPY: {
-                                    Post post = processingPost(vkPost, task);
-                                    addedToProcessingPosts.addFirst(post);
-                                    break;
-                                }
-                                // якщо тип - репост - додаємо пост в чергу до опрацювання та ріпостимо його
-                                // якщо таск завершиться аварійно - можлива втрата репосту даного поста
-                                case REPOST: {
-                                    postToRepost.add(vkPost);
-                                    break;
-                                }
-                                case FAVORITE: {
-                                    Post post = processingPost(vkPost, task);
-                                    System.out.println("-------------" + post);
-                                    Feed feed = new Feed();
-                                    feed.processing(post, task);
-                                    break;
-                                }
-                            }
-                        } catch (PostContentException x) {
-                            LOG.error("Post Content Type Fail. Object: post"+ vkPost.getOwnerId() + "_" + vkPost.getId());
-                        }
-                        // заблоковуємо пост
-                        // виконується якщо пост додато до потингу
-                        // або для поста сталась помилка контенту
-                        LinkedList<Integer> addedToProcessingBlocks = blockMap.get(currentEntry.getKey());
-                        if (addedToProcessingBlocks == null) {
-                            addedToProcessingBlocks = new LinkedList<>();
-                            blockMap.put(currentEntry.getKey(), addedToProcessingBlocks);
-                        }
-                        addedToProcessingBlocks.addFirst(vkPost.getId());
+                    }
+                }
+
+
+                LinkedList<NewPost> newPosts = new LinkedList<>();
+
+                long timeToPost = task.getNextTaskRunDate().getTime();
+                for (Wall wall : destinationWalls) {
+                    // якщо профіль заблокований для запису припинити опрацювання стіни для нього
+                    boolean writeBlocked = Locker.getInstance().isLock(wall);
+                    if (writeBlocked) break;
+                    // відкладений постинг
+                    for (Post post : addedToProcessingPosts) {
+                        NewPost newPost = new NewPost();
+                        newPost.setPost(post);
+                        newPost.setWallId(wall.getId());
+
+                        timeToPost += TaskUtil.getRandomPostDeleay(task) * 1000;
+                        newPost.setPostTime(new Date(timeToPost));
+
+                        newPost.setState(NewPost.State.CREATED);
+                        newPosts.addFirst(newPost);
+                    }
+                    // моментальний ріпостинг
+                    for (com.epam.lab.spider.model.vk.Post vkPost : postToRepost) {
+                        String wallEntityCode = "wall" + vkPost.getOwnerId() + "_" + vkPost.getId();
+                        RepostUtil.makeRepost(wall.getProfile(), wallEntityCode, wall.getOwner());
                     }
 
                 }
-            }
-
-
-            LinkedList<NewPost> newPosts = new LinkedList<>();
-
-            long timeToPost = task.getNextTaskRunDate().getTime();
-            for (Wall wall : destinationWalls) {
-                // якщо профіль заблокований для запису припинити опрацювання стіни для нього
-                boolean writeBlocked = Locker.getInstance().isLock(wall);
-                if (writeBlocked) break;
-                // відкладений постинг
-                for (Post post : addedToProcessingPosts) {
-                    NewPost newPost = new NewPost();
-                    newPost.setPost(post);
-                    newPost.setWallId(wall.getId());
-
-                    timeToPost += TaskUtil.getRandomPostDeleay(task) * 1000;
-                    newPost.setPostTime(new Date(timeToPost));
-
-                    newPost.setState(NewPost.State.CREATED);
-                    newPosts.addFirst(newPost);
+                for (NewPost newPost : newPosts) {
+                    boolean result = SavableServiceUtil.safeSave(newPost);
+                    if (!result) LOG.fatal("ТЕРМІНОВО ФІКСИТЬ БАЗУ!");
                 }
-                // моментальний ріпостинг
-                for (com.epam.lab.spider.model.vk.Post vkPost : postToRepost) {
-                    String wallEntityCode = "wall" + vkPost.getOwnerId() + "_" + vkPost.getId();
-                    RepostUtil.makeRepost(wall.getProfile(), wallEntityCode, wall.getOwner());
+                for (Map.Entry<Wall, LinkedList<Integer>> entry : blockMap.entrySet()) {
+                    synchronizedService.markIdLastProcessedPost(task, entry.getKey(), entry.getValue());
                 }
-
-            }
-            for (NewPost newPost : newPosts) {
-                boolean result = SavableServiceUtil.safeSave(newPost);
-                if (!result) LOG.fatal("ТЕРМІНОВО ФІКСИТЬ БАЗУ!");
-            }
-            for (Map.Entry<Wall, LinkedList<Integer>> entry : blockMap.entrySet()) {
-                synchronizedService.markIdLastProcessedPost(task, entry.getKey(), entry.getValue());
-            }
-            TaskUtil.setNewTaskRunTime(task);
-            {
-                int countGrabMax = task.getPostCount();
-                switch (task.getGrabbingMode()) {
-                    case TOTAL:
-                        countGrabMax = activeSourceInTask * task.getPostCount();
-                        break;
-                    case PER_GROUP:
-                        countGrabMax = task.getPostCount();
-                        break;
+                TaskUtil.setNewTaskRunTime(task);
+                {
+                    int countGrabMax = task.getPostCount();
+                    switch (task.getGrabbingMode()) {
+                        case TOTAL:
+                            countGrabMax = activeSourceInTask * task.getPostCount();
+                            break;
+                        case PER_GROUP:
+                            countGrabMax = task.getPostCount();
+                            break;
+                    }
+                    int countGrabSuccess = addedToProcessingPosts.size();
+                    String title = "Task #" + task.getId() + " have grabbed post " + countGrabSuccess + "/" + countGrabMax + ".";
+                    String info = title + " Planned Post Action Count: " + newPosts.size();
+                    EventLogger eventLogger = EventLogger.getLogger(task.getUserId());
+                    eventLogger.info(title, info);
                 }
-                int countGrabSuccess = addedToProcessingPosts.size();
-                String title = "Task #" + task.getId() + " have grabbed post " + countGrabSuccess + "/" + countGrabMax+".";
-                String info = title+" Planned Post Action Count: "+newPosts.size();
-                EventLogger eventLogger = EventLogger.getLogger(task.getUserId());
-                eventLogger.info(title, info);
+            //збираэмо всі необроблені виключення
+            }catch (Throwable x){
+                x.printStackTrace();
             }
         }
 

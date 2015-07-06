@@ -58,10 +58,19 @@ public class Execute extends Methods {
         if(filter!=null && filter.getLikes()!=null)param.add("likes",filter.getLikes());
         if(filter!=null && filter.getReposts()!=null)param.add("reposts",filter.getReposts());
         if(filter!=null && filter.getComments()!=null)param.add("comments",filter.getComments());
-
-
         Response response = request("execute.getRandomPostFromWall", param).execute();
         return Post.parseItem(response.root().child("items").get(0));
     }
-
+    /**
+     * Возвращает список последних записей со стены пользователя или сообщества. Максимум 50 постов.
+     */
+    public List<Post> getNewPostFromWall(Integer ownerId, Integer count, Integer lastPostId, Integer maxLoopCount) throws VKException {
+        Parameters param = new Parameters();
+        param.add("owner_id",ownerId);
+        if(count!=null)param.add("count",count);
+        if(maxLoopCount!=null)param.add("max_loops",maxLoopCount);
+        if(lastPostId!=null)param.add("last_post_id",lastPostId);
+        Response response = request("execute.getNewPostFromWall", param).execute();
+        return Post.parseItem(response.root().child("items").get(0));
+    }
 }

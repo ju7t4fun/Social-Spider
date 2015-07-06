@@ -1,5 +1,5 @@
-var owner_id = Args.owner_id;
-var count = Args.count;
+var owner_id = parseInt(Args.owner_id);
+var count = parseInt(Args.count);
 var exclude_post = Args.exclude_post;
 var exclude_post_array = [];
 
@@ -48,12 +48,16 @@ while (i < total_count / 100){
 var total_count = response.count;
 api_call_count = api_call_count + 1;
 var serverTime = API.utils.getServerTime();
-
-var random = Args.random_seed * (serverTime % 255);
+var seed = parseInt(Args.random_seed);
+if(seed == 0 )seed = 1423;
+var random = seed * (serverTime % 255);
 if(total_loops<1)total_loops = 30;
 var result_set = [];
 var compare_set = [];
 var j = 0, t = 0;
+if(count > total_count){
+    count = total_count;
+}
 while(j < count && t < total_loops){
     t = t + 1;
     random = (random * 214013 + 2531011) % 32768;
