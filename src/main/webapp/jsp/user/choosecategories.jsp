@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 
 <html>
 <head>
@@ -59,14 +60,14 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-bookmark"></i> Category</h3>
+                    <h3 class="page-header"><i class="fa fa-bookmark"></i><l:resource key="category"/></h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-bookmark"></i>Category</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-bookmark"></i><l:resource key="category"/></li>
                     </ol>
                 </div>
             </div>
@@ -74,7 +75,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left">Category</div>
+                            <div class="pull-left"><l:resource key="category"/></div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="panel-body">
