@@ -28,8 +28,8 @@
           rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic'
           rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/font-awesome/css/font-awesome.min.css"
-          type="text/css">
+    <%--<link rel="stylesheet" href="${pageContext.request.contextPath}/font-awesome/css/font-awesome.min.css"--%>
+          <%--type="text/css">--%>
 
     <!-- Plugin CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.min.css" type="text/css">
@@ -95,7 +95,7 @@
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <a class="navbar-brand page-scroll" href="#page-top">Socail spider</a>
+            <a class="navbar-brand page-scroll" href="#page-top">Social spider</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->

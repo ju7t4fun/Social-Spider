@@ -44,6 +44,9 @@ public class PostServlet extends HttpServlet {
             commands.put("getPostById", new GetPostByIdCommand());
             commands.put("savePostFromFeed", new SavePostFromFeedCommand());
             commands.put("publishPostId", new PublishPostByIdCommand());
+            commands.put("getPostByIdWithoutHtml", new GetPostWithoutHtmlCommand());
+            commands.put("editpost", new EditPostCommand());
+            commands.put("deleteattach", new DeleteAttachmentCommand());
         }
     }
 }

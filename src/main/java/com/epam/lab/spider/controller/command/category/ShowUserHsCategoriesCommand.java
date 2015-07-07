@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.command.userhascategories;
+package com.epam.lab.spider.controller.command.category;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.model.db.entity.Category;
@@ -32,7 +32,7 @@ public class ShowUserHsCategoriesCommand implements ActionCommand {
 
         HttpSession session = request.getSession();
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
-        int lang = Integer.parseInt(bundle.getString("category"));
+        int lang = Integer.parseInt(bundle.getString("support"));
 
         chosenList = local(chosenList, lang);
         nonChosenList = local(nonChosenList, lang);

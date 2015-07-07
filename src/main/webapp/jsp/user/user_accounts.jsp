@@ -62,7 +62,7 @@
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
-                    toastrNotification(response.status,response.msg);
+                    toastrNotification(response.status, response.msg);
                     if (response.status === 'success') {
                         $("#account" + id).remove();
                     }
@@ -85,10 +85,10 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-list"></i><l:resource key="vkaccounts" /></h3>
+                    <h3 class="page-header"><i class="fa fa-list"></i><l:resource key="vkaccounts"/></h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home" /></a></li>
-                        <li><i class="fa fa-th-list"></i><l:resource key="vkaccounts" /></li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-th-list"></i><l:resource key="vkaccounts"/></li>
                     </ol>
                 </div>
             </div>
@@ -97,20 +97,20 @@
                 <div class="col-lg-12">
                     <section class="panel">
 
-                        <table class="table table-striped table-advance table-hover">
+                        <table id="accountsTable" class="table table-striped table-advance table-hover">
                             <tbody>
                             <tr>
-                                <th><i class="icon_id-2_alt"></i> <l:resource key="vkaccounts.id" /></th>
-                                <th><i class="icon_profile"></i> <l:resource key="vkaccounts.fullname" /></th>
-                                <th><i class="icon_link_alt"></i> <l:resource key="vkaccounts.url" /></th>
-                                <th><i class="icon_cogs"></i> <l:resource key="vkaccounts.action" /></th>
+                                <th><i class="icon_id-2_alt"></i> <l:resource key="vkaccounts.id"/></th>
+                                <th><i class="icon_profile"></i> <l:resource key="vkaccounts.fullname"/></th>
+                                <th><i class="icon_link_alt"></i> <l:resource key="vkaccounts.url"/></th>
+                                <th><i class="icon_cogs"></i> <l:resource key="vkaccounts.action"/></th>
                             </tr>
                             <c:set var="i" value="0"/>
                             <c:forEach var="profile" items="${profiles}">
                                 <tr id="account${profile.id}">
                                     <td>${profile.vkId}</td>
                                     <td>
-                                            ${fullNames[i]}
+                                            ${profile.name}
                                     </td>
                                     <td><a target="_blank" href="http://vk.com/id${profile.vkId}">http://vk
                                         .com/id${profile.vkId}</a>
@@ -136,7 +136,7 @@
                             </tbody>
                         </table>
                     </section>
-                    <a href="/accounts?action=add" class="btn btn-primary"><l:resource key="vkaccounts.add" /></a>
+                    <a href="/accounts?action=add" class="btn btn-primary"><l:resource key="vkaccounts.add"/></a>
                 </div>
             </div>
             <!-- page end-->

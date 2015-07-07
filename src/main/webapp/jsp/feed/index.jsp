@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
+<%@ taglib prefix="lg" uri="http://lab.epam.com/spider/logger" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +54,8 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header" style="position: fixed"><i class="fa fa-home"></i> Home</h3>
+                    <h3 class="page-header" style="position: fixed"><i class="fa fa-home"></i><l:resource key="home"/>
+                    </h3>
                 </div>
             </div>
             <section class="wrapper">
@@ -63,7 +65,7 @@
                             <div style="margin-left: 15px; margin-right: 15px">
                                 <div class="panel-body" id="feed">
                                     <div align="center">
-                                        <p>Триває завантаження даних ...</p>
+                                        <p><l:resource key="dataloading"/></p>
                                     </div>
                                 </div>
                             </div>
@@ -105,7 +107,7 @@
                     break;
                 }
             }
-            post += '</table><div class="btn-group" style="margin-left: 450px;"> <a class="btn btn-default" onclick="viewPost(' + postId + ');" data-toggle="modal" data-target="#myModal">View</a> <a class="btn btn-default" onclick="openPublishWindows(' + postId + ');"  data-toggle="modal" data-target="#publish_modal">Publish</a> <a class="btn btn-default" onclick="savePost(' + postId + ');">Save</a></div></ul>';
+            post += '<tr><td style="text-align:right;"><div class="btn-group"> <a class="btn btn-default" onclick="viewPost(' + postId + ');" data-toggle="modal" data-target="#myModal"><l:resource key="view" /></a> <a class="btn btn-default" onclick="openPublishWindows(' + postId + ');"  data-toggle="modal" data-target="#publish_modal"><l:resource key="newpost.publish" /></a> <a class="btn btn-default" onclick="savePost(' + postId + ');"><l:resource key="newpost.save" /></a></div></td></tr></table></ul>';
             post += '<div style="width: 90%; height: 3px;margin:25px auto 25px;border-radius: 4px;background:  lightslategray;"></div>';
             if (isBegin) {
                 var pos = $(document).height() - $(window).scrollTop();
@@ -323,7 +325,7 @@
             return text;
         } else {
             var c = text.substr(0, showChar);
-            var html = c + ' <a style="color: blue" onclick="showMore(' + postId + ');">...show all text</a>';
+            var html = c + ' <a style="color: blue" onclick="showMore(' + postId + ');"><l:resource key="feed.showalltext"/></a>';
             return html;
         }
     }
@@ -338,12 +340,12 @@
     var feedWebSocket = new WebSocket("ws://localhost:8080/websocket/feed");
 
     feedWebSocket.onopen = function (event) {
-//            alert("onOpen");
+        console.log("FeedWebSocket OnOpen " + event.data);
     };
 
     // Опрацювання команд
     feedWebSocket.onmessage = function (event) {
-//            alert("onMessage " + event.data);
+        console.log("FeedWebSocket OnMessage " + event.data);
         var args = event.data.split("|");
         switch (args[0]) {
             case "new":
@@ -361,8 +363,13 @@
     };
 
     feedWebSocket.onclose = function (event) {
-//            alert('onClose');
+        console.log("FeedWebSocket OnClose " + event.data);
+        setTimeout(createSocket(), 5000);
     };
+
+    $(document).ready(function () {
+
+    });
 
 </script>
 <!-- javascripts -->
@@ -381,14 +388,14 @@
 <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
 <!--custom tagsinput-->
 <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
-<script src="${pageContext.request.contextPath}/js/form-component.js"></script>
+<%--<script src="${pageContext.request.contextPath}/js/form-component.js"></script>--%>
 <!--custom checkbox & radio-->
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ga.js"></script>
 <!--custom switch-->
 <script src="${pageContext.request.contextPath}/js/bootstrap-switch.js"></script>
 <!--custom tagsinput-->
 <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
-<script src="${pageContext.request.contextPath}/js/form-component.js"></script>
+<%--<script src="${pageContext.request.contextPath}/js/form-component.js"></script>--%>
 <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
 
 </body>
