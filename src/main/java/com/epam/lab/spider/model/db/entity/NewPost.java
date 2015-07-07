@@ -17,6 +17,7 @@ public class NewPost {
 
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static PostService service = factory.create(PostService.class);
+    private static WallService wallService = factory.create(WallService.class);
 
     private Integer id;
     private Integer postId;
@@ -27,9 +28,18 @@ public class NewPost {
     private Boolean deleted = false;
     private Integer userId = 1;
     private Integer vkPostId;
+    private String fullId = null;
 
     private Stats stats;
     private Post post;
+
+    public String getFullId() {
+        if (fullId != null)
+            return fullId;
+        if (vkPostId != null)
+            fullId = wallService.getById(wallId).getOwner().getVkId() + "_" + vkPostId;
+        return fullId;
+    }
 
     public Integer getId() {
         return id;
@@ -40,7 +50,7 @@ public class NewPost {
     }
 
     public Integer getPostId() {
-        if(post!=null){
+        if (post != null) {
             return post.getId();
         }
         return postId;

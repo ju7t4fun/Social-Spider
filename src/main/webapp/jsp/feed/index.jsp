@@ -364,7 +364,6 @@
 
     feedWebSocket.onclose = function (event) {
         console.log("FeedWebSocket OnClose " + event.data);
-        setTimeout(createSocket(), 5000);
     };
 
     $(document).ready(function () {

@@ -59,7 +59,7 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     @Override
     public boolean insert(Connection connection, Wall wall) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
-                wall.getOwner_id(),
+                wall.getOwnerId(),
                 wall.getProfile_id(),
                 wall.getPermission().toString().toUpperCase(),
                 wall.getDeleted());
@@ -70,7 +70,7 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     @Override
     public boolean update(Connection connection, int id, Wall wall) throws SQLException {
         return changeQuery(connection, SQL_UPDATE_QUERY,
-                wall.getOwner_id(),
+                wall.getOwnerId(),
                 wall.getProfile_id(),
                 wall.getPermission(),
                 wall.getDeleted(),
@@ -78,7 +78,7 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     }
 
     public boolean checkedExist(Connection connection, Wall wall) throws SQLException {
-        return select(connection, SQL_CHECK_EXIST_QUERY, wall.getProfile_id(), wall.getOwner_id(), wall.getPermission
+        return select(connection, SQL_CHECK_EXIST_QUERY, wall.getProfile_id(), wall.getOwnerId(), wall.getPermission
                 ().toString().toUpperCase()).size() > 0;
     }
 
