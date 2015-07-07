@@ -95,6 +95,11 @@ public class GetPostWithoutHtmlCommand implements ActionCommand {
                     for (String id : videoPlayer.keySet()) {
                         JSONObject video = new JSONObject();
                         String url = videoPlayer.get(id);
+                        if (url.contains("http://vk.com/video_ext.php")) {
+                            video.put("type", "vk_video");
+                            video.put("url", url);
+                            attachmentJson.put(video);
+                        }
                         if (url.contains("www.youtube.com")) {
                             video.put("type", "youtube");
                             video.put("url", url);

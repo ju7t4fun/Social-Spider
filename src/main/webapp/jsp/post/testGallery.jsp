@@ -13,7 +13,7 @@
   <title>Unite Gallery - Default Theme - All Options</title>
 
   <script type='text/javascript' src='${pageContext.request.contextPath}/js/jquery-11.0.min.js'></script>
-  <script type='text/javascript' src='${pageContext.request.contextPath}/js/unitegallery.min.js'></script>
+  <script type='text/javascript' src='${pageContext.request.contextPath}/js/testunitegallery.min.js'></script>
 
   <link rel='stylesheet' href='${pageContext.request.contextPath}/css/unite-gallery.css' type='text/css' />
 
@@ -57,6 +57,11 @@
        data-image="thumbs/html5_video_image.png"
        data-videomp4="http://localhost:8080/upload/musics/d5dddii6bdni25k0779bi5omir.mp3"
        data-description="Html5 Video Description">
+
+    <img alt="VK"
+         data-type="VKONTAKTE"
+         data-videoid="http://vk.com/video_ext.php?oid=16697463&id=171361804&hash=0089d6a9aa4c5a4a&api_hash=1436283388b9bd4c6cdc40850774"
+         data-description="VK VIDEO">
 </div>
 
 <script type="text/javascript">

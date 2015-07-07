@@ -63,6 +63,7 @@
                             image.attr("data-image", response.attachments[i].url);
                             break;
                         case "youtube":
+                            alert(response.attachments[i].url);
                             image.attr("data-type", "youtube");
                             image.attr("data-videoid", response.attachments[i].url);
                             break;

@@ -64,9 +64,12 @@
                 var atr;
                 switch (response.attachments[i].type) {
                     case "photo":
-                            atr = "img";
+                        atr = "img";
                         break;
                     case "youtube":
+                        atr = "iframe";
+                        break;
+                    case "vk_video":
                         atr = "iframe";
                         break;
                     case "audio":
@@ -84,12 +87,14 @@
 
                 for (var i = 0; i < response.attachments.length; i++) {
                     var atr = checkType(i);
-                    row.append('<td id="' + response.attachID[i].id + '"><div style="margin: 0px 20px;"><' + atr +
-                            ' width="240" height="200"  src="' + response.attachments[i].url + '"></' + atr +
-                            '></div><td>');
-                    if (i % 2 != 0) {
-                        row = $('<tr></tr>');
-                    }
+                        alert(response.attachments[i].url);
+                        row.append('<td id="' + response.attachID[i].id + '"><div style="margin: 0px 20px;"><' + atr +
+                                ' width="240" height="200"  src="' + response.attachments[i].url + '"></' + atr +
+                                '></div><td>');
+                        if (i % 2 != 0) {
+                            row = $('<tr></tr>');
+                        }
+
                     attach.append(row);
                 }
                 $("td:empty").remove();
