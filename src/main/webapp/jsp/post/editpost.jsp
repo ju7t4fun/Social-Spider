@@ -14,7 +14,7 @@
                             <label>ID</label>
 
                             <div>
-                                <input type="text" class="form-control" style="width: 5%;" id="id"
+                                <input type="text" class="form-control" style="width: 10%;" id="id"
                                        disabled="disabled"/>
                             </div>
                         </div>
@@ -62,12 +62,19 @@
 
             function checkType(i) {
                 var atr;
-                if (response.attachments[i].payload.includes("video")) {
-                    atr = "video controls";
-                } else if (response.attachments[i].payload.includes("music")) {
-                    atr = "video controls";
-                } else if (response.attachments[i].payload.includes("image")) {
-                    atr = "img";
+                switch (response.attachments[i].type) {
+                    case "photo":
+                            atr = "img";
+                        break;
+                    case "youtube":
+                        atr = "iframe";
+                        break;
+                    case "audio":
+                        atr = "video controls";
+                        break;
+                    case "video":
+                        atr = "video controls";
+                        break;
                 }
                 return atr;
             }
@@ -77,8 +84,9 @@
 
                 for (var i = 0; i < response.attachments.length; i++) {
                     var atr = checkType(i);
-                    row.append('<td id="' + response.attachments[i].id + '"><div style="margin: 0px 20px;"><' + atr +
-                            ' width="240" height="200"  src="' + response.attachments[i].payload + '"></' + atr + '></div><td>');
+                    row.append('<td id="' + response.attachID[i].id + '"><div style="margin: 0px 20px;"><' + atr +
+                            ' width="240" height="200"  src="' + response.attachments[i].url + '"></' + atr +
+                            '></div><td>');
                     if (i % 2 != 0) {
                         row = $('<tr></tr>');
                     }
@@ -93,10 +101,9 @@
                     })
                     .on("mouseleave", function () {
                         $(this).removeClass("delete-img");
-//                            $(this).remove();
                     });
 
-            $('td').on("click", function () {
+            $('#attachments td').on("click", function () {
                 var elemID = $(this).closest('td').attr('id');
                 $.post(
                         "http://localhost:8080/post?action=deleteattach",
@@ -108,6 +115,7 @@
                 function onAjaxSuccess(data) {
                     $('#' + elemID).remove();
                     var response = data;
+                    $('#postsTable').DataTable().draw(false);
                     toastrNotification(response.status, response.message);
                 }
             });
@@ -126,6 +134,7 @@
         );
         function onAjaxSuccess(data) {
             var response = data;
+            $('#postsTable').DataTable().draw(false);
             $("#edit_post").modal('toggle');
             toastrNotification(response.status, response.message);
         }

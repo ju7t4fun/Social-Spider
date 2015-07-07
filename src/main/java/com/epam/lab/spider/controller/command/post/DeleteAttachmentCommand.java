@@ -19,7 +19,6 @@ public class DeleteAttachmentCommand implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("DELETE!");
         int attachId = Integer.parseInt(request.getParameter("attachId"));
         JSONObject jsonObject = new JSONObject();
 
