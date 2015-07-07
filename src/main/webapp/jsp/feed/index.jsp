@@ -325,7 +325,7 @@
             return text;
         } else {
             var c = text.substr(0, showChar);
-            var html = c + ' <a style="color: blue" onclick="showMore(' + postId + ');">...show all text</a>';
+            var html = c + ' <a style="color: blue" onclick="showMore(' + postId + ');"><l:resource key="feed.showalltext"/></a>';
             return html;
         }
     }
@@ -364,7 +364,6 @@
 
     feedWebSocket.onclose = function (event) {
         console.log("FeedWebSocket OnClose " + event.data);
-        setTimeout(createSocket(), 5000);
     };
 
     $(document).ready(function () {

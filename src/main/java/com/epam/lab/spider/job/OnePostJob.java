@@ -63,7 +63,7 @@ public class OnePostJob implements Job {
                 SavableServiceUtil.safeSave(newPost);
                 return;
             }
-            Owner owner = ownerService.getById(wall.getOwner_id());
+            Owner owner = ownerService.getById(wall.getOwnerId());
             Profile profile = profileService.getById(wall.getProfile_id());
 
             newPost.setPost(postService.getById(newPost.getPost().getId()));

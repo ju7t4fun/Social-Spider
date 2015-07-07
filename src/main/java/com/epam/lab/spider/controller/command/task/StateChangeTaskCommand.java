@@ -54,6 +54,7 @@ public class StateChangeTaskCommand implements ActionCommand {
             response.setStatus(400);
             JSONObject resultJson = new JSONObject();
             resultJson.put("alert","Switch task state failed!");
+            resultJson.put("msg","error");
             String result = resultJson.toString();
             response.setContentType("application/json;charset=UTF-8");
             PrintWriter out = response.getWriter();
@@ -64,6 +65,7 @@ public class StateChangeTaskCommand implements ActionCommand {
 
         JSONObject resultJson = new JSONObject();
         resultJson.put("alert","Switch task succeed!");
+        resultJson.put("msg","success");
         String result = resultJson.toString();
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();

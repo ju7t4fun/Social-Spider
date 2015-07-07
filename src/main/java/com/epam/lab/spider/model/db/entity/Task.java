@@ -63,7 +63,7 @@ public class Task {
         COPY, REPOST, FAVORITE
     }
 
-    public enum State {
+    public enum  State {
         RUNNING, STOPPED, ERROR
     }
 

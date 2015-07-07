@@ -27,4 +27,6 @@ public interface TaskDAO extends CRUD<Task>,SavableDAO<Task> {
 
     public boolean updateNextTimeRunAndState(Connection connection, int id, Date date,Task.State state) throws SQLException;
 
+    int getCount(Connection connection) throws SQLException;
+
 }

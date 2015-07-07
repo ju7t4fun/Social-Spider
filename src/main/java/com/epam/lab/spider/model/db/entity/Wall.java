@@ -64,7 +64,7 @@ public class Wall {
         this.id = id;
     }
 
-    public Integer getOwner_id() {
+    public Integer getOwnerId() {
         return owner_id;
     }
 

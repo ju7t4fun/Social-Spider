@@ -145,7 +145,7 @@ public class FeedWebSocket implements Receiver {
     private String category(int postId) {
         List<Category> categories = service.getByPostId(postId);
         ResourceBundle bundle = (ResourceBundle) httpSession.getAttribute("bundle");
-        int lang = Integer.parseInt(bundle.getString("category"));
+        int lang = Integer.parseInt(bundle.getString("categoryLangCode"));
         List<String> strings = new ArrayList<>();
         for (Category category : categories) {
             strings.add(category.getName().split("\\|")[lang]);
