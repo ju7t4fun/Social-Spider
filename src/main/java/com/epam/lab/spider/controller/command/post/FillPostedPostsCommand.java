@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -167,8 +168,8 @@ public class FillPostedPostsCommand implements ActionCommand {
                     //message
                     try {
                         String msg;
-                        if (currPost.getPost().getMessage().length() > 20) {
-                            msg = currPost.getPost().getMessage().substring(0, 19);
+                        if (currPost.getPost().getMessage().length() > 45) {
+                            msg = currPost.getPost().getMessage().substring(0, 42) + "...";
                         } else {
                             msg = currPost.getPost().getMessage();
                         }
@@ -189,62 +190,17 @@ public class FillPostedPostsCommand implements ActionCommand {
                         ja.put("Empty Wall!");
                     }
                     ja.put(currPost.getFullId());
-                    try {
-
-//                        Set<Attachment> attachments = currPost.getPost().getAttachments();
-//                        if (attachments.size() > 0) {
-//                            Map<Attachment.Type, Integer> attachmentCount = new HashMap<>();
-//                            for (Attachment attachment : attachments) {
-//                                int count = 0;
-//                                if (attachmentCount.containsKey(attachment.getType())) {
-//                                    count = attachmentCount.get(attachment.getType());
-//                                }
-//                                count++;
-//                                attachmentCount.put(attachment.getType(), count);
-//                            }
-//                            String group = null;
-//                            for (Attachment.Type type : attachmentCount.keySet()) {
-//                                group = group == null ? "" + type + "|" + attachmentCount.get(type) : group + "!" +
-//                                        type +
-//                                        "|" + attachmentCount.get(type);
-//                            }
-//                            ja.put(group);
-//                        } else {
-//                            ja.put("");
-//                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        ja.put("");
-                    }
 
                     try {
-                        ja.put(currPost.getPostTime());
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+                        ja.put(dateFormat.format(currPost.getPostTime()));
                     } catch (Exception ex) {
                         ja.put("Unknown Time!");
                     }
 
-                    int likes;
-                    try {
-                        likes = currPost.getStats().getLikes();
-                    } catch (Exception ex) {
-                        likes = 0;
-                        ex.printStackTrace();
-                    }
-                    int reposts;
-                    try {
-                        reposts = currPost.getStats().getReposts();
-                    } catch (Exception ex) {
-                        reposts = 0;
-                        ex.printStackTrace();
-                    }
-                    int comments;
-                    try {
-                        comments = currPost.getStats().getComments();
-                    } catch (Exception ex) {
-                        comments = 0;
-                        ex.printStackTrace();
-                    }
-                    String data = likes + "|" + reposts + "|" + comments;
+                    NewPost.Stats stats = currPost.getStats();
+                    String data = stats.getLikes() + "|" + stats.getReposts() + "|" + stats.getComments();
+
                     ja.put(data);
                     ja.put(currPost.getPostId());
                     ja.put(currPost.getId());

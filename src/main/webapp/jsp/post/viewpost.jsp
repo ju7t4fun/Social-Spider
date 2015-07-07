@@ -63,8 +63,13 @@
                             image.attr("data-image", response.attachments[i].url);
                             break;
                         case "youtube":
-                            alert(response.attachments[i].url);
                             image.attr("data-type", "youtube");
+                            image.attr("data-videoid", response.attachments[i].url);
+                            break;
+                        case "vk_video":
+                            image.attr("src", "../img/poster.jpg");
+                            image.attr("data-type", "VKONTAKTE");
+                            image.attr("data-image", "../img/poster.jpg");
                             image.attr("data-videoid", response.attachments[i].url);
                             break;
                         case "audio":
