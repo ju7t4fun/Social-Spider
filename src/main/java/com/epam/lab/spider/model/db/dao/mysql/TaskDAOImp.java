@@ -58,6 +58,8 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
     private static final String SQL_GET_ALL_BY_DATE_TIME_LIMIT_BY_STATE_QUERY =
             "SELECT * FROM task WHERE next_task_run < ? AND state = ?  AND deleted = false";
 
+    private static final String SQL_GET_COUNT = "SELECT COUNT(*) FROM task WHERE  deleted = 0";
+
 
     @Override
     public boolean save(Connection conn, Task entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException {
@@ -216,5 +218,14 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
     public boolean updateNextTimeRunAndState(Connection connection, int id, Date date,Task.State state) throws SQLException{
         return changeQuery(connection, SQL_UPDATE_STATE_AND_NEXT_TIME_RUN_QUERY,  state, date, id);
 
+    }
+
+    @Override
+    public int getCount(Connection connection) throws SQLException {
+        ResultSet rs = selectQuery(connection, SQL_GET_COUNT);
+        if (rs.next()) {
+            return rs.getInt("COUNT(*)");
+        }
+        return 0;
     }
 }

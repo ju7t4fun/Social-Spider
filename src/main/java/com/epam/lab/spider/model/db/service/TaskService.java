@@ -229,4 +229,13 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
         }
         return null;
     }
+
+    public int getCount() {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getCount(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }
