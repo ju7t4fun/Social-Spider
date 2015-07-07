@@ -39,6 +39,7 @@ public class GetAccountsCommand implements ActionCommand {
             row.put(profile.getName());
             row.put("http://vk.com/id" + profile.getVkId());
             row.put(profile.getId());
+            row.put(profile.isExpired());
             table.put(row);
         }
         int count = service.getCountByUserId(user.getId());

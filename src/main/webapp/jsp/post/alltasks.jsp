@@ -227,7 +227,7 @@
 <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
 <!--custom tagsinput-->
 <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
-<script src="${pageContext.request.contextPath}/js/form-component.js"></script>
+<%--<script src="${pageContext.request.contextPath}/js/form-component.js"></script>--%>
 <!--custom checkbox & radio-->
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ga.js"></script>
 <!--custom switch-->

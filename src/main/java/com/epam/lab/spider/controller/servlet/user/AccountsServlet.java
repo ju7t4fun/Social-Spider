@@ -36,6 +36,7 @@ public class AccountsServlet extends HttpServlet {
             commands.put("refresh", new RefreshAccountCommand());
             commands.put("remove", new RemoveAccountCommand());
             commands.put("get", new GetAccountsCommand());
+            commands.put("addManually", new AddManuallyAccountCommand());
         }
 
     }

@@ -211,15 +211,15 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-list-alt"></i><l:resource key="created" /></h3>
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i><l:resource key="created"/></h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home" /></a></li>
-                        <li><i class="fa fa-desktop"></i><l:resource key="post" /></li>
-                        <li><i class="fa fa-list-alt"></i><l:resource key="created" /></li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-desktop"></i><l:resource key="post"/></li>
+                        <li><i class="fa fa-list-alt"></i><l:resource key="created"/></li>
                     </ol>
                 </div>
             </div>
@@ -227,7 +227,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left"><l:resource key="created" /></div>
+                            <div class="pull-left"><l:resource key="created"/></div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="panel-body">
@@ -237,9 +237,9 @@
                                            class="row-border tableHeader" id="postsTable">
                                         <thead>
                                         <tr style="align-content: center">
-                                            <th><l:resource key="owner.id" /></th>
-                                            <th><l:resource key="message" /></th>
-                                            <th><l:resource key="attachment" /></th>
+                                            <th><l:resource key="owner.id"/></th>
+                                            <th><l:resource key="message"/></th>
+                                            <th><l:resource key="attachment"/></th>
                                             <th></th>
                                         </tr>
                                         </thead>

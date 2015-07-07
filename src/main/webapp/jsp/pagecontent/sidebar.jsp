@@ -10,7 +10,7 @@
                 <ul class="sidebar-menu">
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
-                            <i class="icon_genius"></i>
+                            <i class="fa fa-credit-card"></i>
                             <span>Post</span>
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>

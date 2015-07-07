@@ -20,26 +20,36 @@
 
     <title>Accounts</title>
 
+
     <!-- Bootstrap CSS -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
     <!-- bootstrap theme -->
     <link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">
     <!--external css-->
+    <link href="${pageContext.request.contextPath}/css/core.css" rel="stylesheet">
+
     <!-- font icon -->
     <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- Custom styles -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
 
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-    <!--[if lt IE 9]>
-    <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
-    <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
-    <![endif]-->
+    <!-- javascripts -->
+    <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
+    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+    <!-- nice scroll -->
+    <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <!-- gritter -->
+
+    <%--<!-- custom gritter script for this page only-->--%>
+    <script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>
+    <%--<!--custome script for all page-->--%>
+    <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
 
     <%--for table--%>
     <link href="http://cdn.datatables.net/1.10.3/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
@@ -51,13 +61,19 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnStandingRedraw.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnSetFilteringDelay.js"></script>
 
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
-    <script src="${pageContext.request.contextPath}/js/jquery.multi-select.js" type="text/javascript"></script>
-    <link href="${pageContext.request.contextPath}/css/multi-select.css" media="screen" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
+    <!--[if lt IE 9]>
+    <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
+    <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
+    <![endif]-->
 
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
+    <!--custom tagsinput-->
+    <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
+
     <script type="text/javascript">
 
         // При завантаженні сторінки
@@ -72,19 +88,7 @@
 
     <script type="text/javascript">
         function removeAccount(id) {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/accounts?action=remove&id=' + id, true);
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4) {
-                    var response = JSON.parse(xmlhttp.responseText);
-                    alert('aaa');
-                    toastrNotification(response.status, response.msg);
-                    if (response.status === 'success') {
-
-                    }
-                }
-            };
-            xmlhttp.send();
+            deleteConfirmProfile(id);
         }
     </script>
 
@@ -115,8 +119,17 @@
                     }
                 }, {
                     "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<div class="btn-group"><a class="btn btn-success"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" href="javascript:removeAccount('  + cellData+ ')"><i class="icon_close_alt2"></i></a></div>');
+                        var button = '<div class="btn-group">';
+                        if (rowData[4])
+                            button = button + '<a class="btn btn-success';
+                        else
+                            button = button + '<a class="btn btn-warning';
+                        button = button + '" href="/accounts?action=refresh"><i class="icon_refresh"></i></a>' +
+                                '<a class="btn btn-danger" href="javascript:removeAccount(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>'
+                        $(td).html(button);
                     }
+                }, {
+                    "bVisible": false, "aTargets": [4]
                 }]
 
             });
@@ -151,6 +164,7 @@
                     </ol>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
@@ -173,8 +187,15 @@
                                         </tr>
                                         </thead>
                                     </table>
-                                    <a href="/accounts?action=add" class="btn btn-primary"><l:resource
-                                            key="vkaccounts.add"/></a>
+                                    <div class="btn-group">
+                                        <a href="/accounts?action=add" class="btn btn-primary"><i
+                                                class="fa fa-vk"></i> <l:resource key="vkaccounts.add"/></a>
+                                        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href=""><span
+                                                class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="javascript:openNoExtension()">Без додатку</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -184,6 +205,59 @@
         </section>
     </section>
 </section>
+<div class="b-popup" id="add_no_extension">
+    <div class="b-popup-content" style="height: 380px;margin-top: 150px;">
+        <h4>Додати акаунт вручну</h4>
+
+        <div class="col-lg-12">
+            <p> Вам необхідно надати програмі права доступу до вашого профілю. Залогініться вконтакті під потрібним
+                вам акаунтом. Натисніть на кнопку "Отримати доступ": </p>
+            <a href="https://oauth.vk.com/authorize?client_id=4949213&scope=wall,groups,photos,audio,video,docs,stats&redirect_uri=https://oauth.vk.com/blank.html&display=page&v=5.27&response_type=token&revoke=1"
+               target="_blank" class="btn btn-info" type="button"
+               style="margin-left: 38%"><i class="fa fa-vk"></i> Отримати доступ</a>
+
+            <p>Після отримання прав доступу ви побачите напис:</p>
+            <blockquote>
+                <small>Пожалуйста, <strong>не копируйте</strong> данные из адресной строки для сторонних сайтов. Таким
+                    образом Вы можете <strong>потерять доступ</strong> к Вашему аккаунту.
+                </small>
+            </blockquote>
+            <p>Скопіюйте з вкладки весь адресний рядок, вставте в поле нижче і натисніть кнопку "Додати".</p>
+            <input id="token_form_id" class="form-control" type="text" placeholder="Токен">
+            <br>
+
+            <div style="float: right">
+                <button class="btn btn-primary" onclick="addManually()">Додати</button>
+                <button class="btn btn-default" onclick="closeNoExtension()">Скасувати</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function openNoExtension() {
+        $("#add_no_extension").show();
+    }
+    function addManually() {
+        var href = $("#token_form_id").val();
+        $.post(
+                "http://localhost:8080/accounts?action=addManually",
+                {
+                    href: href
+                },
+                onAjaxSuccess
+        );
+        function onAjaxSuccess(data) {
+            toastrNotification(data.status, data.msg);
+            if (data.status == 'success') {
+                $('#accountsTable').DataTable().draw();
+                $("#add_no_extension").hide();
+            }
+        }
+    }
+    function closeNoExtension() {
+        $("#add_no_extension").hide();
+    }
+</script>
 </body>
 </html>
 

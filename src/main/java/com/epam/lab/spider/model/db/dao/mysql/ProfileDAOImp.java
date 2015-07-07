@@ -37,8 +37,10 @@ public class ProfileDAOImp extends BaseDAO implements ProfileDAO {
                     " (wall JOIN owner " +
                     "ON wall.owner_id=owner.id AND wall.deleted=false )" +
                     " WHERE owner.vk_id=? ) AS T)";
-    private static final String SQL_GET_BY_USER_ID_LIMIT_QUERY = "SELECT * FROM profile WHERE user_id = ? LIMIT ?, ?";
-    private static final String SQL_GET_COUNT_BY_USER_ID = "SELECT COUNT(*) FROM profile WHERE user_id = ?";
+    private static final String SQL_GET_BY_USER_ID_LIMIT_QUERY = "SELECT * FROM profile WHERE deleted = 0 AND user_id" +
+            " = ? LIMIT ?, ?";
+    private static final String SQL_GET_COUNT_BY_USER_ID = "SELECT COUNT(*) FROM profile WHERE user_id = ? AND " +
+            "deleted = 0";
 
     @Override
     public boolean insert(Connection connection, Profile profile) throws SQLException {

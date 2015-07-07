@@ -8,7 +8,7 @@ var Script = function () {
     var gebtn = function(parEl,child) { return parEl.getElementsByTagName(child); };
     onload = function() {
 
-        
+
 
         if (!d.getElementById || !d.createTextNode) return;
         var ls = gebtn(d,'label');

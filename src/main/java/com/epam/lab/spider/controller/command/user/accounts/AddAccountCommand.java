@@ -1,18 +1,21 @@
 package com.epam.lab.spider.controller.command.user.accounts;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.vk.*;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
 import com.epam.lab.spider.model.db.entity.Profile;
 import com.epam.lab.spider.model.db.service.ProfileService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
 import com.epam.lab.spider.model.vk.User;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 /**
  * Created by Boyarsky Vitaliy on 09.06.2015.
@@ -37,7 +40,6 @@ public class AddAccountCommand implements ActionCommand {
             // Відкриваєм вікно авторизації
             vk.OAuth().open(response, false);
         } else {
-
             // Користувач не підтвердив прав доступу
             if (request.getParameter("user_id").equals("undefined")) {
                 response.sendRedirect("/accounts");
@@ -49,7 +51,8 @@ public class AddAccountCommand implements ActionCommand {
             profile.setVkId(token.getUserId());
             profile.setAccessToken(token.getAccessToken());
             profile.setExtTime(token.getExpirationMoment());
-            profile.setUserId(1);
+            profile.setUserId(((com.epam.lab.spider.model.db.entity.User) request.getSession().getAttribute("user"))
+                    .getId());
             try {
                 Parameters param = new Parameters();
                 param.add("user_ids", token.getUserId());
@@ -62,10 +65,11 @@ public class AddAccountCommand implements ActionCommand {
 
             // Перевіряємо чи такий профіль існує в базі
             Profile oldProfile = service.getByVkId(token.getUserId());
-            if (oldProfile == null)
+            if (oldProfile == null) {
                 service.insert(profile);
-            else
+            } else {
                 service.update(oldProfile.getId(), profile);
+            }
             response.sendRedirect("/accounts");
         }
     }
