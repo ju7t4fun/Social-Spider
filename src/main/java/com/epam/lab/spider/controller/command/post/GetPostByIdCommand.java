@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -30,6 +32,8 @@ import java.util.regex.Pattern;
 public class GetPostByIdCommand implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         int postID = Integer.parseInt(request.getParameter("post_id"));
         PostService postService = new PostService();
         Post post = postService.getById(postID);
@@ -48,7 +52,7 @@ public class GetPostByIdCommand implements ActionCommand {
         }
 
         for (String url : setUrls) {
-            String formated = "<a target=\"_blank\" href=\"" + (url.contains("http://") ? url : "http://" + url) + "\"> reference</a>";
+            String formated = "<a target=\"_blank\" href=\"" + (url.contains("http://") ? url : "http://" + url) + "\"> link </a>";
             postText = postText.replace(url, formated);
         }
 

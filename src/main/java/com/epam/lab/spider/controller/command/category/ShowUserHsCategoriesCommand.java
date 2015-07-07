@@ -32,7 +32,7 @@ public class ShowUserHsCategoriesCommand implements ActionCommand {
 
         HttpSession session = request.getSession();
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
-        int lang = Integer.parseInt(bundle.getString("category"));
+        int lang = Integer.parseInt(bundle.getString("support"));
 
         chosenList = local(chosenList, lang);
         nonChosenList = local(nonChosenList, lang);
