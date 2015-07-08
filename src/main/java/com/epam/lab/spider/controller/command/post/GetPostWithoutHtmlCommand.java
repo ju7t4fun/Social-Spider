@@ -17,10 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Marian Voronovskyi on 06.07.2015.
@@ -34,6 +31,8 @@ public class GetPostWithoutHtmlCommand implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int postID = Integer.parseInt(request.getParameter("post_id"));
+        Map<String, String> urlType = new HashMap<>();
+        request.getSession().setAttribute("files_url", urlType);
         Post post = service.getById(postID);
         Set<Attachment> attachmentSet = post.getAttachments();
         String postText = post.getMessage();
