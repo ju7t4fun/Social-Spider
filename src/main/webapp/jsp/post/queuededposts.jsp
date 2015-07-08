@@ -141,7 +141,7 @@
 
                                         </tbody>
                                     </table>
-                                    <input class="btn btn-primary" style="visibility: hidden" type="button" id="showAllBtnId" onclick="myFunc()" value="Show All"/>
+                                    <%--<input class="btn btn-primary" style="visibility: hidden" type="button" id="showAllBtnId" onclick="myFunc()" value="Show All"/>--%>
                                 </div>
                             </div>
                         </div>
@@ -155,7 +155,7 @@
 <!-- container section end -->
 <script>
     function myFunc() {
-        var newUrl = path + "/post?action=fillqueuededposts";
+        var newUrl = path + "/post?action=getQueueded";
         table.api().ajax.url(newUrl).load();
         document.getElementById("showAllBtnId").style.visibility = "hidden";
     };

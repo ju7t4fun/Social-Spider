@@ -49,6 +49,7 @@ public class PostServlet extends HttpServlet {
             commands.put("deleteattach", new DeleteAttachmentCommand());
             commands.put("postStats", new GetStatPostIdCommand());
             commands.put("getPosted", new GetPostedPostCommand());
+            commands.put("getQueueded", new GetQueuededPostCommand());
         }
     }
 }

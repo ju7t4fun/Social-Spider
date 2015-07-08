@@ -86,8 +86,10 @@ jQuery(document).ready(function () {
     dataTables_filter_input.attr("class", "form-control");
     dataTables_filter_input.attr("style", "width: 500px")
 
-    //$(".dataTables_filter").attr("hidden", "");
-    //$(".dataTables_length").attr("hidden", "");
+    //var dataTables_length_select = $(".dataTables_length").find("select");
+    //dataTables_length_select.attr("class", "form-control");
+    //$(".dataTables_length").empty();
+    //$(".dataTables_length").append(dataTables_length_select);
 
     $("div.toolbar").html('<input style="position: absolute; top: 35px; left: 35px; visibility: hidden" class="btn btn-default" type="button" id="showAllBtnId" onclick="myFunc()" value="Show All"/>');
 
