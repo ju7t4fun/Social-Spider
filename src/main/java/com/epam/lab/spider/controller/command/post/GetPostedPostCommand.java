@@ -1,9 +1,14 @@
 package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.vk.VKException;
+import com.epam.lab.spider.controller.vk.Vkontakte;
+import com.epam.lab.spider.controller.vk.auth.AccessToken;
 import com.epam.lab.spider.model.db.entity.NewPost;
+import com.epam.lab.spider.model.db.entity.Profile;
 import com.epam.lab.spider.model.db.entity.User;
 import com.epam.lab.spider.model.db.service.NewPostService;
+import com.epam.lab.spider.model.db.service.ProfileService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -47,6 +52,8 @@ public class GetPostedPostCommand implements ActionCommand {
 
         JSONObject result = new JSONObject();
         JSONArray array = new JSONArray();
+
+        posts = loadingStatistics(posts, user.getId());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
         for (NewPost post : posts) {
             try {
@@ -67,12 +74,29 @@ public class GetPostedPostCommand implements ActionCommand {
                 service.delete(post.getId());
             }
         }
-
         result.put("iTotalDisplayRecords", postCount);
         result.put("aaData", array);
-
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().print(result.toString());
+    }
+
+    public static List<NewPost> loadingStatistics(List<NewPost> newPosts, int userId) {
+        if (newPosts.size() > 0) {
+            List<Profile> profiles = factory.create(ProfileService.class).getByUserId(userId);
+            Vkontakte vk = new Vkontakte(4949213);
+            for (Profile profile : profiles) {
+                AccessToken accessToken = new AccessToken();
+                accessToken.setAccessToken(profile.getAccessToken());
+                accessToken.setUserId(profile.getVkId());
+                accessToken.setExpirationMoment(profile.getExtTime());
+                vk.setAccessToken(accessToken);
+                try {
+                    return vk.execute().getPostStats(newPosts);
+                } catch (VKException e) {
+                }
+            }
+        }
+        return newPosts;
     }
 }
