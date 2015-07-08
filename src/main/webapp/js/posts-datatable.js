@@ -34,11 +34,11 @@ jQuery(document).ready(function () {
         "aoColumnDefs": [{
             "targets": [0, 1, 2, 4, 5, 6], "orderable": false
         }, {
+            "class": "dt-body-center", "targets": [4, 6]
+        }, {
             "class": "dt-body-left", "targets": 0
         }, {
-            "class": "dt-body-right", "targets": 6
-        }, {
-            "width": "60%", "targets": 0
+            "width": "50%", "targets": 0
         }, {
             "width": "10%", "targets": 3
         }, {
@@ -48,43 +48,32 @@ jQuery(document).ready(function () {
         }, {
             "aTargets": [0], "createdCell": function (td, cellData, rowData, row, col) {
                 $(td).html('<a target="_blank" href="http://vk.com/wall' + rowData[2] + '" >' + cellData + '</a>');
-
             }
         }, {
             "aTargets": [1], "createdCell": function (td, cellData, rowData, row, col) {
-
                 var strCellValue = '<a href=\"javascript:reloadData(\'' + cellData.toString() + '\')\" >' + cellData + "</a>";
                 $(td).html(strCellValue);
-
             }
         }, {
             "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
-
                 var tokens = cellData.split("|");
-
-                $(td).html('<img src=\"/img/like.png" width="23" height="23"> ' + tokens[0] + '   <img src=\"/img/speaker.png" width="23" height="23"> ' +
-                    tokens[1] + '    <img src=\"/img/comment.png" width="23" height="23"> ' + tokens[2]);
-
+                $(td).html('<table onclick="openPostStats(\'' + rowData[6] + '\')"><tr>' +
+                    '<td><img src="/img/like.png" width="18" height="18"> <span class="badge bg-important">' + tokens[0] + '</span></td>' +
+                    '<td><img src="/img/speaker.png" width="18" height="18"> <span class="badge bg-important">' + tokens[1] + '</span></td>' +
+                    '<td><img src="/img/comment.png" width="18" height="18"> <span class="badge bg-important">' + tokens[2] + '</span></td>' +
+                    '</tr></table>');
             }
-        },
-
-            {
-                "bVisible": false, "aTargets": [2]
-                //"aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
-                //$(td).html(cellData);
-                //$(td).html(parseAttachment(cellData));
-            },
-
-            {
-                "aTargets": [6], "createdCell": function (td, cellData, rowData, row, col) {
-
-                $(td).html('<div class="btn-group"><a class="btn btn-success" href="#"><i class="icon_check_alt2"></i></a> <a class="btn btn-danger" onclick="removePost(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
-
+        }, {
+            "width": "30%", "targets": 4
+        }, {
+            "width": "5%", "targets": 6
+        }, {
+            "bVisible": false, "aTargets": [2]
+        }, {
+            "aTargets": [6], "createdCell": function (td, cellData, rowData, row, col) {
+                $(td).html('<a class="btn btn-danger" onclick="removePost(' + cellData + ')"><i class="icon_close_alt2"></i></a>');
             }
-            }
-
-
-        ]
+        }]
 
     });
 
@@ -99,7 +88,6 @@ jQuery(document).ready(function () {
 
 
 //$(".dataTables_length").attr("hidden", "");
-
 
     $('#refreshbtn').click(function () {
         table.fnStandingRedraw();
