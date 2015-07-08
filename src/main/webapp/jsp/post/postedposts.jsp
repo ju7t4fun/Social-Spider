@@ -67,6 +67,19 @@
     <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
     <![endif]-->
 
+    <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
+    <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
+
+    <script type="text/javascript">
+        // При завантаженні сторінки
+        setTimeout(function () {
+            if (${toastr_notification!=null}) {
+                var args = "${toastr_notification}".split("|");
+                toastrNotification(args[0], args[1]);
+            }
+        }, 500);
+    </script>
+
 </head>
 
 <body>
@@ -122,8 +135,8 @@
                                 </thead>
                                 </tbody>
                             </table>
-                            <input class="btn btn-primary" style="visibility: hidden" type="button" id="showAllBtnId"
-                                   onclick="myFunc()" value="Show All"/>
+                            <%--<input class="btn btn-primary" style="visibility: hidden" type="button" id="showAllBtnId"--%>
+                                   <%--onclick="myFunc()" value="Show All"/>--%>
                         </div>
                     </div>
                 </div>
@@ -131,6 +144,7 @@
         </section>
     </section>
 </section>
+<%--Вікно статистики поста--%>
 <div class="b-popup" id="popup_post_stats">
     <div class="b-popup-content" style="height: 340px;">
         <h4>Post Stats</h4>
@@ -225,7 +239,7 @@
 </div>
 <script>
     function myFunc() {
-        var newUrl = path + "/post?action=fillpostedposts";
+        var newUrl = path + "/post?action=getPosted";
         table.api().ajax.url(newUrl).load();
         document.getElementById("showAllBtnId").style.visibility = "hidden";
     }

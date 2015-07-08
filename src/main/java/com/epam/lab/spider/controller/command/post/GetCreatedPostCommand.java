@@ -34,24 +34,20 @@ public class GetCreatedPostCommand implements ActionCommand {
         List<Post> posts;
         int postCount;
         String nameToSearch = request.getParameter("sSearch");
-        if (nameToSearch != null && nameToSearch !="" ) {
+        if (nameToSearch != null && nameToSearch != "" ) {
             nameToSearch = "%" + nameToSearch + "%";
-            postCount = service.getCountByUserIdWithSearch(user.getId(),nameToSearch);
-            posts = service.getByUserIdWithSearch(user.getId(), page, size,nameToSearch);
-
+            postCount = service.getCountByUserIdWithSearch(user.getId(), nameToSearch);
+            posts = service.getByUserIdWithSearch(user.getId(), page, size, nameToSearch);
         } else {
             posts = service.getByUserId(user.getId(), page, size);
             postCount = service.getCountByUserId(user.getId());
-
         }
-
 
         JSONObject result = new JSONObject();
         JSONArray array = new JSONArray();
 
         if (posts != null) {
-            for (int i = 0; i < posts.size(); i++) {
-                Post post = posts.get(i);
+            for (Post post : posts) {
                 JSONArray row = new JSONArray();
                 row.put(post.getId());
                 row.put(post.getMessage().length() > 75 ? post.getMessage().substring(0, 72) + "..." : post

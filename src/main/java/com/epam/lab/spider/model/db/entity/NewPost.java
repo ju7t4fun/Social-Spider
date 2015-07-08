@@ -5,6 +5,7 @@ import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.api.Stats;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
+import com.epam.lab.spider.model.db.service.OwnerService;
 import com.epam.lab.spider.model.db.service.PostService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
 import com.epam.lab.spider.model.db.service.WallService;
@@ -35,12 +36,13 @@ public class NewPost {
 
     private Stats stats;
     private Post post;
+    private Owner owner = null;
 
     public String getFullId() {
         if (fullId != null)
             return fullId;
         if (vkPostId != null)
-            fullId = wallService.getById(wallId).getOwner().getVkId() + "_" + vkPostId;
+            fullId = getOwner().getVkId() + "_" + vkPostId;
         return fullId;
     }
 
@@ -259,6 +261,14 @@ public class NewPost {
                 ", vkPostId=" + vkPostId +
                 ", post=" + post +
                 '}';
+    }
+
+    public Owner getOwner() {
+        if (owner == null) {
+            WallService service = factory.create(WallService.class);
+            owner = service.getById(wallId).getOwner();
+        }
+        return owner;
     }
 
     public enum State {

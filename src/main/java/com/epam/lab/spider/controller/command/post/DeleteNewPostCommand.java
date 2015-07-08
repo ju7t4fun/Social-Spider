@@ -25,7 +25,7 @@ public class DeleteNewPostCommand implements ActionCommand {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
-        int id = Integer.parseInt(request.getParameter("newPostId"));
+        int id = Integer.parseInt(request.getParameter("post_id"));
         JSONObject json = new JSONObject();
         if (service.delete(id)) {
             json.put("status", "success");

@@ -204,6 +204,7 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
         }
         return false;
     }
+
     public boolean updateStage(NewPost nPost) {
         try (Connection connection = PoolConnection.getConnection()) {
             return npdao.updateState(connection, nPost.getId(), nPost.getState());
@@ -234,7 +235,7 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
 
     public List<NewPost> getAllWithQuery(String someQuery) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return npdao.getAllWithQuery(connection,someQuery);
+            return npdao.getAllWithQuery(connection, someQuery);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -243,11 +244,65 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
 
     public int getCountWithQuery(String query) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return npdao.getCountWithQuery(connection,query);
+            return npdao.getCountWithQuery(connection, query);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return -1;
     }
 
+    public int getPostedCountByUserIdWithSearch(Integer id, String sSearch) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.getPostedCountByUserIdWithSearch(connection, id, sSearch);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public List<NewPost> getPostedByUserIdWithSearch(Integer id, int page, int size, String sSearch) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.getPostedByUserIdWithSearch(connection, id, page, size, sSearch);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<NewPost> getPostedByUserId(Integer id, int page, int size) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.getPostedByUserId(connection, id, page, size);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getPostedCountByUserId(Integer id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.getPostedCountByUserId(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public List<NewPost> getByUserIdWithParameters(Integer id, int offset, int limit, String type, String q, String
+            order, Integer wallId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.getByUserIdWithParameters(connection, id, offset, limit, type, q, order, wallId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getCountAllByUserIdWithParameters(Integer id, String type, String q, Integer wallId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.getCountAllByUserIdWithParameters(connection, id, type, q,  wallId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }

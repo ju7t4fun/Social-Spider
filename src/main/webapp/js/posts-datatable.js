@@ -4,10 +4,10 @@
 var table;
 
 
-function reloadData(grName) {
+function reloadData(postId) {
 
     document.getElementById("showAllBtnId").style.visibility = "visible";
-    var newUrl = path + "/post?action=fillpostedposts&groupNameToGroup=" + grName;
+    var newUrl = "/post?action=getPosted&postId=" + postId;
     table.api().ajax.url(newUrl).load();
 
     document.getElementById("showAllBtnId").style.visibility = "visible";
@@ -25,11 +25,13 @@ jQuery(document).ready(function () {
         "bProcessing": true,
         'iDisplayLength': 10,
         "bServerSide": true,
-        "sAjaxSource": path + "/post?action=fillpostedposts",
+        "sAjaxSource": "/post?action=getPosted",
         colVis: {
             "align": "right",
             "buttonText": "columns <img src=\"/img/caaret.png\"/>",
         },
+        //showAllBtnId
+        "sDom": '<"top"<"toolbar">f>t<"bottom"lp><"clear">',
 
         "aoColumnDefs": [{
             "targets": [0, 1, 2, 4, 5, 6], "orderable": false
@@ -51,16 +53,16 @@ jQuery(document).ready(function () {
             }
         }, {
             "aTargets": [1], "createdCell": function (td, cellData, rowData, row, col) {
-                var strCellValue = '<a href=\"javascript:reloadData(\'' + cellData.toString() + '\')\" >' + cellData + "</a>";
+                var strCellValue = '<a href=\"javascript:reloadData(\'' + rowData[6] + '\')\" >' + cellData + "</a>";
                 $(td).html(strCellValue);
             }
         }, {
             "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
                 var tokens = cellData.split("|");
                 $(td).html('<table onclick="openPostStats(\'' + rowData[6] + '\')"><tr>' +
-                    '<td><img src="/img/like.png" width="18" height="18"> <span class="badge bg-important">' + tokens[0] + '</span></td>' +
-                    '<td><img src="/img/speaker.png" width="18" height="18"> <span class="badge bg-important">' + tokens[1] + '</span></td>' +
-                    '<td><img src="/img/comment.png" width="18" height="18"> <span class="badge bg-important">' + tokens[2] + '</span></td>' +
+                    '<td><i style="color: #6c6c6c;" class="fa fa-heart"></i> <span class="badge bg-important">' + tokens[0] + '</span></td>' +
+                    '<td><i style="color: #6c6c6c;" class="fa fa-bullhorn"></i> <span class="badge bg-important">' + tokens[1] + '</span></td>' +
+                    '<td><i style="color: #6c6c6c;" class="fa fa-comment"></i> <span class="badge bg-important">' + tokens[2] + '</span></td>' +
                     '</tr></table>');
             }
         }, {
@@ -71,23 +73,23 @@ jQuery(document).ready(function () {
             "bVisible": false, "aTargets": [2]
         }, {
             "aTargets": [6], "createdCell": function (td, cellData, rowData, row, col) {
-                $(td).html('<a class="btn btn-danger" onclick="removePost(' + cellData + ')"><i class="icon_close_alt2"></i></a>');
+                $(td).html('<a class="btn btn-danger" onclick="removePost(' + cellData + ')"><i' +
+                    ' class="icon_close_alt2"></i></a>');
             }
         }]
 
     });
 
-//            $(".dataTables_filter").attr("hidden", "");
-    $(".dataTables_length").attr("hidden", "");
+    //$(".dataTables_filter").attr("hidden", "");
+    //$(".dataTables_length").attr("hidden", "");
     var dataTables_filter_input = $(".dataTables_filter").find("input");
     dataTables_filter_input.attr("class", "form-control");
     dataTables_filter_input.attr("style", "width: 500px")
 
+    //$(".dataTables_filter").attr("hidden", "");
+    //$(".dataTables_length").attr("hidden", "");
 
-//$(".dataTables_filter").attr("hidden", "");
-
-
-//$(".dataTables_length").attr("hidden", "");
+    $("div.toolbar").html('<input style="position: absolute; top: 35px; left: 35px; visibility: hidden" class="btn btn-default" type="button" id="showAllBtnId" onclick="myFunc()" value="Show All"/>');
 
     $('#refreshbtn').click(function () {
         table.fnStandingRedraw();
@@ -95,7 +97,6 @@ jQuery(document).ready(function () {
 
 })
 ;
-
 
 function removePost(i) {
     deleteConfirmPosted(i);

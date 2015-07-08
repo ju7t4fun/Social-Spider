@@ -87,13 +87,12 @@
 
                 for (var i = 0; i < response.attachments.length; i++) {
                     var atr = checkType(i);
-                        alert(response.attachments[i].url);
-                        row.append('<td id="' + response.attachID[i].id + '"><div style="margin: 0px 20px;"><' + atr +
-                                ' width="240" height="200"  src="' + response.attachments[i].url + '"></' + atr +
-                                '></div><td>');
-                        if (i % 2 != 0) {
-                            row = $('<tr></tr>');
-                        }
+                    row.append('<td id="' + response.attachID[i].id + '"><div style="margin: 0px 20px;"><' + atr +
+                            ' width="240" height="200"  src="' + response.attachments[i].url + '"></' + atr +
+                            '></div><td>');
+                    if (i % 2 != 0) {
+                        row = $('<tr></tr>');
+                    }
 
                     attach.append(row);
                 }

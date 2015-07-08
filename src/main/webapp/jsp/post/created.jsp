@@ -253,7 +253,6 @@
         </section>
     </section>
 </section>
-</section>
 
 <%--Вікно публікації--%>
 <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="publish_modal"
