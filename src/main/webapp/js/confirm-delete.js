@@ -91,6 +91,28 @@ function deleteConfirmPosted(id) {
     });
 }
 
+function deleteConfirmQueued(id) {
+    $('#mod-delete').addClass('mod-show');
+    $('#delete_butt').click(function () {
+        $('#mod-delete').removeClass('mod-show');
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "http://localhost:8080//post?action=deleteNewPost&post_id=" + id, true);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                var response = JSON.parse(xmlhttp.responseText);
+                toastrNotification(response.status, response.msg);
+                if (response.status === 'success') {
+                    $('#queuedTable').DataTable().row($(this).parents('tr')).remove().draw(false);
+                }
+            }
+        }
+        xmlhttp.send();
+    });
+    $('#cancel_butt').click(function () {
+        $('#mod-delete').removeClass('mod-show');
+    });
+}
+
 function deleteConfirmProfile(id) {
     $('#mod-delete').addClass('mod-show');
     $('#delete_butt').click(function () {

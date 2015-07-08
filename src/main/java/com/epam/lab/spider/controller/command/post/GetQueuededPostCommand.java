@@ -59,24 +59,22 @@ public class GetQueuededPostCommand implements ActionCommand {
                         "..." : post.getPost().getMessage());
                 row.put(post.getOwner().getName());
                 Set<Attachment> attachments = post.getPost().getAttachments();
-                if (attachments != null) {
-                    if (attachments.size() > 0) {
-                        Map<Attachment.Type, Integer> attachmentCount = new HashMap<>();
-                        for (Attachment attachment : attachments) {
-                            int count = 0;
-                            if (attachmentCount.containsKey(attachment.getType())) {
-                                count = attachmentCount.get(attachment.getType());
-                            }
-                            count++;
-                            attachmentCount.put(attachment.getType(), count);
+                if (attachments != null && attachments.size() > 0) {
+                    Map<Attachment.Type, Integer> attachmentCount = new HashMap<>();
+                    for (Attachment attachment : attachments) {
+                        int count = 0;
+                        if (attachmentCount.containsKey(attachment.getType())) {
+                            count = attachmentCount.get(attachment.getType());
                         }
-                        String group = null;
-                        for (Attachment.Type type : attachmentCount.keySet()) {
-                            group = group == null ? "" + type + "|" + attachmentCount.get(type) : group + "!" + type +
-                                    "|" + attachmentCount.get(type);
-                        }
-                        row.put(group);
+                        count++;
+                        attachmentCount.put(attachment.getType(), count);
                     }
+                    String group = null;
+                    for (Attachment.Type type : attachmentCount.keySet()) {
+                        group = group == null ? "" + type + "|" + attachmentCount.get(type) : group + "!" + type +
+                                "|" + attachmentCount.get(type);
+                    }
+                    row.put(group);
                 } else {
                     row.put("");
                 }

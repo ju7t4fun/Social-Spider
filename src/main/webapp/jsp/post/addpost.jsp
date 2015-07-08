@@ -412,8 +412,8 @@
                         onAjaxSuccess
                 );
                 function onAjaxSuccess(data) {
-                    var responce = JSON.parse(data);
-                    if (responce.status === 'success') {
+                    var response = JSON.parse(data);
+                    if (response.status === 'success') {
                         location.href = "/post?action=queued";
                     }
                 }
@@ -432,7 +432,7 @@
     <!-- nice scroll -->
     <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js"
-            <%--type="text/javascript"></script>--%>
+    <%--type="text/javascript"></script>--%>
     <!--script for this page only-->
     <script src="${pageContext.request.contextPath}/js/calendar-custom.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.rateit.min.js"></script>

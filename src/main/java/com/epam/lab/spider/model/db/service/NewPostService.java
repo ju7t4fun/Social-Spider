@@ -43,7 +43,6 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
         return SavableServiceUtil.customSave(conn, entity, new Object[]{entity.getPost()}, new Object[]{});
     }
 
-    @Deprecated
     @Override
     public boolean insert(NewPost nPost) {
         boolean res = true;
@@ -72,18 +71,13 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
         return true;
     }
 
-    @Deprecated
     @Override
     public boolean update(int id, NewPost nPost) {
         try {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                if (nPost.getPostId() != null) {
-                    if (!pdao.getById(connection, nPost.getPostId()).equals(nPost.getPost())) {
-                        assertTransaction(pdao.insert(connection, nPost.getPost()));
-                    }
-                } else {
+                if (nPost.getPostId() == null) {
                     assertTransaction(pdao.insert(connection, nPost.getPost()));
                 }
                 assertTransaction(npdao.update(connection, id, nPost));
@@ -299,7 +293,7 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
 
     public int getCountAllByUserIdWithParameters(Integer id, String type, String q, Integer wallId) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return npdao.getCountAllByUserIdWithParameters(connection, id, type, q,  wallId);
+            return npdao.getCountAllByUserIdWithParameters(connection, id, type, q, wallId);
         } catch (SQLException e) {
             e.printStackTrace();
         }

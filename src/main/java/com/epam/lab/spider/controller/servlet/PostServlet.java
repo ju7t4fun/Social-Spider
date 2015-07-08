@@ -50,6 +50,8 @@ public class PostServlet extends HttpServlet {
             commands.put("postStats", new GetStatPostIdCommand());
             commands.put("getPosted", new GetPostedPostCommand());
             commands.put("getQueueded", new GetQueuededPostCommand());
+            commands.put("getPostedDate", new GetPostedDateCommand());
+            commands.put("changeTime", new ChangeTimePostedCommand());
         }
     }
 }

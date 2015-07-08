@@ -181,28 +181,22 @@ public class NewPost {
 
     public com.epam.lab.spider.controller.vk.api.Stats.Reach getPostReach() {
         if (vkPostId != null) {
+            WallService wallService = new WallService();
+            Wall wall = wallService.getById(wallId);
+            Profile profile = wall.getProfile();
+            Vkontakte vk = new Vkontakte(profile.getAppId());
+            AccessToken accessToken = new AccessToken();
+            accessToken.setAccessToken(profile.getAccessToken());
+            accessToken.setUserId(profile.getVkId());
+            accessToken.setExpirationMoment(profile.getExtTime().getTime());
+            vk.setAccessToken(accessToken);
+            Parameters param = new Parameters();
+            param.add("owner_id", wall.getOwner().getVkId());
+            param.add("post_id", vkPostId);
             try {
-                WallService wallService = new WallService();
-                Wall wall = wallService.getById(wallId);
-                Profile profile = wall.getProfile();
-                Vkontakte vk = new Vkontakte(profile.getAppId());
-                AccessToken accessToken = new AccessToken();
-                accessToken.setAccessToken(profile.getAccessToken());
-                accessToken.setUserId(profile.getVkId());
-                accessToken.setExpirationMoment(profile.getExtTime().getTime());
-                vk.setAccessToken(accessToken);
-                Parameters param = new Parameters();
-                param.add("owner_id", wall.getOwner().getVkId());
-                param.add("post_id", vkPostId);
-                try {
-                    return vk.stats().getPostReach(param);
-                } catch (VKException e) {
-                    e.printStackTrace();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                return vk.stats().getPostReach(param);
+            } catch (VKException ignored) {
             }
-
         }
         return new com.epam.lab.spider.controller.vk.api.Stats.Reach() {
             @Override
