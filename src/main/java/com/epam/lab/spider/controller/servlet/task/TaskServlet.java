@@ -38,6 +38,7 @@ public class TaskServlet extends HttpServlet {
             commands.put("stateChange", new StateChangeTaskCommand());
             commands.put("gettasks", new GetAllTasks());
             commands.put("deletetask", new DeleteTaskCommand());
+            commands.put("showtasksforadmin", new ShowAllTasksAdmin());
         }
 
     }

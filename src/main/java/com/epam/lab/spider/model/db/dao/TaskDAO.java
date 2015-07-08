@@ -35,5 +35,7 @@ public interface TaskDAO extends CRUD<Task>,SavableDAO<Task> {
 
     int getActiveCount(Connection connection) throws SQLException;
 
+    Task getByIdAdminRules(Connection connection, int id) throws SQLException;
+
 
 }

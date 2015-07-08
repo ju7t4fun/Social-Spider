@@ -41,7 +41,13 @@ public class StateChangeTaskCommand implements ActionCommand {
             Integer index = Integer.parseInt(taskIdString);
             Task.State state = Task.State.valueOf(toStateString.toUpperCase());
 
-            Task task = taskService.getByIdAndLimitByUserId(index, user.getId());
+            Task task;
+            if (user.getRole() == User.Role.ADMIN ) {
+                task = taskService.getByIdNoLimit(index);
+            } else {
+                task = taskService.getByIdAndLimitByUserId(index, user.getId());
+            }
+
             boolean result;
             if(state == Task.State.RUNNING) {
                 result = TaskUtil.changeStageToRunning(task);

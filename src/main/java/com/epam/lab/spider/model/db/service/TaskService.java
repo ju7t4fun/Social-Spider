@@ -193,6 +193,16 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
         return null;
     }
 
+
+    public Task getByIdNoLimit(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getByIdAdminRules(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Task> getRunnableByNextRunDate(Date date) {
         try (Connection connection = PoolConnection.getConnection()) {
             return tdao.getAllByNextRunDateLimitByState(connection, date, Task.State.RUNNING);

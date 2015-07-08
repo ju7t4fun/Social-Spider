@@ -28,8 +28,10 @@
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="${pageContext.request.contextPath}/task"><l:resource key="alltasks"/></a></li>
-                            <li><a class="" href="${pageContext.request.contextPath}/task?action=create"><l:resource key="addnewtask"/></a></li>
+                            <li><a class="" href="${pageContext.request.contextPath}/task"><l:resource
+                                    key="alltasks"/></a></li>
+                            <li><a class="" href="${pageContext.request.contextPath}/task?action=create"><l:resource
+                                    key="addnewtask"/></a></li>
                         </ul>
                     </li>
                     <li>
@@ -42,6 +44,7 @@
                             <span><l:resource key="category"/></span>
                         </a>
                     </li>
+
                 </ul>
             </c:when>
             <c:when test="${user.role =='ADMIN'}">
@@ -60,16 +63,26 @@
                         </a>
                         <ul class="sub">
                             <li>
-                                <a class="" href="${pageContext.request.contextPath}/admin/users"><l:resource key="userslist"/></a>
+                                <a class="" href="${pageContext.request.contextPath}/admin/users"><l:resource
+                                        key="userslist"/></a>
                             </li>
                             <li>
-                                <a class="" href="${pageContext.request.contextPath}/admin/categories"><l:resource key="category"/>
+                                <a class="" href="${pageContext.request.contextPath}/admin/categories"><l:resource
+                                        key="category"/>
                                 </a>
                             </li>
                             <li>
-                                <a class="" href="${pageContext.request.contextPath}/admin/groups"><l:resource key="groups"/></a>
+                                <a class="" href="${pageContext.request.contextPath}/admin/groups"><l:resource
+                                        key="groups"/></a>
                             </li>
                         </ul>
+                    </li>
+
+                    <li class="sub-menu">
+                        <a href="${pageContext.request.contextPath}/task?action=showtasksforadmin" class="">
+                            <i class="icon_genius"></i>
+                            <span>Tasks Binding</span>
+                        </a>
                     </li>
                 </ul>
             </c:when>

@@ -55,6 +55,8 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
             "= category_has_task.task_id WHERE category_id = ? AND deleted = false";
     private static final String SQL_GET_BY_ID_LIMIT_BY_USER_ID_QUERY =
             "SELECT * FROM task WHERE id = ? AND user_id = ?  AND deleted = false";
+    private static final String SQL_GET_BY_ID_ADMIN_QUERY =
+            "SELECT * FROM task WHERE id = ?  AND deleted = false";
     private static final String SQL_GET_ALL_BY_DATE_TIME_LIMIT_BY_STATE_QUERY =
             "SELECT * FROM task WHERE next_task_run < ? AND state = ?  AND deleted = false";
 
@@ -205,6 +207,12 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
     public Task getByIdLimitByUserId(Connection connection, int id, int userId) throws SQLException {
         return first(select(connection, SQL_GET_BY_ID_LIMIT_BY_USER_ID_QUERY, id, userId));
     }
+
+    @Override
+    public Task getByIdAdminRules(Connection connection, int id) throws SQLException {
+        return first(select(connection, SQL_GET_BY_ID_ADMIN_QUERY, id));
+    }
+
     @Override
     public List<Task> getAllByNextRunDateLimitByState(Connection connection, Date date, Task.State state) throws SQLException {
         return select(connection, SQL_GET_ALL_BY_DATE_TIME_LIMIT_BY_STATE_QUERY, date,state.toString());
