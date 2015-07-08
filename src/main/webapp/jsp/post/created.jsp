@@ -28,6 +28,8 @@
     <!--external css-->
     <link href="${pageContext.request.contextPath}/css/core.css" rel="stylesheet">
 
+
+
     <!-- font icon -->
     <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet"/>

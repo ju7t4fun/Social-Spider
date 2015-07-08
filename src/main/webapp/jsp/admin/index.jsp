@@ -38,10 +38,6 @@
     <!-- nice scroll -->
     <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
-    <!-- chartjs -->
-    <script src="${pageContext.request.contextPath}/assets/chart-master/Chart.js"></script>
-    <!-- custom chart script for this page only-->
-    <script src="${pageContext.request.contextPath}/js/chartjs-custom.js"></script>
     <!--custome script for all page-->
     <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 
@@ -50,69 +46,12 @@
     <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
 
-
-
-    <%--Статистика--%>
-    <script>
-
-        $(document).ready(function () {
-            // Handler for .ready() called.
-            showGroupStat();
-        });
-
-
-        function showGroupStat() {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/admin?action=vkgroupstats', true);
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4) {
-                    var response = JSON.parse(xmlhttp.responseText);
-                    if (response.status == 'error')
-                        toastrNotification(response.status, response.msg);
-                    else {
-                        drawChart(response);
-                        $('#startDate').attr("max", response.max);
-                        $('#startDate').attr("value", response.date_from);
-                        $('#endDate').attr("max", response.max);
-                        $('#endDate').attr("value", response.date_to);
-                    }
-                }
-            };
-            xmlhttp.send();
-        }
-
-        function redrawChart() {
-            var dateFrom = document.getElementById("startDate").value;
-            var dateTo = document.getElementById("endDate").value;
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/admin?action=vkgroupstats&date_from=' + dateFrom + "&date_to=" + dateTo, true);
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4) {
-                    var response = JSON.parse(xmlhttp.responseText);
-                    if (response.status == 'error')
-                        toastrNotification(response.status, response.msg);
-                    else
-                        drawChart(response);
-                }
-            };
-            xmlhttp.send();
-        }
-
-        function drawChart(response) {
-            new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
-            new Chart(document.getElementById("bar").getContext("2d")).Bar(response.bar);
-            new Chart(document.getElementById("pie").getContext("2d")).Pie(response.pie);
-            $("#country_list").empty();
-            for (var i = 0; i < response.pie.length; i++) {
-                $("#country_list").append('<li class="list-group-item row"><div style="border-radius: 4px; width: 20px; height: 20px; background: ' + response.pie[i].color + '"><span style="margin-left: 30px">  ' + response.pie[i].name + '</span></div></li>');
-            }
-            $("#day1").html(response.day);
-            $("#day2").html(response.day);
-            $("#visitors").html(response.visitors);
-            $("#dayVisitors").html(response.dayVisitors);
-        }
-
-    </script>
+    <%--for charts--%>
+    <%--line diagram lib--%>
+    <script src="${pageContext.request.contextPath}/js/highstock.js"></script>
+    <script src="${pageContext.request.contextPath}/js/exporting.js"></script>
+    <%--gender and pie diagram lib--%>
+    <script src="${pageContext.request.contextPath}/js/highcharts.js"></script>
 
 </head>
 
@@ -122,7 +61,7 @@
 <jsp:include page="../pagecontent/sidebar.jsp"/>
 
 <!-- container section start -->
-<section id="container" class="">
+<section id="container1" class="">
 
 
     <section id="main-content">
@@ -139,103 +78,237 @@
 
             <!-- page start-->
 
-
-
-                <div class="modal-body">
-                    <div class="row" >
-                        <!-- chart morris start -->
-
-                        <div class="col-lg-12">
-                            <section class="panel">
-                                <%--<header class="panel-heading" style="position: fixed; left: 300px; top:300px;">--%>
-                                <%--<Char>General Chart</Char>--%>
-                                <%--</header>--%>
-
-
-                                <div style="margin-left: 50px">
-                                    <label for="startDate" ><l:resource
-                                            key="charts.from"/></label>
-                                    <l:resource key="charts.startdate"><input id="startDate" name="date" type="date" style="width: 200px"
-                                                                              class="form-control"
-                                                                              ></l:resource>
-                                    <label for="endDate" ><l:resource key="charts.to"/></label>
-                                    <l:resource key="charts.enddate"><input id="endDate" name="date" type="date" style="width: 200px"
-                                                                            class="form-control" ></l:resource>
-
-                                    <a onclick="redrawChart()"  class="btn btn-default"><l:resource key="charts.update"/></a>
-                                </div>
-
-                                <div class="panel-body" style="margin-top: 50px;">
-                                    <div class="tab-pane" id="chartjs">
-                                        <div class="row">
-                                            <!-- Line -->
-                                            <div class="col-lg-6" >
-                                                <section class="panel">
-                                                    <header class="panel-heading" style="margin-left: 50px;">
-                                                        Unique visitors and views
-                                                    </header>
-                                                    <div style="margin-left: 50px; width: 600px">
-                                                        <l:resource key="charts.uniquevisitsdaily"/>
-                                                        <span id="day1"></span> <l:resource key="charts.days"/>:
-                                                        <span id="dayVisitors"></span><br>
-                                                        <l:resource key="charts.uniquevisits"/>
-                                                        <span id="day2"></span> <l:resource key="charts.days"/>:
-                                                        <span id="visitors"></span>
-                                                    </div>
-                                                    <div class="panel-body text-center"  >
-                                                        <canvas id="line" height="500" width="930" ></canvas>
-                                                    </div>
-                                                </section>
-                                            </div>
-                                        </div>
-                                        <!-- Bar -->
-                                        <div class="row">
-                                            <div class="col-lg-6" >
-                                                <section class="panel">
-                                                    <header class="panel-heading" style="margin-left: 50px;">
-                                                        <l:resource key="charts.age"/>
-                                                    </header>
-                                                    <div class="panel-body text-center">
-                                                        <canvas id="bar" height="500" width="930"></canvas>
-                                                    </div>
-                                                </section>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <!-- Pie -->
-                                            <div class="col-lg-6" >
-                                                <section class="panel">
-                                                    <header class="panel-heading">
-                                                        <l:resource key="charts.geografy"/>
-                                                    </header>
-                                                    <div class="panel-body text-center">
-                                                        <canvas id="pie" height="400" width="400"></canvas>
-                                                    </div>
-                                                </section>
-                                            </div>
-                                            <div class="col-lg-6" style="margin-left: 5px">
-                                                <section class="panel" style="margin-top: 31px">
-                                                    <ul class="list-group" id="country_list">
-                                                    </ul>
-                                                </section>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- chart morris start -->
+                    <div id="line-diagram" style="height: 400px; min-width: 310px"></div>
                 </div>
+            </div>
+            <br>
 
+            <div class="modal-body">
+                <div class="row">
+                    <!-- chart morris start -->
+                    <div id="gender-diagram"
+                         style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+                </div>
+            </div>
+            <br>
 
+            <div class="modal-body">
+                <div class="row">
+                    <!-- chart morris start -->
+                    <div id="pie-diagram"
+                         style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+                </div>
+            </div>
+            <br>
             <!-- page end-->
         </section>
     </section>
 </section>
 <!-- container section end -->
 
+<%--script for line diagram--%>
+<script>
+    $(function () {
+        var seriesOptions = [],
+                seriesCounter = 0,
+                names = ['MSFT', 'AAPL', 'GOOG'],
+        // create the chart when all data is loaded
+                createChart = function () {
 
+                    $('#line-diagram').highcharts('StockChart', {
 
+                        rangeSelector: {
+                            selected: 4
+                        },
+
+                        yAxis: {
+                            labels: {
+                                formatter: function () {
+                                    return (this.value > 0 ? ' + ' : '') + this.value + '%';
+                                }
+                            },
+                            plotLines: [{
+                                value: 0,
+                                width: 2,
+                                color: 'silver'
+                            }]
+                        },
+
+                        plotOptions: {
+                            series: {
+                                compare: 'percent'
+                            }
+                        },
+
+                        tooltip: {
+                            pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
+                            valueDecimals: 2
+                        },
+
+                        series: seriesOptions
+                    });
+                };
+
+        $.each(names, function (i, name) {
+
+            $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=' + name.toLowerCase() + '-c.json&callback=?', function (data) {
+
+                seriesOptions[i] = {
+                    name: name,
+                    data: data
+                };
+
+                // As we're loading the data asynchronously, we don't know what order it will arrive. So
+                // we keep a counter and create the chart when all the data is loaded.
+                seriesCounter += 1;
+
+                if (seriesCounter === names.length) {
+                    createChart();
+                }
+            });
+        });
+    });
+</script>
+
+<%--script for gender diagram--%>
+<script>
+    // Data gathered from http://populationpyramid.net/germany/2015/
+    $(function () {
+        // Age categories
+        var categories = ['0-4', '5-9', '10-14', '15-19',
+            '20-24', '25-29', '30-34', '35-39', '40-44',
+            '45-49', '50-54', '55-59', '60-64', '65-69',
+            '70-74', '75-79', '80-84', '85-89', '90-94',
+            '95-99', '100 + '];
+        $(document).ready(function () {
+            $('#gender-diagram').highcharts({
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Population pyramid for Germany, 2015'
+                },
+                subtitle: {
+                    text: 'Source: <a href="http://populationpyramid.net/germany/2015/">Population Pyramids of the World from 1950 to 2100</a>'
+                },
+                xAxis: [{
+                    categories: categories,
+                    reversed: false,
+                    labels: {
+                        step: 1
+                    }
+                }, { // mirror axis on right side
+                    opposite: true,
+                    reversed: false,
+                    categories: categories,
+                    linkedTo: 0,
+                    labels: {
+                        step: 1
+                    }
+                }],
+                yAxis: {
+                    title: {
+                        text: null
+                    },
+                    labels: {
+                        formatter: function () {
+                            return Math.abs(this.value) + '%';
+                        }
+                    }
+                },
+
+                plotOptions: {
+                    series: {
+                        stacking: 'normal'
+                    }
+                },
+
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
+                                'Population: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+                    }
+                },
+
+                series: [{
+                    name: 'Male',
+                    data: [-2.2, -2.2, -2.3, -2.5, -2.7, -3.1, -3.2,
+                        -3.0, -3.2, -4.3, -4.4, -3.6, -3.1, -2.4,
+                        -2.5, -2.3, -1.2, -0.6, -0.2, -0.0, -0.0]
+                }, {
+                    name: 'Female',
+                    data: [2.1, 2.0, 2.2, 2.4, 2.6, 3.0, 3.1, 2.9,
+                        3.1, 4.1, 4.3, 3.6, 3.4, 2.6, 2.9, 2.9,
+                        1.8, 1.2, 0.6, 0.1, 0.0]
+                }]
+            });
+        });
+
+    });
+</script>
+
+<%--script for pie diagram--%>
+<script>
+    $(function () {
+
+        $(document).ready(function () {
+
+            // Build the chart
+            $('#pie-diagram').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Browser market shares January, 2015 to May, 2015'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false
+                        },
+                        showInLegend: true
+                    }
+                },
+                series: [{
+                    name: "Brands",
+                    colorByPoint: true,
+                    data: [{
+                        name: "Microsoft Internet Explorer",
+                        y: 56.33
+                    }, {
+                        name: "Chrome",
+                        y: 24.03,
+                        sliced: true,
+                        selected: true
+                    }, {
+                        name: "Firefox",
+                        y: 10.38
+                    }, {
+                        name: "Safari",
+                        y: 4.77
+                    }, {
+                        name: "Opera",
+                        y: 0.91
+                    }, {
+                        name: "Proprietary or Undetectable",
+                        y: 0.2
+                    }]
+                }]
+            });
+        });
+    });
+</script>
 </body>
 </html>
 
