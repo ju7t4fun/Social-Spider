@@ -24,15 +24,23 @@ public class GetAllTasks implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        int page = Integer.parseInt(request.getParameter("iDisplayStart"));
+        int start = Integer.parseInt(request.getParameter("iDisplayStart"));
         int size = Integer.parseInt(request.getParameter("iDisplayLength"));
 
         TaskService service = ServiceFactory.getInstance().create(TaskService.class);
         WallService wallService = ServiceFactory.getInstance().create(WallService.class);
 
-        List<Task> tasks = service.getAll();
-        int tasksCount = service.getCount();
+        List<Task> tasks;
+        int tasksCount;
 
+        String type = request.getParameter("type");
+        if (type!=null && type.equals("active")) {
+            tasks = service.getAllActiveLimited(start, size);
+            tasksCount = service.getActiveCount();
+        } else {
+            tasks = service.getAllLimited(start, size);
+            tasksCount = service.getCount();
+        }
 
         JSONObject result = new JSONObject();
         JSONArray array = new JSONArray();

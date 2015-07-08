@@ -12,7 +12,7 @@ jQuery(document).ready(function () {
 
         "bPaginate": true,
         "order": [0, 'asc'],
-        "bInfo": true,
+        "bInfo": false,
         "bLengthChange": true,
         "iDisplayStart": 0,
         'iDisplayLength': 5,
@@ -20,7 +20,6 @@ jQuery(document).ready(function () {
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource":  "http://localhost:8080/UserFillingTableServlet",
-        "dom": 'C<"clear">lfrtip',
         colVis: {
             "align": "right",
             //restore: "Restore",
@@ -32,7 +31,6 @@ jQuery(document).ready(function () {
         "language": {
             "infoFiltered": ""
         },
-        "dom": 'Cf<"toolbar"">rtip',
 
         "columnDefs": [ {
 
@@ -69,31 +67,12 @@ jQuery(document).ready(function () {
             }
         } ]
 
-    })
-        .columnFilter({
-            aoColumns: [
-                //{ type: "number"},
-                //{ type: "text" },
-                //{ type: "text" },
-                //{ type: "text" },
-                //{ type: "text" },
-                //{ type: "text" },
-            ],
-            bUseColVis: true
-        }).fnSetFilteringDelay();
-    $("#personTable_length").hide();
-    //$(".dataTables_filter").css({ "display" :"none" });
+    });
 
-    $('th').css('backgroundColor', 'white');
 
-    $(".dataTables_filter").css({"position": "auto"});
-    $(".dataTables_filter").css({"left": "30%"});
-    $(".dataTables_filter").css({"right": "30%"});
-    $(".dataTables_filter").css({"top": "2%"});
-    $(".dataTables_filter").css({"width": "350px"});
-    $("div.toolbar").append($("dataTables_filter")).append('<div class="btn-group" style="padding:5px "><button class="btn btn-default" id="refreshbtn" style="background:none;border:1px solid #ccc;height:30px" type="button"><span class="glyphicon glyphicon-refresh" style="padding:3px"></span></button></div>');
-    $("div.toolbar").css("float", "right").css({"position": "relative"});
-
+    var dataTables_filter_input = $(".dataTables_filter").find("input");
+    dataTables_filter_input.attr("class", "form-control");
+    dataTables_filter_input.attr("style", "width: 500px")
 
     $('#refreshbtn').click(function () {
         table.fnStandingRedraw();
