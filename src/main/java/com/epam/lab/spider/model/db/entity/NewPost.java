@@ -3,12 +3,15 @@ package com.epam.lab.spider.model.db.entity;
 import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
+import com.epam.lab.spider.controller.vk.api.Stats;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
 import com.epam.lab.spider.model.db.service.PostService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
 import com.epam.lab.spider.model.db.service.WallService;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Sasha on 12.06.2015.
@@ -117,6 +120,41 @@ public class NewPost {
     }
 
     public Stats getStats() {
+        if (stats == null) {
+            try {
+                WallService wallService = new WallService();
+                Wall wall = wallService.getById(wallId);
+                Profile profile = wall.getProfile();
+                Vkontakte vk = new Vkontakte(profile.getAppId());
+                AccessToken accessToken = new AccessToken();
+                accessToken.setAccessToken(profile.getAccessToken());
+                accessToken.setUserId(profile.getVkId());
+                accessToken.setExpirationMoment(profile.getExtTime().getTime());
+                vk.setAccessToken(accessToken);
+                List<NewPost> posts = new ArrayList<>();
+                posts.add(this);
+                List<NewPost> postStats = vk.execute().getPostStats(posts);
+                stats = postStats.get(0).stats;
+            } catch (VKException e) {
+                stats = new Stats() {
+                    @Override
+                    public int getLikes() {
+                        return 0;
+                    }
+
+                    @Override
+                    public int getReposts() {
+                        return 0;
+                    }
+
+                    @Override
+                    public int getComments() {
+                        return 0;
+                    }
+                };
+            }
+        }
+
         return stats;
     }
 
@@ -141,25 +179,70 @@ public class NewPost {
 
     public com.epam.lab.spider.controller.vk.api.Stats.Reach getPostReach() {
         if (vkPostId != null) {
-            WallService wallService = new WallService();
-            Wall wall = wallService.getById(wallId);
-            Profile profile = wall.getProfile();
-            Vkontakte vk = new Vkontakte(profile.getAppId());
-            AccessToken accessToken = new AccessToken();
-            accessToken.setAccessToken(profile.getAccessToken());
-            accessToken.setUserId(profile.getVkId());
-            accessToken.setExpirationMoment(profile.getExtTime().getTime());
-            vk.setAccessToken(accessToken);
-            Parameters param = new Parameters();
-            param.add("owner_id", wall.getOwner().getVkId());
-            param.add("post_id", wallId);
             try {
-                return vk.stats().getPostReach(param);
-            } catch (VKException e) {
+                WallService wallService = new WallService();
+                Wall wall = wallService.getById(wallId);
+                Profile profile = wall.getProfile();
+                Vkontakte vk = new Vkontakte(profile.getAppId());
+                AccessToken accessToken = new AccessToken();
+                accessToken.setAccessToken(profile.getAccessToken());
+                accessToken.setUserId(profile.getVkId());
+                accessToken.setExpirationMoment(profile.getExtTime().getTime());
+                vk.setAccessToken(accessToken);
+                Parameters param = new Parameters();
+                param.add("owner_id", wall.getOwner().getVkId());
+                param.add("post_id", vkPostId);
+                try {
+                    return vk.stats().getPostReach(param);
+                } catch (VKException e) {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
+
         }
-        return null;
+        return new com.epam.lab.spider.controller.vk.api.Stats.Reach() {
+            @Override
+            public int getReachSubscribers() {
+                return 0;
+            }
+
+            @Override
+            public int getReachTotal() {
+                return 0;
+            }
+
+            @Override
+            public int getLinks() {
+                return 0;
+            }
+
+            @Override
+            public int getToGroup() {
+                return 0;
+            }
+
+            @Override
+            public int getJoinGroup() {
+                return 0;
+            }
+
+            @Override
+            public int getReport() {
+                return 0;
+            }
+
+            @Override
+            public int getHide() {
+                return 0;
+            }
+
+            @Override
+            public int getUnsubscribe() {
+                return 0;
+            }
+        };
     }
 
     @Override

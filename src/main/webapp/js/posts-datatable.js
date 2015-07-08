@@ -57,7 +57,7 @@ jQuery(document).ready(function () {
         }, {
             "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
                 var tokens = cellData.split("|");
-                $(td).html('<table onclick="alert(\'' + rowData[6] + '\')"><tr>' +
+                $(td).html('<table onclick="openPostStats(\'' + rowData[6] + '\')"><tr>' +
                     '<td><img src="/img/like.png" width="18" height="18"> <span class="badge bg-important">' + tokens[0] + '</span></td>' +
                     '<td><img src="/img/speaker.png" width="18" height="18"> <span class="badge bg-important">' + tokens[1] + '</span></td>' +
                     '<td><img src="/img/comment.png" width="18" height="18"> <span class="badge bg-important">' + tokens[2] + '</span></td>' +

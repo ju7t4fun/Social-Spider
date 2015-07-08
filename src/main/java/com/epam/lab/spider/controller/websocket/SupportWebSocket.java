@@ -1,5 +1,6 @@
 package com.epam.lab.spider.controller.websocket;
 
+import com.epam.lab.spider.controller.utils.EventLogger;
 import com.epam.lab.spider.model.db.entity.Message;
 import com.epam.lab.spider.model.db.entity.User;
 import com.epam.lab.spider.model.db.service.MessageService;
@@ -167,6 +168,7 @@ public class SupportWebSocket {
         msg.setText(args[2]);
         msg.setType(Message.Type.TO_USER);
         service.insert(msg);
+        EventLogger.getLogger(id).info("Нове повідомлення", msg.getText());
         if (sessions.containsKey(id)) {
             Session session = sessions.get(id);
             int count = service.getCountUnReadByUserId(id);
