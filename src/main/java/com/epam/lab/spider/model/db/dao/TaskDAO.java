@@ -29,4 +29,11 @@ public interface TaskDAO extends CRUD<Task>,SavableDAO<Task> {
 
     int getCount(Connection connection) throws SQLException;
 
+    List<Task> getAllLimited(Connection connection, int start, int ammount) throws SQLException;
+
+    List<Task> getAllActiveLimited(Connection connection, int start, int ammount) throws SQLException;
+
+    int getActiveCount(Connection connection) throws SQLException;
+
+
 }

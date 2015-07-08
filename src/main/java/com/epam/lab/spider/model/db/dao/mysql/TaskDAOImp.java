@@ -58,7 +58,10 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
     private static final String SQL_GET_ALL_BY_DATE_TIME_LIMIT_BY_STATE_QUERY =
             "SELECT * FROM task WHERE next_task_run < ? AND state = ?  AND deleted = false";
 
+    private static final String SQL_GET_ALL_LIMITED_QUERY = "SELECT * FROM task WHERE deleted = false LIMIT ?, ?";
     private static final String SQL_GET_COUNT = "SELECT COUNT(*) FROM task WHERE  deleted = 0";
+    private static final String SQL_GET_ALL_ACTIVE_LIMITED_QUERY = "SELECT * FROM task WHERE deleted = false AND state='RUNNING' LIMIT ?, ?";
+    private static final String SQL_GET_ACTIVE_COUNT = "SELECT COUNT(*) FROM task WHERE  deleted = 0 AND state='RUNNING'";
 
 
     @Override
@@ -221,8 +224,26 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
     }
 
     @Override
+    public List<Task> getAllLimited(Connection connection, int start, int ammount) throws SQLException {
+        return select(connection, SQL_GET_ALL_LIMITED_QUERY, start, ammount);
+    }
+    @Override
     public int getCount(Connection connection) throws SQLException {
         ResultSet rs = selectQuery(connection, SQL_GET_COUNT);
+        if (rs.next()) {
+            return rs.getInt("COUNT(*)");
+        }
+        return 0;
+    }
+
+    @Override
+    public List<Task> getAllActiveLimited(Connection connection, int start, int ammount) throws SQLException {
+        return select(connection, SQL_GET_ALL_ACTIVE_LIMITED_QUERY, start, ammount);
+    }
+
+    @Override
+    public int getActiveCount(Connection connection) throws SQLException {
+        ResultSet rs = selectQuery(connection, SQL_GET_ACTIVE_COUNT);
         if (rs.next()) {
             return rs.getInt("COUNT(*)");
         }
