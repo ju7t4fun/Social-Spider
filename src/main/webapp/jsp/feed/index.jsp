@@ -52,6 +52,8 @@
     <jsp:include page="../post/viewpost.jsp"/>
     <v:views userId="${user.id}"/>
 
+    <v:views userId="${user.id}"/>
+
     <section id="main-content">
         <section class="wrapper">
             <div class="row">

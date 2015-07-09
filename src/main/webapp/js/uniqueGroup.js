@@ -34,12 +34,12 @@ jQuery(document).ready(function () {
             {
                 "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
 
-                urlBanned = "<img src=\"/img/banned.jpg\" " +
-                    " style=\"width:37px;height:37px;\" " +
+                urlBanned = "<img src=\"/img/groupBanned.png\" " +
+                    " style=\"width:57px;height:57px;\" " +
                     "  onclick=\"changeBan(\'" + rowData[0] + "\')\"  title=\"Banned\" >";
 
-                urlActivated = "<img src=\"/img/activated.jpg\" " +
-                    " style=\"width:37px;height:37px;\" " +
+                urlActivated = "<img src=\"/img/groupApproved.jpg\" " +
+                    " style=\"width:77px;height:57px;\" " +
                     "  onclick=\"changeBan(\'" + rowData[0] + "\')\" title=\"Unbanned\" >";
                 if (cellData == false) {
                     $(td).html(urlActivated);
