@@ -15,6 +15,7 @@ import java.util.List;
 public interface NewPostDAO extends CRUD<NewPost>, SavableDAO<NewPost> {
 
     List<NewPost> getAllUnpostedByDate(Connection connection, Date date) throws SQLException;
+    List<NewPost> getAllUndeletedByDate(Connection connection, Date date) throws SQLException;
 
     boolean setErrorStateByWall(Connection connection, Integer wallId) throws SQLException;
 

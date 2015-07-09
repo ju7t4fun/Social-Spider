@@ -3,10 +3,8 @@ package com.epam.lab.spider.job;
 
 import com.epam.lab.spider.model.db.entity.NewPost;
 import com.epam.lab.spider.model.db.service.NewPostService;
-import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
 import org.apache.log4j.Logger;
 import org.quartz.*;
-import org.quartz.impl.StdSchedulerFactory;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -18,8 +16,8 @@ import static org.quartz.TriggerBuilder.newTrigger;
 /**
  * Created by shell on 6/14/2015.
  */
-public class PostJob implements Job {
-    public static final Logger LOG = Logger.getLogger(PostJob.class);
+public class PostManagerJob implements Job {
+    public static final Logger LOG = Logger.getLogger(PostManagerJob.class);
     NewPostService newPostService = new NewPostService();
 
 
@@ -37,7 +35,7 @@ public class PostJob implements Job {
             newPost.setState(NewPost.State.POSTING);
             newPostService.updateStage(newPost);
 //            SavableServiceUtil.safeSave(newPost);
-            JobDetail jobDetail = newJob(OnePostJob.class).usingJobData("new_post_id", newPost.getId()).build();
+            JobDetail jobDetail = newJob(PostExecutorJob.class).usingJobData("new_post_id", newPost.getId()).build();
             SimpleTrigger jobTrigger = (SimpleTrigger) newTrigger()
                     .startAt(newPost.getPostTime())
                     .forJob(jobDetail)

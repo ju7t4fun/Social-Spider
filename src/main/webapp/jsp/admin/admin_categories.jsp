@@ -14,6 +14,7 @@
     <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
     <meta name="author" content="GeeksLabs">
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
     <title>All Posts</title>
@@ -29,6 +30,7 @@
     <!-- Custom styles -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
+
 
     <!-- javascripts -->
     <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
@@ -62,6 +64,10 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnSetFilteringDelay.js"></script>
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+
+    <%--for tooltip--%>
+    <script src="${pageContext.request.contextPath}/js/jquery-ui-1.9.2.custom.min.js"></script>
 
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
@@ -105,6 +111,20 @@
                     },
 
                     {
+                        "aTargets": [1], "createdCell": function (td, cellData, rowData, row, col) {
+
+                        var parts = cellData.split("|");
+
+
+                        $(td).html('<a  href="#" title="" >'+parts[0]+'</a>')
+                                .tooltip(
+                                { content: '<img src="'+ parts[2]+'" width="300" height="200" width="300" />' },
+                                { tooltipClass:"i1" } );
+
+                    }
+                    },
+
+                    {
                         "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
 
                         $(td).html('<div class="btn-group"><a class="btn btn-danger" onclick="removeCategory('  + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
@@ -122,6 +142,15 @@
             dataTables_filter_input.attr("style", "width: 500px")
 
         })
+
+        function hideElem(id) {
+            document.getElementById(id).style.visibility = "hidden";
+        }
+
+        function showElem(id) {
+            document.getElementById(id).style.visibility = "visible";
+        }
+
         function addCat(name){
 
             var xmlhttp = new  XMLHttpRequest();
@@ -167,6 +196,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h3 class="page-header" style="width: 100%"><i class="fa fa-list-alt"></i>Categories</h3>
+
                 </div>
             </div>
             <div class="row">
@@ -175,6 +205,7 @@
                         <div class="panel-body">
                             <div id="active" class="tab-pane active">
                                 <div class="col-lg-12">
+
                                     <table width="100%" border="0" margin="0" padding="0"
                                            class="row-border tableHeader" id="categoryTable">
                                         <thead>
@@ -239,6 +270,20 @@
         </div>
     </div>
 </div>
+<style>
+    .i1   {
+        position: fixed;
+        background: red;
+        font-size:12px;
+        height:250px;
+        width:350px;
+        padding:20px;
+        color:#fff;
+        z-index: 99;
+        border: 2px solid white;
+
+    }
+</style>
 </body>
 </html>
 
