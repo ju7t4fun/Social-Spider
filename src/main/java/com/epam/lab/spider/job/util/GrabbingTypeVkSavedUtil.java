@@ -79,6 +79,7 @@ public class GrabbingTypeVkSavedUtil {
         SortedSet<Integer> sortedAlreadyAddSet = new TreeSet<>();
         sortedAlreadyAddSet.addAll(alreadyAddSet);
         List<Post> postsOnTargetWall = null;
+        int localCount = sortedAlreadyAddSet.isEmpty()?countOfPosts:50;
         boolean badExecution = false;
         do {
             try {
@@ -86,7 +87,7 @@ public class GrabbingTypeVkSavedUtil {
                     Thread.sleep(400);
                     badExecution = false;
                 }
-                postsOnTargetWall = vk.execute().getNewPostFromWall(owner.getVkId(), countOfPosts, sortedAlreadyAddSet.last(), null);
+                postsOnTargetWall = vk.execute().getNewPostFromWall(owner.getVkId(), localCount, sortedAlreadyAddSet.last(), null);
             } catch (VKException x) {
                 if (x.getExceptionCode() == VKException.VK_EXECUTE_RUNTIME_ERROR) {
                     badExecution = false;

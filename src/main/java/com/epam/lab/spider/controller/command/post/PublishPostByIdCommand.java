@@ -33,6 +33,7 @@ public class PublishPostByIdCommand implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("---------------------START------------------------------------------");
         // Вхідні параметри
         Integer postId = Integer.parseInt(request.getParameter("postId"));
         String date = request.getParameter("date");
@@ -45,12 +46,14 @@ public class PublishPostByIdCommand implements ActionCommand {
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         User user = (User) session.getAttribute("user");
         Post post = postService.getById(postId);
+        System.out.println("---- " + post.getId() + " --- " + post.getUserId());
         if (post.getUserId() < 0) {
             post.getAttachments();
             post.setUserId(user.getId());
             postService.insert(post);
         }
         // Створюємо new post
+        System.out.println("---- " + post.getId() + " --- " + post.getUserId());
         NewPost newPost = new NewPost();
         newPost.setUserId(user.getId());
         newPost.setPostId(post.getId());
@@ -87,6 +90,7 @@ public class PublishPostByIdCommand implements ActionCommand {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(array.toString());
+        System.out.println("---------------------END------------------------------------------");
     }
 
 }

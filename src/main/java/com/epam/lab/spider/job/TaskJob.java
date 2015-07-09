@@ -191,17 +191,22 @@ public class TaskJob implements Job {
 
                 LinkedList<Post> addedToProcessingPosts = new LinkedList<>();
                 Map<Wall, LinkedList<Integer>> blockMap = new HashMap<>();
-                // перевірка кількості незаблокованих стін з незаблокованими профіліми
-                for (Wall wall : destinationWalls) {
-                    // перевірка чи стіна заблокована
-                    boolean writeBlocked = Locker.getInstance().isLock(wall);
-                    if (!writeBlocked) activeDestinationInTask++;
-                }
-                // якщо кількість стін призначення нульова
-                // то принипини працювання завдання
-                if (activeDestinationInTask == 0) {
-                    LOG.info("TASK#" + task.getId() + " has hot active destination wall!");
-                    continue taskProcessing;
+
+                if(task.getType() != Task.Type.FAVORITE) {
+                    // перевірка кількості незаблокованих стін з незаблокованими профіліми
+                    for (Wall wall : destinationWalls) {
+                        // перевірка чи стіна заблокована
+                        boolean writeBlocked = Locker.getInstance().isLock(wall);
+                        if (!writeBlocked) activeDestinationInTask++;
+                    }
+                    // якщо кількість стін призначення нульова
+                    // то принипини працювання завдання
+                    if (activeDestinationInTask == 0) {
+                        LOG.info("TASK#" + task.getId() + " has hot active destination wall!");
+                        continue taskProcessing;
+                    }
+                }else{
+                    LOG.info("TASK#" + task.getId() + " has type FAVORITE.  Checking destination not will running.");
                 }
                 // перевірка кількості незаблокованих джерел з незаблокованими профілями
                 for (Wall wall : sourceWalls) {

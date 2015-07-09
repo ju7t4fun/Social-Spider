@@ -83,7 +83,7 @@
 
         // Видалення групи
         function removeOwner(id) {
-          deleteConfirmOwner(id);
+            deleteConfirmOwner(id);
         }
     </script>
 
@@ -140,7 +140,7 @@
                     }
                 }, {
                     "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<div class="btn-group"><a onclick="getGroupName(\'' + rowData[1] + '\', ' + cellData +')" class="btn btn-success" data-toggle="modal" data-target="#edit_group"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removeOwner(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
+                        $(td).html('<div class="btn-group"><a onclick="getGroupName(\'' + rowData[1] + '\', ' + cellData + ')" class="btn btn-success" data-toggle="modal" data-target="#edit_group"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removeOwner(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
                     }
                 }, {
                     "width": "60%", "targets": 1
@@ -262,10 +262,10 @@
                     else {
                         $('#modal_stat').modal('show');
                         drawChart(response);
-                        $('#startDate').attr("max", response.max);
-                        $('#startDate').attr("value", response.date_from);
-                        $('#endDate').attr("max", response.max);
-                        $('#endDate').attr("value", response.date_to);
+                        $('#fromDate').attr("max", response.max);
+                        $('#fromDate').attr("value", response.date_from);
+                        $('#toDate').attr("max", response.max);
+                        $('#toDate').attr("value", response.date_to);
                     }
                 }
             };
@@ -273,8 +273,8 @@
         }
 
         function redrawChart() {
-            var dateFrom = document.getElementById("startDate").value;
-            var dateTo = document.getElementById("endDate").value;
+            var dateFrom = document.getElementById("fromDate").value;
+            var dateTo = document.getElementById("toDate").value;
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open('GET', '/owner?action=stat&id=' + ownerId + '&date_from=' + dateFrom + "&date_to=" + dateTo, true);
             xmlhttp.onreadystatechange = function () {
@@ -290,17 +290,10 @@
         }
 
         function drawChart(response) {
-            new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
-            new Chart(document.getElementById("bar").getContext("2d")).Bar(response.bar);
-            new Chart(document.getElementById("pie").getContext("2d")).Pie(response.pie);
-            $("#country_list").empty();
-            for (var i = 0; i < response.pie.length; i++) {
-                $("#country_list").append('<li class="list-group-item row"><div style="border-radius: 4px; width: 20px; height: 20px; background: ' + response.pie[i].color + '"><span style="margin-left: 30px">  ' + response.pie[i].name + '</span></div></li>');
-            }
-            $("#day1").html(response.day);
-            $("#day2").html(response.day);
-            $("#visitors").html(response.visitors);
-            $("#dayVisitors").html(response.dayVisitors);
+            drawLineDiagram(response.line);
+            drawGenderDiagram(response.bar);
+            drawCountryDiagram(response.country);
+            drawCityDiagram(response.city);
         }
 
     </script>
@@ -323,7 +316,8 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header" style="width: 80%"><i class="fa fa-list-alt"></i> <l:resource key="owner"/></h3>
+                    <h3 class="page-header" style="width: 80%"><i class="fa fa-list-alt"></i> <l:resource key="owner"/>
+                    </h3>
                 </div>
             </div>
             <div class="row">
@@ -417,10 +411,13 @@
                     <div class="col-md-12">
                         <form id="modal_form" class="form-horizontal">
                             <div>
-                                <l:resource key="owner.groupname"><input id="ownerUrlEdit" type="text" class="form-control" placeholder=""></l:resource>
+                                <l:resource key="owner.groupname"><input id="ownerUrlEdit" type="text"
+                                                                         class="form-control"
+                                                                         placeholder=""></l:resource>
                             </div>
                             <div style="position: relative; top: 10px; left: 497px;">
-                                <a type="submit" onclick="addNewOwner()" class="btn btn-primary"><l:resource key="add"/></a>
+                                <a type="submit" onclick="addNewOwner()" class="btn btn-primary"><l:resource
+                                        key="add"/></a>
                             </div>
                             <script>
                                 function addNewOwner() {
@@ -460,18 +457,19 @@
                 <div class="row">
                     <div class="col-md-12">
                         <form id="modal_form1" class="form-horizontal">
-                                <l:resource key="owner.groupname"><input id="group_name" type="text" name="category" class="form-control"
-                                       placeholder=""></l:resource>
-                            </div>
-                            <div style="position: relative; top: 10px; left: 497px;">
-                                <a id="submit_edit" class="btn btn-primary"><l:resource key="edit"/></a>
-                            </div>
-                        </form>
+                            <l:resource key="owner.groupname"><input id="group_name" type="text" name="category"
+                                                                     class="form-control"
+                                                                     placeholder=""></l:resource>
                     </div>
+                    <div style="position: relative; top: 10px; left: 497px;">
+                        <a id="submit_edit" class="btn btn-primary"><l:resource key="edit"/></a>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 <script>
     function getGroupName(name, id) {

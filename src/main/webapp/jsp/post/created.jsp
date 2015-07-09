@@ -29,7 +29,6 @@
     <link href="${pageContext.request.contextPath}/css/core.css" rel="stylesheet">
 
 
-
     <!-- font icon -->
     <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet"/>
@@ -110,6 +109,7 @@
                     "buttonText": "columns <img src=\"/img/caaret.png\"/>",
                 },
 
+                "sDom": '<"top"f>t<"bottom"lp><"clear">',
                 "columnDefs": [{
                     "bVisible": false, "aTargets": [0]
                 }, {
@@ -136,12 +136,10 @@
             });
 
 
-            $(".dataTables_length").attr("hidden", "");
+//            $(".dataTables_length").attr("hidden", "");
             var dataTables_filter_input = $(".dataTables_filter").find("input");
             dataTables_filter_input.attr("class", "form-control");
             dataTables_filter_input.attr("style", "width: 500px")
-//            $(".dataTables_filter").attr("hidden", "");
-            $(".dataTables_length").attr("hidden", "");
 
 
             $('#refreshbtn').click(function () {
@@ -254,7 +252,6 @@
             </div>
         </section>
     </section>
-</section>
 </section>
 
 <%--Вікно публікації--%>
