@@ -126,6 +126,7 @@ public class SaveTaskCommand implements ActionCommand {
             task.setPostDelayMin(Integer.parseInt(postDelayMin));
             task.setPostDelayMax(Integer.parseInt(postDelayMax));
             task.setGrabbingMode( Task.GrabbingMode.valueOf(grabbingMode.toUpperCase()));
+            task.setGrabbingSize(50);
 
 
             List<String> wallWarning = new ArrayList<>();

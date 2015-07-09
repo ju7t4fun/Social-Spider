@@ -30,6 +30,7 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM new_post WHERE id = ? AND deleted = 0";
     private static final String SQL_SELECT_CREATED_BY_DATE_LE = "SELECT * FROM new_post WHERE state in " +
             "('CREATED', 'RESTORED') AND post_time < ? AND deleted = 0";
+    private static final String SQL_SELECT_UNDELETED_BY_DELETE_DATE_LE = "SELECT * FROM new_post WHERE state LIKE 'POSTED' AND delete_time < '2015-07-10 16:15:52' AND deleted = 0";
 
     private static final String SQL_SET_ERROR_STATE_BASE = "UPDATE new_post SET state = 'ERROR' WHERE state IN " +
             "('CREATED', 'POSTING','RESTORED') AND wall_id IN ";
@@ -157,6 +158,10 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     public List<NewPost> getAllUnpostedByDate(Connection connection, Date date) throws SQLException {
         return select(connection, SQL_SELECT_CREATED_BY_DATE_LE, date);
     }
+    public List<NewPost> getAllUndeletedByDate(Connection connection, Date date) throws SQLException {
+        return select(connection, SQL_SELECT_UNDELETED_BY_DELETE_DATE_LE, date);
+    }
+
 
     public boolean setErrorStateByWall(Connection connection, Integer wallId) throws SQLException {
         return changeQuery(connection, SQL_SET_ERROR_STAGE_BY_WALL_ID, wallId);

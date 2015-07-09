@@ -154,6 +154,14 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
         }
         return null;
     }
+    public List<NewPost> getAllUndeletedByDate(Date date) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.getAllUndeletedByDate(connection, date);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public boolean setSpecialStageByOwner(Integer ownerId, NewPost.State state) {
         try (Connection connection = PoolConnection.getConnection()) {
