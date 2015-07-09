@@ -33,13 +33,29 @@ public class GetAllTasks implements ActionCommand {
         List<Task> tasks;
         int tasksCount;
 
-        String type = request.getParameter("type");
-        if (type!=null && type.equals("active")) {
-            tasks = service.getAllActiveLimited(start, size);
-            tasksCount = service.getActiveCount();
+        User user = null;
+
+        try {
+            user = (User)request.getSession().getAttribute("user");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return;
+        }
+
+        String taskType = request.getParameter("taskType");
+        if (user.getRole() == User.Role.ADMIN && taskType!=null && taskType.equals("forAdmin")) {
+            tasks = service.getAllLimitedAdmin(start, size);
+            tasksCount = service.getCountAdmin();
         } else {
-            tasks = service.getAllLimited(start, size);
-            tasksCount = service.getCount();
+
+            String type = request.getParameter("type");
+            if (type != null && type.equals("active")) {
+                tasks = service.getAllActiveLimited(user.getId(), start, size);
+                tasksCount = service.getActiveCount(user.getId());
+            } else {
+                tasks = service.getAllLimited(user.getId(), start, size);
+                tasksCount = service.getCount(user.getId());
+            }
         }
 
         JSONObject result = new JSONObject();
