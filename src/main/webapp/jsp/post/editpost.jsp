@@ -14,13 +14,13 @@
         <div class="modal-content" style="width: 840px; position: relative; left: -100px;">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h3 class="modal-title">Post</h3>
+                <h3 class="modal-title"><l:resource key="post"/></h3>
             </div>
             <div class="modal-body" style="position: relative; left: 70px; top: -21px;">
                 <div class="row">
                     <div class="col-md-10">
                         <div class="form-group">
-                            <label>ID</label>
+                            <label><l:resource key="owner.id"/></label>
 
                             <div>
                                 <input type="text" class="form-control" style="width: 10%;" id="id"
@@ -29,7 +29,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Text</label>
+                            <label><l:resource key="text"/></label>
 
                             <div>
                                     <textarea rows="15" cols="55" id="post_tarea" class="form-control"
@@ -37,7 +37,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Attachments</label>
+                            <label><l:resource key="attachment"/></label>
                         </div>
                         <div>
                             <table id="attachments" style="margin-left: 80px;"></table>
@@ -164,7 +164,7 @@
                         </script>
                         <div class="form-group">
                             <div class="col-xs-5 col-xs-offset-3">
-                                <button id="scrl" onclick="saveEditedPost();" class="btn btn-default">Save</button>
+                                <button id="scrl" onclick="saveEditedPost();" class="btn btn-default"><l:resource key="newpost.save"/></button>
                             </div>
                         </div>
                     </div>

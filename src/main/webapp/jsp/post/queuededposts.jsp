@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +17,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-    <title>All Posts</title>
+    <title>Queued Posts</title>
 
     <!-- Bootstrap CSS -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -100,15 +101,15 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-list-alt"></i> Queued</h3>
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> <l:resource key="queued"/></h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-desktop"></i>Post</li>
-                        <li><i class="fa fa-list-alt"></i>Queued</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-desktop"></i><l:resource key="post"/></li>
+                        <li><i class="fa fa-list-alt"></i><l:resource key="queued"/></li>
                     </ol>
                 </div>
             </div>
@@ -116,7 +117,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left">Queued</div>
+                            <div class="pull-left"><l:resource key="queued"/></div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="panel-body">
@@ -129,19 +130,19 @@
                                         <tbody>
                                         <thead>
                                         <tr>
-                                            <th>Message</th>
-                                            <th>Group Name</th>
-                                            <th>Attachments</th>
-                                            <th>Post Time</th>
-                                            <th>Id</th>
-                                            <th>Delete</th>
+                                            <th><l:resource key="message"/></th>
+                                            <th><l:resource key="owner.groupname"/></th>
+                                            <th><l:resource key="attachment"/></th>
+                                            <th><l:resource key="newpost.posttime"/></th>
+                                            <th><l:resource key="owner.id"/></th>
+                                            <th><l:resource key="delete"/></th>
 
                                         </tr>
                                         </thead>
 
                                         </tbody>
                                     </table>
-                                    <input class="btn btn-primary" style="visibility: hidden" type="button" id="showAllBtnId" onclick="myFunc()" value="Show All"/>
+                                    <l:resource key="showall"><input class="btn btn-primary" style="visibility: hidden" type="button" id="showAllBtnId" onclick="myFunc()" value=""/></l:resource>
                                 </div>
                             </div>
                         </div>
