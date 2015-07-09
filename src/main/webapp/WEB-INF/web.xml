@@ -140,6 +140,14 @@
         <servlet-name>AdminAddTaskServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.admin.AdminAddTaskServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminOwnerServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.AdminOwnerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminOwnerServlet</servlet-name>
+        <url-pattern>/admin/owner</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminAddTaskServlet</servlet-name>
         <url-pattern>/admin/addtask</url-pattern>

@@ -10,9 +10,9 @@ import java.io.IOException;
 /**
  * Created by Marian Voronovskyi on 09.07.2015.
  */
-public class AdminAddTaskCommand implements ActionCommand {
+public class AdminOwnerCommand implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/jsp/admin/admin_addtask.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/admin/admin_owner.jsp").forward(request, response);
     }
 }
