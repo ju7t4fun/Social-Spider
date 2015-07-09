@@ -80,43 +80,62 @@
 <jsp:include page="../pagecontent/header.jsp"/>
 <jsp:include page="../pagecontent/sidebar.jsp"/>
 
+
 <!-- container section start -->
 <%--<c:set var="mysrc" value="${pageContext.request.contextPath}/img/deleted.png" />--%>
+
+
+
 <section id="container" class="">
     <!--main content start-->
     <!--main content start-->
+
+
     <section id="main-content">
         <section class="wrapper">
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <div class="pull-left">Tasks Binding</div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="panel-body">
-
-                        <div class="col-lg-12">
-                            <table id="tasksTable">
-                                <thead>
-                                <tr style="align-content: center">
-                                    <th>Grabbing</th>
-                                    <th>Binding</th>
-                                    <th>Type</th>
-                                    <th>Content</th>
-                                    <th>On/Off</th>
-                                    <th>Delete</th>
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
-
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> Task Binding</h3>
                 </div>
             </div>
-
+            <div class="row">
+                <div class="col-lg-12">
+                    <ol class="breadcrumb">
+                        <li><i class="fa fa-home"></i><a href="/">Admin</a></li>
+                        <li><i class="fa fa-desktop"></i>Task Binding</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div id="active" class="tab-pane active">
+                                <div class="col-lg-12">
+                                    <table id="tasksTable">
+                                        <thead>
+                                        <tr style="align-content: center">
+                                            <th>Grabbing</th>
+                                            <th>Binding</th>
+                                            <th>Type</th>
+                                            <th>Content</th>
+                                            <th>On/Off</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </section>
+
 </section>
+
+
 
 <!-- container section end -->
 

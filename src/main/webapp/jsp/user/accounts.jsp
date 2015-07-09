@@ -193,7 +193,7 @@
                                         <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href=""><span
                                                 class="caret"></span></a>
                                         <ul class="dropdown-menu">
-                                            <li><a href="javascript:openNoExtension()">Без додатку</a></li>
+                                            <li><a href="javascript:openNoExtension()"><l:resource key="no.extension"/></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -207,28 +207,27 @@
 </section>
 <div class="b-popup" id="add_no_extension">
     <div class="b-popup-content" style="height: 380px;margin-top: 150px;">
-        <h4>Додати акаунт вручну</h4>
+        <h4><l:resource key="add.account.manually"/></h4>
 
         <div class="col-lg-12">
-            <p> Вам необхідно надати програмі права доступу до вашого профілю. Залогініться вконтакті під потрібним
-                вам акаунтом. Натисніть на кнопку "Отримати доступ": </p>
+            <p> <l:resource key="access.text1"/> </p>
             <a href="https://oauth.vk.com/authorize?client_id=4949213&scope=wall,groups,photos,audio,video,docs,stats&redirect_uri=https://oauth.vk.com/blank.html&display=page&v=5.27&response_type=token&revoke=1"
                target="_blank" class="btn btn-info" type="button"
-               style="margin-left: 38%"><i class="fa fa-vk"></i> Отримати доступ</a>
+               style="margin-left: 38%"><i class="fa fa-vk"></i> <l:resource key="get.access"/></a>
 
-            <p>Після отримання прав доступу ви побачите напис:</p>
+            <p><l:resource key="access.text2"/></p>
             <blockquote>
                 <small>Пожалуйста, <strong>не копируйте</strong> данные из адресной строки для сторонних сайтов. Таким
                     образом Вы можете <strong>потерять доступ</strong> к Вашему аккаунту.
                 </small>
             </blockquote>
-            <p>Скопіюйте з вкладки весь адресний рядок, вставте в поле нижче і натисніть кнопку "Додати".</p>
-            <input id="token_form_id" class="form-control" type="text" placeholder="Токен">
+            <p><l:resource key="access.text3"/></p>
+            <l:resource key="token"><input id="token_form_id" class="form-control" type="text" placeholder=""></l:resource>
             <br>
 
             <div style="float: right">
-                <button class="btn btn-primary" onclick="addManually()">Додати</button>
-                <button class="btn btn-default" onclick="closeNoExtension()">Скасувати</button>
+                <button class="btn btn-primary" onclick="addManually()"><l:resource key="add"/></button>
+                <button class="btn btn-default" onclick="closeNoExtension()"><l:resource key="cancel"/></button>
             </div>
         </div>
     </div>
