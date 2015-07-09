@@ -1,8 +1,9 @@
 package com.epam.lab.spider.controller.servlet.admin;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.admin.AdminVkGroupStats;
 import com.epam.lab.spider.controller.command.admin.ShowAdminAllUsers;
+import com.epam.lab.spider.controller.command.admin.stats.GetVisitorsStatsCommand;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,16 +23,18 @@ public class AdminServlet extends HttpServlet {
         public AdminActionFactory() {
             commands = new HashMap<>();
             commands.put("default", new ShowAdminAllUsers());
-            commands.put("vkgroupstats", new AdminVkGroupStats());
+            commands.put("stats", new GetVisitorsStatsCommand());
         }
     }
 
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+            IOException {
         factory.action(request, response);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+            IOException {
         factory.action(request, response);
     }
 }
