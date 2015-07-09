@@ -71,25 +71,6 @@
 
 
     <script>
-        <%--var mysrc = "${pageContext.request.contextPath}/img/deleted.png";--%>
-
-        //        $(document).ready(function() {
-        //            var oTable = $('#personTable').dataTable();
-        //
-        //            // Highlight every second row
-        //            oTable.$('tr:odd').css('backgroundColor', 'blue');
-        //        } );
-
-
-        //        $(document).ready(function() {
-        //            var oTable = $('#example').dataTable();
-        //
-        //            // Filter to rows with 'Webkit' in them, add a background colour and then
-        //            // remove the filter, thus highlighting the 'Webkit' rows only.
-        //            oTable.fnFilter('Webkit');
-        //            oTable.$('tr', {"filter": "applied"}).css('backgroundColor', 'blue');
-        //            oTable.fnFilter('');
-        //        } );
 
         function changeImage(e) {
 
@@ -148,166 +129,55 @@
 <section id="container" class="">
     <!--main content start-->
     <!--main content start-->
+
+
     <section id="main-content">
         <section class="wrapper">
-            <%--<div class="row">--%>
-            <%--<div class="col-lg-12">--%>
-            <%--<h3 class="page-header"><i class="fa fa-table"></i> Admin</h3>--%>
-            <%--<ol class="breadcrumb">--%>
-            <%--<li><i class="fa fa-home"></i><a href="index.html">Home</a></li>--%>
-            <%--<li><i class="fa fa-table"></i>Users</li>--%>
-            <%--<li><i class="fa fa-th-list"></i>User List</li>--%>
-            <%--</ol>--%>
-            <%--</div>--%>
-            <%--</div>--%>
-            <!-- page start-->
-            <%--<div class="row">--%>
-            <%--<div class="col-lg-12" style="width:770px;">--%>
-            <%--<section class="panel">--%>
-            <%--<header class="panel-heading">--%>
-            <%--Users--%>
-            <%--</header>--%>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> User List</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ol class="breadcrumb">
+                        <li><i class="fa fa-home"></i><a href="/">Admin</a></li>
+                        <li><i class="fa fa-desktop"></i>Edit</li>
+                        <li><i class="fa fa-list-alt"></i>User List</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="pull-left">Posted</div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-body">
+                            <table width="100%" border="0" margin="0" padding="0"
+                                   class="row-border tableHeader" id="personTable">
+                                <tbody>
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Surname</th>
+                                    <th>Email</th>
+                                    <th>State</th>
 
-            <%--<table id="idUserTable" class="table table-striped table-advance table-hover">--%>
-
-            <%--<thead>--%>
-            <%--<tr>--%>
-            <%--<th><i class="icon_id-2_alt"></i> Id</th>--%>
-            <%--<th><i class="icon_profile"></i> Full Name</th>--%>
-            <%--<th><i class="icon_mail_alt"></i> Email</th>--%>
-            <%--<th><i class="icon_cogs"></i> Status</th>--%>
-            <%--</tr>--%>
-            <%--</thead>--%>
-
-            <%--<tfoot>--%>
-            <%--<tr>--%>
-            <%--<th><i class="icon_id-2_alt"></i> Id</th>--%>
-            <%--<th><i class="icon_profile"></i> Full Name</th>--%>
-            <%--<th><i class="icon_mail_alt"></i> Email</th>--%>
-            <%--<th><i class="icon_cogs"></i> Status</th>--%>
-            <%--</tr>--%>
-            <%--</tfoot>--%>
-
-            <%--<tbody>--%>
-
-            <%--<c:forEach var="user" items="${listUsers}">--%>
-            <%--<tr>--%>
-            <%--<td>${user.id}</td>--%>
-            <%--<td>${user.name} ${user.surname}</td>--%>
-            <%--<td>${user.email}</td>--%>
-            <%--<c:if test="${user.state == 'CREATED'}">--%>
-            <%--<td><img src="${pageContext.request.contextPath}/img/created.jpg"--%>
-            <%--style="width:37px;height:37px;"--%>
-            <%--id="${user.email}" onclick="changeImage(this)" title="created">--%>
-            <%--</td>--%>
-            <%--</c:if>--%>
-            <%--<c:if test="${user.state == 'ACTIVATED'}">--%>
-            <%--<td><img src="${pageContext.request.contextPath}/img/activated.jpg"--%>
-            <%--style="width:37px;height:37px;"--%>
-            <%--id="${user.email}" onclick="changeImage(this)" title="activated">--%>
-            <%--</td>--%>
-            <%--</c:if>--%>
-            <%--<c:if test="${user.state == 'BANNED'}">--%>
-            <%--<td><img src="${pageContext.request.contextPath}/img/banned.jpg"--%>
-            <%--style="width:37px;height:37px;"--%>
-            <%--id="${user.email}" onclick="changeImage(this)" title="banned">--%>
-            <%--</td>--%>
-            <%--</c:if>--%>
-            <%--</tr>--%>
-            <%--</c:forEach>--%>
-            <%--</tbody>--%>
-            <%--</table>--%>
-            <%--</section>--%>
-            <%--</div>--%>
-            <table width="100%" border="0" margin="0" padding="0"
-                   class="row-border tableHeader" id="personTable">
-                <tbody>
-                <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Email</th>
-                    <th>State</th>
-
-                </tr>
-                </thead>
-                </tbody>
-            </table>
-
-            <%--Banned Users--%>
-            <%--<section class="panel" style="width:400px; margin-left:770px;margin-top:-264px;position:fixed;">--%>
-            <%--<header class="panel-heading">--%>
-            <%--Banned Users--%>
-            <%--</header>--%>
-            <%--<div class="panel-body">--%>
-            <%--<input name="tagsinput" id="tagsinput" class="tagsinput"--%>
-            <%--value="User1, User2, User3, User4, User5"/>--%>
-            <%--</div>--%>
-            <%--</section>--%>
-            <%--</div>--%>
-            <!-- page end-->
+                                </tr>
+                                </thead>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </section>
+
 </section>
-<style>
-    tfoot input {
-        width: 100%;
-        padding: 3px;
-        box-sizing: border-box;
-    }
-
-    .tableHeader {
-        text-align: left;
-    }
-
-    tfoot {
-        display: table-header-group;
-    }
-
-    .dataTables_length {
-        position: absolute;
-        top: 10px;
-        left: 220px;
-    }
-
-    .dataTables_info {
-        position: absolute;
-        top: 0px;
-        left: 5px;
-    }
-
-    .ColVis {
-        padding-right: 10px;
-        padding-top: 5px;
-
-    }
-
-    .dataTables_filter {
-        position: absolute;
-        top: 10px;
-        left: 200px;
-        font-size: 15px;
-    }
-
-    .dataTables_filter input {
-        height: 22px;
-        margin-right: 10px;
-        width: 150px
-    }
-
-    input {
-        -moz-border-radius: 15px;
-        border-radius: 3px;
-        border: solid 1px #c7c7c7;
-        padding: 1px;
-    }
-
-    table.dataTable tbody td {
-        padding: 7px;
-        padding-left: 20px;
-    }
-</style>
 <!-- container section end -->
 
 </body>

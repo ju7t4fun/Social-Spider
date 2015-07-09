@@ -59,10 +59,9 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnStandingRedraw.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnSetFilteringDelay.js"></script>
 
-    <%--for tabs--%>
-    <%--<script src="//code.jquery.com/jquery-1.10.2.js"></script>--%>
+
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <%--<link rel="stylesheet" href="${pageContext.request.contextPath}//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">--%>
+
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
@@ -318,10 +317,6 @@
                 }
                 },
 
-
-//                            {
-//                                "width": "100px", "targets": [4, 5]
-//                            },
                 {
                     "width": "30%", "targets": [0, 1, 3]
                 },
@@ -392,10 +387,6 @@
                 }
                 },
 
-
-//                            {
-//                                "width": "100px", "targets": [4, 5]
-//                            },
                 {
                     "width": "30%", "targets": [0, 1, 3]
                 },
@@ -465,9 +456,6 @@
     $(".dataTables_length").attr("hidden", "");
 
 
-    $('#refreshbtn').click(function () {
-        table.fnStandingRedraw();
-    });
 
     function deleteTask(id) {
         var xmlhttp = new XMLHttpRequest();
@@ -534,8 +522,7 @@
                 return '<img src=\"/img/restIcos/repost.jpg" style="width: 30px; height: 30px">';
         }
         return "";
-    }
-    ;
+    };
 
 </script>
 
