@@ -84,6 +84,12 @@
                             <span>Tasks Binding</span>
                         </a>
                     </li>
+                    <li class="sub-menu">
+                        <a href="${pageContext.request.contextPath}/admin/addtask" class="">
+                            <i class="icon_genius"></i>
+                            <span>Add task</span>
+                        </a>
+                    </li>
                 </ul>
             </c:when>
         </c:choose>
