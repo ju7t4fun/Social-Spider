@@ -78,38 +78,52 @@
 <jsp:include page="../pagecontent/sidebar.jsp"/>
 
 
-<section id="main-content">
-    <section class="wrapper">
-        <div class="row">
-            <div class="col-lg-12">
-                <h3 class="page-header" style="width: 100%"><i class="fa fa-list-alt"></i>Groups</h3>
+<section id="container" class="">
+    <!--main content start-->
+    <!--main content start-->
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <div id="active" class="tab-pane active">
-                                    <div class="col-lg-12">
-                                        <table width="100%" border="0" margin="0" padding="0"
-                                               class="row-border tableHeader" id="groupTable">
-                                            <thead>
-                                            <tr style="align-content: center">
-                                                <th>Vk ID</th>
-                                                <th>Name</th>
-                                                <th>Ban/Unban</th>
-                                            </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
+
+    <section id="main-content">
+        <section class="wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> Groups</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ol class="breadcrumb">
+                        <li><i class="fa fa-home"></i><a href="/">Admin</a></li>
+                        <li><i class="fa fa-desktop"></i>Edit</li>
+                        <li><i class="fa fa-list-alt"></i>Groups</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div id="active" class="tab-pane active">
+                                <div class="col-lg-12">
+                                    <table width="100%" border="0" margin="0" padding="0"
+                                           class="row-border tableHeader" id="groupTable">
+                                        <thead>
+                                        <tr style="align-content: center">
+                                            <th>Vk ID</th>
+                                            <th>Name</th>
+                                            <th>Ban/Unban</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
+        </section>
     </section>
+
 </section>
 
 

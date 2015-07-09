@@ -90,7 +90,7 @@
             table = $('#categoryTable').dataTable({
 
                 "bSort": true,
-                aaSorting:[],
+                aaSorting: [],
                 "bPaginate": true,
                 "paging": true,
                 "bInfo": false,
@@ -98,7 +98,7 @@
                 "bProcessing": true,
                 'iDisplayLength': 10,
                 "bServerSide": true,
-                "sAjaxSource": path +  "/admin/categories?action=getcategory",
+                "sAjaxSource": path + "/admin/categories?action=getcategory",
                 colVis: {
                     "align": "right",
                     "buttonText": "columns <img src=\"/img/caaret.png\"/>",
@@ -107,27 +107,33 @@
                 "columnDefs": [
 
                     {
-                        "targets": [0,1,2], "orderable": false
+                        "targets": [0, 1, 2, 3], "orderable": false
                     },
 
                     {
                         "aTargets": [1], "createdCell": function (td, cellData, rowData, row, col) {
-
-                        var parts = cellData.split("|");
-
-
-                        $(td).html('<a  href="#" title="" >'+parts[0]+'</a>')
-                                .tooltip(
-                                { content: '<img src="'+ parts[2]+'" width="300" height="200" width="300" />' },
-                                { tooltipClass:"i1" } );
-
+                        $(td).html('<a class="btn btn-default" onclick="PopUpShow(' + cellData + ')"><span class="fa fa-users"></span></a>');
                     }
                     },
 
                     {
                         "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
 
-                        $(td).html('<div class="btn-group"><a class="btn btn-danger" onclick="removeCategory('  + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
+                        var parts = cellData.split("|");
+
+
+                        $(td).html('<a  href="#" title="" >' + parts[0] + '</a>')
+                                .tooltip(
+                                {content: '<img src="' + parts[2] + '" width="300" height="200" width="300" />'},
+                                {tooltipClass: "i1"});
+
+                    }
+                    },
+
+                    {
+                        "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
+
+                        $(td).html('<div class="btn-group"><a data-toggle="modal" data-target="#edit_post" onclick="editCategory(' + cellData + ')" class="btn btn-success"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removeCategory(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
 
                     }
                     }
@@ -143,6 +149,14 @@
 
         })
 
+        function PopUpShow(categoryId) {
+            alert("Category ID: " + categoryId);
+        }
+
+        function editCategory(categoryId) {
+            alert(categoryId);
+        }
+
         function hideElem(id) {
             document.getElementById(id).style.visibility = "hidden";
         }
@@ -151,12 +165,12 @@
             document.getElementById(id).style.visibility = "visible";
         }
 
-        function addCat(name){
+        function addCat(name) {
 
-            var xmlhttp = new  XMLHttpRequest();
-            xmlhttp.open("POST",path + "/admin/categories?action=addcategory",true);
-            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-            xmlhttp.send("category="+name);
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", path + "/admin/categories?action=addcategory", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send("category=" + name);
 
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
@@ -166,10 +180,10 @@
         }
 
         function removeCategory(i) {
-            var xmlhttp = new  XMLHttpRequest();
-            xmlhttp.open("POST", path +  "/admin/categories?action=removecategory",true);
-            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-            xmlhttp.send("id="+i);
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", path + "/admin/categories?action=removecategory", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send("id=" + i);
 
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
@@ -181,22 +195,36 @@
     </script>
 
 </head>
-<body>
 
 <!-- container section start -->
+
+<jsp:include page="../pagecontent/header.jsp"/>
+<jsp:include page="../pagecontent/sidebar.jsp"/>
+
+<%--<jsp:include page="../post/viewpost.jsp"/>--%>
+
+
+<!-- container section start -->
+<%--<c:set var="mysrc" value="${pageContext.request.contextPath}/img/deleted.png" />--%>
 <section id="container" class="">
+    <!--main content start-->
+    <!--main content start-->
 
-    <jsp:include page="../pagecontent/header.jsp"/>
-    <jsp:include page="../pagecontent/sidebar.jsp"/>
-
-    <%--<jsp:include page="../post/viewpost.jsp"/>--%>
 
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header" style="width: 100%"><i class="fa fa-list-alt"></i>Categories</h3>
-
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> Categories</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ol class="breadcrumb">
+                        <li><i class="fa fa-home"></i><a href="/">Admin</a></li>
+                        <li><i class="fa fa-desktop"></i>Edit</li>
+                        <li><i class="fa fa-list-alt"></i>Categories</li>
+                    </ol>
                 </div>
             </div>
             <div class="row">
@@ -211,6 +239,7 @@
                                         <thead>
                                         <tr style="align-content: center">
                                             <th>id</th>
+                                            <th>Binding to tasks</th>
                                             <th>Category name</th>
                                             <th>Delete</th>
                                         </tr>
@@ -226,24 +255,26 @@
             </div>
         </section>
     </section>
-</section>
 
+</section>
 
 <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modal_category"
      class="modal fade">
     <div class="modal-dialog">
-        <div class="modal-content"  style="height: 520px; width: 820px">
+        <div class="modal-content" style="height: 520px; width: 820px">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h4 class="modal-title"  >Add category</h4>
+                <h4 class="modal-title">Add category</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form id="modal_form" method="POST"  action="" onsubmit="addCat(document.getElementById('catName').value)"
+                        <form id="modal_form" method="POST" action=""
+                              onsubmit="addCat(document.getElementById('catName').value)"
                               class="form-horizontal">
                             <div>
-                                <input type="text" name="category" class="form-control" id="catName" placeholder="Category name">
+                                <input type="text" name="category" class="form-control" id="catName"
+                                       placeholder="Category name">
                             </div>
 
                             <div id="compForm" class="container kv-main" style="width:800px;  margin-top:20px;">
@@ -261,7 +292,7 @@
                             </div>
 
                             <div style="position: absolute; top: 420px;right: 2% ">
-                                <button type="submit" class="btn btn-primary" >Add</button>
+                                <button type="submit" class="btn btn-primary">Add</button>
                             </div>
                         </form>
                     </div>
@@ -271,14 +302,14 @@
     </div>
 </div>
 <style>
-    .i1   {
+    .i1 {
         position: fixed;
         background: red;
-        font-size:12px;
-        height:250px;
-        width:350px;
-        padding:20px;
-        color:#fff;
+        font-size: 12px;
+        height: 250px;
+        width: 350px;
+        padding: 20px;
+        color: #fff;
         z-index: 99;
         border: 2px solid white;
 

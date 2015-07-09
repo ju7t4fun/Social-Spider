@@ -129,28 +129,55 @@
 <section id="container" class="">
     <!--main content start-->
     <!--main content start-->
+
+
     <section id="main-content">
         <section class="wrapper">
-            <table width="100%" border="0" margin="0" padding="0"
-                   class="row-border tableHeader" id="personTable">
-                <tbody>
-                <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Email</th>
-                    <th>State</th>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> User List</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ol class="breadcrumb">
+                        <li><i class="fa fa-home"></i><a href="/">Admin</a></li>
+                        <li><i class="fa fa-desktop"></i>Edit</li>
+                        <li><i class="fa fa-list-alt"></i>User List</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="pull-left">Posted</div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-body">
+                            <table width="100%" border="0" margin="0" padding="0"
+                                   class="row-border tableHeader" id="personTable">
+                                <tbody>
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Surname</th>
+                                    <th>Email</th>
+                                    <th>State</th>
 
-                </tr>
-                </thead>
-                </tbody>
-            </table>
-
+                                </tr>
+                                </thead>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </section>
-</section>
 
+</section>
 <!-- container section end -->
 
 </body>

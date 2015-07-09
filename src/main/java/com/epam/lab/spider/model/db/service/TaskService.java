@@ -246,33 +246,50 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
         return null;
     }
 
-    public List<Task> getAllLimited(int start, int ammount) {
+    public List<Task> getAllLimited(int userId, int start, int ammount) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return tdao.getAllLimited(connection, start, ammount);
+            return tdao.getAllLimited(connection,userId, start, ammount);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
-    public int getCount() {
+    public int getCount(int userId) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return tdao.getCount(connection);
+            return tdao.getCount(connection, userId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return -1;
     }
-    public List<Task> getAllActiveLimited(int start, int ammount) {
+    public List<Task> getAllActiveLimited(int userId, int start, int ammount) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return tdao.getAllActiveLimited(connection, start, ammount);
+            return tdao.getAllActiveLimited(connection,  userId, start, ammount);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
-    public int getActiveCount() {
+    public int getActiveCount(int userId) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return tdao.getActiveCount(connection);
+            return tdao.getActiveCount(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public List<Task> getAllLimitedAdmin(int start, int ammount) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getAllLimitedAdmin(connection, start, ammount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public int getCountAdmin() {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getCountAdmin(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }

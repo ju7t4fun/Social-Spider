@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +17,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-    <title>All Posts</title>
+    <title>Posted Posts</title>
 
     <!-- Bootstrap CSS -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -99,15 +100,15 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-list-alt"></i> Posted</h3>
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> <l:resource key="posted"/></h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-desktop"></i>Post</li>
-                        <li><i class="fa fa-list-alt"></i>Posted</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-desktop"></i><l:resource key="post"/></li>
+                        <li><i class="fa fa-list-alt"></i><l:resource key="posted"/></li>
                     </ol>
                 </div>
             </div>
@@ -115,7 +116,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left">Posted</div>
+                            <div class="pull-left"><l:resource key="posted"/></div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="panel-body">
@@ -124,13 +125,13 @@
                                 <tbody>
                                 <thead>
                                 <tr>
-                                    <th>Message</th>
-                                    <th>Group Name</th>
-                                    <th>Attachments</th>
-                                    <th>Post Time</th>
-                                    <th>Statistic</th>
-                                    <th>Id</th>
-                                    <th>Delete</th>
+                                    <th><l:resource key="message"/></th>
+                                    <th><l:resource key="owner.groupname"/></th>
+                                    <th><l:resource key="attachment"/></th>
+                                    <th><l:resource key="newpost.posttime"/></th>
+                                    <th><l:resource key="owner.statistics"/></th>
+                                    <th><l:resource key="owner.id"/></th>
+                                    <th><l:resource key="delete"/></th>
                                 </tr>
                                 </thead>
                                 </tbody>
@@ -147,12 +148,12 @@
 <%--Вікно статистики поста--%>
 <div class="b-popup" id="popup_post_stats">
     <div class="b-popup-content" style="height: 340px;">
-        <h4>Post Stats</h4>
+        <h4><l:resource key="poststats"/></h4>
         <br>
         <table id="stats_table" class="col-lg-12">
             <tr>
                 <td>
-                    <div align="center">Охоплення сумарне / підписників</div>
+                    <div align="center"><l:resource key="subscribers"/></div>
                     <div align="center">
                         <h1 id="reach_total">0</h1>
 
@@ -160,11 +161,11 @@
 
                         <h1 id="reach_subscribers">0</h1></div>
                     <div align="center">
-                        Кількість усіх користувачів / підписників спільноти, які побачили Ваш запис.
+                        <l:resource key="amountofusers"/>
                     </div>
                 </td>
                 <td>
-                    <div align="center">Зворотній зв'язок</div>
+                    <div align="center"><l:resource key="feedback"/></div>
                     <div>
                         <table>
                             <tr>
@@ -182,26 +183,26 @@
                             </tr>
                         </table>
                     </div>
-                    <div align="center">Кількість відміток «Мені подобається», репостів і коментарів.</div>
+                    <div align="center"><l:resource key="like.share.comment.amount"/></div>
                 </td>
             </tr>
             <tr>
-                <td><h4 id="to_group">0</h4> переходів у спільноту</td>
-                <td><h4 id="hide_post">0</h4> приховування</td>
+                <td><h4 id="to_group">0</h4> <l:resource key="community.visits"/></td>
+                <td><h4 id="hide_post">0</h4> <l:resource key="hide.post"/></td>
             </tr>
             <tr>
-                <td><h4 id="join_group">0</h4> вступів до спільноти</td>
-                <td><h4 id="report">0</h4> скарг</td>
+                <td><h4 id="join_group">0</h4> <l:resource key="community.join"/></td>
+                <td><h4 id="report">0</h4> <l:resource key="report"/></td>
             </tr>
             <tr>
-                <td><h4 id="links">0</h4> переходів за посиланням</td>
-                <td><h4 id="unsubscribe">0</h4> приховувань всіх записів</td>
+                <td><h4 id="links">0</h4> <l:resource key="links.followed"/></td>
+                <td><h4 id="unsubscribe">0</h4> <l:resource key="unsubscribe"/></td>
             </tr>
         </table>
         <br>
 
         <div align="right" style="margin-right: 20px">
-            <button class="btn btn-primary" onclick="closePostStats()">OK</button>
+            <button class="btn btn-primary" onclick="closePostStats()"><l:resource key="ok"/></button>
         </div>
     </div>
     <script>

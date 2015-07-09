@@ -136,7 +136,14 @@
         <servlet-name>UserHasCategoriesServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.UserHasCategoriesServlet</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>AdminAddTaskServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.AdminAddTaskServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminAddTaskServlet</servlet-name>
+        <url-pattern>/admin/addtask</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserHasCategoriesServlet</servlet-name>
         <url-pattern>/categories</url-pattern>
