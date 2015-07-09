@@ -50,6 +50,7 @@
     <jsp:include page="../pagecontent/header.jsp"/>
     <jsp:include page="../pagecontent/sidebar.jsp"/>
     <jsp:include page="../post/viewpost.jsp"/>
+    <v:views userId="${user.id}"/>
 
     <v:views userId="${user.id}"/>
 

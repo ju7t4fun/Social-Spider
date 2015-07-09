@@ -54,6 +54,8 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
             " permission = 'write'";
     private static final String SQL_GET_READ_BY_OWNER_ID = "SELECT * FROM wall WHERE owner_id = ? AND deleted = false AND" +
             " permission = 'read'";
+    private static final String SQL_GET_WRITE_BY_ADMIN = "SELECT wall.* FROM wall JOIN profile ON profile.id = wall.profile_id JOIN user ON user.id = profile.user_id WHERE\n" +
+            " role = 'ADMIN' AND user.deleted = 0 AND profile.deleted = 0 AND wall.deleted = 0 AND wall.permission = 'READ';";
 
 
     @Override
@@ -122,6 +124,11 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     @Override
     public List<Wall> getWriteByOwnerId(Connection connection, int ownerId) throws SQLException {
         return select(connection, SQL_GET_WRITE_BY_OWNER_ID, ownerId);
+    }
+
+    @Override
+    public List<Wall> getWriteByAdmin(Connection connection) throws SQLException {
+        return select(connection, SQL_GET_WRITE_BY_ADMIN);
     }
 
     @Override

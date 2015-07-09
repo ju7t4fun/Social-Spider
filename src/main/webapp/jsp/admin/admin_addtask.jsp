@@ -24,6 +24,8 @@
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
     <!-- bootstrap theme -->
     <link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
+
     <!--external css-->
     <!-- font icon -->
     <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>
@@ -35,8 +37,9 @@
 
     <!-- javascripts -->
     <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.task.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/save.task.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/save.admintask.js"></script>
     <script src="${pageContext.request.contextPath}/assets/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
 
 
@@ -109,21 +112,15 @@
                             <div id="collapseOne" class="panel-collapse collapse in">
                                 <div class="panel-body">
                                     <div class="col-lg-6">
-                                        <h4><l:resource key="select.group.to.grab"/></h4>
-                                        <select id="tokenize_focus_source_walls" multiple="multiple"
-                                                class="tokenize-sample" style="width:350px;">
-                                            <c:forEach items="${sourceWalls}" var="wall">
-                                                <option value="${wall.id}"><c:out value="${wall.text}"/></option>
+                                        <h4><l:resource key="newpost.selectgroup"/>:</h4>
+                                        <select name="groups" id="tokenize_focus" multiple="multiple"
+                                                class="tokenize-sample">
+                                            <c:forEach items="${owners}" var="owner">
+                                                <option value="${owner.wallId}">${owner.name}</option>
                                             </c:forEach>
-
                                         </select>
-
                                         <script type="text/javascript">
-                                            $('select#tokenize_focus_source_walls').tokenize({
-                                                datas: 'select',
-                                                newElements: 'false',
-                                                displayDropdownOnFocus: true
-                                            });
+                                            $('select#tokenize_focus').tokenize({displayDropdownOnFocus: true});
                                         </script>
                                     </div>
 
@@ -328,7 +325,25 @@
     <!--main content end-->
 </section>
 <!-- container section end -->
+<script>
+    $(document).ready(function () {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('GET', '/owner?action=getOwnerWall', true);
+        xmlhttp.onreadystatechange = function () {
 
+            if (xmlhttp.readyState == 4) {
+                var response = JSON.parse(xmlhttp.responseText);
+                var list = $("#tokenize_focus");
+                list.empty();
+                list.data('tokenize').clear();
+                for (var i = 0; i < response.owner.length; i++) {
+                    list.append('<option value="' + response.owner[i].id + '">' + response.owner[i].name + '</option>');
+                }
+            };
+        }
+        xmlhttp.send();
+    });
+</script>
 <!-- javascripts -->
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <!-- nice scroll -->
@@ -340,10 +355,12 @@
 <script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>
 <!--custome script for all page-->
 <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.tokenize.task.js"></script>
+
 <!--custom tagsinput-->
 <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
 <script src="${pageContext.request.contextPath}/js/form-component.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
+
 
 </body>
 </html>
