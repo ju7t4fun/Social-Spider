@@ -250,4 +250,12 @@ public class WallService implements BaseService<Wall> {
         return null;
     }
 
+    public List<Wall> getWriteByAdmin() {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return wdao.getWriteByAdmin(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

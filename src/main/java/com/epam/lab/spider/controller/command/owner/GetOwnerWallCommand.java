@@ -32,7 +32,12 @@ public class GetOwnerWallCommand implements ActionCommand {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        List<Wall> writeWalls = service.getWriteByUserId(user.getId());
+        List<Wall> writeWalls;
+        if (user.getRole() == User.Role.USER) {
+          writeWalls = service.getWriteByUserId(user.getId());
+        } else {
+            writeWalls = service.getWriteByAdmin();
+        }
         List<OwnerWall> ownerWalls = new ArrayList<>();
         for (final Wall wall : writeWalls) {
             ownerWalls.add(new OwnerWall() {
