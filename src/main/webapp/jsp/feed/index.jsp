@@ -9,6 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <%@ taglib prefix="lg" uri="http://lab.epam.com/spider/logger" %>
+<%@ taglib prefix="v" uri="http://lab.epam.com/spider/views" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,6 +50,8 @@
     <jsp:include page="../pagecontent/header.jsp"/>
     <jsp:include page="../pagecontent/sidebar.jsp"/>
     <jsp:include page="../post/viewpost.jsp"/>
+
+    <v:views userId="${user.id}"/>
 
     <section id="main-content">
         <section class="wrapper">
