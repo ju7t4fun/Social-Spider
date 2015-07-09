@@ -15,7 +15,7 @@ import java.util.List;
 public class CategoryDAOImp extends BaseDAO implements CategoryDAO {
 
     private static final String SQL_INSERT_QUERY = "INSERT INTO category (name, image_url) VALUES (?, ?)";
-    private static final String SQL_UPDATE_QUERY = "UPDATE category SET name = ?";
+    private static final String SQL_UPDATE_QUERY = "UPDATE category SET name = ?, image_url = ? WHERE id = ? ";
     private static final String SQL_DELETE_QUERY = "DELETE FROM category WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM category ORDER BY id desc ";
 
@@ -45,7 +45,7 @@ public class CategoryDAOImp extends BaseDAO implements CategoryDAO {
     @Override
     public boolean update(Connection connection, int id, Category category) throws SQLException {
         return changeQuery(connection, SQL_UPDATE_QUERY,
-                category.getName(), id);
+                category.getName(), category.getImageUrl(),  id);
     }
 
     @Override

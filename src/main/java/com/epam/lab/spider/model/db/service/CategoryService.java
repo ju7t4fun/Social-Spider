@@ -34,9 +34,14 @@ public class CategoryService implements BaseService<Category> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                assertTransaction(cdao.insert(connection, category));
+//                assertTransaction(cdao.insert(connection, category));
+//                for (Task task : category.getTasks()) {
+//                    assertTransaction(chtdao.insert(connection, category.getId(), task.getId()));
+//                }
+//                connection.commit();
+                cdao.insert(connection, category);
                 for (Task task : category.getTasks()) {
-                    assertTransaction(chtdao.insert(connection, category.getId(), task.getId()));
+                    chtdao.insert(connection, category.getId(), task.getId());
                 }
                 connection.commit();
             } catch (SQLTransactionException e) {
@@ -60,10 +65,15 @@ public class CategoryService implements BaseService<Category> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                assertTransaction(cdao.update(connection, id, category));
-                assertTransaction(chtdao.deleteByCategoryId(connection, id));
+//                assertTransaction(cdao.update(connection, id, category));
+//                assertTransaction(chtdao.deleteByCategoryId(connection, id));
+//                for (Task task : category.getTasks()) {
+//                    assertTransaction(chtdao.insert(connection, id, task.getId()));
+//                }
+                cdao.update(connection, id, category);
+               chtdao.deleteByCategoryId(connection, id);
                 for (Task task : category.getTasks()) {
-                    assertTransaction(chtdao.insert(connection, id, task.getId()));
+                   chtdao.insert(connection, id, task.getId());
                 }
                 connection.commit();
             } catch (SQLTransactionException e) {
