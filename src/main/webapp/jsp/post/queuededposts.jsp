@@ -157,8 +157,6 @@
     function myFunc() {
         var newUrl = path + "/post?action=fillqueuededposts";
         table.api().ajax.url(newUrl).load();
-
-
         document.getElementById("showAllBtnId").style.visibility = "hidden";
     };
 </script>

@@ -125,4 +125,21 @@ public class ProfileService implements BaseService<Profile> {
         return getByVkId(id) != null;
     }
 
+    public List<Profile> getByUserId(Integer id, int page, int size) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getByUserId(connection, id, page, size);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getCountByUserId(Integer id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getCountByUserId(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

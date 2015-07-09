@@ -29,6 +29,7 @@ public class FeedWebSocket implements Receiver {
     private static CategoryService service = factory.create(CategoryService.class);
     private static Map<Integer, Session> sessions = new HashMap<>();
     private static Map<Integer, List<Category>> categoriesUser = new HashMap<>();
+    private HttpSession httpSession;
     private User user;
 
     public FeedWebSocket() {
@@ -41,6 +42,7 @@ public class FeedWebSocket implements Receiver {
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
         HttpSession httpSession = getHttpSession(config);
+        this.httpSession = httpSession;
         user = (User) httpSession.getAttribute("user");
         sessions.put(user.getId(), session);
         categoriesUser.put(user.getId(), service.getByUserId(user.getId()));
@@ -97,7 +99,7 @@ public class FeedWebSocket implements Receiver {
                 List<Category> userCategories = categoriesUser.get(userId);
                 if (compareByCategoryId(userCategories, postCategories)) {
                     Session session = sessions.get(userId);
-                    session.getBasicRemote().sendText(message);
+                    session.getBasicRemote().sendText(message + "|" + category(postId));
                 }
             }
         } catch (IOException e) {
@@ -122,8 +124,7 @@ public class FeedWebSocket implements Receiver {
         List<Integer> postIds = postService.getByCategoryFromUser(userId, offset, limit);
         try {
             for (Integer id : postIds) {
-                List<Category> categories = service.getByPostId(id);
-                session.getBasicRemote().sendText("on_scroll|" + id + "|" + categories);
+                session.getBasicRemote().sendText("on_scroll|" + id + "|" + category(id));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -134,12 +135,22 @@ public class FeedWebSocket implements Receiver {
         List<Integer> postIds = postService.getByCategoryFromUser(userId, 0, 5);
         try {
             for (Integer id : postIds) {
-                List<Category> categories = service.getByPostId(id);
-                session.getBasicRemote().sendText("history|" + id + "|" + categories);
+                session.getBasicRemote().sendText("history|" + id + "|" + category(id));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String category(int postId) {
+        List<Category> categories = service.getByPostId(postId);
+        ResourceBundle bundle = (ResourceBundle) httpSession.getAttribute("bundle");
+        int lang = Integer.parseInt(bundle.getString("categoryLangCode"));
+        List<String> strings = new ArrayList<>();
+        for (Category category : categories) {
+            strings.add(category.getName().split("\\|")[lang]);
+        }
+        return strings.toString();
     }
 
     private enum Command {

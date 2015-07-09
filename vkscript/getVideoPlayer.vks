@@ -1,0 +1,2 @@
+var video = API.video.get({"videos": Args.videos});
+return video.items@.player;

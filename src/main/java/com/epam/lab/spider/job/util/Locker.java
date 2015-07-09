@@ -38,7 +38,7 @@ public class Locker {
     }
 
     public synchronized boolean isLock(Wall wall) {
-        return isLockOrNull("owner", wall.getOwner_id())
+        return isLockOrNull("owner", wall.getOwnerId())
                 || isLockOrNull("wall", wall.getId())
                 || isLockOrNull("profile", wall.getProfile_id());
 

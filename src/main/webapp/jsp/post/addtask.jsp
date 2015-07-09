@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <%--
   Created by IntelliJ IDEA.
   User: Sasha
@@ -84,9 +85,9 @@
       <div class="row">
         <div class="col-lg-12">
           <ol class="breadcrumb">
-            <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-            <li><i class="fa fa-desktop"></i>UI Fitures</li>
-            <li><i class="fa fa-list-alt"></i>Components</li>
+            <li><i class="fa fa-home"></i><a href="index.html"><l:resource key="home"/></a></li>
+            <li><i class="fa fa-desktop"></i><l:resource key="task"/></li>
+            <li><i class="fa fa-list-alt"></i><l:resource key="addnewtask"/></li>
           </ol>
         </div>
       </div>
@@ -99,14 +100,14 @@
               <div class="panel-heading">
                 <h4 class="panel-title">
                   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                    Step #1 | Basic Settings - Groups & Grabbing Type
+                    <l:resource key="addtask.step1"/>
                   </a>
                 </h4>
               </div>
               <div id="collapseOne" class="panel-collapse collapse in">
                 <div class="panel-body">
                   <div class="col-lg-6">
-                    <h4>Select group from which you are grabbing posts:</h4>
+                    <h4><l:resource key="select.group.to.grab"/></h4>
                     <select id="tokenize_focus_source_walls" multiple="multiple" class="tokenize-sample" style="width:350px;">
                       <c:forEach items="${sourceWalls}" var="wall">
                         <option value="${wall.id}"><c:out value="${wall.text}"/></option>
@@ -121,7 +122,7 @@
                         displayDropdownOnFocus: true
                       });
                     </script>
-                    <h4>Select group to post:</h4>
+                    <h4><l:resource key="select.group.to.post"/></h4>
                     <select id="tokenize_focus_destination_walls" multiple="multiple" class="tokenize-sample" style="width:350px;">
                       <c:forEach items="${destinationWalls}" var="wall">
                         <option value="${wall.id}"><c:out value="${wall.text}"/></option>
@@ -134,12 +135,12 @@
                       });
                     </script>
 
-                    <h4>Select Grabbing Mode And count of post per one task grabbing:</h4>
+                    <h4><l:resource key="select.grabbing.mode"/></h4>
                     <br>
-                    <input type="radio" name="grabbing_mode" value="total" checked> For each source group give full count of posts. <br>
-                    <input type="radio" name="grabbing_mode" value="per_group"> Give count of posts from random group. <br>
+                    <input type="radio" name="grabbing_mode" value="total" checked> <l:resource key="grabbing.mode1"/> <br>
+                    <input type="radio" name="grabbing_mode" value="per_group"> <l:resource key="grabbing.mode2"/> <br>
                     <div class="post_count_number_group">
-                    <span>Counts of post per one task grabbing action:  </span>
+                    <span><l:resource key="amount.of.posts"/>  </span>
                     <input type="number" name="post_count" style="width:40px;border: none;-webkit-appearance: none; " value="1">
                       </div>
                     <div>
@@ -192,8 +193,6 @@
                           from_max: 8,
                           from: 1,
                           step: 1,
-                          prefix: "Get ",
-                          postfix: "  post.",
                           decorate_both: false,
                           onStart: track,
                           onChange: track,
@@ -208,25 +207,25 @@
                   </div>
 
                   <div class="col-lg-6">
-                    <h4>Type of Grabbing: </h4>
+                    <h4><l:resource key="grabbing.type"/> </h4>
                     <br>
-                    <input type="radio" name="grabbing_type" value="begin" checked> Grab posts from the start of the wall. <br>
+                    <input type="radio" name="grabbing_type" value="begin" checked> <l:resource key="grabbing.type1"/> <br>
 
-                    <input type="radio" name="grabbing_type" value="end"> Grab posts from the end of the wall. <br>
+                    <input type="radio" name="grabbing_type" value="end"> <l:resource key="grabbing.type2"/> <br>
 
-                    <input type="radio" name="grabbing_type" value="random"> Grab random post. <br>
+                    <input type="radio" name="grabbing_type" value="random"> <l:resource key="grabbing.type3"/> <br>
 
-                    <input type="radio" name="grabbing_type" value="new"> Grab new posts only. <br>
+                    <input type="radio" name="grabbing_type" value="new"> <l:resource key="grabbing.type4"/> <br>
                     <br>
-                    <h4>Filter: </h4>
+                    <h4><l:resource key="filter"/> </h4>
                     <br>
-                    <span style="width:80px;display: inline-block">Likes </span>
+                    <span style="width:80px;display: inline-block"><l:resource key="likes"/> </span>
                     <input type="number" name="likes" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="60" />
                     <br>
-                    <span style="width:80px;display: inline-block"> Reposting </span>
+                    <span style="width:80px;display: inline-block"> <l:resource key="reposts"/> </span>
                     <input type="number" name="reposts" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="10" />
                     <br>
-                    <span style="width:80px;display: inline-block"> Comments </span>
+                    <span style="width:80px;display: inline-block"> <l:resource key="comments"/> </span>
                     <input type="number" name="comments" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="0" />
                     <br>
                   </div>
@@ -239,27 +238,27 @@
               <div class="panel-heading">
                 <h4 class="panel-title">
                   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                    Step #2 | Basic Settings - Posting Settings
+                    <l:resource key="addtask.step2"/>
                   </a>
                 </h4>
               </div>
               <div id="collapseTwo" class="panel-collapse collapse">
                 <div class="panel-body">
                   <div class="col-lg-6">
-                    <h4>Posting type: </h4>
-                    <input type="radio" name="posting_type" value="COPY" checked> Copying
-                    <input type="radio" name="posting_type" value="REPOST" style="margin-left:15px;"> Reposting
+                    <h4> <l:resource key="posting.type"/> </h4>
+                    <input type="radio" name="posting_type" value="COPY" checked> <l:resource key="copying"/>
+                    <input type="radio" name="posting_type" value="REPOST" style="margin-left:15px;"> <l:resource key="reposts"/>
 
-                    <h4>Repeat: </h4>
-                    <input type="radio" name="repeat" value="REPEAT_DISABLE" checked> Do not repeat posts. <br>
-                    <input type="radio" name="repeat" value="REPEAT_ON_TIME"> Post can be repeated every
-                    <input type="number" name="repeat_days" style="width:40px;border: none;-webkit-appearance: none; "> days.
+                    <h4><l:resource key="repeat"/> </h4>
+                    <input type="radio" name="repeat" value="REPEAT_DISABLE" checked> <l:resource key="do.not.repeat"/> <br>
+                    <input type="radio" name="repeat" value="REPEAT_ON_TIME"> <l:resource key="repeat.every"/>
+                    <input type="number" name="repeat_days" style="width:40px;border: none;-webkit-appearance: none; "> <l:resource key="days"/>
 
                   </div>
                   <div class="col-lg-6">
-                    <h4>Start Time: </h4>
-                    <input type="radio" name="start_time" value="INTERVAL" checked> Interval
-                    <input type="radio" name="start_time" value="SCHEDULE" style="margin-left:15px;" disabled > Schedule
+                    <h4><l:resource key="start.time"/> </h4>
+                    <input type="radio" name="start_time" value="INTERVAL" checked> <l:resource key="interval"/>
+                    <input type="radio" name="start_time" value="SCHEDULE" style="margin-left:15px;" disabled > <l:resource key="schedule"/>
                     <div class="interval_number_group">
                       <br>
                       <br>
@@ -296,8 +295,7 @@
                           type: 'double',
                           step: 1,
 //                          grid: true,
-                          prefix: "Interval: ",
-                          postfix: " minute",
+                          postfix: " min",
                           decorate_both: false,
                           onStart: track,
                           onChange: track,
@@ -308,14 +306,14 @@
                     </script>
 
                     <br>
-                    <h4>Work Time: </h4>
-                    <input type="radio" name="work_time" value="ROUND_DAILY" checked> Around the Clock
-                    <input type="radio" name="work_time" value="DAY_PERIOD" style="margin-left:15px;" disabled> Select Time
+                    <h4><l:resource key="work.time"/> </h4>
+                    <input type="radio" name="work_time" value="ROUND_DAILY" checked> <l:resource key="around.the.clock"/>
+                    <input type="radio" name="work_time" value="DAY_PERIOD" style="margin-left:15px;" disabled> <l:resource key="select.time"/>
 
                     <br>
                     <br>
                     <%--[TIME_SELECT]--%>
-                    <h4>Post delay: </h4>
+                    <h4><l:resource key="post.delay"/> </h4>
                     <div class="post_delay_number_group">
                       <span>Between </span>
                       <input type="number" name="post_delay_min" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="10" />
@@ -348,8 +346,7 @@
                           type: 'double',
                           step: 1,
 //                          grid: true,
-                          prefix: "Delay: ",
-                          postfix: " second",
+                          postfix: " sec",
                           decorate_both: false,
                           onStart: track,
                           onChange: track,
@@ -366,35 +363,35 @@
               <div class="panel-heading">
                 <h4 class="panel-title">
                   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                    Step #3 | Advanced Settings - Content Type & Actions
+                    <l:resource key="addtask.step3"/>
                   </a>
                 </h4>
               </div>
               <div id="collapseThree" class="panel-collapse collapse">
                 <div class="panel-body">
                   <div class="col-lg-6">
-                    <h4>Content Type</h4>
-                    <div class="col-lg-3">
-                      <input type="checkbox" name="content_type" value="text" checked> Text <br>
-                      <input type="checkbox" name="content_type" value="photo" checked> Photo <br>
-                      <input type="checkbox" name="content_type" value="audio" checked> Audio <br>
-                      <input type="checkbox" name="content_type" value="video" checked> Video <br>
+                    <h4><l:resource key="content.type"/></h4>
+                    <div class="col-lg-4">
+                      <input type="checkbox" name="content_type" value="text" checked> <l:resource key="text"/> <br>
+                      <input type="checkbox" name="content_type" value="photo" checked> <l:resource key="photo"/> <br>
+                      <input type="checkbox" name="content_type" value="audio" checked> <l:resource key="audio"/> <br>
+                      <input type="checkbox" name="content_type" value="video" checked> <l:resource key="video"/> <br>
                     </div>
 
-                    <div class="col-lg-3">
-                      <input type="checkbox" name="content_type" value="repost" checked> Deep Repost Copy <br>
-                      <input type="checkbox" name="content_type" value="link"> Links <br>
-                      <input type="checkbox" name="content_type" value="hashtag"> Hashtags <br>
-                      <input type="checkbox" name="content_type" value="docs" checked> Documents <br>
-                      <input type="checkbox" name="content_type" value="page"> Pages <br>
+                    <div class="col-lg-4">
+                      <input type="checkbox" name="content_type" value="repost" checked> <l:resource key="deep.copy"/> <br>
+                      <input type="checkbox" name="content_type" value="link"> <l:resource key="links"/> <br>
+                      <input type="checkbox" name="content_type" value="hashtag"> <l:resource key="hashtags"/> <br>
+                      <input type="checkbox" name="content_type" value="docs" checked> <l:resource key="documents"/> <br>
+                      <input type="checkbox" name="content_type" value="page"> <l:resource key="pages"/> <br>
                     </div>
 
                   </div>
                   <div class="col-lg-3">
-                    <h4>Actions After Posting</h4>
-                    <input type="radio" name="actions" value="LIKE"> Like <br>
-                    <input type="radio" name="actions" value="REPOST"> Repost <br>
-                    <input type="radio" name="actions" value="DO_NOTHING" checked> Do nothing <br>
+                    <h4><l:resource key="actions.after.posting"/></h4>
+                    <input type="radio" name="actions" value="LIKE"> <l:resource key="like"/> <br>
+                    <input type="radio" name="actions" value="REPOST"> <l:resource key="reposts"/> <br>
+                    <input type="radio" name="actions" value="DO_NOTHING" checked> <l:resource key="do.nothing"/> <br>
                   </div>
 
                 </div>
@@ -404,14 +401,14 @@
               <div class="panel-heading">
                 <h4 class="panel-title">
                   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
-                    Step #4 | Advanced Settings - Text Settings
+                    <l:resource key="addtask.step4"/>
                   </a>
                 </h4>
               </div>
               <div id="collapseFour" class="panel-collapse collapse">
                 <div class="panel-body">
                   <div class="col-lg-6">
-                    <h4>Hash Tags</h4>
+                    <h4><l:resource key="hashtags"/></h4>
 
                     <input name="wordsinput" id="tagsinput" class="tagsinput" value="socialspider, posting" />
                     <!--
@@ -422,7 +419,7 @@
                     -->
                   </div>
                   <div class="col-lg-3">
-                    <h4>Add Text to Post</h4>
+                    <h4><l:resource key="add.text.to.post"/></h4>
 										<textarea class="form-control" name="addtext" style="width:500px;height:120px;">
 										</textarea>
 
@@ -435,8 +432,8 @@
           </div>
           <!--collapse end-->
           <div class="col-lg-offset-2 col-lg-9">
-            <button id="task-save" type="submit" class="btn btn-primary">Save</button>
-            <button type="reset" class="btn btn-default">Reset</button>
+            <button id="task-save" type="submit" class="btn btn-primary"><l:resource key="newpost.save"/></button>
+            <button type="reset" class="btn btn-default"><l:resource key="newpost.reset"/></button>
           </div>
         </div>
 

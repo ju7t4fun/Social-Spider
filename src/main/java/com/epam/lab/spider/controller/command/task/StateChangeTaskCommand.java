@@ -41,7 +41,13 @@ public class StateChangeTaskCommand implements ActionCommand {
             Integer index = Integer.parseInt(taskIdString);
             Task.State state = Task.State.valueOf(toStateString.toUpperCase());
 
-            Task task = taskService.getByIdAndLimitByUserId(index, user.getId());
+            Task task;
+            if (user.getRole() == User.Role.ADMIN ) {
+                task = taskService.getByIdNoLimit(index);
+            } else {
+                task = taskService.getByIdAndLimitByUserId(index, user.getId());
+            }
+
             boolean result;
             if(state == Task.State.RUNNING) {
                 result = TaskUtil.changeStageToRunning(task);
@@ -54,6 +60,7 @@ public class StateChangeTaskCommand implements ActionCommand {
             response.setStatus(400);
             JSONObject resultJson = new JSONObject();
             resultJson.put("alert","Switch task state failed!");
+            resultJson.put("msg","error");
             String result = resultJson.toString();
             response.setContentType("application/json;charset=UTF-8");
             PrintWriter out = response.getWriter();
@@ -64,6 +71,7 @@ public class StateChangeTaskCommand implements ActionCommand {
 
         JSONObject resultJson = new JSONObject();
         resultJson.put("alert","Switch task succeed!");
+        resultJson.put("msg","success");
         String result = resultJson.toString();
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();

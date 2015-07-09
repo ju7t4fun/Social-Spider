@@ -11,39 +11,40 @@
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
                             <i class="icon_genius"></i>
-                            <span>Post</span>
+                            <span><l:resource key="post"/></span>
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="/post?action=created">Created</a></li>
-                            <li><a class="" href="/post?action=queued">Queued</a></li>
-                            <li><a class="" href="/post?action=posted">Posted</a></li>
+                            <li><a class="" href="/post?action=created"><l:resource key="created"/></a></li>
+                            <li><a class="" href="/post?action=queued"><l:resource key="queued"/></a></li>
+                            <li><a class="" href="/post?action=posted"><l:resource key="posted"/></a></li>
                             <li><a class="" href="/post?action=add"><l:resource key="addnewpost"/></a></li>
                         </ul>
                     </li>
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
                             <i class="icon_document_alt"></i>
-                            <span>Task</span>
+                            <span><l:resource key="task"/></span>
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="${pageContext.request.contextPath}/task">All
-                                Tasks</a></li>
-                            <li><a class="" href="${pageContext.request.contextPath}/task?action=create">Add New
-                                Task</a></li>
+                            <li><a class="" href="${pageContext.request.contextPath}/task"><l:resource
+                                    key="alltasks"/></a></li>
+                            <li><a class="" href="${pageContext.request.contextPath}/task?action=create"><l:resource
+                                    key="addnewtask"/></a></li>
                         </ul>
                     </li>
                     <li>
-                        <a class="" href="/owner"> <i class="icon_piechart"></i>
-                            <span>Owner</span>
+                        <a class="" href="/owner"> <i class="fa fa-users"></i>
+                            <span><l:resource key="owner"/></span>
                         </a>
                     </li>
                     <li>
-                        <a class="" href="/userhascategories"> <i class="icon_piechart"></i>
-                            <span>Choose Categories</span>
+                        <a class="" href="/categories"> <i class="fa fa-bookmark"></i>
+                            <span><l:resource key="category"/></span>
                         </a>
                     </li>
+
                 </ul>
             </c:when>
             <c:when test="${user.role =='ADMIN'}">
@@ -51,29 +52,37 @@
                     <li class="sub-menu">
                         <a href="${pageContext.request.contextPath}/admin/support" class="">
                             <i class="icon_genius"></i>
-                            <span>Support</span>
+                            <span><l:resource key="support"/></span>
                         </a>
                     </li>
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
                             <i class="icon_genius"></i>
-                            <span>Edit</span>
+                            <span><l:resource key="edit"/></span>
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
                             <li>
-                                <a class="" href="${pageContext.request.contextPath}/admin/users">Users
-                                    list</a>
+                                <a class="" href="${pageContext.request.contextPath}/admin/users"><l:resource
+                                        key="userslist"/></a>
                             </li>
                             <li>
-                                <a class="" href="${pageContext.request.contextPath}/admin/categories">Categories
+                                <a class="" href="${pageContext.request.contextPath}/admin/categories"><l:resource
+                                        key="category"/>
                                 </a>
                             </li>
                             <li>
-                                <a class="" href="${pageContext.request.contextPath}/admin/groups">Groups
-                                </a>
+                                <a class="" href="${pageContext.request.contextPath}/admin/groups"><l:resource
+                                        key="groups"/></a>
                             </li>
                         </ul>
+                    </li>
+
+                    <li class="sub-menu">
+                        <a href="${pageContext.request.contextPath}/task?action=showtasksforadmin" class="">
+                            <i class="icon_genius"></i>
+                            <span>Tasks Binding</span>
+                        </a>
                     </li>
                 </ul>
             </c:when>

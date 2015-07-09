@@ -30,7 +30,7 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
     private TaskDAO tdao = factory.create(TaskDAO.class);
     private TaskSourceDAO tsdao = factory.create(TaskSourceDAO.class);
     private TaskDestinationDAO tddao = factory.create(TaskDestinationDAO.class);
-//    private CategoryHasTaskDAO chtdao = factory.create(CategoryHasTaskDAO.class);
+    private CategoryHasTaskDAO chtdao = factory.create(CategoryHasTaskDAO.class);
     private FilterDAO fdao = factory.create(FilterDAO.class);
 
     @Override
@@ -128,11 +128,17 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                assertTransaction(fdao.delete(connection, tdao.getById(connection, id).getFilterId()));
-                assertTransaction(tddao.deleteByTaskId(connection, id));
-                assertTransaction(tsdao.deleteByTaskId(connection, id));
-//                assertTransaction(chtdao.deleteByTaskId(connection, id));
-                assertTransaction(tdao.delete(connection, id));
+//                assertTransaction(fdao.delete(connection, tdao.getById(connection, id).getFilterId()));
+//                assertTransaction(tddao.deleteByTaskId(connection, id));
+//                assertTransaction(tsdao.deleteByTaskId(connection, id));
+////                assertTransaction(chtdao.deleteByTaskId(connection, id));
+//                assertTransaction(tdao.delete(connection, id));
+
+                fdao.delete(connection, tdao.getById(connection, id).getFilterId());
+                tddao.deleteByTaskId(connection, id);
+                tsdao.deleteByTaskId(connection, id);
+             chtdao.deleteByTaskId(connection, id);
+                tdao.delete(connection, id);
                 connection.commit();
             } catch (SQLTransactionException e) {
                 connection.rollback();
@@ -187,6 +193,16 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
         return null;
     }
 
+
+    public Task getByIdNoLimit(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getByIdAdminRules(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Task> getRunnableByNextRunDate(Date date) {
         try (Connection connection = PoolConnection.getConnection()) {
             return tdao.getAllByNextRunDateLimitByState(connection, date, Task.State.RUNNING);
@@ -228,5 +244,38 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<Task> getAllLimited(int start, int ammount) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getAllLimited(connection, start, ammount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public int getCount() {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getCount(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+    public List<Task> getAllActiveLimited(int start, int ammount) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getAllActiveLimited(connection, start, ammount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public int getActiveCount() {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getActiveCount(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 }

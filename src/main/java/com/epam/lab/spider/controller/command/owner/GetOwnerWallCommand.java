@@ -2,6 +2,7 @@ package com.epam.lab.spider.controller.command.owner;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.model.db.entity.Owner;
+import com.epam.lab.spider.model.db.entity.Profile;
 import com.epam.lab.spider.model.db.entity.User;
 import com.epam.lab.spider.model.db.entity.Wall;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
@@ -42,7 +43,7 @@ public class GetOwnerWallCommand implements ActionCommand {
 
                 @Override
                 public String getName() {
-                    return wall.getOwner().getName();
+                    return wall.getOwner().getName() + " (" + wall.getProfile().getName() + ")";
                 }
             });
         }

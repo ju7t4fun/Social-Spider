@@ -28,6 +28,8 @@
     <!--external css-->
     <link href="${pageContext.request.contextPath}/css/core.css" rel="stylesheet">
 
+
+
     <!-- font icon -->
     <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet"/>
@@ -121,7 +123,7 @@
                     }
                 }, {
                     "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<div class="btn-group"><a class="btn btn-primary" data-toggle="modal" data-target="#publish_modal" onclick="openPublishWindows(' + cellData + ')" ><i class="icon_plus_alt2"></i></a><a class="btn btn-danger" onclick="removePost(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
+                        $(td).html('<div class="btn-group"><a class="btn btn-primary" data-toggle="modal" data-target="#publish_modal" onclick="openPublishWindows(' + cellData + ')" ><i class="icon_plus_alt2"></i></a><a data-toggle="modal" data-target="#edit_post" onclick="editPost(' + cellData + ')" class="btn btn-success"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removePost(' + cellData + ',this)"><i class="icon_close_alt2"></i></a></div>');
                     }
                 }, {
                     "width": "60%", "targets": 1
@@ -203,7 +205,7 @@
     <jsp:include page="../pagecontent/sidebar.jsp"/>
 
     <jsp:include page="../post/viewpost.jsp"/>
-
+    <jsp:include page="../post/editpost.jsp"/>
     <%--for confirm delete modal window(include script and css)--%>
     <jsp:include page="../pagecontent/confirm-delete.jsp"/>
 
@@ -211,15 +213,15 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-list-alt"></i> Created</h3>
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i><l:resource key="created"/></h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-desktop"></i>Post</li>
-                        <li><i class="fa fa-list-alt"></i>Created</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-desktop"></i><l:resource key="post"/></li>
+                        <li><i class="fa fa-list-alt"></i><l:resource key="created"/></li>
                     </ol>
                 </div>
             </div>
@@ -227,7 +229,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left">Created</div>
+                            <div class="pull-left"><l:resource key="created"/></div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="panel-body">
@@ -237,9 +239,9 @@
                                            class="row-border tableHeader" id="postsTable">
                                         <thead>
                                         <tr style="align-content: center">
-                                            <th>id</th>
-                                            <th>Message</th>
-                                            <th>Attachment</th>
+                                            <th><l:resource key="owner.id"/></th>
+                                            <th><l:resource key="message"/></th>
+                                            <th><l:resource key="attachment"/></th>
                                             <th></th>
                                         </tr>
                                         </thead>

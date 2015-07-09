@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.model.db.entity.Attachment;
 import com.epam.lab.spider.model.db.entity.Post;
 import com.epam.lab.spider.model.db.entity.User;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 /**
@@ -26,10 +28,11 @@ public class SavePostFromFeedCommand implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         JSONObject json = new JSONObject();
         response.setContentType("application/json");
         response.setContentType("UTF-8");
-        HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         int id = Integer.parseInt(request.getParameter("id"));
 
@@ -38,7 +41,7 @@ public class SavePostFromFeedCommand implements ActionCommand {
         post.setUserId(user.getId());
         if (postService.insert(post)) {
             json.put("status", "success");
-            json.put("message", "Post successfully created!");
+            json.put("message", UTF8.encoding(bundle.getString("notification.create.post.success")));
         }
         response.getWriter().write(json.toString());
     }
