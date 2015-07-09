@@ -22,7 +22,7 @@ public class AddCategoryCommand implements ActionCommand {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 
-        String name = request.getParameter("support");
+        String name = request.getParameter("category");
         JSONObject json = new JSONObject();
 
         Category category = new Category();
