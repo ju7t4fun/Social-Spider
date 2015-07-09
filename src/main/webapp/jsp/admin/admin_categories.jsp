@@ -107,11 +107,17 @@
                 "columnDefs": [
 
                     {
-                        "targets": [0,1,2], "orderable": false
+                        "targets": [0,1,2,3], "orderable": false
                     },
 
                     {
                         "aTargets": [1], "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).html('<a class="btn btn-default" onclick="PopUpShow(' + cellData + ')"><span class="fa fa-users"></span></a>');
+                    }
+                    },
+
+                    {
+                        "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
 
                         var parts = cellData.split("|");
 
@@ -125,9 +131,9 @@
                     },
 
                     {
-                        "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
+                        "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
 
-                        $(td).html('<div class="btn-group"><a class="btn btn-danger" onclick="removeCategory('  + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
+                        $(td).html('<div class="btn-group"><a data-toggle="modal" data-target="#edit_post" onclick="editCategory(' + cellData + ')" class="btn btn-success"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removeCategory('  + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
 
                     }
                     }
@@ -142,6 +148,14 @@
             dataTables_filter_input.attr("style", "width: 500px")
 
         })
+
+        function PopUpShow(categoryId) {
+            alert("Category ID: " + categoryId);
+        }
+
+        function editCategory(categoryId) {
+            alert(categoryId);
+        }
 
         function hideElem(id) {
             document.getElementById(id).style.visibility = "hidden";
@@ -211,6 +225,7 @@
                                         <thead>
                                         <tr style="align-content: center">
                                             <th>id</th>
+                                            <th>Binding to tasks</th>
                                             <th>Category name</th>
                                             <th>Delete</th>
                                         </tr>
