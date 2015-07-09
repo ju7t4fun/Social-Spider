@@ -346,7 +346,9 @@ public class TaskJob implements Job {
                         NewPost newPost = new NewPost();
                         newPost.setPost(post);
                         newPost.setWallId(wall.getId());
-
+                        // set user id
+                        newPost.setUserId(task.getUserId());
+                        newPost.getPost().setUserId(task.getUserId());
                         timeToPost += TaskUtil.getRandomPostDeleay(task) * 1000;
                         newPost.setPostTime(new Date(timeToPost));
 

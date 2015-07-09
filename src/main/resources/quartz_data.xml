@@ -8,7 +8,7 @@
     <schedule>
         <job>
             <name>PostJob</name>
-            <job-class>com.epam.lab.spider.job.PostJob</job-class>
+            <job-class>com.epam.lab.spider.job.PostManagerJob</job-class>
         </job>
         <trigger>
             <simple>
@@ -17,6 +17,17 @@
                 <start-time-seconds-in-future>15</start-time-seconds-in-future>
             </simple>
         </trigger>
+        <job>
+        <name>DeleteJob</name>
+        <job-class>com.epam.lab.spider.job.DeleteJob</job-class>
+    </job>
+    <trigger>
+        <simple>
+            <name>DeleteJob</name>
+            <job-name>DeleteJob</job-name>
+            <start-time-seconds-in-future>25</start-time-seconds-in-future>
+        </simple>
+    </trigger>
         <job>
             <name>TaskJob</name>
             <job-class>com.epam.lab.spider.job.TaskJob</job-class>

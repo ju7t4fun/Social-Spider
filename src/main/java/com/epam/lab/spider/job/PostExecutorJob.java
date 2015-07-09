@@ -23,9 +23,9 @@ import java.util.List;
 /**
  * Created by shell on 6/16/2015.
  */
-public class OnePostJob implements Job {
+public class PostExecutorJob implements Job {
 
-    public static final Logger LOG = Logger.getLogger(OnePostJob.class);
+    public static final Logger LOG = Logger.getLogger(PostExecutorJob.class);
     NewPostService newPostService = new NewPostService();
     PostService postService = new PostService();
     WallService wallService = new WallService();
@@ -173,10 +173,20 @@ public class OnePostJob implements Job {
                         }
                     } while (manyRequest);
                 }
+                EventLogger eventLogger = EventLogger.getLogger(newPost.getUserId());
+                if(response!=null){
+                    newPost.setState(NewPost.State.POSTED);
+                    newPost.setVkPostId(Integer.parseInt(response.toString()));
+                    SavableServiceUtil.safeSave(newPost);
+                    String info = "Success to posting wall" + wall.getOwner().getVkId() + "_" + newPost.getVkPostId();
+                    LOG.info(info);
+                    eventLogger.info(info, info);
+                }else{
+                    String error = "Failed to posting wall" + wall.getOwner().getVkId() + "_" + newPost.getVkPostId();
+                    LOG.error(error);
+                    eventLogger.error(error, error);
+                }
 
-                newPost.setState(NewPost.State.POSTED);
-                newPost.setVkPostId(Integer.parseInt(response.toString()));
-                SavableServiceUtil.safeSave(newPost);
 
                 LOG.debug("new post success : " + owner.getVkId() + "_" + response);
                 return;
