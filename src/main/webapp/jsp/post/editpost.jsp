@@ -20,10 +20,8 @@
                 <div class="row">
                     <div class="col-md-10">
                         <div class="form-group">
-                            <label><l:resource key="owner.id"/></label>
-
                             <div>
-                                <input type="text" class="form-control" style="width: 10%;" id="id"
+                                <input type="text" class="form-control" style="width: 10%; display: none;" id="id"
                                        disabled="disabled"/>
                             </div>
                         </div>
@@ -79,13 +77,10 @@
                                         $('#uriForm').show();
                                         $('#fl').hide();
                                         $('#sc').hide();
-                                        $('html, body').animate({
-                                            scrollTop: $("#scrl").offset().top
-                                        }, 1000);
                                     }
                                 </script>
                                 <div id="compForm" class="container kv-main" style="width:700px;
-                                                margin-top:20px; margin-left: -150px;" >
+                                                margin-top:20px; margin-left: -126px;" >
                                     <input id="input-dim-2" type="file"
                                            multiple="true" method="post"
                                            enctype="multipart/form-data"
@@ -98,7 +93,7 @@
                                     </script>
                                 </div>
                                 <div class="container kv-main" id="uriForm" style="width:600px;
-                                                margin-top:20px; margin-left: -200px;">
+                                                margin-top:20px; margin-left: -126px;">
                                     <form class="bs-example bs-example-form" role="form">
                                         <div class="row">
                                             <div class="col-lg-6">
@@ -162,9 +157,9 @@
                             $('#sc').hide();
                             $('#fl').hide();
                         </script>
-                        <div class="form-group">
-                            <div class="col-xs-5 col-xs-offset-3">
-                                <button id="scrl" onclick="saveEditedPost();" class="btn btn-default"><l:resource key="newpost.save"/></button>
+                        <div class="form-group" >
+                            <div class="col-xs-5 col-xs-offset-3" style="margin-top: 3px;">
+                                <button onclick="saveEditedPost();" class="btn btn-default"><l:resource key="newpost.save"/></button>
                             </div>
                         </div>
                     </div>
@@ -175,6 +170,9 @@
 </div>
 <script>
     function editPost(id) {
+        $("#remove_all").click();
+        $('#compForm').hide();
+        $('#uriForm').hide();
         $.post(
                 "http://localhost:8080/post?action=getPostByIdWithoutHtml",
                 {
@@ -216,7 +214,6 @@
 
                 for (var i = 0; i < response.attachments.length; i++) {
                     var atr = checkType(i);
-                    alert(response.attachments[i].url);
                     row.append('<td id="' + response.attachID[i].id + '"><div style="margin: 0px 20px;"><' + atr +
                             ' width="240" height="200"  src="' + response.attachments[i].url + '"></' + atr +
                             '></div><td>');
