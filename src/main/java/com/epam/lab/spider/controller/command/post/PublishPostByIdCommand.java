@@ -79,11 +79,11 @@ public class PublishPostByIdCommand implements ActionCommand {
             if (newPostService.insert(newPost)) {
                 obj = new JSONObject();
                 obj.put("status", "success");
-                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.success")));
+                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.account.success")));
             } else {
                 obj = new JSONObject();
                 obj.put("status", "error");
-                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.error")));
+                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.account.error")));
             }
             array.put(obj);
         }

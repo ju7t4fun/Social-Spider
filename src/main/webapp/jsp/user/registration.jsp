@@ -22,6 +22,27 @@
     <!-- Plugin CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.min.css" type="text/css">
 
+    <script type='text/javascript'>
+        var captchaContainer = null;
+        var flag = null;
+        var loadCaptcha = function () {
+            captchaContainer = grecaptcha.render('captcha_container', {
+                'sitekey': '6LdMAgMTAAAAAGYY5PEQeW7b3L3tqACmUcU6alQf',
+                'callback': function (response) {
+                    if (response == 0) {
+                        flag = false;
+                    } else if (response != 0) {
+                        flag = true;
+                    }
+                }
+            });
+        };
+    </script>
+
+    <%--for google capcha--%>
+    <script src="https://www.google.com/recaptcha/api.js?hl=en&onload=loadCaptcha&render=explicit" async
+            defer></script>
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/creative.css" type="text/css">
     <!-- font icon -->
@@ -86,22 +107,34 @@
                                                          pattern="^[a-zA-Z\u0400-\u04ff]+$"/></l:resource>
                 </div>
                 <div class="form-group">
-                   <!-- <span class="input-group-addon"><i class="icon_mail_alt"></i></span>-->
+                    <!-- <span class="input-group-addon"><i class="icon_mail_alt"></i></span>-->
                     <l:resource key="login.email"><input type="email" class="form-control" id="email" name="email"
                                                          maxlength="255" value="${email}" placeholder=""
                                                          style="border-color:#ffffff;"/></l:resource>
                 </div>
                 <div class="form-group">
-                   <!-- <span class="input-group-addon"><i class="icon_key_alt"></i></span>-->
+                    <!-- <span class="input-group-addon"><i class="icon_key_alt"></i></span>-->
                     <l:resource key="login.password"><input type="password" class="form-control" id="password"
                                                             name="password" placeholder=""
                                                             pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"/></l:resource>
                 </div>
 
-                <button class="btn btn-primary btn-lg btn-block" type="submit"
-                        style="margin-bottom:20px;margin-right:10px;"><l:resource key="reg.signup"/>
-                </button>
+                <div class="form-group">
+                    <div id="captcha_container"></div>
+                </div>
 
+                <i class="btn btn-primary btn-lg btn-block" onclick="submitRegistration();"
+                   style="margin-bottom:20px;margin-right:10px;"><l:resource key="reg.signup"/>
+                </i>
+                <script>
+                    function submitRegistration() {
+                        if (flag == null) {
+                            toastrNotification("error", "Wrong captcha!");
+                        } else {
+                            $('#register_form').submit();
+                        }
+                    }
+                </script>
             </div>
         </form>
 
@@ -118,7 +151,7 @@
         });
     });
 </script>
- <jsp:include page="../pagecontent/simple_footer.jsp"/>
+<jsp:include page="../pagecontent/simple_footer.jsp"/>
 
 <!-- javascripts -->
 <script src="js/jquery.js"></script>

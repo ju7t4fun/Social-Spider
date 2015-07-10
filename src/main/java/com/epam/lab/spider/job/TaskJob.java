@@ -5,6 +5,7 @@ import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
 import com.epam.lab.spider.job.exception.PostContentException;
+import com.epam.lab.spider.job.exception.WallStopException;
 import com.epam.lab.spider.job.util.*;
 import com.epam.lab.spider.model.db.entity.*;
 
@@ -113,13 +114,13 @@ public class TaskJob implements Job {
         }else return post;
     }
 
-    public List<com.epam.lab.spider.model.vk.Post> grabbingWall(Wall wall, Task task) {
-        List<com.epam.lab.spider.model.vk.Post> postsPrepareToPosting = new ArrayList<>();
+    public List<com.epam.lab.spider.model.vk.Post> grabbingWall(Wall wall, Task task) throws WallStopException {
+        List<com.epam.lab.spider.model.vk.Post> toPostingQueue = new ArrayList<>();
         Owner owner = wall.getOwner();
         Profile profile = wall.getProfile();
         Filter filter = task.getFilter();
         Set<Integer> alreadyAddSet = synchronizedService.getProcessedPost(task, wall, 10000);
-        Integer grabbingSize = task.getGrabbingSize();
+//        Integer grabbingSize = task.getGrabbingSize();
         int countOfPosts = task.getPostCount();
         try {
             Integer appId = profile.getAppId();
@@ -131,25 +132,21 @@ public class TaskJob implements Job {
             accessToken.setExpirationMoment(profile.getExtTime().getTime());
             vk.setAccessToken(accessToken);
             // !Initialization auth_token
-
+            TaskSynchronizedNewDataService syncService = new TaskSynchronizedNewDataService();
             // Work Body
             switch (task.getGrabbingType()) {
 
                 case BEGIN:
-                    postsPrepareToPosting = GrabbingTypeServerUtil.grabbingBegin(owner, vk, filter, alreadyAddSet,
-                            countOfPosts, grabbingSize);
+                case END:
+                    toPostingQueue =  GrabbingTypeVkSavedSyncUtil.grabbing(task.getGrabbingType(), owner, vk, filter,
+                            syncService.getBy(task, wall), alreadyAddSet, countOfPosts);
                     break;
                 case RANDOM:
-                    postsPrepareToPosting = GrabbingTypeVkSavedUtil.grabbingRandom(owner, vk, filter, alreadyAddSet,
-                            countOfPosts, grabbingSize);
-                    LOG.info("New grabbingSize:" + grabbingSize);
-                    break;
-                case END:
-                    postsPrepareToPosting = GrabbingTypeServerUtil.grabbingEnd(owner, vk, filter, alreadyAddSet,
-                            countOfPosts, grabbingSize);
+                    toPostingQueue = GrabbingTypeVkSavedUtil.grabbingRandom(owner, vk, filter, alreadyAddSet,
+                            countOfPosts);
                     break;
                 case NEW:
-                    postsPrepareToPosting = GrabbingTypeVkSavedUtil.grabbingNew(owner, vk, alreadyAddSet,countOfPosts);
+                    toPostingQueue = GrabbingTypeVkSavedUtil.grabbingNew(owner, vk, alreadyAddSet,countOfPosts);
                     break;
             }
 
@@ -166,7 +163,7 @@ public class TaskJob implements Job {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return postsPrepareToPosting;
+        return toPostingQueue;
     }
 
     @Override
@@ -191,7 +188,7 @@ public class TaskJob implements Job {
 
                 LinkedList<Post> addedToProcessingPosts = new LinkedList<>();
                 Map<Wall, LinkedList<Integer>> blockMap = new HashMap<>();
-
+                Map<Wall, SynchronizedData> syncMap = new HashMap<>();
                 if(task.getType() != Task.Type.FAVORITE) {
                     // перевірка кількості незаблокованих стін з незаблокованими профіліми
                     for (Wall wall : destinationWalls) {
@@ -221,24 +218,31 @@ public class TaskJob implements Job {
                     LOG.info("TASK#" + task.getId() + " has hot active source wall!");
                     continue taskProcessing;
                 }
-
-
                 LinkedHashMap<Wall, List<com.epam.lab.spider.model.vk.Post>> postByWallMap = new LinkedHashMap<>();
-
                 // grabbing wall
                 for (Wall wall : sourceWalls) {
                     Profile profile = wall.getProfile();
                     boolean readBlocked = Locker.getInstance().isProfileReadableLock(profile.getId());
                     if (!readBlocked) {
                         List<com.epam.lab.spider.model.vk.Post> list;
-                        list = this.grabbingWall(wall, task);
-                        postByWallMap.put(wall, list);
+                        try {
+                            list = this.grabbingWall(wall, task);
+                            postByWallMap.put(wall, list);
+                        }catch (WallStopException x){
+                            String title = "Task #+"+task.getId()+". Data for one of source wall has been ended.";
+                            String message = "Data for wall #"+wall.getId()+" at task #"+task.getId()+" has been ended.";
+                            LOG.info(message);
+                            EventLogger eventLogger = EventLogger.getLogger(task.getUserId());
+                            eventLogger.warn(title, message);
+                            //postByWallMap.put(wall, new ArrayList<com.epam.lab.spider.model.vk.Post>());
+                        }
                     }
                 }
                 List<com.epam.lab.spider.model.vk.Post> postToRepost = new ArrayList<>();
                 {
                     if (task.getGrabbingMode() == Task.GrabbingMode.TOTAL) {
                         for (Map.Entry<Wall, List<com.epam.lab.spider.model.vk.Post>> entity : postByWallMap.entrySet()) {
+                            Wall wall = entity.getKey();
                             List<com.epam.lab.spider.model.vk.Post> postsPrepareToPosting = entity.getValue();
                             LinkedList<Integer> addedToProcessingBlocks = new LinkedList<>();
                             for (com.epam.lab.spider.model.vk.Post vkPost : postsPrepareToPosting) {
@@ -264,6 +268,19 @@ public class TaskJob implements Job {
                                             break;
                                         }
                                     }
+                                    if(vkPost instanceof PostOffsetDecorator){
+                                        PostOffsetDecorator decoratedPost = (PostOffsetDecorator) vkPost;
+                                        SynchronizedData sync = new SynchronizedData(task,wall,decoratedPost);
+                                        switch (task.getGrabbingType()) {
+                                            case BEGIN:
+                                            case END:
+                                                    syncMap.put(wall,sync);
+                                                break;
+                                            default:
+                                                LOG.warn("SyncData has not can used at unsynchronized method.");
+                                        }
+                                        LOG.debug("PostOffsetDecorator detected");
+                                    }
                                     LOG.debug("Post wall" + vkPost.getOwnerId() + "_" + vkPost.getId() + " has added to " +
                                             "processing.");
                                 } catch (PostContentException x) {
@@ -288,6 +305,7 @@ public class TaskJob implements Job {
                             for (Map.Entry<Wall, List<com.epam.lab.spider.model.vk.Post>> entry : postByWallMap.entrySet())
                                 if (j++ == basket) currentEntry = entry;
                             // !перебір мапи
+                            Wall wall = currentEntry.getKey();
                             List<com.epam.lab.spider.model.vk.Post> basketOfPreparePost = currentEntry.getValue();
                             // видалення корзини з постами, якщо вона порожня
                             if (basketOfPreparePost.isEmpty()) {
@@ -320,6 +338,30 @@ public class TaskJob implements Job {
                                         feed.processing(post, task);
                                         break;
                                     }
+                                }
+                                if(vkPost instanceof PostOffsetDecorator){
+                                    PostOffsetDecorator decoratedPost = (PostOffsetDecorator) vkPost;
+                                    SynchronizedData sync = new SynchronizedData(task,wall,decoratedPost);
+                                    SynchronizedData oldSync = syncMap.get(wall);
+                                    if(oldSync == null ){
+                                        syncMap.put(wall,sync);
+                                    }else{
+                                        switch (task.getGrabbingType()) {
+                                            case END:
+                                                if(decoratedPost.getOffset()<oldSync.getPostOffset()){
+                                                    syncMap.put(wall,sync);
+                                                }
+                                                break;
+                                            case BEGIN:
+                                                if(decoratedPost.getOffset()>oldSync.getPostOffset()){
+                                                    syncMap.put(wall,sync);
+                                                }
+                                                break;
+                                            default:
+                                                LOG.warn("SyncData has not can used at unsynchronized method.");
+                                        }
+                                    }
+                                    LOG.debug("PostOffsetDecorator detected");
                                 }
                             } catch (PostContentException x) {
                                 LOG.error("Post Content Type Fail. Object: post" + vkPost.getOwnerId() + "_" + vkPost.getId());
@@ -388,8 +430,10 @@ public class TaskJob implements Job {
                     int countGrabSuccess = addedToProcessingPosts.size();
                     String title = "Task #" + task.getId() + " have grabbed post " + countGrabSuccess + "/" + countGrabMax + ".";
                     String info = title + " Planned Post Action Count: " + newPosts.size();
-                    EventLogger eventLogger = EventLogger.getLogger(task.getUserId());
-                    eventLogger.info(title, info);
+                    if(task.getType() != Task.Type.FAVORITE) {
+                        EventLogger eventLogger = EventLogger.getLogger(task.getUserId());
+                        eventLogger.info(title, info);
+                    }
                 }
             //збираэмо всі необроблені виключення
             }catch (Throwable x){

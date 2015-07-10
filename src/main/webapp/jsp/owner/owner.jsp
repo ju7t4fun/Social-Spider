@@ -222,6 +222,7 @@
                 if (selectionRead[i].selected)
                     read.push(selectionRead[i].value);
             }
+            xmlhttp.open("POST", "/owner?action=bind&id=" + id);
             for (i = 0; i < selectionWrite.length; i++) {
                 if (selectionWrite[i].selected)
                     write.push(selectionWrite[i].value);
@@ -231,7 +232,6 @@
                 write: write
             };
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("POST", "/owner?action=bind&id=" + id);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);

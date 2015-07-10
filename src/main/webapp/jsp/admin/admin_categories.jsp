@@ -85,6 +85,7 @@
 
     <script type="text/javascript">
 
+        var taskToSendId;
         var table;
 
 
@@ -109,17 +110,12 @@
                 "columnDefs": [
 
                     {
-                        "targets": [0, 1, 2, 3], "orderable": false
+                        "targets": [0, 1, 2], "orderable": false
                     },
+
 
                     {
                         "aTargets": [1], "createdCell": function (td, cellData, rowData, row, col) {
-                        $(td).html('<a class="btn btn-default" onclick="PopUpShow(' + rowData[0] + ')"><span class="fa fa-users"></span></a>');
-                    }
-                    },
-
-                    {
-                        "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
 
                         var parts = cellData.split("|");
 
@@ -133,9 +129,9 @@
                     },
 
                     {
-                        "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
+                        "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
 
-                        $(td).html('<div class="btn-group"><a class="btn btn-success" data-toggle="modal" data-target="#modal_categoryEdit" onclick="setId(' +cellData +  ', \'' + rowData[1]  +'\''  +')"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removeCategory(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
+                        $(td).html('<div class="btn-group"><a class="btn btn-success" data-toggle="modal" data-target="#modal_categoryEdit" onclick="setId(' +rowData[0] +  ', \'' + cellData  +'\''  +')"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removeCategory(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
 
                     }
                     }
@@ -150,10 +146,6 @@
             dataTables_filter_input.attr("style", "width: 500px")
 
         })
-
-        function PopUpShow(categoryId) {
-            alert("Category ID: " + categoryId);
-        }
 
         function setId(id, name) {
 
@@ -240,6 +232,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
+
                         <div class="panel-body">
                             <div id="active" class="tab-pane active">
                                 <div class="col-lg-12">
@@ -249,7 +242,6 @@
                                         <thead>
                                         <tr style="align-content: center">
                                             <th>id</th>
-                                            <th>Binding to tasks</th>
                                             <th>Category name</th>
                                             <th>Delete</th>
                                         </tr>

@@ -5,9 +5,11 @@ import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.Response;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
+import com.epam.lab.spider.job.exception.WallStopException;
 import com.epam.lab.spider.model.db.entity.Filter;
 import com.epam.lab.spider.model.db.entity.NewPost;
 import com.epam.lab.spider.model.vk.Post;
+import com.epam.lab.spider.model.vk.PostOffsetDecorator;
 
 import java.util.*;
 
@@ -161,5 +163,60 @@ public class Execute extends Methods {
         if (lastPostId != null) param.add("last_post_id", lastPostId);
         Response response = request("execute.getNewPostFromWall", param).execute();
         return Post.parseItem(response.root().child("items").get(0));
+    }
+    /**
+     *
+     */
+    public List<PostOffsetDecorator> getPostFromBeginWall(Integer ownerId, Integer count, Integer lastPostId, Integer offset, Filter filter)
+            throws VKException,WallStopException {
+        Parameters param = bindSyncMethod(ownerId,count,lastPostId,offset,filter);
+        Response response = request("execute.postsByWallBeginSync", param).execute();
+        return bindSyncResponse(response);
+    }
+    /**
+     *
+     */
+    public List<PostOffsetDecorator> getPostFromEndWall(Integer ownerId, Integer count, Integer lastPostId, Integer offset, Filter filter)
+            throws VKException, WallStopException  {
+        Parameters param = bindSyncMethod(ownerId,count,lastPostId,offset,filter);
+        Response response = request("execute.postsByWallEndSync", param).execute();
+        return bindSyncResponse(response);
+    }
+
+
+
+    private Parameters bindSyncMethod(Integer ownerId, Integer count, Integer lastPostId, Integer offset, Filter filter){
+        Parameters param = new Parameters();
+        param.add("owner_id", ownerId);
+        if (count != null) param.add("count", count);
+        if (offset != null) param.add("offset", offset);
+        if (lastPostId != null) param.add("last_post_id", lastPostId);
+
+        if (filter != null && filter.getLikes() != null) param.add("likes", filter.getLikes());
+        if (filter != null && filter.getReposts() != null) param.add("reposts", filter.getReposts());
+        if (filter != null && filter.getComments() != null) param.add("comments", filter.getComments());
+        return param;
+    }
+    private List<PostOffsetDecorator>  bindSyncResponse(Response response) throws WallStopException {
+        List<Node> nodeHasDataList = response.root().child("data");
+        if(!nodeHasDataList.isEmpty()){
+            String data = nodeHasDataList.get(0).value().toString();
+            if(data.equals("none")){
+                throw  new WallStopException();
+            }
+        }
+        List<Post> posts = Post.parseItem(response.root().child("items").get(0));
+        List<PostOffsetDecorator> decoratedPosts = new ArrayList<>();
+        System.out.println(response.toString());
+        List<Node> nodes = response.root().child("offset_map").get(0).child();
+        int i = 0;
+        for(Post post:posts){
+            PostOffsetDecorator postOffsetDecorator = new PostOffsetDecorator();
+            postOffsetDecorator.setPost(post);
+            Integer offsetValue = nodes.get(i++).value().toInt();
+            postOffsetDecorator.setOffset(offsetValue);
+            decoratedPosts.add(postOffsetDecorator);
+        }
+        return decoratedPosts;
     }
 }

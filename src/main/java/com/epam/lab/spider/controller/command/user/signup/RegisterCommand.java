@@ -33,6 +33,9 @@ public class RegisterCommand implements ActionCommand {
         String surname = UTF8.encoding(request.getParameter("surname"));
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String gRecaptchaResponse = request
+                .getParameter("g-recaptcha-response");
+        System.out.println("CAPCHA:!!!!!!!!!!!!! " + gRecaptchaResponse);
 
         // Очищуємо сесію від мусору
         HttpSession session = request.getSession();
@@ -42,7 +45,11 @@ public class RegisterCommand implements ActionCommand {
         session.removeAttribute("email");
 
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
-
+        if (gRecaptchaResponse == "" || gRecaptchaResponse == null) {
+            request.setAttribute("toastr_notification", "error|Captcha error");
+            request.getRequestDispatcher("jsp/user/registration.jsp").forward(request, response);
+            return;
+        }
         User user = userService.getByEmail(email);
         if (user != null && !user.getDeleted()) {
             // Користувач з таким email-ом існує

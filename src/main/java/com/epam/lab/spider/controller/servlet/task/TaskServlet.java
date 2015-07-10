@@ -39,6 +39,8 @@ public class TaskServlet extends HttpServlet {
             commands.put("gettasks", new GetAllTasks());
             commands.put("deletetask", new DeleteTaskCommand());
             commands.put("showtasksforadmin", new ShowAllTasksAdmin());
+            commands.put("optionFilling", new FillCatOptions());
+            commands.put("bind", new BindCommand());
         }
 
     }

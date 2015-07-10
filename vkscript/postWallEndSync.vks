@@ -1,0 +1,201 @@
+var owner_id = parseInt(Args.owner_id);
+var count = parseInt(Args.count);
+if(count == 0)count = 150;
+var offset = parseInt(Args.offset);
+var last_post_id = parseInt(Args.last_post_id);
+
+var likes = parseInt(Args.likes);
+var reposts = parseInt(Args.reposts);
+var comments = parseInt(Args.comments);
+
+var total_loops = parseInt(Args.max_loops);
+var query_size = parseInt(Args.query_size);
+if(query_size == 0)query_size = 30;
+if(query_size > 100)query_size = 100;
+if(total_loops<1 ||total_loops>180) total_loops = 180;
+
+var basket_limit = (total_loops - (total_loops%query_size)) / query_size;
+if(basket_limit>24)basket_limit = 24;
+
+
+if(offset == 0){
+    offset = API.wall.get({
+        "owner_id" : owner_id,
+        "filter": "owner",
+        "count": 1,
+        "offset": 0
+    }).count - 1;
+}
+// пошук в останнього посту
+var cycle_remainder = 0;
+var success_sync;
+if(last_post_id>0){
+    var success = true;
+    var range_swith_count = 0;
+    var range_swith_count_max = 3;
+    var x = 50;
+    var ranging_offset = offset - x;
+    if(ranging_offset<0) {
+        x = x + ranging_offset;
+        ranging_offset = 0;
+    }
+    //return [ranging_offset, x];
+    var range_response = API.wall.get({
+        "owner_id" : owner_id,
+        "filter": "owner",
+        "count": 100,
+        "offset": ranging_offset
+    });
+    var max_y = range_response.items.length - 1;
+    if(max_y<0)max_y = 0;
+    var y = x;
+    var d = 0;
+    while(range_response.items[y].id > last_post_id ) {
+
+        if(y<max_y)y = y + 1;
+        else {
+        // жадібна реалізація глибокого пошуку
+        if(range_swith_count<range_swith_count_max){
+            range_swith_count = range_swith_count + 1;
+            d = d + y - x + 1;
+            y = 0;
+            x = 0;
+            ranging_offset = ranging_offset + 100;
+            //return  range_response.count;
+            if(ranging_offset > range_response.count){
+                success = false;
+                last_post_id = range_response.items[y].id;
+            }else{
+                range_response = API.wall.get({
+                    "owner_id" : owner_id,
+                    "filter": "owner",
+                    "count": 100,
+                    "offset": ranging_offset
+                });
+                var max_y = range_response.items.length - 1;
+                if(max_y<0)max_y = 0;
+            }
+        }
+        // елегантний аварійний і непонятний вихід із цикла
+        else{
+            success = false;
+            last_post_id = range_response.items[y].id;
+        }
+        }
+
+    }
+    //заборона пошуку при аварійному виході із цикла
+    if(success && range_swith_count<range_swith_count_max){
+        while(range_response.items[y].id < last_post_id ) {
+            if(y>0)y = y - 1;
+            else {
+                // жадібна реалізація глибокого пошуку
+                if(range_swith_count<range_swith_count_max){
+                    range_swith_count = range_swith_count + 1;
+                    d = d + y - x - 1;
+                    x = 99;
+                    y = 99;
+                    if(ranging_offset == 0){
+                        // елегантний аварійний вихід із цикла
+                        // хибні налаштування
+                        success = false;
+                        last_post_id = range_response.items[y].id;
+                    }else{
+                        ranging_offset = ranging_offset - 100;
+                        if(ranging_offset<0) {
+                            x = x + ranging_offset;
+                            y = x;
+                            ranging_offset = 0;
+                        }
+                        range_response = API.wall.get({
+                            "owner_id" : owner_id,
+                            "filter": "owner",
+                            "count": 100,
+                            "offset": ranging_offset
+                        });
+                    }
+                }
+                // елегантний аварійний і непонятний вихід із цикла
+                else{
+                    success = false;
+                    last_post_id = range_response.items[y].id;
+                }
+            }
+        }
+    }
+    d = d + y - x;
+    if(success && range_response.items[y].id == last_post_id ){
+        offset = offset + d;
+    }
+    //витрати на всяку фігню
+    var max_operation = 1111 - 60;
+    if(d<0)d=-d;
+    var pay_for_sync = d * 2 + 10 * range_swith_count;
+    var remainder = max_operation - pay_for_sync;
+    cycle_remainder =  remainder/6.2 % 2000;
+
+    if(total_loops==0||total_loops>cycle_remainder)total_loops = cycle_remainder;
+    success_sync = success;
+
+}
+var total_loops = total_loops - (total_loops%query_size);
+var basket_limit = total_loops / query_size;
+if(basket_limit>24)basket_limit = 20;
+var query_offset = offset;
+var calculeted_query_size = query_size;
+
+
+
+var result = [];
+var offset_map = [];
+var response;
+var i = 0, basket = 0;
+
+do{
+    query_offset = query_offset - query_size;
+    if(query_offset < 0){
+        calculeted_query_size = query_size + query_offset;
+        query_offset = 0;
+    }
+    response = API.wall.get({
+        "owner_id" : owner_id,
+        "filter": "owner",
+        "count": calculeted_query_size,
+        "offset": query_offset
+    });
+    i = response.items.length - 1;
+    if(response.items.length>0 && result.length<count){
+        do{
+            if(response.items[i].likes.count>=likes
+            && response.items[i].reposts.count>=reposts
+            && response.items[i].comments.count>=comments
+            ){
+                offset_map.push(i);
+                result.push(response.items[i]);
+            }
+            i = i - 1;
+        }while(i>=0 && result.length<count);
+    }
+    basket = basket + 1;
+}while(response.items.length==query_size && basket<basket_limit);
+i = i + 1;
+var finish_offset = offset + (basket - 1) * query_size
+- calculeted_query_size + i;
+
+return {
+    synchonized:success_sync,
+    start_offset:offset,
+    finish_offset:finish_offset,
+    debug_info:{
+        cycle_remainder:cycle_remainder,
+        total_posts_count:response.count,
+        index:i,
+        basket:basket,
+        result_length:result.length,
+        basket_limit:basket_limit,
+        query_size:query_size,
+        total_loops:total_loops
+    },
+    items:result,
+    offset_map:offset_map
+};

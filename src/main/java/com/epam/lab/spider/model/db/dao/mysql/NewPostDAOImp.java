@@ -35,8 +35,9 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
 
     private static final String SQL_SET_ERROR_STATE_BASE = "UPDATE new_post SET state = 'ERROR' WHERE state IN " +
             "('CREATED', 'POSTING','RESTORED') AND wall_id IN ";
-    private static final String SQL_SET_RESTORED_STATE_BASE = "UPDATE new_post SET state = 'RESTORED' WHERE state IN " +
-            "('ERROR') AND wall_id IN ";
+    private static final String SQL_SET_RESTORED_STATE_BASE = "UPDATE new_post SET state = 'RESTORED' WHERE state LIKE " +
+            "'ERROR' AND wall_id IN ";
+
     private static final String SQL_WALL_PREDICATE = " ? ";
     private static final String SQL_OWNER_PREDICATE = " SELECT id FROM wall WHERE owner_id = ? ";
     private static final String SQL_PROFILE_PREDICATE = " SELECT id FROM wall WHERE profile_id = ? ";
