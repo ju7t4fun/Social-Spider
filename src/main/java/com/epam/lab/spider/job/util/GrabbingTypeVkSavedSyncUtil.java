@@ -93,8 +93,8 @@ public class GrabbingTypeVkSavedSyncUtil {
                 if (badExecution) {
                     Thread.sleep(400);
                     badExecution = false;
-                } else
-                    postsOnTargetWall = simpleGrabbing(grabbingType, vk, ownerId, count, lastPostId, offset, filter);
+                }
+                postsOnTargetWall = simpleGrabbing(grabbingType, vk, ownerId, count, lastPostId, offset, filter);
             } catch (VKException x) {
                 if(x.getExceptionCode() == VKException.VK_EXECUTE_RUNTIME_ERROR){
                     if(currentAttempt<totalAttempt) {

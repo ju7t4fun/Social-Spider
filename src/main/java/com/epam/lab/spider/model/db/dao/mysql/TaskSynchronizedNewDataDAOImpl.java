@@ -49,7 +49,7 @@ public class TaskSynchronizedNewDataDAOImpl extends BaseDAO implements TaskSynch
         while (rs.next()) {
             synchronizedData = new SynchronizedData();
             synchronizedData.setPostVkId(rs.getInt("vk_inner_post_id"));
-            synchronizedData.setPostOffset(rs.getInt("vk_inner_post_id"));
+            synchronizedData.setPostOffset(rs.getInt("offset"));
             synchronizedData.setTaskId(rs.getInt("task_id"));
             synchronizedData.setWallId(rs.getInt("wall_id"));
             synchronizedDatas.add(synchronizedData);
