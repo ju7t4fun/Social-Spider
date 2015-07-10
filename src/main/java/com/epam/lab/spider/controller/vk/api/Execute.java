@@ -5,6 +5,7 @@ import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.Response;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
+import com.epam.lab.spider.job.exception.WallStopException;
 import com.epam.lab.spider.model.db.entity.Filter;
 import com.epam.lab.spider.model.db.entity.NewPost;
 import com.epam.lab.spider.model.vk.Post;
@@ -167,7 +168,7 @@ public class Execute extends Methods {
      *
      */
     public List<PostOffsetDecorator> getPostFromBeginWall(Integer ownerId, Integer count, Integer lastPostId, Integer offset, Filter filter)
-            throws VKException {
+            throws VKException,WallStopException {
         Parameters param = bindSyncMethod(ownerId,count,lastPostId,offset,filter);
         Response response = request("execute.postsByWallBeginSync", param).execute();
         return bindSyncResponse(response);
@@ -176,7 +177,7 @@ public class Execute extends Methods {
      *
      */
     public List<PostOffsetDecorator> getPostFromEndWall(Integer ownerId, Integer count, Integer lastPostId, Integer offset, Filter filter)
-            throws VKException {
+            throws VKException, WallStopException  {
         Parameters param = bindSyncMethod(ownerId,count,lastPostId,offset,filter);
         Response response = request("execute.postsByWallEndSync", param).execute();
         return bindSyncResponse(response);
@@ -196,7 +197,14 @@ public class Execute extends Methods {
         if (filter != null && filter.getComments() != null) param.add("comments", filter.getComments());
         return param;
     }
-    private List<PostOffsetDecorator>  bindSyncResponse(Response response){
+    private List<PostOffsetDecorator>  bindSyncResponse(Response response) throws WallStopException {
+        List<Node> nodeHasDataList = response.root().child("data");
+        if(!nodeHasDataList.isEmpty()){
+            String data = nodeHasDataList.get(0).value().toString();
+            if(data.equals("none")){
+                throw  new WallStopException();
+            }
+        }
         List<Post> posts = Post.parseItem(response.root().child("items").get(0));
         List<PostOffsetDecorator> decoratedPosts = new ArrayList<>();
         System.out.println(response.toString());

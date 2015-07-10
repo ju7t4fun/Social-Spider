@@ -2,6 +2,7 @@ package com.epam.lab.spider.job.util;
 
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
+import com.epam.lab.spider.job.exception.WallStopException;
 import com.epam.lab.spider.model.db.entity.Filter;
 import com.epam.lab.spider.model.db.entity.Owner;
 import com.epam.lab.spider.model.db.entity.SynchronizedData;
@@ -19,10 +20,11 @@ import java.util.Set;
  */
 public class GrabbingTypeVkSavedSyncUtil {
     public static final Logger LOG = Logger.getLogger(GrabbingTypeServerUtil.class);
-    public static List<Post> grabbing(Task.GrabbingType type,Owner owner, Vkontakte vk, Filter filter, SynchronizedData sync, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException {
+    public static List<Post> grabbing(Task.GrabbingType type,Owner owner, Vkontakte vk, Filter filter, SynchronizedData sync, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException, WallStopException {
         List<PostOffsetDecorator> postsPrepareToPosting = new ArrayList<>();
         Integer lastVkId;
         Integer lastOffset;
+        boolean nextLoop = true;
         if(sync != null) {
             lastVkId = sync.getPostVkId();
             lastOffset = sync.getPostOffset();
@@ -30,7 +32,7 @@ public class GrabbingTypeVkSavedSyncUtil {
             lastVkId = 0;
             lastOffset = 0;
         }
-        for(int loopsCount = 0;true;loopsCount++) {
+        for(int loopsCount = 0;nextLoop;loopsCount++) {
             List<PostOffsetDecorator> postsOnTargetWall;
             // get data
             postsOnTargetWall = badRequestProtectGrabbing(type,vk, owner.getVkId(), null, lastVkId, lastOffset, filter);
@@ -39,33 +41,40 @@ public class GrabbingTypeVkSavedSyncUtil {
                 PostOffsetDecorator vkPost = postsOnTargetWall.get(0);
                 if(vkPost.getOffset().equals(lastOffset) && vkPost.getId() == lastVkId) synchronization = true;
             }
-            if (!synchronization){
-                for (PostOffsetDecorator vkPost : postsOnTargetWall) {
-                    boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));
-                    if (alreadyProceededPost) {
-                        LOG.debug("Post " + owner.getVkId() + "_" + vkPost.getId() + " already processed.");
-                    } else {
-                        postsPrepareToPosting.add(vkPost);
+            int payloadPost = postsOnTargetWall.size();
+            payloadPost-=synchronization?1:0;
+            if(payloadPost<=0){
+                // завершення виконання завдання
+                nextLoop = false;
+            }else {
+                if (!synchronization) {
+                    for (PostOffsetDecorator vkPost : postsOnTargetWall) {
+                        boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));
+                        if (alreadyProceededPost) {
+                            LOG.debug("Post " + owner.getVkId() + "_" + vkPost.getId() + " already processed.");
+                        } else {
+                            postsPrepareToPosting.add(vkPost);
+                        }
+                    }
+                } else {
+                    for (int i = 1; i < postsOnTargetWall.size(); i++) {
+                        postsPrepareToPosting.add(postsOnTargetWall.get(i));
                     }
                 }
-            }else {
-                for (int i = 1; i < postsOnTargetWall.size(); i++) {
-                    postsPrepareToPosting.add(postsOnTargetWall.get(i));
+                if (postsPrepareToPosting.size() > countOfPosts) {
+                    LOG.info("Complete grabbing of post at owner#" + owner.getVkId() + " loops count " + loopsCount + ".");
+                    break;
+                } else {
+                    PostOffsetDecorator lastPost = postsPrepareToPosting.get(postsPrepareToPosting.size() - 1);
+                    lastVkId = lastPost.getId();
+                    lastOffset = lastPost.getOffset();
                 }
-            }
-            if(postsPrepareToPosting.size()>countOfPosts){
-                LOG.info("Complete grabbing of post at owner#" + owner.getVkId() + " loops count " + loopsCount + ".");
-                break;
-            }else{
-                PostOffsetDecorator lastPost = postsPrepareToPosting.get(postsPrepareToPosting.size() - 1);
-                lastVkId = lastPost.getId();
-                lastOffset = lastPost.getOffset();
             }
         }
         return ((List<Post>)((List<? extends Post>)postsPrepareToPosting));
     }
 
-    private static List<PostOffsetDecorator> badRequestProtectGrabbing(Task.GrabbingType grabbingType, Vkontakte vk, Integer ownerId, Integer count, Integer lastPostId, Integer offset, Filter filter) throws InterruptedException, VKException {
+    private static List<PostOffsetDecorator> badRequestProtectGrabbing(Task.GrabbingType grabbingType, Vkontakte vk, Integer ownerId, Integer count, Integer lastPostId, Integer offset, Filter filter) throws InterruptedException, VKException, WallStopException {
         boolean  badExecution = false;
         int currentAttempt = 0;
         int totalAttempt = 3;
@@ -95,12 +104,12 @@ public class GrabbingTypeVkSavedSyncUtil {
         }while (badExecution);
         return postsOnTargetWall;
     }
-    private static List<PostOffsetDecorator> simpleGrabbing(Task.GrabbingType grabbingType, Vkontakte vk, Integer ownerId, Integer count, Integer lastPostId, Integer offset, Filter filter) throws VKException {
+    private static List<PostOffsetDecorator> simpleGrabbing(Task.GrabbingType grabbingType, Vkontakte vk, Integer ownerId, Integer count, Integer lastPostId, Integer offset, Filter filter) throws VKException,WallStopException {
         switch (grabbingType) {
             case BEGIN:
                 return vk.execute().getPostFromBeginWall(ownerId, count, lastPostId, offset, filter);
             case END:
-                return vk.execute().getPostFromBeginWall(ownerId, count, lastPostId, offset, filter);
+                return vk.execute().getPostFromEndWall(ownerId, count, lastPostId, offset, filter);
             case RANDOM:
             case NEW:
                 LOG.fatal("UNSUPPORTED METHOD");

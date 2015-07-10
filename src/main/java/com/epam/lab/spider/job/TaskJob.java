@@ -5,6 +5,7 @@ import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
 import com.epam.lab.spider.job.exception.PostContentException;
+import com.epam.lab.spider.job.exception.WallStopException;
 import com.epam.lab.spider.job.util.*;
 import com.epam.lab.spider.model.db.entity.*;
 
@@ -113,7 +114,7 @@ public class TaskJob implements Job {
         }else return post;
     }
 
-    public List<com.epam.lab.spider.model.vk.Post> grabbingWall(Wall wall, Task task) {
+    public List<com.epam.lab.spider.model.vk.Post> grabbingWall(Wall wall, Task task) throws WallStopException {
         List<com.epam.lab.spider.model.vk.Post> toPostingQueue = new ArrayList<>();
         Owner owner = wall.getOwner();
         Profile profile = wall.getProfile();
@@ -217,18 +218,24 @@ public class TaskJob implements Job {
                     LOG.info("TASK#" + task.getId() + " has hot active source wall!");
                     continue taskProcessing;
                 }
-
-
                 LinkedHashMap<Wall, List<com.epam.lab.spider.model.vk.Post>> postByWallMap = new LinkedHashMap<>();
-
                 // grabbing wall
                 for (Wall wall : sourceWalls) {
                     Profile profile = wall.getProfile();
                     boolean readBlocked = Locker.getInstance().isProfileReadableLock(profile.getId());
                     if (!readBlocked) {
                         List<com.epam.lab.spider.model.vk.Post> list;
-                        list = this.grabbingWall(wall, task);
-                        postByWallMap.put(wall, list);
+                        try {
+                            list = this.grabbingWall(wall, task);
+                            postByWallMap.put(wall, list);
+                        }catch (WallStopException x){
+                            String title = "Task #+"+task.getId()+". Data for one of source wall has been ended.";
+                            String message = "Data for wall #"+wall.getId()+" at task #"+task.getId()+" has been ended.";
+                            LOG.info(message);
+                            EventLogger eventLogger = EventLogger.getLogger(task.getUserId());
+                            eventLogger.warn(title, message);
+                            //postByWallMap.put(wall, new ArrayList<com.epam.lab.spider.model.vk.Post>());
+                        }
                     }
                 }
                 List<com.epam.lab.spider.model.vk.Post> postToRepost = new ArrayList<>();
@@ -423,8 +430,10 @@ public class TaskJob implements Job {
                     int countGrabSuccess = addedToProcessingPosts.size();
                     String title = "Task #" + task.getId() + " have grabbed post " + countGrabSuccess + "/" + countGrabMax + ".";
                     String info = title + " Planned Post Action Count: " + newPosts.size();
-                    EventLogger eventLogger = EventLogger.getLogger(task.getUserId());
-                    eventLogger.info(title, info);
+                    if(task.getType() != Task.Type.FAVORITE) {
+                        EventLogger eventLogger = EventLogger.getLogger(task.getUserId());
+                        eventLogger.info(title, info);
+                    }
                 }
             //збираэмо всі необроблені виключення
             }catch (Throwable x){
