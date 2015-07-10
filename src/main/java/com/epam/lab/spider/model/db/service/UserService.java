@@ -140,4 +140,14 @@ public class UserService implements BaseService<User> {
         }
         return false;
     }
+
+
+    public List<User> getAllUser() {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return udao.getAllUser(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

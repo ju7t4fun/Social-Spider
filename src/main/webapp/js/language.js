@@ -8,7 +8,7 @@ $(document).ready(function () {
         });
 
         var myJsonString = JSON.stringify(names);
-        $.post("controller?action=locale&lang=".concat(lang), {names: myJsonString})
+        $.post("http://localhost:8080/controller?action=locale&lang=".concat(lang), {names: myJsonString})
             .done(function (data) {
                 var map = data;
                 $(".loc-t").each(function () {

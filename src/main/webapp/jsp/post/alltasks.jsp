@@ -89,7 +89,7 @@
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-12" style="margin-left: 13px ">
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
                         <li><i class="fa fa-desktop"></i>Task</li>
@@ -99,68 +99,67 @@
             </div>
 
             <div class="row">
+                <div class="col-lg-12">
 
-
-                <div class="ui-tabs">
-                    <ul class="ui-tabs-nav">
-                        <li><a href="#tabs-1" onclick="toActive()" >Active Tasks</a></li>
-                        <li><a href="#tabs-2" onclick="toAll()" >All Tasks</a></li>
+                    <ul class="nav nav-tabs" role="tablist" style="margin-left: 13px ">
+                        <li role="presentation" class="active"><a href="#tabs-1" onclick="toActive()"
+                                                                  aria-controls="tabs-1"
+                                                                  role="tab" data-toggle="tab">Active Tasks</a></li>
+                        <li role="presentation"><a href="#tabs-2" onclick="toAll()" aria-controls="tabs-2" role="tab"
+                                                   data-toggle="tab">All Tasks</a></li>
                     </ul>
-                    <div id="tabs-1" class="ui-tabs-panel">
-                        <div class="col-lg-12">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <div class="pull-left">Active</div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="panel-body">
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="tabs-1">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
 
-                                    <div class="col-lg-12">
-                                        <table id="activeTasksTable">
-                                            <thead>
-                                            <tr style="align-content: center">
-                                                <th>Grabbing</th>
-                                                <th>Posting</th>
-                                                <th>Type</th>
-                                                <th>Content</th>
-                                                <th>On/Off</th>
-                                                <th>Delete</th>
-                                            </tr>
-                                            </thead>
-                                        </table>
+                                    <div class="panel-body">
+
+                                        <div class="col-lg-12">
+                                            <table id="activeTasksTable">
+                                                <thead>
+                                                <tr style="align-content: center">
+                                                    <th>Grabbing</th>
+                                                    <th>Posting</th>
+                                                    <th>Type</th>
+                                                    <th>Content</th>
+                                                    <th>On/Off</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
 
+
+                                </div>
                             </div>
                         </div>
-                    </div>
 
 
-                    <div id="tabs-2" class="ui-tabs-panel">
-                        <div class="col-lg-12">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <div class="pull-left">All</div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="panel-body">
+                        <div id="tabs-2" role="tabpanel" class="tab-pane ">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
 
-                                    <div class="col-lg-12">
-                                        <table id="tasksTable">
-                                            <thead>
-                                            <tr style="align-content: center">
-                                                <th>Grabbing</th>
-                                                <th>Posting</th>
-                                                <th>Type</th>
-                                                <th>Content</th>
-                                                <th>On/Off</th>
-                                                <th>Delete</th>
-                                            </tr>
-                                            </thead>
-                                        </table>
+                                    <div class="panel-body">
+
+                                        <div class="col-lg-12">
+                                            <table id="tasksTable">
+                                                <thead>
+                                                <tr style="align-content: center">
+                                                    <th>Grabbing</th>
+                                                    <th>Posting</th>
+                                                    <th>Type</th>
+                                                    <th>Content</th>
+                                                    <th>On/Off</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
 
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -456,7 +455,6 @@
     $(".dataTables_length").attr("hidden", "");
 
 
-
     function deleteTask(id) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('GET', '/task?action=deletetask&taskId=' + id, true);
@@ -475,7 +473,7 @@
         xmlhttp.open('GET', '/task?action=deletetask&taskId=' + id, true);
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4) {
-               activeTable.fnStandingRedraw();
+                activeTable.fnStandingRedraw();
             }
 
         };
@@ -497,7 +495,8 @@
             cell = cell + " " + parseDoc(args[i].toUpperCase());
         }
         return cell;
-    };
+    }
+    ;
 
     function parseDoc(arg) {
         var arg = arg.trim();
@@ -522,7 +521,8 @@
                 return '<img src=\"/img/restIcos/repost.jpg" style="width: 30px; height: 30px">';
         }
         return "";
-    };
+    }
+    ;
 
 </script>
 

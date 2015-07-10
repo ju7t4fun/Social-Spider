@@ -18,17 +18,31 @@ var basket_limit = (total_loops - (total_loops%query_size)) / query_size;
 if(basket_limit>24)basket_limit = 24;
 
 
-if(offset == 0){
+if(offset == 0 && last_post_id == 0){
     offset = API.wall.get({
         "owner_id" : owner_id,
         "filter": "owner",
         "count": 1,
         "offset": 0
-    }).count - 1;
+    }).count;
+    if(offset==0){
+        return {
+        data:"none",
+        items:[],
+        offset_map:[]
+        };
+    }
+}
+if(offset<=0){
+    return {
+    data:"none",
+    items:[],
+    offset_map:[]
+    };
 }
 // пошук в останнього посту
 var cycle_remainder = 0;
-var success_sync;
+var success_sync = false;
 if(last_post_id>0){
     var success = true;
     var range_swith_count = 0;
@@ -166,9 +180,9 @@ do{
     i = response.items.length - 1;
     if(response.items.length>0 && result.length<count){
         do{
-            if(response.items[i].likes.count>=likes
+            if(response.items[i].likes.count>=likes 
             && response.items[i].reposts.count>=reposts
-            && response.items[i].comments.count>=comments
+            && response.items[i].comments.count>=comments 
             ){
                 offset_map.push(i);
                 result.push(response.items[i]);
@@ -179,23 +193,24 @@ do{
     basket = basket + 1;
 }while(response.items.length==query_size && basket<basket_limit);
 i = i + 1;
-var finish_offset = offset + (basket - 1) * query_size
+var finish_offset = offset + (basket - 1) * query_size 
 - calculeted_query_size + i;
 
 return {
+    data:"finded",
     synchonized:success_sync,
     start_offset:offset,
     finish_offset:finish_offset,
     debug_info:{
         cycle_remainder:cycle_remainder,
-        total_posts_count:response.count,
+        total_posts_count:response.count, 
         index:i,
         basket:basket,
         result_length:result.length,
         basket_limit:basket_limit,
         query_size:query_size,
         total_loops:total_loops
-    },
+    }, 
     items:result,
     offset_map:offset_map
 };

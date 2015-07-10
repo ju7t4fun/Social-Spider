@@ -51,7 +51,7 @@
                 <ul class="sidebar-menu">
                     <li class="sub-menu">
                         <a href="${pageContext.request.contextPath}/admin/support" class="">
-                            <i class="icon_genius"></i>
+                            <i class="fa fa-envelope-o"></i>
                             <span><l:resource key="support"/></span>
                         </a>
                     </li>

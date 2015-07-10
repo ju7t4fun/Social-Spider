@@ -5,6 +5,7 @@ import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
 import com.epam.lab.spider.job.exception.PostContentException;
+import com.epam.lab.spider.job.exception.WallAlreadyStopped;
 import com.epam.lab.spider.job.exception.WallStopException;
 import com.epam.lab.spider.job.util.*;
 import com.epam.lab.spider.model.db.entity.*;
@@ -32,6 +33,8 @@ public class TaskJob implements Job {
     WallService wallService = new WallService();
     TaskService taskService = new TaskService();
     TaskSynchronizedDataService synchronizedService = new TaskSynchronizedDataService();
+
+    static TaskSynchronizedNewDataService syncNewService = new TaskSynchronizedNewDataService();
 
     public Post processingPost(com.epam.lab.spider.model.vk.Post vkPost,  Task task)throws PostContentException {
         return processingPost(vkPost, task.getContentType(), task.getHashTags());
@@ -114,7 +117,7 @@ public class TaskJob implements Job {
         }else return post;
     }
 
-    public List<com.epam.lab.spider.model.vk.Post> grabbingWall(Wall wall, Task task) throws WallStopException {
+    public List<com.epam.lab.spider.model.vk.Post> grabbingWall(Wall wall, Task task) throws WallStopException, WallAlreadyStopped {
         List<com.epam.lab.spider.model.vk.Post> toPostingQueue = new ArrayList<>();
         Owner owner = wall.getOwner();
         Profile profile = wall.getProfile();
@@ -132,14 +135,13 @@ public class TaskJob implements Job {
             accessToken.setExpirationMoment(profile.getExtTime().getTime());
             vk.setAccessToken(accessToken);
             // !Initialization auth_token
-            TaskSynchronizedNewDataService syncService = new TaskSynchronizedNewDataService();
             // Work Body
             switch (task.getGrabbingType()) {
 
                 case BEGIN:
                 case END:
                     toPostingQueue =  GrabbingTypeVkSavedSyncUtil.grabbing(task.getGrabbingType(), owner, vk, filter,
-                            syncService.getBy(task, wall), alreadyAddSet, countOfPosts);
+                            syncNewService.getBy(task, wall), alreadyAddSet, countOfPosts);
                     break;
                 case RANDOM:
                     toPostingQueue = GrabbingTypeVkSavedUtil.grabbingRandom(owner, vk, filter, alreadyAddSet,
@@ -228,12 +230,15 @@ public class TaskJob implements Job {
                         try {
                             list = this.grabbingWall(wall, task);
                             postByWallMap.put(wall, list);
+                        }catch (WallAlreadyStopped x){
+                            LOG.debug("Wall already stopped.");
                         }catch (WallStopException x){
                             String title = "Task #+"+task.getId()+". Data for one of source wall has been ended.";
                             String message = "Data for wall #"+wall.getId()+" at task #"+task.getId()+" has been ended.";
                             LOG.info(message);
                             EventLogger eventLogger = EventLogger.getLogger(task.getUserId());
                             eventLogger.warn(title, message);
+                            syncMap.put(wall,new SynchronizedData(task,wall,-1,-1));
                             //postByWallMap.put(wall, new ArrayList<com.epam.lab.spider.model.vk.Post>());
                         }
                     }
@@ -415,6 +420,9 @@ public class TaskJob implements Job {
                 }
                 for (Map.Entry<Wall, LinkedList<Integer>> entry : blockMap.entrySet()) {
                     synchronizedService.markIdLastProcessedPost(task, entry.getKey(), entry.getValue());
+                }
+                for (Map.Entry<Wall, SynchronizedData> entry : syncMap.entrySet()) {
+                    syncNewService.save(entry.getValue());
                 }
                 TaskUtil.setNewTaskRunTime(task);
                 {
