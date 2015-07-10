@@ -136,17 +136,12 @@ public class TaskJob implements Job {
             switch (task.getGrabbingType()) {
 
                 case BEGIN:
-                    postsPrepareToPosting =  GrabbingTypeVkSavedSyncUtil.grabbingBegin(owner,vk,filter, syncService.getBy(task,wall),alreadyAddSet,countOfPosts);
+                case END:
+                    postsPrepareToPosting =  GrabbingTypeVkSavedSyncUtil.grabbing(task.getGrabbingType(), owner, vk, filter, syncService.getBy(task, wall), alreadyAddSet,countOfPosts);
                     break;
                 case RANDOM:
                     postsPrepareToPosting = GrabbingTypeVkSavedUtil.grabbingRandom(owner, vk, filter, alreadyAddSet,
                             countOfPosts, grabbingSize);
-                    LOG.info("New grabbingSize:" + grabbingSize);
-                    break;
-                case END:
-//                    postsPrepareToPosting = GrabbingTypeServerUtil.grabbingEnd(owner, vk, filter, alreadyAddSet,
-//                            countOfPosts, grabbingSize);
-                    postsPrepareToPosting =  GrabbingTypeVkSavedSyncUtil.grabbingEnd(owner,vk,filter, syncService.getBy(task,wall),alreadyAddSet,countOfPosts);
                     break;
                 case NEW:
                     postsPrepareToPosting = GrabbingTypeVkSavedUtil.grabbingNew(owner, vk, alreadyAddSet,countOfPosts);
