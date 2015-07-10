@@ -156,7 +156,7 @@
                             <div role="tabpanel" class="tab-pane active" id="task" style="height: 490px">
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div id="task-line-diagram" style="height: 450px; min-width: 998px"></div>
+                                        <div id="task-line-diagram" style="height: 450px; min-width: 1140px"></div>
                                     </div>
                                 </div>
                             </div>
