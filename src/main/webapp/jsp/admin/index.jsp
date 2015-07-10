@@ -47,6 +47,7 @@
     <script src="${pageContext.request.contextPath}/js/exporting.js"></script>
     <%--gender and pie diagram lib--%>
     <script src="${pageContext.request.contextPath}/js/highcharts.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 </head>
 
@@ -63,10 +64,10 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-table"></i> Admin</h3>
+                    <h3 class="page-header"><i class="fa fa-pie-chart"></i> Admin</h3>
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-table"></i>Charts</li>
+                        <li><i class="fa fa-pie-chart"></i>Charts</li>
                     </ol>
                 </div>
             </div>
