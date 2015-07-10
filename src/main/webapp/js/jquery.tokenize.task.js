@@ -601,7 +601,7 @@
         searchMaxLength: 0,
         debounce: 0,
         newElements: true,
-        nbDropdownElements: 10,
+        nbDropdownElements: 100,
         displayDropdownOnFocus: false,
         maxElements: 0,
         sortable: false,
