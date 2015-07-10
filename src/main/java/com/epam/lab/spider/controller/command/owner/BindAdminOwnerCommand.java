@@ -29,7 +29,7 @@ public class BindAdminOwnerCommand implements ActionCommand {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
-        // Парсимо JSON
+
         StringBuffer sb = new StringBuffer();
         try {
             String line;
@@ -45,7 +45,6 @@ public class BindAdminOwnerCommand implements ActionCommand {
         JSONArray array = new JSONArray();
         JSONObject obj;
 
-        // Видаляємо
         List<Integer> wallIds = getDeletedWall(walls, json.getJSONArray("read"), Wall.Permission.READ);
         for (Integer wallId : wallIds) {
             if (service.delete(wallId)) {
@@ -59,7 +58,6 @@ public class BindAdminOwnerCommand implements ActionCommand {
             }
             array.put(obj);
         }
-        // Створюємо
         List<Integer> profileIds = getCreatedWall(walls, json.getJSONArray("read"), Wall.Permission.READ);
         Wall wall;
         for (Integer profileId : profileIds) {

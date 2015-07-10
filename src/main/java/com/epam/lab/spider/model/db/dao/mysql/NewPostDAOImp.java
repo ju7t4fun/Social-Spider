@@ -10,9 +10,9 @@ import com.epam.lab.spider.model.db.entity.NewPost;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by Sasha on 12.06.2015.
@@ -30,8 +30,8 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM new_post WHERE id = ? AND deleted = 0";
     private static final String SQL_SELECT_CREATED_BY_DATE_LE = "SELECT * FROM new_post WHERE state in " +
             "('CREATED', 'RESTORED') AND post_time < ? AND deleted = 0";
-    private static final String SQL_SELECT_UNDELETED_BY_DELETE_DATE_LE = "SELECT * FROM new_post " +
-            "WHERE state LIKE 'POSTED' AND delete_time < ? AND deleted = 0";
+    private static final String SQL_SELECT_UNDELETED_BY_DELETE_DATE_LE = "SELECT * FROM new_post WHERE state LIKE " +
+            "'POSTED' AND delete_time < ?  AND deleted = 0";
 
     private static final String SQL_SET_ERROR_STATE_BASE = "UPDATE new_post SET state = 'ERROR' WHERE state IN " +
             "('CREATED', 'POSTING','RESTORED') AND wall_id IN ";
@@ -64,6 +64,15 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
             ".deleted = 0 AND state = 'POSTED' ORDER BY id DESC LIMIT ?, ?";
     private static final String SQL_GET_POSTED_BY_USER_ID_QUERY = "SELECT * FROM new_post WHERE user_id = ? AND" +
             " deleted = 0 AND state = 'POSTED' ORDER BY id DESC LIMIT ?, ?";
+    private static final String SQL_BY_USER_ID_WITH_PARAMETERS_QUERY = "SELECT new_post.* FROM new_post JOIN " +
+            "post ON post.id = new_post.post_id WHERE new_post.user_id = ? AND new_post.state = ? AND new_post" +
+            ".deleted = 0 {SEARCH_SUBQUERY} {FILTRATION_SUBQUERY} {ORDER_SUBQUERY} LIMIT ?, ?";
+    private static final String SQL_COUNT_ALL_BY_USER_ID_WITH_PARAMETERS_QUERY = "SELECT COUNT(*) FROM new_post " +
+            "JOIN post ON post.id = new_post.post_id WHERE new_post.user_id = ? AND new_post.state = ? AND new_post" +
+            ".deleted = 0 {SEARCH_SUBQUERY} {FILTRATION_SUBQUERY} {ORDER_SUBQUERY}";
+    private static final String SQL_STATISTICS_POSTED_QUERY = "SELECT  COUNT(*) AS count, DATE_FORMAT(post_time, " +
+            "'%Y-%m-%d %H') AS date FROM new_post WHERE post_time > ? AND post_time <= ? AND state = 'POSTED' GROUP " +
+            "BY UNIX_TIMESTAMP(post_time) DIV 3600;";
 
     @Override
     public boolean insert(Connection connection, NewPost post) throws SQLException {
@@ -127,10 +136,6 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
         return -1;
     }
 
-    private static final String SQL_BY_USER_ID_WITH_PARAMETERS_QUERY = "SELECT new_post.* FROM new_post JOIN " +
-            "post ON post.id = new_post.post_id WHERE new_post.user_id = ? AND new_post.state = ? AND new_post" +
-            ".deleted = 0 {SEARCH_SUBQUERY} {FILTRATION_SUBQUERY} {ORDER_SUBQUERY} LIMIT ?, ?";
-
     @Override
     public List<NewPost> getByUserIdWithParameters(Connection connection, Integer id, int offset, int limit, String
             type, String q, String order, Integer wallId) throws SQLException {
@@ -144,10 +149,6 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
                 .replace("{ORDER_SUBQUERY}", ORDER_SUBQUERY), id, type, offset, limit);
     }
 
-    private static final String SQL_COUNT_ALL_BY_USER_ID_WITH_PARAMETERS_QUERY = "SELECT COUNT(*) FROM new_post " +
-            "JOIN post ON post.id = new_post.post_id WHERE new_post.user_id = ? AND new_post.state = ? AND new_post" +
-            ".deleted = 0 {SEARCH_SUBQUERY} {FILTRATION_SUBQUERY} {ORDER_SUBQUERY}";
-
     @Override
     public int getCountAllByUserIdWithParameters(Connection connection, Integer id, String type, String q, Integer
             wallId) throws SQLException {
@@ -159,6 +160,24 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
         if (rs.next())
             return rs.getInt("COUNT(*)");
         return -1;
+    }
+
+    @Override
+    public Map<Long, Integer> statisticsPosting(Connection connection, String date) throws SQLException {
+        String fromDate = date + " 00:00:00";
+        String toDate = date + "23:59:59";
+        ResultSet rs = selectQuery(connection, SQL_STATISTICS_POSTED_QUERY, fromDate, toDate);
+        Map<Long, Integer> statistics = new HashMap<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        while (rs.next()) {
+            String format = rs.getString("date") + ":00:00";
+            try {
+                statistics.put(dateFormat.parse(format).getTime(), rs.getInt("count"));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return statistics;
     }
 
     @Override
@@ -227,6 +246,7 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     public List<NewPost> getAllUnpostedByDate(Connection connection, Date date) throws SQLException {
         return select(connection, SQL_SELECT_CREATED_BY_DATE_LE, date);
     }
+
     public List<NewPost> getAllUndeletedByDate(Connection connection, Date date) throws SQLException {
         return select(connection, SQL_SELECT_UNDELETED_BY_DELETE_DATE_LE, date);
     }

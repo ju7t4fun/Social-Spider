@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Sasha on 12.06.2015.
@@ -15,6 +16,7 @@ import java.util.List;
 public interface NewPostDAO extends CRUD<NewPost>, SavableDAO<NewPost> {
 
     List<NewPost> getAllUnpostedByDate(Connection connection, Date date) throws SQLException;
+
     List<NewPost> getAllUndeletedByDate(Connection connection, Date date) throws SQLException;
 
     boolean setErrorStateByWall(Connection connection, Integer wallId) throws SQLException;
@@ -49,4 +51,6 @@ public interface NewPostDAO extends CRUD<NewPost>, SavableDAO<NewPost> {
 
     int getCountAllByUserIdWithParameters(Connection connection, Integer id, String type, String q, Integer wallId)
             throws SQLException;
+
+    Map<Long, Integer> statisticsPosting(Connection connection, String date) throws SQLException;
 }

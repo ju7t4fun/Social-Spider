@@ -23,4 +23,5 @@ public interface UserDAO extends CRUD<User> {
 
     boolean updateByParameter(Connection connection,String name, String value, Integer id) throws SQLException;
 
+    List<User> getAllUser(Connection connection) throws SQLException;
 }

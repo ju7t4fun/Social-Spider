@@ -47,6 +47,7 @@
     <script src="${pageContext.request.contextPath}/js/exporting.js"></script>
     <%--gender and pie diagram lib--%>
     <script src="${pageContext.request.contextPath}/js/highcharts.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 </head>
 
@@ -63,10 +64,10 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-table"></i> Admin</h3>
+                    <h3 class="page-header"><i class="fa fa-pie-chart"></i> Admin</h3>
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-table"></i>Charts</li>
+                        <li><i class="fa fa-pie-chart"></i>Charts</li>
                     </ol>
                 </div>
             </div>
@@ -74,7 +75,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left"><l:resource key="owner"/></div>
+                            <div class="pull-left">Visits</div>
                             <div class="clearfix"></div>
                         </div>
                         <br>
@@ -111,7 +112,8 @@
                                 <div class="modal-body">
                                     <div class="row">
                                         <div id="gender-diagram"
-                                             style="min-width: 700px; max-width: 700px; height: 450px; margin: auto 150px"></div>
+                                             style="min-width: 700px; max-width: 700px; height: 450px; margin: auto
+                                             230px"></div>
                                     </div>
                                 </div>
                             </div>
@@ -130,18 +132,233 @@
                                     </div>
                                 </div>
                             </div>
-                            <div role="tabpanel" class="tab-pane" id="settings">...</div>
+                        </div>
+
+                        <br>
+
+                        <div class="row" style="margin-left: 270px">
+                            <div class="col-lg-3">
+                                <input id="date" class="form-control" type="date">
+                            </div>
+                            <input class="btn btn-default" type="button" onclick="redrawChartStats()" value="Show">
+                        </div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#task" aria-controls="task" role="tab" data-toggle="tab">Task</a></li>
+                            <li role="presentation">
+                                <a href="#post" aria-controls="post" role="tab" data-toggle="tab">Post</a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#error" aria-controls="error" role="tab" data-toggle="tab">Error</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="task" style="height: 490px">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div id="task-line-diagram" style="height: 450px; min-width: 1140px"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="post" style="height: 490px">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div id="post-line-diagram" style="height: 450px; min-width: 1140px"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="error" style="height: 490px">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div id="error-line-diagram" style="height: 450px; min-width: 1140px"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div>
-            </div>
-
         </section>
     </section>
 </section>
 
+<%--Побудова графіків постингу, грабінгу та помилок--%>
+<script>
+    function drawTaskDiagram(data) {
+        $('#task-line-diagram').highcharts('StockChart', {
+            rangeSelector: {
+                inputEnabled: false,
+                buttons: [{
+                    type: 'day',
+                    count: 1,
+                    text: 'day'
+                }, {
+                    type: 'week',
+                    count: 1,
+                    text: 'week'
+                }, {
+                    type: 'month',
+                    count: 1,
+                    text: '1m'
+                }, {
+                    type: 'month',
+                    count: 3,
+                    text: '3m'
+                }, {
+                    type: 'month',
+                    count: 6,
+                    text: '6m'
+                }, {
+                    type: 'year',
+                    count: 1,
+                    text: '1y'
+                }, {
+                    type: 'all',
+                    text: 'All'
+                }],
+                selected: 0
+            },
+
+            chart: {
+                alignTicks: false
+            },
+
+            series: [{
+                type: 'column',
+                name: 'Task',
+                data: data
+            }]
+        });
+    }
+
+    function drawPostDiagram(data) {
+        $('#post-line-diagram').highcharts('StockChart', {
+            rangeSelector: {
+                inputEnabled: false,
+                buttons: [{
+                    type: 'day',
+                    count: 1,
+                    text: 'day'
+                }, {
+                    type: 'week',
+                    count: 1,
+                    text: 'week'
+                }, {
+                    type: 'month',
+                    count: 1,
+                    text: '1m'
+                }, {
+                    type: 'month',
+                    count: 3,
+                    text: '3m'
+                }, {
+                    type: 'month',
+                    count: 6,
+                    text: '6m'
+                }, {
+                    type: 'year',
+                    count: 1,
+                    text: '1y'
+                }, {
+                    type: 'all',
+                    text: 'All'
+                }],
+                selected: 0
+            },
+
+            chart: {
+                alignTicks: false
+            },
+
+            series: [{
+                type: 'column',
+                name: 'Task',
+                data: data
+            }]
+        });
+    }
+
+    function drawErrorDiagram(data) {
+        $('#error-line-diagram').highcharts('StockChart', {
+            rangeSelector: {
+                inputEnabled: false,
+                buttons: [{
+                    type: 'day',
+                    count: 1,
+                    text: 'day'
+                }, {
+                    type: 'week',
+                    count: 1,
+                    text: 'week'
+                }, {
+                    type: 'month',
+                    count: 1,
+                    text: '1m'
+                }, {
+                    type: 'month',
+                    count: 3,
+                    text: '3m'
+                }, {
+                    type: 'month',
+                    count: 6,
+                    text: '6m'
+                }, {
+                    type: 'year',
+                    count: 1,
+                    text: '1y'
+                }, {
+                    type: 'all',
+                    text: 'All'
+                }],
+                selected: 0
+            },
+
+            chart: {
+                alignTicks: false
+            },
+
+            series: [{
+                type: 'column',
+                name: 'Error',
+                color: '#FF0000',
+                data: data
+            }]
+        });
+    }
+
+    function redrawChartStats() {
+        var date = document.getElementById("date").value;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('GET', '/admin?action=statsService&date=' + date, true);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                var response = JSON.parse(xmlhttp.responseText);
+                drawTaskDiagram(response.task);
+                drawPostDiagram(response.posted);
+                drawErrorDiagram(response.errors);
+                $("#date").val(response.date);
+            }
+        };
+        xmlhttp.send();
+    }
+
+    $(document).ready(function () {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('GET', '/admin?action=statsService', true);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                var response = JSON.parse(xmlhttp.responseText);
+                drawTaskDiagram(response.task);
+                drawPostDiagram(response.posted);
+                drawErrorDiagram(response.errors);
+                $("#date").val(response.date);
+            }
+        };
+        xmlhttp.send();
+    })
+</script>
+<%--Опрацювання діаграм відвідування--%>
 <script>
 
     function drawLineDiagram(data) {

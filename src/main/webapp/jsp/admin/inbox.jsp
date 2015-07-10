@@ -30,12 +30,40 @@
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
 
+    <!-- javascripts -->
+    <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
+    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+    <!-- nice scroll -->
+    <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <!-- gritter -->
+
+    <%--<!-- custom gritter script for this page only-->--%>
+    <script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>
+    <%--<!--custome script for all page-->--%>
+    <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
+
+    <%--for table--%>
+    <link href="http://cdn.datatables.net/1.10.3/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
+    <link href="http://datatables.net/release-datatables/extensions/ColVis/css/dataTables.colVis.css" rel="stylesheet"
+          type="text/css">
+    <script src="http://cdn.datatables.net/1.10.3/js/jquery.dataTables.min.js"></script>
+    <script src="http://datatables.net/release-datatables/extensions/ColVis/js/dataTables.colVis.js"></script>
+    <script src="http://jquery-datatables-column-filter.googlecode.com/svn/trunk/media/js/jquery.dataTables.columnFilter.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnStandingRedraw.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnSetFilteringDelay.js"></script>
+
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
     <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
     <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
     <![endif]-->
+
+    <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
+    <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
 
     <script type="text/javascript">
         function selectItem(id) {
@@ -83,17 +111,22 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-envelope-o"></i> Support</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">HOME</a></li>
-                        <li><i class="fa fa-user"></i></i><a href="/">ADMIN</a></li>
-                        <li><i class="fa fa-list-alt"></i>INBOX</li>
+                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+                        <li><i class="fa fa-user"></i></i><a href="/">Admin</a></li>
+                        <li><i class="fa fa-envelope-o"></i>Support</li>
                     </ol>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-lg-4">
-                    <section class="panel" style="overflow: scroll;  height: 73%; padding: 5px;
+                    <section class="panel" style="overflow: scroll;  height: 63%; padding: 5px;
                     overflow-x:hidden">
                         <ul class="nav nav-tabs-justified">
                             <c:forEach var="user" items="${users}">
@@ -112,7 +145,7 @@
                     </section>
                 </div>
                 <div class="col-lg-8">
-                    <section class="panel" style="padding:15px; height: 73%">
+                    <section class="panel" style="padding:15px; height: 63%">
                         <ul id="support_inbox_a" class="chats" style="overflow: scroll; width:100%; height: 88%; padding:
                         5px; overflow-x:hidden">
                             <c:forEach var="msg" items="${messages}">
@@ -152,36 +185,42 @@
                             </c:forEach>
                         </ul>
                         <br>
-
-                        <div class="widget-foot">
-                            <form class="form-inline">
-                                <div class="form-group" style="width: 80%">
-                                    <input id="message_text" style="width: 100%" id="message_text" type="text"
-                                           class="form-control" placeholder="Type your message here...">
+                        <c:choose>
+                            <c:when test="${current_user != null}">
+                                <div class="widget-foot">
+                                    <form class="form-inline">
+                                        <div class="form-group" style="width: 80%">
+                                            <input id="message_text" style="width: 100%" id="message_text" type="text"
+                                                   class="form-control" placeholder="Type your message here...">
+                                        </div>
+                                        <input onclick="send(${current_user.id})" type="button" class="btn btn-info"
+                                               style="margin-left:5%"
+                                               value="Надіслати">
+                                    </form>
                                 </div>
-                                <input onclick="send(${current_user.id})" type="button" class="btn btn-info"
-                                       style="margin-left:5%"
-                                       value="Надіслати">
-                            </form>
-                        </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="widget-foot">
+                                    <form class="form-inline">
+                                        <div class="form-group" style="width: 80%">
+                                            <input id="message_text1" style="width: 100%;" id="message_text1"
+                                                   type="text"
+                                                   class="form-control" placeholder="Type your message here..."
+                                                   disabled>
+                                        </div>
+                                        <input onclick="send(${current_user.id})" type="button" class="btn btn-info"
+                                               style="margin-left:5%"
+                                               value="Надіслати" disabled>
+                                    </form>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+
                     </section>
                 </div>
             </div>
         </section>
     </section>
-
 </section>
-<!-- container section end -->
-<!-- javascripts -->
-<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-<!-- nice scroll -->
-<script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
-<!-- jquery knob -->
-<script src="${pageContext.request.contextPath}/assets/jquery-knob/js/jquery.knob.js"></script>
-<!--custome script for all page-->
-<script src="${pageContext.request.contextPath}/js/scripts.js"></script>
-
 </body>
 </html>

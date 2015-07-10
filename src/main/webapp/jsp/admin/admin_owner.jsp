@@ -257,13 +257,14 @@
                         </div>
 
                         <div class="b-popup" id="popup_bind">
-                            <div class="b-popup-content" style="height: 340px; width: 600px;">
-                                <h4><l:resource key="owner.accbinding"/></h4>
-                                <table style="margin-left: 110px">
+                            <div class="b-popup-content" style="height: 340px; width: 500px; margin-left: 470px;">
+                                <h4><div style="margin-left: 53px;" ><l:resource key="owner.accbinding"/></div></h4>
+                                <table style="margin-left: 55px">
                                     <tr>
-                                        <th style="width:400px;"><l:resource key="owner.read"/></th>
+                                        <th style="width:400px; "><div style="margin-left: -27px;"  > <l:resource key="owner.read"  /></div></th>
                                     </tr>
-                                    <tr>
+
+                                    <tr  >
                                         <td>
                                             <select id="tokenize_read" multiple="multiple">
                                             </select>
@@ -274,11 +275,11 @@
 
                                 <div align="right">
                                     <a href="javascript:PopUpHide()">
-                                        <button class="btn btn-info" style="margin-right: 14px"><l:resource
+                                        <button class="btn btn-info" style="margin-right: 54px"><l:resource
                                                 key="newpost.save"/></button>
                                     </a>
                                     <a href="javascript:PopUpHideS()">
-                                        <button class="btn btn-danger" style="margin-right: 14px"><l:resource
+                                        <button class="btn btn-danger" style="margin-right: 54px"><l:resource
                                                 key="cancel"/></button>
                                     </a>
                                 </div>

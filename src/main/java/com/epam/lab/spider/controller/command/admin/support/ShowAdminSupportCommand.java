@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.command.admin;
+package com.epam.lab.spider.controller.command.admin.support;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.model.db.entity.Message;
@@ -11,9 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Boyarsky Vitaliy on 23.06.2015.
@@ -26,7 +24,7 @@ public class ShowAdminSupportCommand implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<User> users = service.getAll();
+        List<User> users = service.getAllUser();
         if (request.getParameter("id") != null) {
             int id = Integer.parseInt(request.getParameter("id"));
             User user = service.getById(id);
@@ -36,7 +34,7 @@ public class ShowAdminSupportCommand implements ActionCommand {
             request.setAttribute("messages", messages);
         }
         Map<Integer, Integer> count = messageService.getListUnReadAdminMessages(users.size());
-        Map<User, Integer> map = new HashMap<>();
+        Map<User, Integer> map = new TreeMap<>();
         for (User user : users) {
             map.put(user, count.containsKey(user.getId()) ? count.get(user.getId()) : 0);
         }

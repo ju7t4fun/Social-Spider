@@ -17,6 +17,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static com.epam.lab.spider.model.db.SQLTransactionException.assertTransaction;
 
@@ -306,5 +307,14 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public Map<Long, Integer> statisticsPosting(String date) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.statisticsPosting(connection, date);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
