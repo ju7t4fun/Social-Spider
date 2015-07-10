@@ -15,9 +15,10 @@ import java.util.*;
  */
 public class GrabbingTypeVkSavedUtil {
     public static final Logger LOG = Logger.getLogger(GrabbingTypeServerUtil.class);
-    public static List<Post> grabbingRandom(Owner owner, Vkontakte vk, Filter filter, Set<Integer> alreadyAddSet, int countOfPosts, Integer grabbingLimitSize) throws InterruptedException, VKException {
+    public static List<Post> grabbingRandom(Owner owner, Vkontakte vk, Filter filter, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException {
         List<Post> postsPrepareToPosting = new ArrayList<>();
         int grabbingSize = 10;
+        Integer grabbingLimitSize = 10;
         Random random = new Random();
         boolean endOfContent = false;
         postGrabbingAndFiltering:

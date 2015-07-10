@@ -6,14 +6,10 @@ import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.Request;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.controller.vk.api.Stats;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.job.OnePostJob;
-import com.epam.lab.spider.job.util.Locker;
 import com.epam.lab.spider.job.util.PostAttachmentUtil;
 import com.epam.lab.spider.model.db.entity.*;
 import com.epam.lab.spider.model.db.service.*;
-import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -27,12 +23,18 @@ public class Run {
     public static final Logger LOG = Logger.getLogger(Run.class);
 
     public static void main(String[] args) throws VKException {
-//        Vkontakte vk = new Vkontakte(4949213);
-//        AccessToken token = new AccessToken();
-//        token.setAccessToken("d24ded071abd3e7458da3070eeb5395cb1ed6c6e8fc24e43e45b14b851a096a953fff342720d618615cf5");
-//        token.setUserId(1);
-//        token.setExpirationMoment(new Date());
-//        vk.setAccessToken(token);
+//        TaskSynchronizedNewDataService taskSynchronizedNewDataService = new TaskSynchronizedNewDataService();
+//        taskSynchronizedNewDataService.createTableIfNotExist();
+
+        Vkontakte vk = new Vkontakte(4949213);
+        AccessToken token = new AccessToken();
+        token.setAccessToken("2c19ba70d24d0cfb18b20438ffdba37e038c1366e563f44d508580764dbe33e01a9ecc16e0ea5e0f2c452");
+        token.setUserId(1);
+        token.setExpirationMoment(new Date());
+        vk.setAccessToken(token);
+
+        vk.execute().getPostFromBeginWall(16697463,5, null,null,null);
+
 //        Parameters param = new Parameters();
 //        param.add("owner_id","-24056415");
 //        param.add("post_id","21770");

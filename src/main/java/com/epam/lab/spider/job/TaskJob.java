@@ -114,12 +114,12 @@ public class TaskJob implements Job {
     }
 
     public List<com.epam.lab.spider.model.vk.Post> grabbingWall(Wall wall, Task task) {
-        List<com.epam.lab.spider.model.vk.Post> postsPrepareToPosting = new ArrayList<>();
+        List<com.epam.lab.spider.model.vk.Post> toPostingQueue = new ArrayList<>();
         Owner owner = wall.getOwner();
         Profile profile = wall.getProfile();
         Filter filter = task.getFilter();
         Set<Integer> alreadyAddSet = synchronizedService.getProcessedPost(task, wall, 10000);
-        Integer grabbingSize = task.getGrabbingSize();
+//        Integer grabbingSize = task.getGrabbingSize();
         int countOfPosts = task.getPostCount();
         try {
             Integer appId = profile.getAppId();
@@ -137,14 +137,15 @@ public class TaskJob implements Job {
 
                 case BEGIN:
                 case END:
-                    postsPrepareToPosting =  GrabbingTypeVkSavedSyncUtil.grabbing(task.getGrabbingType(), owner, vk, filter, syncService.getBy(task, wall), alreadyAddSet,countOfPosts);
+                    toPostingQueue =  GrabbingTypeVkSavedSyncUtil.grabbing(task.getGrabbingType(), owner, vk, filter,
+                            syncService.getBy(task, wall), alreadyAddSet, countOfPosts);
                     break;
                 case RANDOM:
-                    postsPrepareToPosting = GrabbingTypeVkSavedUtil.grabbingRandom(owner, vk, filter, alreadyAddSet,
-                            countOfPosts, grabbingSize);
+                    toPostingQueue = GrabbingTypeVkSavedUtil.grabbingRandom(owner, vk, filter, alreadyAddSet,
+                            countOfPosts);
                     break;
                 case NEW:
-                    postsPrepareToPosting = GrabbingTypeVkSavedUtil.grabbingNew(owner, vk, alreadyAddSet,countOfPosts);
+                    toPostingQueue = GrabbingTypeVkSavedUtil.grabbingNew(owner, vk, alreadyAddSet,countOfPosts);
                     break;
             }
 
@@ -161,7 +162,7 @@ public class TaskJob implements Job {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return postsPrepareToPosting;
+        return toPostingQueue;
     }
 
     @Override
