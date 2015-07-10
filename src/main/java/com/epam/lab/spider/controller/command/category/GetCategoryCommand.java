@@ -69,10 +69,8 @@ public class GetCategoryCommand implements ActionCommand {
         for (Category category : categories) {
             JSONArray row = new JSONArray();
             row.put(category.getId());
-            row.put(category.getName());
-            System.out.println(category.getName());
             row.put(category.getName().split("\\|")[lang] + "|" + category.getImageUrl());
-            row.put(category.getId());
+            row.put(category.getName());
             table.put(row);
         }
         System.out.println(categories.size());
