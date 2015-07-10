@@ -206,7 +206,7 @@
                 read: read
             };
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("POST", "/owner?action=bind&id=" + id);
+            xmlhttp.open("POST", "/owner?action=bindadmin&id=" + id);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
