@@ -257,9 +257,9 @@
                         </div>
 
                         <div class="b-popup" id="popup_bind">
-                            <div class="b-popup-content" style="height: 340px; width: 600px;">
+                            <div class="b-popup-content" style="height: 340px; width: 500px; margin-left: 470px;">
                                 <h4><l:resource key="owner.accbinding"/></h4>
-                                <table style="margin-left: 110px">
+                                <table style="margin-left: 55px">
                                     <tr>
                                         <th style="width:400px;"><l:resource key="owner.read"/></th>
                                     </tr>

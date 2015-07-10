@@ -35,7 +35,6 @@ public class RegisterCommand implements ActionCommand {
         String password = request.getParameter("password");
         String gRecaptchaResponse = request
                 .getParameter("g-recaptcha-response");
-        System.out.println("CAPCHA:!!!!!!!!!!!!! " + gRecaptchaResponse);
 
         // Очищуємо сесію від мусору
         HttpSession session = request.getSession();

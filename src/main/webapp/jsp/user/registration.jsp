@@ -128,7 +128,7 @@
                 </i>
                 <script>
                     function submitRegistration() {
-                        if (flag == null) {
+                        if (flag == null || flag == false) {
                             toastrNotification("error", "Wrong captcha!");
                         } else {
                             $('#register_form').submit();
