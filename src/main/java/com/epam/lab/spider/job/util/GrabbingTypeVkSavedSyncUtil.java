@@ -2,6 +2,7 @@ package com.epam.lab.spider.job.util;
 
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
+import com.epam.lab.spider.job.exception.WallAlreadyStopped;
 import com.epam.lab.spider.job.exception.WallStopException;
 import com.epam.lab.spider.model.db.entity.Filter;
 import com.epam.lab.spider.model.db.entity.Owner;
@@ -20,7 +21,12 @@ import java.util.Set;
  */
 public class GrabbingTypeVkSavedSyncUtil {
     public static final Logger LOG = Logger.getLogger(GrabbingTypeServerUtil.class);
-    public static List<Post> grabbing(Task.GrabbingType type,Owner owner, Vkontakte vk, Filter filter, SynchronizedData sync, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException, WallStopException {
+    public static List<Post> grabbing(Task.GrabbingType type,Owner owner, Vkontakte vk, Filter filter, SynchronizedData sync, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException, WallStopException, WallAlreadyStopped {
+        if(sync!=null){
+            if(sync.getPostOffset() == -1 || sync.getPostVkId() == -1){
+                throw  new WallAlreadyStopped();
+            }
+        }
         List<PostOffsetDecorator> postsToPosting = new ArrayList<>();
         Integer lastVkId;
         Integer lastOffset;
