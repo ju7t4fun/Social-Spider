@@ -30,12 +30,13 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM new_post WHERE id = ? AND deleted = 0";
     private static final String SQL_SELECT_CREATED_BY_DATE_LE = "SELECT * FROM new_post WHERE state in " +
             "('CREATED', 'RESTORED') AND post_time < ? AND deleted = 0";
-    private static final String SQL_SELECT_UNDELETED_BY_DELETE_DATE_LE = "SELECT * FROM new_post WHERE state LIKE 'POSTED' AND delete_time < '2015-07-10 16:15:52' AND deleted = 0";
+    private static final String SQL_SELECT_UNDELETED_BY_DELETE_DATE_LE = "SELECT * FROM new_post " +
+            "WHERE state LIKE 'POSTED' AND delete_time < ? AND deleted = 0";
 
     private static final String SQL_SET_ERROR_STATE_BASE = "UPDATE new_post SET state = 'ERROR' WHERE state IN " +
             "('CREATED', 'POSTING','RESTORED') AND wall_id IN ";
-    private static final String SQL_SET_RESTORED_STATE_BASE = "UPDATE new_post SET state = 'RESTORED' WHERE state IN " +
-            "('ERROR') AND wall_id IN ";
+    private static final String SQL_SET_RESTORED_STATE_BASE = "UPDATE new_post SET state = 'RESTORED' WHERE state LIKE " +
+            "'ERROR' AND wall_id IN ";
 
     private static final String SQL_WALL_PREDICATE = " ? ";
     private static final String SQL_OWNER_PREDICATE = " SELECT id FROM wall WHERE owner_id = ? ";

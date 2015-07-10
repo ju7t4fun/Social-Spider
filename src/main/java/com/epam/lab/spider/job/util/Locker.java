@@ -180,21 +180,25 @@ public class Locker {
                 dataLockService.deleteLock(table, index, mode);
             }
         }
-        if (table.equals("profile")) {
-            Profile profile = profileService.getById(index);
-            List<Wall> walls = wallService.getWallsByProfileId(profile.getId());
-            for (Wall wall : walls) {
-                if (!isLock(wall)) {
-                    newPostService.setRestoredStageByWall(wall.getId());
+        // TODO: REWRITE TO USE RESTORE WITH CORRECT POST TIME
+        boolean needRestorePosts = false;
+        if(needRestorePosts) {
+            if (table.equals("profile")) {
+                Profile profile = profileService.getById(index);
+                List<Wall> walls = wallService.getWallsByProfileId(profile.getId());
+                for (Wall wall : walls) {
+                    if (!isLock(wall)) {
+                        newPostService.setRestoredStageByWall(wall.getId());
 //                    newPostService.setSpecialStageByWall(wall.getId(), NewPost.State.RESTORED);
+                    }
                 }
             }
-        }
-        if (table.equals("wall")) {
-            Wall wall = wallService.getById(index);
-            if (!isLock(wall)) {
-                newPostService.setRestoredStageByWall(wall.getId());
-                newPostService.setSpecialStageByWall(wall.getId(), NewPost.State.RESTORED);
+            if (table.equals("wall")) {
+                Wall wall = wallService.getById(index);
+                if (!isLock(wall)) {
+                    newPostService.setRestoredStageByWall(wall.getId());
+                    newPostService.setSpecialStageByWall(wall.getId(), NewPost.State.RESTORED);
+                }
             }
         }
     }

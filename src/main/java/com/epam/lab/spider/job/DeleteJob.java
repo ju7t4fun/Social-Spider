@@ -15,6 +15,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static org.quartz.TriggerBuilder.newTrigger;
+
 
 /**
  * Created by hell-engine on 7/9/2015.
@@ -80,6 +82,15 @@ public class DeleteJob implements Job {
             } catch (Throwable e) {
                 e.printStackTrace();
             }
+        }
+        SimpleTrigger trigger = (SimpleTrigger) newTrigger()
+                .startAt(nextDate)
+                .forJob(jobExecutionContext.getJobDetail())
+                .build();
+        try {
+            jobExecutionContext.getScheduler().scheduleJob(trigger);
+        } catch (SchedulerException e) {
+            e.printStackTrace();
         }
 
     }
