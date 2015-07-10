@@ -8,6 +8,7 @@ import com.epam.lab.spider.model.db.entity.Event;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Boyarsky Vitaliy on 16.06.2015.
@@ -123,5 +124,14 @@ public class EventService implements BaseService<Event> {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public Map<Long, Integer> statisticsError(String date) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return edao.statisticsExecution(connection, date);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
