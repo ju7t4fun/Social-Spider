@@ -45,7 +45,8 @@
     <script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>
     <%--<!--custome script for all page-->--%>
     <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
-    <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.multi-select.js" type="text/javascript"></script>
+    <link href="${pageContext.request.contextPath}/css/multi-select.css" media="screen" rel="stylesheet">
 
     <%--for table--%>
     <link href="http://cdn.datatables.net/1.10.3/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
@@ -109,6 +110,37 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
+
+
+                        <div class="b-popup" id="popup_bind">
+                            <div class="b-popup-content" style="height: 340px;">
+                                <h4><l:resource key="task.categoriesbinding"/></h4>
+                                <table style="margin-left: 92px">
+                                    <tr>
+                                        <td>
+                                            <select id="tokenize_category" multiple="multiple">
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br>
+
+                                <div align="right">
+                                    <a href="javascript:PopUpHide()">
+                                        <button class="btn btn-info" style="margin-right: 14px"><l:resource
+                                                key="newpost.save"/></button>
+                                    </a>
+                                    <a href="javascript:PopUpHideS()">
+                                        <button class="btn btn-danger" style="margin-right: 14px"><l:resource
+                                                key="cancel"/></button>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
                         <div class="panel-body">
                             <div id="active" class="tab-pane active">
                                 <div class="col-lg-12">
@@ -225,8 +257,73 @@
     });
 
 
-    function PopUpShow(taskId) {
-        alert("Task ID: " + taskId);
+    var taskToSendId;
+
+    function PopUpShow(id) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('GET', '/task?action=optionFilling&id=' + id, true);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                var response = JSON.parse(xmlhttp.responseText);
+                setOption(response);
+                taskToSendId = id;
+                $("#popup_bind").show();
+            }
+        };
+        xmlhttp.send();
+    }
+
+    function setOption(response) {
+        $('#tokenize_category').empty();
+        $('#tokenize_category').multiSelect('refresh');
+
+        for (var i = 0; i < response.categories.length; i++) {
+            $('#tokenize_category').multiSelect('addOption', {
+                value: '' + response.categories[i].id,
+                text: response.categories[i].name, index: 0,
+            });
+            if (response.categories[i].select == true) {
+                $('#tokenize_category').multiSelect('select', '' + response.categories[i].id);
+            }
+        }
+    }
+
+
+    function PopUpHide() {
+        sendSelectedField(taskToSendId);
+        $("#popup_bind").hide();
+    }
+
+    function PopUpHideS() {
+        $("#popup_bind").hide();
+    }
+
+
+    function sendSelectedField(id) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("POST", "/task?action=bind&id=" + id);
+        var selectionCategory= document.getElementById("tokenize_category").options;
+
+
+        var categories = [];
+        for (var i = 0; i < selectionCategory.length; i++) {
+            if (selectionCategory[i].selected)
+                categories.push(selectionCategory[i].value);
+        }
+
+        var request = {
+            categories: categories,
+        };
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                var response = JSON.parse(xmlhttp.responseText);
+                for (var i = 0; i < response.length; i++) {
+                    toastrNotification(response[i].status, response[i].msg);
+                }
+            }
+        };
+        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xmlhttp.send(JSON.stringify(request));
     }
 
     function change(obj, id) {

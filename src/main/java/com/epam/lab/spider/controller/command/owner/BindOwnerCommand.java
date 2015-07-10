@@ -41,7 +41,7 @@ public class BindOwnerCommand implements ActionCommand {
             e.printStackTrace();
         }
         JSONObject json = new JSONObject(sb.toString());
-
+        System.out.println(json);
         int id = Integer.parseInt(request.getParameter("id"));
         List<Wall> walls = service.getByOwnerId(id);
         JSONArray array = new JSONArray();
@@ -54,11 +54,11 @@ public class BindOwnerCommand implements ActionCommand {
             if (service.delete(wallId)) {
                 obj = new JSONObject();
                 obj.put("status", "success");
-                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.success")));
+                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.account.success")));
             } else {
                 obj = new JSONObject();
                 obj.put("status", "error");
-                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.error")));
+                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.account.error")));
             }
             array.put(obj);
         }

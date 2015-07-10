@@ -76,6 +76,7 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
             post.setId(rs.getInt("id"));
             post.setMessage(rs.getString("message"));
             post.setDeleted(rs.getBoolean("deleted"));
+            post.setUserId(rs.getInt("user_id"));
             posts.add(post);
         }
         return posts;

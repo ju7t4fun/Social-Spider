@@ -41,11 +41,6 @@
     <!--custome script for all page-->
     <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-    <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
-    <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
-
     <%--for charts--%>
     <%--line diagram lib--%>
     <script src="${pageContext.request.contextPath}/js/highstock.js"></script>
@@ -70,245 +65,290 @@
                 <div class="col-lg-12">
                     <h3 class="page-header"><i class="fa fa-table"></i> Admin</h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
                         <li><i class="fa fa-table"></i>Charts</li>
                     </ol>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="pull-left"><l:resource key="owner"/></div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <br>
 
-            <!-- page start-->
+                        <div class="row" style="margin-left: 270px">
+                            <div class="col-lg-3">
+                                <input id="fromDate" class="form-control" type="date">
+                            </div>
+                            <div class="col-lg-3">
+                                <input id="toDate" class="form-control" type="date">
+                            </div>
+                            <input class="btn btn-default" type="button" onclick="redrawChart()" value="Show">
+                        </div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#home" aria-controls="home" role="tab" data-toggle="tab">Visitors</a></li>
+                            <li role="presentation">
+                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Sex / Age</a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Geo</a>
+                            </li>
+                        </ul>
 
-            <div class="modal-body">
-                <div class="row">
-                    <!-- chart morris start -->
-                    <div id="line-diagram" style="height: 400px; min-width: 310px"></div>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="home" style="height: 490px">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div id="line-diagram" style="height: 450px; min-width: 998px"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="profile" style="height: 490px">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div id="gender-diagram"
+                                             style="min-width: 700px; max-width: 700px; height: 450px; margin: auto 150px"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="messages" style="height: 490px">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div id="pie-diagram"
+                                             style="min-width: 480px; height: 400px; max-width: 480px;"></div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div id="city-diagram"
+                                             style="min-width: 480px; height: 400px; max-width: 480px; position: relative;
+                                     left: 480px;  top: -426px"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="settings">...</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <br>
-
-            <div class="modal-body">
-                <div class="row">
-                    <!-- chart morris start -->
-                    <div id="gender-diagram"
-                         style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto"></div>
-                </div>
+            <div>
             </div>
-            <br>
 
-            <div class="modal-body">
-                <div class="row">
-                    <!-- chart morris start -->
-                    <div id="pie-diagram"
-                         style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
-                </div>
-            </div>
-            <br>
-            <!-- page end-->
         </section>
     </section>
 </section>
-<!-- container section end -->
 
-<%--script for line diagram--%>
 <script>
-    $(function () {
-        var seriesOptions = [],
-                seriesCounter = 0,
-                names = ['MSFT', 'AAPL', 'GOOG'],
-        // create the chart when all data is loaded
-                createChart = function () {
 
-                    $('#line-diagram').highcharts('StockChart', {
-
-                        rangeSelector: {
-                            selected: 4
-                        },
-
-                        yAxis: {
-                            labels: {
-                                formatter: function () {
-                                    return (this.value > 0 ? ' + ' : '') + this.value + '%';
-                                }
-                            },
-                            plotLines: [{
-                                value: 0,
-                                width: 2,
-                                color: 'silver'
-                            }]
-                        },
-
-                        plotOptions: {
-                            series: {
-                                compare: 'percent'
-                            }
-                        },
-
-                        tooltip: {
-                            pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
-                            valueDecimals: 2
-                        },
-
-                        series: seriesOptions
-                    });
-                };
-
-        $.each(names, function (i, name) {
-
-            $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=' + name.toLowerCase() + '-c.json&callback=?', function (data) {
-
-                seriesOptions[i] = {
-                    name: name,
-                    data: data
-                };
-
-                // As we're loading the data asynchronously, we don't know what order it will arrive. So
-                // we keep a counter and create the chart when all the data is loaded.
-                seriesCounter += 1;
-
-                if (seriesCounter === names.length) {
-                    createChart();
-                }
-            });
-        });
-    });
-</script>
-
-<%--script for gender diagram--%>
-<script>
-    // Data gathered from http://populationpyramid.net/germany/2015/
-    $(function () {
-        // Age categories
-        var categories = ['0-4', '5-9', '10-14', '15-19',
-            '20-24', '25-29', '30-34', '35-39', '40-44',
-            '45-49', '50-54', '55-59', '60-64', '65-69',
-            '70-74', '75-79', '80-84', '85-89', '90-94',
-            '95-99', '100 + '];
-        $(document).ready(function () {
-            $('#gender-diagram').highcharts({
-                chart: {
-                    type: 'bar'
-                },
-                title: {
-                    text: 'Population pyramid for Germany, 2015'
-                },
-                subtitle: {
-                    text: 'Source: <a href="http://populationpyramid.net/germany/2015/">Population Pyramids of the World from 1950 to 2100</a>'
-                },
-                xAxis: [{
-                    categories: categories,
-                    reversed: false,
-                    labels: {
-                        step: 1
-                    }
-                }, { // mirror axis on right side
-                    opposite: true,
-                    reversed: false,
-                    categories: categories,
-                    linkedTo: 0,
-                    labels: {
-                        step: 1
-                    }
-                }],
-                yAxis: {
-                    title: {
-                        text: null
-                    },
-                    labels: {
-                        formatter: function () {
-                            return Math.abs(this.value) + '%';
-                        }
-                    }
-                },
-
-                plotOptions: {
-                    series: {
-                        stacking: 'normal'
-                    }
-                },
-
-                tooltip: {
-                    formatter: function () {
-                        return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
-                                'Population: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
-                    }
-                },
-
-                series: [{
-                    name: 'Male',
-                    data: [-2.2, -2.2, -2.3, -2.5, -2.7, -3.1, -3.2,
-                        -3.0, -3.2, -4.3, -4.4, -3.6, -3.1, -2.4,
-                        -2.5, -2.3, -1.2, -0.6, -0.2, -0.0, -0.0]
+    function drawLineDiagram(data) {
+        $('#line-diagram').highcharts('StockChart', {
+            rangeSelector: {
+                inputEnabled: false,
+                buttons: [{
+                    type: 'week',
+                    count: 1,
+                    text: 'week'
                 }, {
-                    name: 'Female',
-                    data: [2.1, 2.0, 2.2, 2.4, 2.6, 3.0, 3.1, 2.9,
-                        3.1, 4.1, 4.3, 3.6, 3.4, 2.6, 2.9, 2.9,
-                        1.8, 1.2, 0.6, 0.1, 0.0]
-                }]
-            });
+                    type: 'month',
+                    count: 1,
+                    text: '1m'
+                }, {
+                    type: 'month',
+                    count: 3,
+                    text: '3m'
+                }, {
+                    type: 'month',
+                    count: 6,
+                    text: '6m'
+                }, {
+                    type: 'year',
+                    count: 1,
+                    text: '1y'
+                }, {
+                    type: 'all',
+                    text: 'All'
+                }],
+                selected: 1
+            },
+
+            series: [{
+                name: 'Views',
+                data: data.views
+            }, {
+                name: 'Visitors',
+                data: data.visitors
+            }]
         });
+    }
 
-    });
-</script>
+    function drawGenderDiagram(data) {
+        var categories = ['12-18', '18-21', '21-24', '24-27',
+            '27-30', '30-35', '35-45', ' 45-100'];
+        $('#gender-diagram').highcharts({
+            chart: {
+                type: 'bar'
+            },
 
-<%--script for pie diagram--%>
-<script>
-    $(function () {
+            title: {
+                text: 'Gender'
+            },
 
-        $(document).ready(function () {
-
-            // Build the chart
-            $('#pie-diagram').highcharts({
-                chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    type: 'pie'
-                },
+            xAxis: [{
+                categories: categories,
+                reversed: false,
+                labels: {
+                    step: 1
+                }
+            }, { // mirror axis on right side
+                opposite: true,
+                reversed: false,
+                categories: categories,
+                linkedTo: 0,
+                labels: {
+                    step: 1
+                }
+            }],
+            yAxis: {
                 title: {
-                    text: 'Browser market shares January, 2015 to May, 2015'
+                    text: null
                 },
-                tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                },
-                plotOptions: {
-                    pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: false
-                        },
-                        showInLegend: true
+                labels: {
+                    formatter: function () {
+                        return Math.abs(this.value) + '%';
                     }
-                },
-                series: [{
-                    name: "Brands",
-                    colorByPoint: true,
-                    data: [{
-                        name: "Microsoft Internet Explorer",
-                        y: 56.33
-                    }, {
-                        name: "Chrome",
-                        y: 24.03,
-                        sliced: true,
-                        selected: true
-                    }, {
-                        name: "Firefox",
-                        y: 10.38
-                    }, {
-                        name: "Safari",
-                        y: 4.77
-                    }, {
-                        name: "Opera",
-                        y: 0.91
-                    }, {
-                        name: "Proprietary or Undetectable",
-                        y: 0.2
-                    }]
-                }]
-            });
+                }
+            },
+
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+
+            series: [{
+                name: 'Male',
+                data: data.male
+            }, {
+                name: 'Female',
+                data: data.female
+            }]
         });
+    }
+
+    function drawCountryDiagram(data) {
+        $('#pie-diagram').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Country'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: "Brands",
+                colorByPoint: true,
+                data: data
+            }]
+        });
+    }
+
+    function drawCityDiagram(data) {
+        $('#city-diagram').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'City'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: "Brands",
+                colorByPoint: true,
+                data: data
+            }]
+        });
+    }
+
+    $(document).ready(function () {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('GET', '/admin?action=stats', true);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                var response = JSON.parse(xmlhttp.responseText);
+                if (response.status == 'error')
+                    toastrNotification(response.status, response.msg);
+                else {
+                    drawChart(response);
+                    $('#fromDate').attr("max", response.max);
+                    $('#fromDate').attr("value", response.date_from);
+                    $('#toDate').attr("max", response.max);
+                    $('#toDate').attr("value", response.date_to);
+                }
+            }
+        };
+        xmlhttp.send();
     });
+
+    function redrawChart() {
+        var dateFrom = document.getElementById("fromDate").value;
+        var dateTo = document.getElementById("toDate").value;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('GET', '/owner?action=stat&id=' + ownerId + '&date_from=' + dateFrom + "&date_to=" + dateTo, true);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                var response = JSON.parse(xmlhttp.responseText);
+                if (response.status == 'error')
+                    toastrNotification(response.status, response.msg);
+                else
+                    drawChart(response);
+            }
+        };
+        xmlhttp.send();
+    }
+
+    function drawChart(response) {
+        drawLineDiagram(response.line);
+        drawGenderDiagram(response.bar);
+        drawCountryDiagram(response.country);
+        drawCityDiagram(response.city);
+    }
+
 </script>
+
 </body>
 </html>
 

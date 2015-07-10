@@ -33,6 +33,7 @@ public class PublishPostByIdCommand implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("---------------------START------------------------------------------");
         // Вхідні параметри
         Integer postId = Integer.parseInt(request.getParameter("postId"));
         String date = request.getParameter("date");
@@ -45,12 +46,14 @@ public class PublishPostByIdCommand implements ActionCommand {
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         User user = (User) session.getAttribute("user");
         Post post = postService.getById(postId);
+        System.out.println("---- " + post.getId() + " --- " + post.getUserId());
         if (post.getUserId() < 0) {
             post.getAttachments();
             post.setUserId(user.getId());
             postService.insert(post);
         }
         // Створюємо new post
+        System.out.println("---- " + post.getId() + " --- " + post.getUserId());
         NewPost newPost = new NewPost();
         newPost.setUserId(user.getId());
         newPost.setPostId(post.getId());
@@ -76,17 +79,18 @@ public class PublishPostByIdCommand implements ActionCommand {
             if (newPostService.insert(newPost)) {
                 obj = new JSONObject();
                 obj.put("status", "success");
-                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.success")));
+                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.account.success")));
             } else {
                 obj = new JSONObject();
                 obj.put("status", "error");
-                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.error")));
+                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.account.error")));
             }
             array.put(obj);
         }
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(array.toString());
+        System.out.println("---------------------END------------------------------------------");
     }
 
 }

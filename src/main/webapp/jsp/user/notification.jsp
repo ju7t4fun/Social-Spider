@@ -113,6 +113,8 @@
                     "buttonText": "columns <img src=\"/img/caaret.png\"/>",
                 },
 
+                "sDom": '<"top"if>rt<"bottom"lp><"clear">',
+
                 "columnDefs": [{
                     "aTargets": [0], "createdCell": function (td, cellData, rowData, row, col) {
                         $(td).html(parseNotificationType(cellData));
@@ -127,7 +129,7 @@
             });
 
             $(".dataTables_filter").attr("hidden", "");
-            $(".dataTables_length").attr("hidden", "");
+//            $(".dataTables_length").attr("hidden", "");
 
             function parseNotificationType(type) {
                 switch (type) {

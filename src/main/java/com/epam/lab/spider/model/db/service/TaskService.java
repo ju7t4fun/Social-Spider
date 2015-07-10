@@ -7,6 +7,7 @@ import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
 import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
 import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
+import com.epam.lab.spider.model.db.entity.CategoryHasTask;
 import com.epam.lab.spider.model.db.entity.Task;
 import com.epam.lab.spider.model.db.entity.Wall;
 import com.epam.lab.spider.model.db.service.savable.CustomizeSavableAction;
@@ -294,5 +295,31 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public boolean deleteFromCHT(int categoryId, int taskId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return chtdao.delete(connection, categoryId, taskId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean insertIntoCHT(int categoryId, int taskId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return chtdao.insert(connection, categoryId, taskId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+    public List<CategoryHasTask> getAllCHTByTaskId(int taskId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return chtdao.getAllCHTByTaskId(connection,taskId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

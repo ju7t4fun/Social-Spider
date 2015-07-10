@@ -79,7 +79,6 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
         }
     }
 
-    @Deprecated
     @Override
     public boolean update(int id, Post post) {
         try {

@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +17,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-    <title>All Posts</title>
+    <title>Queued Posts</title>
 
     <!-- Bootstrap CSS -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -100,15 +101,15 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-list-alt"></i> Queued</h3>
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> <l:resource key="queued"/></h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-desktop"></i>Post</li>
-                        <li><i class="fa fa-list-alt"></i>Queued</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-desktop"></i><l:resource key="post"/></li>
+                        <li><i class="fa fa-list-alt"></i><l:resource key="queued"/></li>
                     </ol>
                 </div>
             </div>
@@ -116,32 +117,30 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left">Queued</div>
+                            <div class="pull-left"><l:resource key="queued"/></div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="panel-body">
                             <div id="active" class="tab-pane active">
                                 <div class="col-lg-12">
-
-
                                     <table width="100%" border="0" margin="0" padding="0"
                                            class="row-border tableHeader" id="queuedTable">
                                         <tbody>
                                         <thead>
                                         <tr>
-                                            <th>Message</th>
-                                            <th>Group Name</th>
-                                            <th>Attachments</th>
-                                            <th>Post Time</th>
-                                            <th>Id</th>
-                                            <th>Delete</th>
+                                            <th><l:resource key="message"/></th>
+                                            <th><l:resource key="owner.groupname"/></th>
+                                            <th><l:resource key="attachment"/></th>
+                                            <th><l:resource key="newpost.posttime"/></th>
+                                            <th><l:resource key="owner.id"/></th>
+                                            <th><l:resource key="delete"/></th>
 
                                         </tr>
                                         </thead>
 
                                         </tbody>
                                     </table>
-                                    <input class="btn btn-primary" style="visibility: hidden" type="button" id="showAllBtnId" onclick="myFunc()" value="Show All"/>
+                                    <l:resource key="showall"><input class="btn btn-primary" style="visibility: hidden" type="button" id="showAllBtnId" onclick="myFunc()" value=""/></l:resource>
                                 </div>
                             </div>
                         </div>
@@ -152,13 +151,160 @@
     </section>
     <!--main content end-->
 </section>
-<!-- container section end -->
+<%--Вікно публікації--%>
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="change_dates"
+     class="modal fade">
+    <div class="modal-dialog" style="margin-left: 35%; margin-top: 110px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
+                <h4 class="modal-title"><l:resource key="newpost.dateandtime"/></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="modal_form" class="form-horizontal">
+
+                            <div class="col-lg-8" style="position: relative; left: -15px; top: 30px; z-index: 10;">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="date"><l:resource
+                                            key="newpost.date"/></label>
+
+                                    <div class="col-md-6">
+                                        <l:resource key="newpost.postdate">
+                                            <input id="date" name="date" type="date"
+                                                   min="${date}" value="${date}"
+                                                   class="form-control input-md">
+                                        </l:resource>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="time"
+                                           style="margin-top: -24px">
+                                        <l:resource key="newpost.time"/></label>
+
+                                    <div class="col-md-6" style="margin-top: -24px">
+                                        <l:resource key="newpost.posttime">
+                                            <input id="time" name="time" type="time" value="${time}"
+                                                   class="form-control input-md">
+                                        </l:resource>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="  position: relative;  left: 240px;  top: -74px;">
+                                <%--Включення автовидалення поста--%>
+                                <div class="form-group" style="position: relative;  left: -259px;  top: 53px;">
+                                    <label class="col-md-4 control-label"
+                                           style="position: relative;left: -50px; top: 20px;"
+                                           for="check"><l:resource key="newpost.removingdate"/></label>
+                                    <input id="check" type="checkbox">
+                                </div>
+
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="del_date"><l:resource
+                                                key="newpost.date"/></label>
+
+                                        <div class="col-md-6">
+                                            <l:resource key="newpost.postdate">
+                                                <input id="del_date" name="date" type="date"
+                                                       min="${date}" value="${date}"
+                                                       class="form-control input-md">
+                                            </l:resource>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="del_time"
+                                               style="margin-top: -24px">
+                                            <l:resource key="newpost.time"/></label>
+
+                                        <div class="col-md-6" style="margin-top: -24px">
+                                            <l:resource key="newpost.posttime">
+                                                <input id="del_time" name="time" type="time" value="${time}"
+                                                       class="form-control input-md">
+                                            </l:resource>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style=" margin-top: 25px;  float: right;">
+                                <button id="submit_modal" type="button"
+                                        class="btn btn-primary">
+                                    <l:resource key="newpost.save"/>
+                                </button>
+                                <button id="modal_cancel" type="button"
+                                        class="btn btn-default">
+                                    Cancel
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        var publishPostId = 0;
+
+        // Завантажуємо дані для вікна
+        function openPublishWindows(id) {
+            publishPostId = id;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('GET', '/post?action=getPostedDate&post_id=' + id, true);
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    var response = JSON.parse(xmlhttp.responseText);
+                    $("#date").val(response.date);
+                    $("#time").val(response.time);
+                    $("#del_date").val(response.del_date);
+                    $("#del_time").val(response.del_time);
+                }
+            };
+            xmlhttp.send();
+        }
+
+        // Змінюємо дату
+        $(document).ready(function () {
+            $("#modal_cancel").click(function () {
+                $("#change_dates").modal('toggle');
+            });
+            $("#submit_modal").click(function () {
+                $.post(
+                        "/post?action=changeTime",
+                        {
+                            post_id: publishPostId,
+                            date: $("#date").val(),
+                            time: $("#time").val(),
+                            date_delete: $("#del_date").val(),
+                            time_delete: $("#del_time").val(),
+                            checked: $("#check").prop('checked'),
+                        },
+                        onAjaxSuccess
+                );
+                function onAjaxSuccess(response) {
+                    toastrNotification(response.status, response.msg);
+                    if (response.status === 'success') {
+                        $('#queuedTable').DataTable().draw(false);
+                        $("#change_dates").modal('toggle');
+                    }
+                }
+            });
+        });
+
+    </script>
+
+</div>
 <script>
     function myFunc() {
-        var newUrl = path + "/post?action=fillqueuededposts";
+        var newUrl = path + "/post?action=getQueueded";
         table.api().ajax.url(newUrl).load();
         document.getElementById("showAllBtnId").style.visibility = "hidden";
-    };
+    }
 </script>
 </body>
 </html>

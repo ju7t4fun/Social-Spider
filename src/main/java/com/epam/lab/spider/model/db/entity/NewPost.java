@@ -5,6 +5,7 @@ import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.api.Stats;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
+import com.epam.lab.spider.model.db.service.OwnerService;
 import com.epam.lab.spider.model.db.service.PostService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
 import com.epam.lab.spider.model.db.service.WallService;
@@ -35,12 +36,13 @@ public class NewPost {
 
     private Stats stats;
     private Post post;
+    private Owner owner = null;
 
     public String getFullId() {
         if (fullId != null)
             return fullId;
         if (vkPostId != null)
-            fullId = wallService.getById(wallId).getOwner().getVkId() + "_" + vkPostId;
+            fullId = getOwner().getVkId() + "_" + vkPostId;
         return fullId;
     }
 
@@ -179,28 +181,22 @@ public class NewPost {
 
     public com.epam.lab.spider.controller.vk.api.Stats.Reach getPostReach() {
         if (vkPostId != null) {
+            WallService wallService = new WallService();
+            Wall wall = wallService.getById(wallId);
+            Profile profile = wall.getProfile();
+            Vkontakte vk = new Vkontakte(profile.getAppId());
+            AccessToken accessToken = new AccessToken();
+            accessToken.setAccessToken(profile.getAccessToken());
+            accessToken.setUserId(profile.getVkId());
+            accessToken.setExpirationMoment(profile.getExtTime().getTime());
+            vk.setAccessToken(accessToken);
+            Parameters param = new Parameters();
+            param.add("owner_id", wall.getOwner().getVkId());
+            param.add("post_id", vkPostId);
             try {
-                WallService wallService = new WallService();
-                Wall wall = wallService.getById(wallId);
-                Profile profile = wall.getProfile();
-                Vkontakte vk = new Vkontakte(profile.getAppId());
-                AccessToken accessToken = new AccessToken();
-                accessToken.setAccessToken(profile.getAccessToken());
-                accessToken.setUserId(profile.getVkId());
-                accessToken.setExpirationMoment(profile.getExtTime().getTime());
-                vk.setAccessToken(accessToken);
-                Parameters param = new Parameters();
-                param.add("owner_id", wall.getOwner().getVkId());
-                param.add("post_id", vkPostId);
-                try {
-                    return vk.stats().getPostReach(param);
-                } catch (VKException e) {
-                    e.printStackTrace();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                return vk.stats().getPostReach(param);
+            } catch (VKException ignored) {
             }
-
         }
         return new com.epam.lab.spider.controller.vk.api.Stats.Reach() {
             @Override
@@ -259,6 +255,14 @@ public class NewPost {
                 ", vkPostId=" + vkPostId +
                 ", post=" + post +
                 '}';
+    }
+
+    public Owner getOwner() {
+        if (owner == null) {
+            WallService service = factory.create(WallService.class);
+            owner = service.getById(wallId).getOwner();
+        }
+        return owner;
     }
 
     public enum State {
