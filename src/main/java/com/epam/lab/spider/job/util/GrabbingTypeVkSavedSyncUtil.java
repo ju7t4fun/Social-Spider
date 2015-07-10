@@ -20,8 +20,15 @@ public class GrabbingTypeVkSavedSyncUtil {
     public static final Logger LOG = Logger.getLogger(GrabbingTypeServerUtil.class);
     public static List<Post> grabbingBegin(Owner owner, Vkontakte vk, Filter filter, SynchronizedData sync, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException {
         List<PostOffsetDecorator> postsPrepareToPosting = new ArrayList<>();
-        Integer lastVkId  = sync.getPostVkId();
-        Integer lastOffset = sync.getPostOffset();
+        Integer lastVkId;
+        Integer lastOffset;
+        if(sync != null) {
+            lastVkId = sync.getPostVkId();
+            lastOffset = sync.getPostOffset();
+        }else {
+            lastVkId = null;
+            lastOffset = null;
+        }
         postGrabbingAndFiltering:
         for(int loopsCount = 0;true;loopsCount++) {
             List<PostOffsetDecorator> postsOnTargetWall;
@@ -48,7 +55,7 @@ public class GrabbingTypeVkSavedSyncUtil {
                     if (alreadyProceededPost) {
                         LOG.debug("Post " + owner.getVkId() + "_" + vkPost.getId() + " already processed.");
                     } else {
-                            postsPrepareToPosting.add(vkPost);
+                        postsPrepareToPosting.add(vkPost);
                     }
                 }
             }else {
@@ -69,8 +76,15 @@ public class GrabbingTypeVkSavedSyncUtil {
     }
     public static List<Post> grabbingEnd(Owner owner, Vkontakte vk, Filter filter, SynchronizedData sync, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException {
         List<PostOffsetDecorator> postsPrepareToPosting = new ArrayList<>();
-        Integer lastVkId  = sync.getPostVkId();
-        Integer lastOffset = sync.getPostOffset();
+        Integer lastVkId;
+        Integer lastOffset;
+        if(sync != null) {
+            lastVkId = sync.getPostVkId();
+            lastOffset = sync.getPostOffset();
+        }else {
+            lastVkId = null;
+            lastOffset = null;
+        }
         postGrabbingAndFiltering:
         for(int loopsCount = 0;true;loopsCount++) {
             List<PostOffsetDecorator> postsOnTargetWall;
