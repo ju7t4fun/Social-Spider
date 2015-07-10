@@ -1,0 +1,77 @@
+var owner_id = parseInt(Args.owner_id);
+var count = parseInt(Args.count);
+if(count == 0)count = 180;
+var offset = parseInt(Args.offset);
+
+var likes = parseInt(Args.likes);
+var reposts = parseInt(Args.reposts);
+var comments = parseInt(Args.comments);
+
+var total_loops = parseInt(Args.max_loops);
+var query_size = parseInt(Args.query_size);
+if(query_size == 0)query_size = 30;
+if(query_size > 100)query_size = 100;
+if(total_loops<1 ||total_loops>180) total_loops = 180;
+
+var basket_limit = (total_loops - (total_loops%query_size)) / query_size;
+if(basket_limit>24)basket_limit = 24;
+
+
+if(offset == 0){
+    offset = API.wall.get({
+        "owner_id" : owner_id,
+        "filter": "owner",
+        "count": 1,
+        "offset": 0
+    }).count;
+}
+
+var query_offset = offset;
+var calculeted_query_size = query_size;
+
+
+
+var result = [];
+var response;
+var i = 0, basket = 0;
+
+do{
+    query_offset = query_offset - query_size;
+    if(query_offset < 0){
+        calculeted_query_size = query_size + query_offset;
+        query_offset = 0;
+    }
+    response = API.wall.get({
+        "owner_id" : owner_id,
+        "filter": "owner",
+        "count": calculeted_query_size,
+        "offset": query_offset
+    });
+    i = response.items.length - 1;
+    if(response.items.length>0 && result.length<count){
+        do{
+            if(response.items[i].likes.count>=likes 
+            && response.items[i].reposts.count>=reposts
+            && response.items[i].comments.count>=comments 
+            ){
+                result.push(response.items[i]);
+            }
+            i = i - 1;
+        }while(i>=0 && result.length<count);
+    }
+    basket = basket + 1;
+}while(response.items.length==query_size && basket<basket_limit);
+i = i + 1;
+var finish_offset = offset + (basket - 1) * query_size 
+- calculeted_query_size + i;
+
+return {
+    start_offset:offset,
+    finish_offset:finish_offset,
+    debug_info:{
+        total_posts_count:response.count, 
+        index:i,
+        basket:basket,
+        result_length:result.length}, 
+    items:result
+};

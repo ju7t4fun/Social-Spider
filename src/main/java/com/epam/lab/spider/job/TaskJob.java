@@ -131,13 +131,12 @@ public class TaskJob implements Job {
             accessToken.setExpirationMoment(profile.getExtTime().getTime());
             vk.setAccessToken(accessToken);
             // !Initialization auth_token
-
+            TaskSynchronizedNewDataService syncService = new TaskSynchronizedNewDataService();
             // Work Body
             switch (task.getGrabbingType()) {
 
                 case BEGIN:
-                    postsPrepareToPosting = GrabbingTypeServerUtil.grabbingBegin(owner, vk, filter, alreadyAddSet,
-                            countOfPosts, grabbingSize);
+                    postsPrepareToPosting =  GrabbingTypeVkSavedSyncUtil.grabbingBegin(owner,vk,filter, syncService.getBy(task,wall),alreadyAddSet,countOfPosts);
                     break;
                 case RANDOM:
                     postsPrepareToPosting = GrabbingTypeVkSavedUtil.grabbingRandom(owner, vk, filter, alreadyAddSet,
@@ -145,8 +144,9 @@ public class TaskJob implements Job {
                     LOG.info("New grabbingSize:" + grabbingSize);
                     break;
                 case END:
-                    postsPrepareToPosting = GrabbingTypeServerUtil.grabbingEnd(owner, vk, filter, alreadyAddSet,
-                            countOfPosts, grabbingSize);
+//                    postsPrepareToPosting = GrabbingTypeServerUtil.grabbingEnd(owner, vk, filter, alreadyAddSet,
+//                            countOfPosts, grabbingSize);
+                    postsPrepareToPosting =  GrabbingTypeVkSavedSyncUtil.grabbingEnd(owner,vk,filter, syncService.getBy(task,wall),alreadyAddSet,countOfPosts);
                     break;
                 case NEW:
                     postsPrepareToPosting = GrabbingTypeVkSavedUtil.grabbingNew(owner, vk, alreadyAddSet,countOfPosts);
@@ -191,7 +191,7 @@ public class TaskJob implements Job {
 
                 LinkedList<Post> addedToProcessingPosts = new LinkedList<>();
                 Map<Wall, LinkedList<Integer>> blockMap = new HashMap<>();
-
+                Map<Wall, SynchronizedData> syncMap = new HashMap<>();
                 if(task.getType() != Task.Type.FAVORITE) {
                     // перевірка кількості незаблокованих стін з незаблокованими профіліми
                     for (Wall wall : destinationWalls) {
@@ -239,6 +239,7 @@ public class TaskJob implements Job {
                 {
                     if (task.getGrabbingMode() == Task.GrabbingMode.TOTAL) {
                         for (Map.Entry<Wall, List<com.epam.lab.spider.model.vk.Post>> entity : postByWallMap.entrySet()) {
+                            Wall wall = entity.getKey();
                             List<com.epam.lab.spider.model.vk.Post> postsPrepareToPosting = entity.getValue();
                             LinkedList<Integer> addedToProcessingBlocks = new LinkedList<>();
                             for (com.epam.lab.spider.model.vk.Post vkPost : postsPrepareToPosting) {
@@ -264,6 +265,19 @@ public class TaskJob implements Job {
                                             break;
                                         }
                                     }
+                                    if(vkPost instanceof PostOffsetDecorator){
+                                        PostOffsetDecorator decoratedPost = (PostOffsetDecorator) vkPost;
+                                        SynchronizedData sync = new SynchronizedData(task,wall,decoratedPost);
+                                        switch (task.getGrabbingType()) {
+                                            case BEGIN:
+                                            case END:
+                                                    syncMap.put(wall,sync);
+                                                break;
+                                            default:
+                                                LOG.warn("SyncData has not can used at unsynchronized method.");
+                                        }
+                                        LOG.debug("PostOffsetDecorator detected");
+                                    }
                                     LOG.debug("Post wall" + vkPost.getOwnerId() + "_" + vkPost.getId() + " has added to " +
                                             "processing.");
                                 } catch (PostContentException x) {
@@ -288,6 +302,7 @@ public class TaskJob implements Job {
                             for (Map.Entry<Wall, List<com.epam.lab.spider.model.vk.Post>> entry : postByWallMap.entrySet())
                                 if (j++ == basket) currentEntry = entry;
                             // !перебір мапи
+                            Wall wall = currentEntry.getKey();
                             List<com.epam.lab.spider.model.vk.Post> basketOfPreparePost = currentEntry.getValue();
                             // видалення корзини з постами, якщо вона порожня
                             if (basketOfPreparePost.isEmpty()) {
@@ -320,6 +335,30 @@ public class TaskJob implements Job {
                                         feed.processing(post, task);
                                         break;
                                     }
+                                }
+                                if(vkPost instanceof PostOffsetDecorator){
+                                    PostOffsetDecorator decoratedPost = (PostOffsetDecorator) vkPost;
+                                    SynchronizedData sync = new SynchronizedData(task,wall,decoratedPost);
+                                    SynchronizedData oldSync = syncMap.get(wall);
+                                    if(oldSync == null ){
+                                        syncMap.put(wall,sync);
+                                    }else{
+                                        switch (task.getGrabbingType()) {
+                                            case END:
+                                                if(decoratedPost.getOffset()<oldSync.getPostOffset()){
+                                                    syncMap.put(wall,sync);
+                                                }
+                                                break;
+                                            case BEGIN:
+                                                if(decoratedPost.getOffset()>oldSync.getPostOffset()){
+                                                    syncMap.put(wall,sync);
+                                                }
+                                                break;
+                                            default:
+                                                LOG.warn("SyncData has not can used at unsynchronized method.");
+                                        }
+                                    }
+                                    LOG.debug("PostOffsetDecorator detected");
                                 }
                             } catch (PostContentException x) {
                                 LOG.error("Post Content Type Fail. Object: post" + vkPost.getOwnerId() + "_" + vkPost.getId());
