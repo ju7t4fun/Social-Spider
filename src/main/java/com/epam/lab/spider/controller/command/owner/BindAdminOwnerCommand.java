@@ -19,10 +19,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * Created by Boyarsky Vitaliy on 30.06.2015.
+ * Created by Marian Voronovskyi on 10.07.2015.
  */
-public class BindOwnerCommand implements ActionCommand {
-
+public class BindAdminOwnerCommand implements ActionCommand {
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static WallService service = factory.create(WallService.class);
 
@@ -30,7 +29,7 @@ public class BindOwnerCommand implements ActionCommand {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
-        // –ü–∞—Ä—Å–∏–º–æ JSON
+        // œ‡ÒËÏÓ JSON
         StringBuffer sb = new StringBuffer();
         try {
             String line;
@@ -41,28 +40,26 @@ public class BindOwnerCommand implements ActionCommand {
             e.printStackTrace();
         }
         JSONObject json = new JSONObject(sb.toString());
-        System.out.println(json);
         int id = Integer.parseInt(request.getParameter("id"));
         List<Wall> walls = service.getByOwnerId(id);
         JSONArray array = new JSONArray();
         JSONObject obj;
 
-        // –í–∏–¥–∞–ª—è—î–º–æ
+        // ¬Ë‰‡Îˇ∫ÏÓ
         List<Integer> wallIds = getDeletedWall(walls, json.getJSONArray("read"), Wall.Permission.READ);
-        wallIds.addAll(getDeletedWall(walls, json.getJSONArray("write"), Wall.Permission.WRITE));
         for (Integer wallId : wallIds) {
             if (service.delete(wallId)) {
                 obj = new JSONObject();
                 obj.put("status", "success");
-                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.account.success")));
+                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.success")));
             } else {
                 obj = new JSONObject();
                 obj.put("status", "error");
-                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.account.error")));
+                obj.put("msg", UTF8.encoding(bundle.getString("notification.delete.binding.error")));
             }
             array.put(obj);
         }
-        // –°—Ç–≤–æ—Ä—é—î–º–æ
+        // —Ú‚Ó˛∫ÏÓ
         List<Integer> profileIds = getCreatedWall(walls, json.getJSONArray("read"), Wall.Permission.READ);
         Wall wall;
         for (Integer profileId : profileIds) {
@@ -70,24 +67,6 @@ public class BindOwnerCommand implements ActionCommand {
             wall.setOwner_id(id);
             wall.setProfile_id(profileId);
             wall.setPermission(Wall.Permission.READ);
-            wall.setDeleted(false);
-            if (service.insert(wall)) {
-                obj = new JSONObject();
-                obj.put("status", "success");
-                obj.put("msg", UTF8.encoding(bundle.getString("notification.bind.account.success")));
-            } else {
-                obj = new JSONObject();
-                obj.put("status", "error");
-                obj.put("msg", UTF8.encoding(bundle.getString("notification.bind.account.error")));
-            }
-            array.put(obj);
-        }
-        profileIds = getCreatedWall(walls, json.getJSONArray("write"), Wall.Permission.WRITE);
-        for (Integer profileId : profileIds) {
-            wall = new Wall();
-            wall.setOwner_id(id);
-            wall.setProfile_id(profileId);
-            wall.setPermission(Wall.Permission.WRITE);
             wall.setDeleted(false);
             if (service.insert(wall)) {
                 obj = new JSONObject();
