@@ -38,36 +38,6 @@
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 
-    <%----%>
-    <%--<!-- Bootstrap CSS -->--%>
-    <%--<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">--%>
-    <%--<!-- bootstrap theme -->--%>
-    <%--<link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">--%>
-    <%--<!--external css-->--%>
-    <%--<!-- font icon -->--%>
-    <%--<link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>--%>
-    <%--<link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet"/>--%>
-    <%--<!-- Custom styles -->--%>
-    <%--<link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">--%>
-    <%--<link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>--%>
-
-    <%--<!-- javascripts -->--%>
-    <%--<script src="${pageContext.request.contextPath}/js/jquery.js"></script>--%>
-    <%--<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>--%>
-    <%--<!-- nice scroll -->--%>
-    <%--<script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>--%>
-    <%--<script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>--%>
-    <%--<!-- gritter -->--%>
-
-    <%--&lt;%&ndash;<!-- custom gritter script for this page only-->&ndash;%&gt;--%>
-    <%--<script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>--%>
-    <%--&lt;%&ndash;<!--custome script for all page-->&ndash;%&gt;--%>
-    <%--<script src="${pageContext.request.contextPath}/js/scripts.js"></script>--%>
-    <%--&lt;%&ndash;<script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>&ndash;%&gt;--%>
-
-    <%--<link href="${pageContext.request.contextPath}/css/fileinput.css" media="all" rel="stylesheet"--%>
-    <%--type="text/css"/>--%>
-    <%--<script src="${pageContext.request.contextPath}/js/fileinput.min.js" type="text/javascript"></script>--%>
 
     <%--Таблиця--%>
     <link href="http://cdn.datatables.net/1.10.3/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
@@ -133,7 +103,7 @@
 
                         $(td).html('<a  href="#" title="" >' + parts[0] + '</a>')
                                 .tooltip(
-                                {content: '<img src="' + parts[1] + '" width="300" height="200" width="300" />'},
+                                {content: '<img src="' + parts[1] + '" width="200" height="120"  />'},
                                 {tooltipClass: "i1"});
                     }
                 }, {
@@ -297,8 +267,8 @@
         position: fixed;
         background: red;
         font-size: 12px;
-        height: 250px;
-        width: 350px;
+        height: 160px;
+        width: 240px;
         padding: 20px;
         color: #fff;
         z-index: 99;
