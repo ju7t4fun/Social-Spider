@@ -76,7 +76,7 @@
 <header class="back-header">
     <div class="container">
 
-        <form class="login-form" action="/login?action=signIn" method="post" id="register_form">
+        <form class="login-form" action="/login?action=signIn" method="post" id="login_form">
             <div class="login-wrap">
                 <p class="login-img"><i class="icon_lock_alt"></i></p>
 
@@ -118,42 +118,51 @@
         });
     });
 </script>
-
+<script>
+    var Script = function () {
+        $().ready(function () {
+            $("#login_form").validate({
+                rules: {
+                    password: {
+                        required: true,
+                        minlength: 5
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    }
+                },
+                messages: {
+                    password: {
+                        required: "Please provide a password.",
+                        minlength: "Your password must be at least 5 characters long."
+                    },
+                    email: "Please enter a valid email address.",
+                    agree: "Please accept our terms & condition."
+                },
+                errorPlacement: function (error, element) {
+                    element.attr('title', error.text());
+                    $(".error").tooltip(
+                            {
+                                tooltipClass: "mytooltip",
+                                placement: 'top',
+                                html: true
+                            });
+                }
+            });
+        });
+    }();
+</script>
 <jsp:include page="../pagecontent/simple_footer.jsp"/>
 
-<!-- javascripts -->
-<!--<script src="${pageContext.request.contextPath}/js/jquery.js"></script>-->
-<!--<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>-->
-<!-- nice scroll -->
-<!--<script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
-<!--<script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
-<!-- jquery validate js -->
-<!--<script type="${pageContext.request.contextPath}/text/javascript" src="js/jquery.validate.min.js"></script>
-
-<!-- custom form validation script for this page-->
-<!--<script src="${pageContext.request.contextPath}/js/form-validation-script.js"></script>
-<!--custome script for all page-->
-<!--<script src="${pageContext.request.contextPath}/js/scripts.js"></script>
-
-<!-- EASING SCROLL SCRIPTS PLUGIN -->
-<!--<script src="${pageContext.request.contextPath}/js/jquery.vegas.min.js"></script>
-<!-- VEGAS SLIDESHOW SCRIPTS -->
-<!--<script src="${pageContext.request.contextPath}/js/jquery.easing.min.js"></script>
-
-
-
-<script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <!-- nice scroll -->
-<script src="js/jquery.scrollTo.min.js"></script>
-<script src="js/jquery.nicescroll.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
 <!-- jquery validate js -->
-<script type="text/javascript" src="js/jquery.validate.min.js"></script>
-
-<!-- custom form validation script for this page-->
-<script src="js/form-validation-script.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
 <!--custome script for all page-->
-<script src="js/scripts.js"></script>
+<script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 <!-- EASING SCROLL SCRIPTS PLUGIN -->
 <script src="${pageContext.request.contextPath}/js/jquery.vegas.min.js"></script>
 <!-- VEGAS SLIDESHOW SCRIPTS -->
