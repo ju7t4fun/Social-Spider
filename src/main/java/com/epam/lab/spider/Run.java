@@ -2,6 +2,7 @@ package com.epam.lab.spider;
 
 
 import com.epam.lab.spider.controller.utils.EventLogger;
+import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
 import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.Request;
 import com.epam.lab.spider.controller.vk.VKException;
@@ -26,11 +27,8 @@ public class Run {
     public static final Logger LOG = Logger.getLogger(Run.class);
 
     public static void main(String[] args) throws VKException {
-        String s = "di$ma";
-        Pattern p = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ]");
-        Matcher m = p.matcher(s);
-
-        System.out.println(m.find());
+        String s = "<script>alert(1);</script>";
+        System.out.println(ReplaceHtmlTags.reaplaceAll(s));
     }
 
 }
