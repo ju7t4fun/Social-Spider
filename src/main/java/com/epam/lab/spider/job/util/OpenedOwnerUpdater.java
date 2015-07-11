@@ -91,7 +91,11 @@ public class OpenedOwnerUpdater {
                     Group group = groups.get(i);
                     Owner owner = groupsWall.get(i);
                     Integer groupId = - group.get("id").toInt();
-
+                    boolean closed = group.get("is_closed").toInt()>0;
+                    if(closed){
+                        LOG.info("Closed group. Field not updated!");
+                        continue;
+                    }
                     if(groupId.intValue() != owner.getVkId().intValue()){
                         LOG.error("Unequals vk.id's!");
                     }else{

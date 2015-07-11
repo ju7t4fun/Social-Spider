@@ -277,7 +277,7 @@
             "sAjaxSource": "http://localhost:8080/task?action=gettasks",
             colVis: {
                 "align": "right",
-                "buttonText": "columns <img src=\"/img/caaret.png\"/>",
+                "buttonText": "columns <img src=\"/img/caaret.png\"/>"
             },
 
             "columnDefs": [
@@ -347,7 +347,7 @@
             "sAjaxSource": "http://localhost:8080/task?action=gettasks&type=active",
             colVis: {
                 "align": "right",
-                "buttonText": "columns <img src=\"/img/caaret.png\"/>",
+                "buttonText": "columns <img src=\"/img/caaret.png\"/>"
             },
 
             "columnDefs": [

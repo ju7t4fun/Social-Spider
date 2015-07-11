@@ -33,92 +33,13 @@ public class TaskJob implements Job {
     public static final Logger LOG = Logger.getLogger(TaskJob.class);
     WallService wallService = new WallService();
     TaskService taskService = new TaskService();
-    TaskSynchronizedDataService synchronizedService = new TaskSynchronizedDataService();
+    static TaskSynchronizedDataService synchronizedService = new TaskSynchronizedDataService();
 
     static TaskSynchronizedNewDataService syncNewService = new TaskSynchronizedNewDataService();
 
-    public Post processingPost(com.epam.lab.spider.model.vk.Post vkPost,  Task task)throws PostContentException {
-        return processingPost(vkPost, task.getContentType(), task.getHashTags());
-    }
 
-    public Post processingPost(com.epam.lab.spider.model.vk.Post vkPost,  Task.ContentType contentType) throws PostContentException {
-        return processingPost(vkPost, contentType, null);
-    }
-    public Post processingPost(com.epam.lab.spider.model.vk.Post vkPost,  Task.ContentType contentType, String hashTags) throws PostContentException {
-        Post post = new Post();
-        Task.ContentType newPostContentType = new Task.ContentType();
-        StringBuilder messageBuilder = new StringBuilder();
-        String pureText = vkPost.getText().trim();
-        //TODO: REMOVE ALL HASH TAGS FROM SOURCE TEXT
-        if(!contentType.hasHashtags()){
 
-        }
-        if (contentType.hasText()) {
-            if(!pureText.isEmpty()) {
-                messageBuilder.append(pureText);
-                newPostContentType.setType(Task.ContentType.TEXT);
-            }
-        }
-        if(contentType.hasReposts()){
-            List<com.epam.lab.spider.model.vk.Post> copyHistoryList = vkPost.getCopyHistory();
-            if(!copyHistoryList.isEmpty()){
-                post = processingPost(copyHistoryList.get(0),  contentType);
-                String innerMessage = post.getMessage();
-                messageBuilder.append("\n").append(innerMessage);
-                newPostContentType.setType(Task.ContentType.REPOSTS);
-
-            }
-        }
-        {
-            if(hashTags!=null)messageBuilder.append("\n").append(hashTags);
-            post.setMessage(messageBuilder.toString().trim());
-        }
-        for (com.epam.lab.spider.model.vk.Attachment vkAttachment : vkPost.getAttachments()) {
-            if (contentType.hasPhoto() && vkAttachment instanceof Photo) {
-                Attachment attachment = new Attachment();
-                attachment.setType(Attachment.Type.PHOTO);
-                attachment.setPayload(((Photo) vkAttachment).getPhoto604().toString());
-                post.addAttachment(attachment);
-                newPostContentType.setType(Task.ContentType.PHOTO);
-            }
-            if (contentType.hasAudio() && vkAttachment instanceof Audio) {
-                Attachment attachment = new Attachment();
-                Audio audio = (Audio) vkAttachment;
-                String attachString = "audio" + audio.getOwnerId() + "_" + audio.getId();
-                attachment.setPayload(attachString);
-                attachment.setMode(Attachment.Mode.CODE);
-                attachment.setType(Attachment.Type.AUDIO);
-                post.addAttachment(attachment);
-                newPostContentType.setType(Task.ContentType.AUDIO);
-            }
-            if (contentType.hasDoc() && vkAttachment instanceof Doc) {
-                Attachment attachment = new Attachment();
-                Doc doc = (Doc) vkAttachment;
-                String attachString = "doc" + doc.getOwnerId() + "_" + doc.getId();
-                attachment.setPayload(attachString);
-                attachment.setMode(Attachment.Mode.CODE);
-                attachment.setType(Attachment.Type.DOC);
-                post.addAttachment(attachment);
-                newPostContentType.setType(Task.ContentType.DOCUMENTS);
-            }
-            if (contentType.hasVideo() && vkAttachment instanceof Video) {
-                Attachment attachment = new Attachment();
-                Video video = (Video) vkAttachment;
-                String attachString = "video" + video.getOwnerId() + "_" + video.getId();
-                attachment.setPayload(attachString);
-                attachment.setMode(Attachment.Mode.CODE);
-                attachment.setType(Attachment.Type.VIDEO);
-                post.addAttachment(attachment);
-                newPostContentType.setType(Task.ContentType.VIDEO);
-            }
-        }
-        if(newPostContentType.getType().intValue()==0){
-            throw new PostContentException();
-//            return null;
-        }else return post;
-    }
-
-    public List<com.epam.lab.spider.model.vk.Post> grabbingWall(Wall wall, Task task) throws WallStopException, WallAlreadyStopped, FindingEmptyResultException {
+    public static List<com.epam.lab.spider.model.vk.Post> grabbingWall(Wall wall, Task task) throws WallStopException, WallAlreadyStopped, FindingEmptyResultException {
         List<com.epam.lab.spider.model.vk.Post> toPostingQueue = new ArrayList<>();
         Owner owner = wall.getOwner();
         Profile profile = wall.getProfile();
@@ -141,15 +62,15 @@ public class TaskJob implements Job {
 
                 case BEGIN:
                 case END:
-                    toPostingQueue =  GrabbingTypeVkSavedSyncUtil.grabbing(task.getGrabbingType(), owner, vk, filter,
-                            syncNewService.getBy(task, wall), alreadyAddSet, countOfPosts);
+                    toPostingQueue =  GrabbingTypeVkSavedSyncUtil.grabbing(task.getGrabbingType(), task.getContentType(),
+                            owner, vk, filter, syncNewService.getBy(task, wall), alreadyAddSet, countOfPosts);
                     break;
                 case RANDOM:
-                    toPostingQueue = GrabbingTypeVkSavedUtil.grabbingRandom(owner, vk, filter, alreadyAddSet,
+                    toPostingQueue = GrabbingTypeVkSavedUtil.grabbingRandom(task.getContentType(),owner, vk, filter, alreadyAddSet,
                             countOfPosts);
                     break;
                 case NEW:
-                    toPostingQueue = GrabbingTypeVkSavedUtil.grabbingNew(owner, vk, alreadyAddSet,countOfPosts);
+                    toPostingQueue = GrabbingTypeVkSavedUtil.grabbingNew(task.getContentType(),owner, vk, alreadyAddSet,countOfPosts);
                     break;
             }
 
@@ -259,7 +180,7 @@ public class TaskJob implements Job {
                                     switch (task.getType()) {
                                         // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
                                         case COPY: {
-                                            Post post = processingPost(vkPost, task);
+                                            Post post = PostProcessingUtil.processingPost(vkPost, task);
                                             addedToProcessingPosts.addFirst(post);
                                             break;
                                         }
@@ -270,7 +191,7 @@ public class TaskJob implements Job {
                                             break;
                                         }
                                         case FAVORITE: {
-                                            Post post = processingPost(vkPost, task);
+                                            Post post = PostProcessingUtil.processingPost(vkPost, task);
                                             System.out.println("-------------" + post);
                                             Feed feed = new Feed();
                                             feed.processing(post, task);
@@ -330,7 +251,7 @@ public class TaskJob implements Job {
                                     // опрацьовуємо пост за правилами заданими в таску
                                     // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
                                     case COPY: {
-                                        Post post = processingPost(vkPost, task);
+                                        Post post = PostProcessingUtil.processingPost(vkPost, task);
                                         addedToProcessingPosts.addFirst(post);
                                         break;
                                     }
@@ -341,7 +262,7 @@ public class TaskJob implements Job {
                                         break;
                                     }
                                     case FAVORITE: {
-                                        Post post = processingPost(vkPost, task);
+                                        Post post = PostProcessingUtil.processingPost(vkPost, task);
                                         System.out.println("-------------" + post);
                                         Feed feed = new Feed();
                                         feed.processing(post, task);

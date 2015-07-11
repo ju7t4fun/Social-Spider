@@ -4,7 +4,9 @@ import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.model.db.entity.Filter;
 import com.epam.lab.spider.model.db.entity.Owner;
+import com.epam.lab.spider.model.db.entity.Task;
 import com.epam.lab.spider.model.vk.Post;
+import com.epam.lab.spider.model.vk.PostOffsetDecorator;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.log4j.Logger;
 
@@ -15,15 +17,15 @@ import java.util.*;
  */
 public class GrabbingTypeVkSavedUtil {
     public static final Logger LOG = Logger.getLogger(GrabbingTypeServerUtil.class);
-    public static List<Post> grabbingRandom(Owner owner, Vkontakte vk, Filter filter, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException {
-        List<Post> postsPrepareToPosting = new ArrayList<>();
+    public static List<Post> grabbingRandom(Task.ContentType contentType, Owner owner, Vkontakte vk, Filter filter, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException {
+        List<Post> postsToPosting = new ArrayList<>();
         int grabbingSize = 10;
         Integer grabbingLimitSize = 10;
         Random random = new Random();
         boolean endOfContent = false;
         postGrabbingAndFiltering:
-        for(int loopsCount = 0,currentPostCount = 0;true;loopsCount++) {
-            List<Post> postsOnTargetWall = null;
+        for(int loopsCount = 0;true;loopsCount++) {
+            List<Post> grabbedPosts = null;
             boolean manyRequest = false, badExecution = false;
             do {
                 try {
@@ -32,8 +34,8 @@ public class GrabbingTypeVkSavedUtil {
                         manyRequest = false;
                         badExecution = false;
                     }
-                    postsOnTargetWall = vk.execute().getRandomPostFromWall(owner.getVkId(),grabbingSize,filter,grabbingLimitSize, random.nextInt(255));
-                    if(postsOnTargetWall.size()<grabbingSize){
+                    grabbedPosts = vk.execute().getRandomPostFromWall(owner.getVkId(),grabbingSize,filter,grabbingLimitSize, random.nextInt(255));
+                    if(grabbedPosts.size()<grabbingSize){
                         endOfContent = true;
                     }
                 } catch (VKException x) {
@@ -45,24 +47,23 @@ public class GrabbingTypeVkSavedUtil {
                     }
                     else throw x;
                 }
-                // фікс архітектури
-                // перехоплення NullPointerException by UnknownHostException
                 catch (NullPointerException x){
                     badExecution = true;
                 }
             }while (manyRequest || badExecution);
 
-            for (com.epam.lab.spider.model.vk.Post vkPost : postsOnTargetWall) {
+            for (Post vkPost : grabbedPosts) {
                 boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));
                 if (alreadyProceededPost) {
                     LOG.debug("Post " + owner.getVkId() + "_" + vkPost.getId() + " already processed.");
                 } else {
-                    postsPrepareToPosting.add(vkPost);
-                    currentPostCount++;
-                    if (currentPostCount >= countOfPosts) break postGrabbingAndFiltering;
+                    boolean hasContent = PostProcessingUtil.checkContent(vkPost, contentType);
+                    if (hasContent) postsToPosting.add(vkPost);
+                    boolean isNeededSize = postsToPosting.size() >= countOfPosts;
+                    if (isNeededSize) break;
                 }
             }
-            if (currentPostCount < countOfPosts){
+            if (postsToPosting.size() < countOfPosts){
                 // збільшення кількості для наступного запиту
                 grabbingSize = (int)(grabbingSize * 1.5);
             }
@@ -73,22 +74,23 @@ public class GrabbingTypeVkSavedUtil {
             }
             //grabbingLimitSize = 999;
         }
-        return postsPrepareToPosting;
+        return postsToPosting;
     }
-    public static List<Post> grabbingNew(Owner owner, Vkontakte vk, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException {
-        List<Post> postsPrepareToPosting = new ArrayList<>();
+    public static List<Post> grabbingNew(Task.ContentType contentType, Owner owner, Vkontakte vk, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException {
+        List<Post> postsToPosting = new ArrayList<>();
         SortedSet<Integer> sortedAlreadyAddSet = new TreeSet<>();
         sortedAlreadyAddSet.addAll(alreadyAddSet);
-        List<Post> postsOnTargetWall = null;
+        List<Post> grabbedPosts = null;
         int localCount = sortedAlreadyAddSet.isEmpty()?countOfPosts:50;
         boolean badExecution = false;
+        boolean unlimitedUpdate = true;
         do {
             try {
                 if (badExecution) {
                     Thread.sleep(400);
                     badExecution = false;
                 }
-                postsOnTargetWall = vk.execute().getNewPostFromWall(owner.getVkId(), localCount, sortedAlreadyAddSet.last(), null);
+                grabbedPosts = vk.execute().getNewPostFromWall(owner.getVkId(), localCount, sortedAlreadyAddSet.last(), null);
             } catch (VKException x) {
                 if (x.getExceptionCode() == VKException.VK_EXECUTE_RUNTIME_ERROR) {
                     badExecution = false;
@@ -98,15 +100,20 @@ public class GrabbingTypeVkSavedUtil {
             }
         } while (badExecution);
 
-        for (com.epam.lab.spider.model.vk.Post vkPost : postsOnTargetWall) {
+        for (Post vkPost : grabbedPosts) {
             boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));
             if (alreadyProceededPost) {
-                LOG.debug("Post wall" + owner.getVkId() + "_" + vkPost.getId() + " already processed.");
+                LOG.debug("Post " + owner.getVkId() + "_" + vkPost.getId() + " already processed.");
             } else {
-                postsPrepareToPosting.add(vkPost);
+                boolean hasContent = PostProcessingUtil.checkContent(vkPost, contentType);
+                if (hasContent) postsToPosting.add(vkPost);
+                if(unlimitedUpdate) {
+                    boolean isNeededSize = postsToPosting.size() >= countOfPosts;
+                    if (isNeededSize) break;
+                }
             }
         }
-        return postsPrepareToPosting;
+        return postsToPosting;
     }
 
 }

@@ -38,7 +38,7 @@
   <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.task.js"></script>
   <script type="text/javascript" src="${pageContext.request.contextPath}/js/save.task.js"></script>
   <script src="${pageContext.request.contextPath}/assets/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
-
+  <script src="${pageContext.request.contextPath}/js/j4f-number-cases.js"></script>
 
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css" />
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/just4fun.fix.css" />
@@ -46,7 +46,10 @@
   <!-- Range Slider styles -->
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/ionRangeSlider/css/normalize.css" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/ionRangeSlider/css/ion.rangeSlider.css" />
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/ionRangeSlider/css/ion.rangeSlider.skinFlat.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/ionRangeSlider/css/ion.rangeSlider.skinHTML5.css" />
+  <!-- radios-for-buttons -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
   <!--[if lt IE 9]>
   <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
@@ -116,10 +119,14 @@
                     </select>
 
                     <script type="text/javascript">
+                      var calculateCountWallCallBack;
                       $('select#tokenize_focus_source_walls').tokenize({
                         datas: 'select',
-                        newElements:'false',
-                        displayDropdownOnFocus: true
+                        newElements:false,
+                        displayDropdownOnFocus: true,
+                        onAddToken: function(value, text, e){
+                          calculateCountWallCallBack();
+                        }
                       });
                     </script>
                     <h4><l:resource key="select.group.to.post"/></h4>
@@ -131,91 +138,157 @@
                     <script type="text/javascript">
                       $('select#tokenize_focus_destination_walls').tokenize({
                         displayDropdownOnFocus:true,
-                        newElements:'false'
+                        newElements:false,
+                        onAddToken: function(value, text, e){
+                          calculateCountWallCallBack();
+                        }
                       });
                     </script>
+                    <div id="grabbing-mode-group">
+                      <h4><l:resource key="select.grabbing.mode"/></h4>
+                      <br>
 
-                    <h4><l:resource key="select.grabbing.mode"/></h4>
-                    <br>
-                    <input type="radio" name="grabbing_mode" value="total" checked> <l:resource key="grabbing.mode1"/> <br>
-                    <input type="radio" name="grabbing_mode" value="per_group"> <l:resource key="grabbing.mode2"/> <br>
-                    <div class="post_count_number_group">
-                    <span><l:resource key="amount.of.posts"/>  </span>
-                    <input type="number" name="post_count" style="width:40px;border: none;-webkit-appearance: none; " value="1">
+                      <div class="btn-group btn-group-vertical j4f-fix-full-width" data-toggle="buttons">
+                        <label class="btn btn-info active">
+                          <input type="radio" name="grabbing_mode" value="total" checked>
+                          <l:resource key="grabbingModeTotalBegin"/>
+                          <span class="post-count-dat-info"></span>
+                          <l:resource key="grabbingModeTotalEnd"/>
+                          <l:resource key="grabbingModeSummaryCount"/>
+                          <l:resource key="grabbingModeSummaryGrabbed"><span></span></l:resource><span>/</span>
+                          <l:resource key="grabbingModeSummaryPosted"><span></span></l:resource><span> : </span>
+                          <span id="post-count-to-grabbing-mode-1"></span><span>/</span>
+                          <span id="post-count-to-posting-mode-1"></span><span> .</span>
+                        </label>
+                        <label class="btn btn-info">
+                          <input type="radio" name="grabbing_mode" value="per_group">
+                          <l:resource key="grabbingModePerGroupBegin"/>
+                          <span class="post-count-nom-info"></span>
+                          <l:resource key="grabbingModePerGroupEnd"/>
+                          <l:resource key="grabbingModeSummaryCount"/>
+                          <l:resource key="grabbingModeSummaryGrabbed"><span></span></l:resource><span>/</span>
+                          <l:resource key="grabbingModeSummaryPosted"><span></span></l:resource><span> : </span>
+                          <span id="post-count-to-grabbing-mode-2"></span><span>/</span>
+                          <span id="post-count-to-posting-mode-2"></span><span> .</span>
+                        </label>
                       </div>
-                    <div>
-                      <input type="text" id="post_count_slider" value="" name="interval" />
-                    </div>
-                    <script type="text/javascript">
-                      $(document).ready(function () {
-                        var slider;
-                        var $range_post_count = $("#post_count_slider"),
-                                $post_count_input = $("[name='post_count']");
-                        $(".post_count_number_group").hide();
+                      <br>
 
-                        var oldFrom = 0;
-                        var oldFromPostfix = " post.";
-                        var track = function (data) {
-                          $post_count_input.val(data.from);
+                      <div class="post_count_number_group">
+                        <span><l:resource key="amount.of.posts"/>  </span>
+                        <input type="number" name="post_count"
+                               style="width:40px;border: none;-webkit-appearance: none; " value="1">
+                      </div>
+                      <div>
+                        <input type="text" id="post_count_slider" value="" name="interval"/>
+                      </div>
+                      <script type="text/javascript">
+                        var nmbPost = new Object(), slider_data, newPrefix, nmbOne = new Object();
+                        nmbPost.nom = "${bundle.nmbPostNom}";
+                        nmbPost.dat = "${bundle.nmbPostDat}";
+                        nmbPost.gen = "${bundle.nmbPostGen}";
+                        nmbPost.plu = "${bundle.nmbPostPlu}";
+                        nmbOne.dat  = "${bundle.nmbOneDat}";
+                        nmbOne.nom  = "${bundle.nmbOneNom}";
 
-//                          var from = data.from;
-//                          var needChange = false;
-//                          if(from != oldFrom){
-//                            oldFrom = from;
-//                            needChange = true;
-//                          }
-//
-//                          if(needChange){
-//                            var newPostfix;
-//                            if(from > 1){
-//                              newPostfix = "  posts.";
-//                            }
-//                            else{
-//                              newPostfix = "  post.";
-//                            }
-//                            if(oldFromPostfix != newPostfix){
-//                              oldFromPostfix = newPostfix;
-//                              slider.update({
-//                                postfix: newPostfix
-//                              });
-//                            }
-//
-//                          }
-                        };
+                        newPrefix   = "${bundle.srcPostCountPrefix}";
+                        scriptLocaleStorage.set("nmbPostNom",nmbPost.nom);
+                        scriptLocaleStorage.set("nmbPostGen",nmbPost.gen);
+                        scriptLocaleStorage.set("nmbPostPlu",nmbPost.plu);
+                        scriptLocaleStorage.set("nmbPostDat",nmbPost.dat);
+                        scriptLocaleStorage.set("nmbOneDat",nmbOne.dat);
+                        scriptLocaleStorage.set("nmbOneNom",nmbOne.nom);
+                        scriptLocaleStorage.set("srcPostCountPrefix",newPrefix);
 
-
-                        $range_post_count.ionRangeSlider({
-                          hide_min_max: true,
-                          keyboard: true,
-                          min: 0,
-                          max: 10,
-                          from_min: 1,
-                          from_max: 8,
-                          from: 1,
-                          step: 1,
-                          decorate_both: false,
-                          onStart: track,
-                          onChange: track,
-                          onFinish: track,
-                          onUpdate: track
+                        scriptCallBack.push(function(map){
+                          nmbPost.nom = map.get("nmbPostNom");
+                          nmbPost.dat = map.get("nmbPostDat");
+                          nmbPost.gen = map.get("nmbPostGen");
+                          nmbPost.plu = map.get("nmbPostPlu");
+                          nmbOne.dat  = map.get("nmbOneDat");
+                          nmbOne.nom  = map.get("nmbOneNom");
+                          newPrefix   = map.get("srcPostCountPrefix");
+                          slider_data.update(function(){
+                            prefix: newPrefix
+                          });
                         });
-                        slider = $range_post_count.data("ionRangeSlider");
-                      });
-                    </script>
 
+                        $(document).ready(function () {
+                          $(".post_count_number_group").hide();
+                          var track = function (data) {
+                            $("[name='post_count']").val(data.from);
+                            var count = new Object();
+                            if (data.from == 1) {
+                              count.nom = nmbOne.nom;
+                              count.dat = nmbOne.dat;
+                            } else {
+                              count.nom = data.from;
+                              count.dat = data.from;
+                            }
+                            $(".post-count-dat-info").text("" + count.dat + " " + units(data.from, {
+                              nom: nmbPost.dat,
+                              gen: nmbPost.gen,
+                              plu: nmbPost.plu
+                            }));
+                            $(".post-count-nom-info").text("" + count.nom + " " + units(data.from, {
+                              nom: nmbPost.nom,
+                              gen: nmbPost.gen,
+                              plu: nmbPost.plu
+                            }));
+                            recalcCount(data.from);
+                            calculateCountWallCallBack = function(){
+                              recalcCount(data.from);
+                            }
+                          };
+                          function recalcCount(postCount){
+                            var sourceCount = $("#tokenize_focus_source_walls > option[selected]").length;
+                            var onePost = sourceCount>0?1:0;
+                            var destCount = $("#tokenize_focus_destination_walls > option[selected]").length;
+                            $("#post-count-to-grabbing-mode-1").text(postCount * sourceCount);
+                            $("#post-count-to-posting-mode-1").text(postCount * sourceCount * destCount);
+
+                            $("#post-count-to-grabbing-mode-2").text(postCount * onePost);
+                            $("#post-count-to-posting-mode-2").text(postCount * onePost * destCount);
+                          };
+                          slider_data = $("#post_count_slider").ionRangeSlider({
+                            hide_min_max: true,
+                            keyboard: true,
+                            min: 0,
+                            max: 10,
+                            from_min: 1,
+                            from_max: 8,
+                            from: 1,
+                            step: 1,
+                            decorate_both: false,
+                            prefix: newPrefix,
+                            onStart: track,
+                            onChange: track,
+                            onFinish: track,
+                            onUpdate: track
+                          }).data("ionRangeSlider");
+                        });
+                      </script>
+                    </div>
 
                   </div>
 
                   <div class="col-lg-6">
                     <h4><l:resource key="grabbing.type"/> </h4>
                     <br>
-                    <input type="radio" name="grabbing_type" value="begin" checked> <l:resource key="grabbing.type1"/> <br>
-
-                    <input type="radio" name="grabbing_type" value="end"> <l:resource key="grabbing.type2"/> <br>
-
-                    <input type="radio" name="grabbing_type" value="random"> <l:resource key="grabbing.type3"/> <br>
-
-                    <input type="radio" name="grabbing_type" value="new"> <l:resource key="grabbing.type4"/> <br>
+                    <div class="btn-group btn-group-vertical j4f-fix-full-width" data-toggle="buttons">
+                      <label class="btn btn-default active">
+                        <input type="radio" name="grabbing_type" value="begin" checked> <l:resource key="grabbing.type1"/>
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="grabbing_type" value="end"> <l:resource key="grabbing.type2"/>
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="grabbing_type" value="random"> <l:resource key="grabbing.type3"/>
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="grabbing_type" value="new"> <l:resource key="grabbing.type4"/>
+                      </label>
+                    </div>
                     <br>
                     <h4><l:resource key="filter"/> </h4>
                     <br>
@@ -246,19 +319,76 @@
                 <div class="panel-body">
                   <div class="col-lg-6">
                     <h4> <l:resource key="posting.type"/> </h4>
-                    <input type="radio" name="posting_type" value="COPY" checked> <l:resource key="copying"/>
-                    <input type="radio" name="posting_type" value="REPOST" style="margin-left:15px;"> <l:resource key="reposts"/>
+                    <div class="btn-group btn-group-justified" data-toggle="buttons">
+                      <label class="btn btn-default active">
+                        <input type="radio" name="posting_type" value="COPY" checked> <l:resource key="copying"/>
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="posting_type" value="REPOST" > <l:resource key="reposts"/>
+                      </label>
+                    </div>
 
-                    <h4><l:resource key="repeat"/> </h4>
-                    <input type="radio" name="repeat" value="REPEAT_DISABLE" checked> <l:resource key="do.not.repeat"/> <br>
-                    <input type="radio" name="repeat" value="REPEAT_ON_TIME"> <l:resource key="repeat.every"/>
-                    <input type="number" name="repeat_days" style="width:40px;border: none;-webkit-appearance: none; "> <l:resource key="days"/>
+                    <h4><l:resource key="repeat_h4_text"/></h4>
+                    <div class="btn-group btn-group-vertical j4f-fix-full-width" data-toggle="buttons">
+                      <label class="btn btn-default active">
+                        <input type="radio" name="repeat" value="REPEAT_DISABLE" checked> <l:resource key="do.not.repeat"/> <br>
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="repeat" value="REPEAT_ON_TIME"> <l:resource key="repeat.every"/>
+                         <span id="repeat_days_text"></span><l:resource key="days"/>
+                      </label>
+                    </div>
+                    <div class="repeat_count_group">
+                      <input type="number" name="repeat_days" style="width:40px;border: none;-webkit-appearance: none; " value="7" />
+                    </div>
+                    <div>
+                      <input type="text" id="repeat_count_slider" />
+                    </div>
+                    <script type="text/javascript">
+                      $(document).ready(function () {
+                        var $repeat_count_slider = $("#repeat_count_slider"),
+                                $range_repeat_count1 = $("[name='repeat_days']"),
+                                $repeat_count_text = $("#repeat_days_text");
+                        $(".repeat_count_group").hide();
+                        var track = function (data) {
+                          $range_repeat_count1.val(data.from);
+                          $repeat_count_text.text(data.from);
+                        };
+
+
+                        $repeat_count_slider.ionRangeSlider({
+                          hide_min_max: true,
+                          keyboard: true,
+                          min: 0,
+                          max: 90,
+                          from_min: 7,
+                          from_max: 90,
+                          from: 1,
+                          step: 1,
+                          postfix: " days",
+                          decorate_both: false,
+                          onStart: track,
+                          onChange: track,
+                          onFinish: track,
+                          onUpdate: track
+                        });
+                      });
+                    </script>
+
 
                   </div>
                   <div class="col-lg-6">
                     <h4><l:resource key="start.time"/> </h4>
-                    <input type="radio" name="start_time" value="INTERVAL" checked> <l:resource key="interval"/>
-                    <input type="radio" name="start_time" value="SCHEDULE" style="margin-left:15px;" disabled > <l:resource key="schedule"/>
+                    <div class="btn-group btn-group-justified" data-toggle="buttons">
+                      <label class="btn btn-default active">
+                        <input type="radio" name="start_time" value="INTERVAL" checked> <l:resource key="interval"/>
+                      </label>
+                      <label class="btn btn-default" disabled>
+                        <input type="radio" name="start_time" value="SCHEDULE" style="margin-left:15px;" disabled > <l:resource key="schedule"/>
+                      </label>
+                    </div>
+
+
                     <div class="interval_number_group">
                       <br>
                       <br>
@@ -307,9 +437,14 @@
 
                     <br>
                     <h4><l:resource key="work.time"/> </h4>
-                    <input type="radio" name="work_time" value="ROUND_DAILY" checked> <l:resource key="around.the.clock"/>
-                    <input type="radio" name="work_time" value="DAY_PERIOD" style="margin-left:15px;" disabled> <l:resource key="select.time"/>
-
+                    <div class="btn-group btn-group-justified" data-toggle="buttons">
+                      <label class="btn btn-default active">
+                        <input type="radio" name="work_time" value="ROUND_DAILY" checked> <l:resource key="around.the.clock"/>
+                      </label>
+                      <label class="btn btn-default" disabled>
+                        <input type="radio" name="work_time" value="DAY_PERIOD" style="margin-left:15px;" disabled> <l:resource key="select.time"/>
+                      </label>
+                    </div>
                     <br>
                     <br>
                     <%--[TIME_SELECT]--%>
@@ -385,45 +520,34 @@
                       <input type="checkbox" name="content_type" value="docs" checked> <l:resource key="documents"/> <br>
                       <input type="checkbox" name="content_type" value="page"> <l:resource key="pages"/> <br>
                     </div>
-
                   </div>
-                  <div class="col-lg-3">
-                    <h4><l:resource key="actions.after.posting"/></h4>
-                    <input type="radio" name="actions" value="LIKE"> <l:resource key="like"/> <br>
-                    <input type="radio" name="actions" value="REPOST"> <l:resource key="reposts"/> <br>
-                    <input type="radio" name="actions" value="DO_NOTHING" checked> <l:resource key="do.nothing"/> <br>
+                  <div class="col-lg-6">
+                    <h4><l:resource key="hashtags"/></h4>
+                    <input name="wordsinput" id="tagsinput" class="tagsinput" value="socialspider, posting" />
                   </div>
-
+                  <div class="col-lg-6">
+                    <h4><l:resource key="add.text.to.post"/></h4>
+                    <textarea class="form-control" name="addtext" rows="2"></textarea>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="panel panel-default">
+            <div class="panel panel-default" hidden>
               <div class="panel-heading">
                 <h4 class="panel-title">
                   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
                     <l:resource key="addtask.step4"/>
+                    <div class="col-lg-6">
+                      <h4><l:resource key="actions.after.posting"/></h4>
+                      <input type="radio" name="actions" value="LIKE"> <l:resource key="like"/> <br>
+                      <input type="radio" name="actions" value="REPOST"> <l:resource key="reposts"/> <br>
+                      <input type="radio" name="actions" value="DO_NOTHING" checked> <l:resource key="do.nothing"/> <br>
+                    </div>
                   </a>
                 </h4>
               </div>
               <div id="collapseFour" class="panel-collapse collapse">
                 <div class="panel-body">
-                  <div class="col-lg-6">
-                    <h4><l:resource key="hashtags"/></h4>
-
-                    <input name="wordsinput" id="tagsinput" class="tagsinput" value="socialspider, posting" />
-                    <!--
-                    <br>
-                    <input type="radio" name="stop_words" value="1"> Skip
-                    <input type="radio" name="stop_words" value="2" style="margin-left:15px;"> Delete
-                    <input type="radio" name="stop_words" value="3" style="margin-left:15px;"> Delete sentence
-                    -->
-                  </div>
-                  <div class="col-lg-3">
-                    <h4><l:resource key="add.text.to.post"/></h4>
-										<textarea class="form-control" name="addtext" style="width:500px;height:120px;">
-										</textarea>
-
-                  </div>
 
                 </div>
               </div>

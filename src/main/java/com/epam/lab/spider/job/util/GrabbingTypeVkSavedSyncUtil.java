@@ -22,7 +22,7 @@ import java.util.Set;
  */
 public class GrabbingTypeVkSavedSyncUtil {
     public static final Logger LOG = Logger.getLogger(GrabbingTypeServerUtil.class);
-    public static List<Post> grabbing(Task.GrabbingType type,Owner owner, Vkontakte vk, Filter filter, SynchronizedData sync, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException, WallStopException, WallAlreadyStopped, FindingEmptyResultException {
+    public static List<Post> grabbing(Task.GrabbingType type, Task.ContentType contentType,Owner owner, Vkontakte vk, Filter filter, SynchronizedData sync, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException, WallStopException, WallAlreadyStopped, FindingEmptyResultException {
         if(sync!=null){
             if(sync.getPostOffset() == -1 || sync.getPostVkId() == -1){
                 throw  new WallAlreadyStopped();
@@ -51,24 +51,16 @@ public class GrabbingTypeVkSavedSyncUtil {
                 }
                 else throw e;
             }
-            boolean synchronization = false;
 
-
-            if (!synchronization) {
-                for (PostOffsetDecorator vkPost : grabbedPosts) {
-                    if (postsToPosting.size() >= countOfPosts) {
-                        break;
-                    }
-                    boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));
-                    if (alreadyProceededPost) {
-                        LOG.debug("Post " + owner.getVkId() + "_" + vkPost.getId() + " already processed.");
-                    } else {
-                        postsToPosting.add(vkPost);
-                    }
-                }
-            } else {
-                for (int i = 0; i < grabbedPosts.size() && i <= countOfPosts; i++) {
-                    postsToPosting.add(grabbedPosts.get(i));
+            for (PostOffsetDecorator vkPost : grabbedPosts) {
+                boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));
+                if (alreadyProceededPost) {
+                    LOG.debug("Post " + owner.getVkId() + "_" + vkPost.getId() + " already processed.");
+                } else {
+                    boolean hasContent = PostProcessingUtil.checkContent(vkPost, contentType);
+                    if (hasContent) postsToPosting.add(vkPost);
+                    boolean isNeededSize = postsToPosting.size() >= countOfPosts;
+                    if (isNeededSize) break;
                 }
             }
             if (postsToPosting.size() >= countOfPosts) {
@@ -79,7 +71,6 @@ public class GrabbingTypeVkSavedSyncUtil {
                 lastVkId = lastPost.getId();
                 lastOffset = lastPost.getOffset();
             }
-
         }
         return ((List<Post>)((List<? extends Post>)postsToPosting));
     }

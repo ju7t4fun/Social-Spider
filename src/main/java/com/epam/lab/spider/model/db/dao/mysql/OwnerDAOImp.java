@@ -81,6 +81,7 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
             owner.setDomain((rs.getString("domain")));
             owner.setDeleted(rs.getBoolean("deleted"));
             owner.setBanned(rs.getBoolean("banned"));
+            owner.setUserId(rs.getInt("user_id"));
             ownerList.add(owner);
         }
         return ownerList;
