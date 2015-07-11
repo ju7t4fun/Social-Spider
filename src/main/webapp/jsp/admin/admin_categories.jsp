@@ -95,7 +95,18 @@
         var table;
 
         jQuery(document).ready(function () {
+
             table = $('#categoryTable').dataTable({
+                language: {
+                    url:   "/controller?action=getLangJSON"
+                },
+                "initComplete": function () {
+//                    $(".dataTables_length").attr("hidden", "");
+                    var dataTables_filter_input = $(".dataTables_filter").find("input");
+                    dataTables_filter_input.attr("class", "form-control");
+                    dataTables_filter_input.attr("style", "width: 500px")
+
+                },
                 "bSort": true,
                 aaSorting: [],
                 "bPaginate": true,
@@ -132,11 +143,6 @@
                 }]
             });
 
-//            $(".dataTables_filter").attr("hidden", "");
-//            $(".dataTables_length").attr("hidden", "");
-            var dataTables_filter_input = $(".dataTables_filter").find("input");
-            dataTables_filter_input.attr("class", "form-control");
-            dataTables_filter_input.attr("style", "width: 500px")
 
         });
 
@@ -303,6 +309,7 @@
 
 <script>
     // Локалізація
+
     $(".btn").click(function () {
         var lang = $(this).attr("change");
         var names = [];
@@ -320,7 +327,8 @@
                     });
                     $(".loc-p").each(function () {
                         $(this).attr("placeholder", map[$(this).attr("locres")]);
-                    });
+                    })
+
                     table.fnStandingRedraw();
                 });
     })
@@ -404,5 +412,6 @@
 <%--for tooltip--%>
 <script src="${pageContext.request.contextPath}/js/jquery-ui-1.9.2.custom.min.js"></script>
 
+</body>
 </html>
 

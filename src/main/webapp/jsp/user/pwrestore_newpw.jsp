@@ -80,7 +80,7 @@
 
     <div class="container">
 
-        <form class="login-form" action="/forgot_password" method="post" id="register_form">
+        <form class="login-form" action="/forgot_password" method="post" id="restore_form">
             <input type="hidden" name="action" value="change">
             <input type="hidden" name="email" value="${email}">
 
@@ -91,7 +91,7 @@
                     <span class="input-group-addon"><i class="icon_key_alt"></i></span>
                     <l:resource key="login.password"><input type="password" name="password" id="password"
                                                             class="form-control" placeholder=""
-                                                            style="border-color:#ffffff;" required/></l:resource>
+                                                            style="border-color:#ffffff;"/></l:resource>
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="icon_key_alt"></i></span>
@@ -99,7 +99,7 @@
                                                                      id="confirm_password"
                                                                      class="form-control" placeholder=""
                                                                      style="border-color:#ffffff;"
-                                                                     required/></l:resource>
+                            /></l:resource>
                 </div>
                 <button class="btn btn-primary btn-lg btn-block" type="submit"
                         style="margin-bottom:20px;margin-right:10px;"><l:resource key="button.send"/>
@@ -120,6 +120,45 @@
         });
     });
 </script>
+<script>
+    var Script = function () {
+        $().ready(function () {
+            $("#restore_form").validate({
+                rules: {
+                    password: {
+                        required: true,
+                        minlength: 5
+                    },
+                    confirm_password: {
+                        equalTo: "#password",
+                        required: true,
+                        minlength: 5
+                    }
+                },
+                messages: {
+                    password: {
+                        required: "Please provide a password.",
+                        minlength: "Your password must be at least 5 characters long."
+                    },
+                    confirm_password: {
+                        equalTo: "Passwords does not match",
+                        required: "Please provide a password.",
+                        minlength: "Your password must be at least 5 characters long."
+                    }
+                },
+                errorPlacement: function (error, element) {
+                    element.attr('title', error.text());
+                    $(".error").tooltip(
+                            {
+                                tooltipClass: "mytooltip",
+                                placement: 'top',
+                                html: true
+                            });
+                }
+            });
+        });
+    }();
+</script>
 <jsp:include page="../pagecontent/simple_footer.jsp"/>
 
 <!-- javascripts -->
@@ -129,10 +168,9 @@
 <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
 <!-- jquery validate js -->
-<script type="${pageContext.request.contextPath}/text/javascript" src="js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
 
-<!-- custom form validation script for this page-->
-<script src="${pageContext.request.contextPath}/js/form-validation-script.js"></script>
+
 <!--custome script for all page-->
 <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 <!-- EASING SCROLL SCRIPTS PLUGIN -->

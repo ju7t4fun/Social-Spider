@@ -103,20 +103,20 @@
                 <div class="form-group">
                     <!--<span class="input-group-addon"><i class="icon_profile"></i></span>-->
                     <l:resource key="reg.surname"><input type="text" class="form-control" id="surname" name="surname"
-                                                         maxlength="45" value="${surname}" placeholder=""
-                                                         pattern="^[a-zA-Z\u0400-\u04ff]+$"/></l:resource>
+                                                         maxlength="45" value="${surname}"  placeholder=""
+                                                         /></l:resource>
                 </div>
                 <div class="form-group">
                     <!-- <span class="input-group-addon"><i class="icon_mail_alt"></i></span>-->
                     <l:resource key="login.email"><input type="email" class="form-control" id="email" name="email"
-                                                         maxlength="255" value="${email}" placeholder=""
+                                                         maxlength="255" value="${email}"  placeholder=""
                                                          style="border-color:#ffffff;"/></l:resource>
                 </div>
                 <div class="form-group">
                     <!-- <span class="input-group-addon"><i class="icon_key_alt"></i></span>-->
                     <l:resource key="login.password"><input type="password" class="form-control" id="password"
                                                             name="password" placeholder=""
-                                                            pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"/></l:resource>
+                                                           /></l:resource>
                 </div>
 
                 <div class="form-group">
@@ -151,21 +151,23 @@
         });
     });
 </script>
+
+
 <jsp:include page="../pagecontent/simple_footer.jsp"/>
 
 <!-- javascripts -->
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <!-- nice scroll -->
-<script src="js/jquery.scrollTo.min.js"></script>
-<script src="js/jquery.nicescroll.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
 <!-- jquery validate js -->
-<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
 
 <!-- custom form validation script for this page-->
-<script src="js/form-validation-script.js"></script>
+<script src="${pageContext.request.contextPath}/js/form-validation-script.js"></script>
 <!--custome script for all page-->
-<script src="js/scripts.js"></script>
+<script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 <!-- EASING SCROLL SCRIPTS PLUGIN -->
 <script src="${pageContext.request.contextPath}/js/jquery.vegas.min.js"></script>
 <!-- VEGAS SLIDESHOW SCRIPTS -->

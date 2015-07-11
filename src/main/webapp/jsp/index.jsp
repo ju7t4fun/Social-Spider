@@ -123,7 +123,6 @@
                 <h2 class="section-heading"><l:resource key="index.whatyouneed" /></h2>
                 <hr class="light">
                 <p class="text-faded"><l:resource key="index.whatyouneedtext" /></p>
-                <a href="#" class="btn btn-default btn-xl"><l:resource key="index.getstarted" /></a>
             </div>
         </div>
     </div>
