@@ -127,7 +127,7 @@
             <img src="${pageContext.request.contextPath}/img/admin.jpg" alt="" width="40" height="40"/>
         </div>
         <div class="chat-content">
-            <div class="chat-meta">{date}<span class="pull-right"> <l:resource key="header.admin" /> </span>
+            <div class="chat-meta">{date}<span class="pull-right"> <l:resource key="header.admin"/> </span>
             </div>
             <div class="chat-meta" style="color:#4c4c4c;font-size:14px;">{message}</div>
             <div class="clearfix"></div>
@@ -143,7 +143,7 @@
     <ul class="dropdown-menu extended inbox" style="opacity: 1">
         <div class="notify-arrow notify-arrow-blue"></div>
         <li style="width:370px;">
-            <p class="blue"><l:resource key="header.seeallmessages" /></p>
+            <p class="blue"><l:resource key="header.seeallmessages"/></p>
         </li>
 
         <div class="col-md-4 portlets" style="width:400px; margin-left:-15px;height:200px;">
@@ -160,10 +160,12 @@
                     <div class="widget-foot">
                         <form class="form-inline">
                             <div class="form-group" style="width: 65%">
-                                <l:resource key="header.typemessagehere"> <input style="width: 100%" id="message_text" type="text" class="form-control"
-                                       placeholder=""></l:resource>
+                                <l:resource key="header.typemessagehere"> <input style="width: 100%" id="message_text"
+                                                                                 type="text" class="form-control"
+                                                                                 placeholder=""></l:resource>
                             </div>
-                            <a onclick="send()" class="btn btn-info" style="margin-left:5%"><l:resource key="header.send" /></a>
+                            <a onclick="send()" class="btn btn-info" style="margin-left:5%"><l:resource
+                                    key="header.send"/></a>
                         </form>
                     </div>
                 </div>

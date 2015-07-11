@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.command.admin;
+package com.epam.lab.spider.controller.command.admin.users;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.model.db.entity.User;
@@ -20,12 +20,9 @@ public class ShowAdminAllUsers implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        UserService userService = factory.create(UserService.class);
-
-        List<User> list = userService.getAll();
-        request.getSession().setAttribute("listUsers",list);
-
+        UserService service = factory.create(UserService.class);
+        List<User> list = service.getAll();
+        request.getSession().setAttribute("listUsers", list);
         request.getRequestDispatcher("/jsp/admin/admin_allusers.jsp").forward(request, response);
     }
 }

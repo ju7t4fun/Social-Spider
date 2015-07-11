@@ -52,10 +52,6 @@
           type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/fileinput.min.js" type="text/javascript"></script>
 
-    <%--for table--%>
-    <script>
-        var path = '${pageContext.request.contextPath}';
-    </script>
     <link href="http://cdn.datatables.net/1.10.3/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
     <link href="http://datatables.net/release-datatables/extensions/ColVis/css/dataTables.colVis.css" rel="stylesheet"
           type="text/css">
@@ -67,27 +63,16 @@
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
-
     <%--for tooltip--%>
     <script src="${pageContext.request.contextPath}/js/jquery-ui-1.9.2.custom.min.js"></script>
 
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-    <!--[if lt IE 9]>
-    <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
-    <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
-    <![endif]-->
-
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
-
 
     <script type="text/javascript">
 
         var taskToSendId;
         var table;
-
 
         jQuery(document).ready(function () {
             table = $('#categoryTable').dataTable({
@@ -101,42 +86,29 @@
                 "bProcessing": true,
                 'iDisplayLength': 10,
                 "bServerSide": true,
-                "sAjaxSource": path + "/admin/categories?action=getcategory",
+                "sAjaxSource": "http://localhost:8080/admin/categories?action=getcategory",
                 colVis: {
                     "align": "right",
                     "buttonText": "columns <img src=\"/img/caaret.png\"/>",
                 },
 
-                "columnDefs": [
-
-                    {
-                        "targets": [0, 1, 2], "orderable": false
-                    },
-
-
-                    {
-                        "aTargets": [1], "createdCell": function (td, cellData, rowData, row, col) {
+                "columnDefs": [{
+                    "targets": [0, 1, 2], "orderable": false
+                }, {
+                    "aTargets": [1], "createdCell": function (td, cellData, rowData, row, col) {
 
                         var parts = cellData.split("|");
-
 
                         $(td).html('<a  href="#" title="" >' + parts[0] + '</a>')
                                 .tooltip(
                                 {content: '<img src="' + parts[1] + '" width="300" height="200" width="300" />'},
                                 {tooltipClass: "i1"});
-
                     }
-                    },
-
-                    {
-                        "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
-
-                        $(td).html('<div class="btn-group"><a class="btn btn-success" data-toggle="modal" data-target="#modal_categoryEdit" onclick="setId(' +rowData[0] +  ', \'' + cellData  +'\''  +')"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removeCategory(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
-
+                }, {
+                    "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).html('<div class="btn-group"><a class="btn btn-success" data-toggle="modal" data-target="#modal_categoryEdit" onclick="setId(' + rowData[0] + ', \'' + cellData + '\'' + ')"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removeCategory(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
                     }
-                    }
-                ]
-
+                }]
             });
 
 //            $(".dataTables_filter").attr("hidden", "");
@@ -198,20 +170,10 @@
 
 </head>
 
-<!-- container section start -->
-
 <jsp:include page="../pagecontent/header.jsp"/>
 <jsp:include page="../pagecontent/sidebar.jsp"/>
 
-<%--<jsp:include page="../post/viewpost.jsp"/>--%>
-
-
-<!-- container section start -->
-<%--<c:set var="mysrc" value="${pageContext.request.contextPath}/img/deleted.png" />--%>
 <section id="container" class="">
-    <!--main content start-->
-    <!--main content start-->
-
 
     <section id="main-content">
         <section class="wrapper">
@@ -257,7 +219,6 @@
             </div>
         </section>
     </section>
-
 </section>
 
 <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modal_category"
@@ -304,7 +265,6 @@
     </div>
 </div>
 
-
 <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modal_categoryEdit"
      class="modal fade">
     <div class="modal-dialog">
@@ -319,9 +279,9 @@
                         <form id="modal_formEdit" method="POST" action=""
                               onsubmit="editCat(document.getElementById('catNameEdit').value, document.getElementById('catIdEdit').value)"
                               class="form-horizontal">
-                            <div hidden >
-                                <l:resource key="category.name"><input type="text" name="categoryId" class="form-control" id="catIdEdit" readonly
-                                       placeholder=""></l:resource>
+                            <div hidden>
+                                <input type="text" name="categoryId" class="form-control" id="catIdEdit" readonly
+                                       placeholder="Category name">
                             </div>
                             <div>
                                 <l:resource key="category.name"><input type="text" name="category" class="form-control" id="catNameEdit"
@@ -329,10 +289,8 @@
                             </div>
 
                             <div id="compFormEdit" class="container kv-main" style="width:800px;  margin-top:20px;">
-                                <input id="input-dim-2Edit" type="file"
-                                       multiple="true" method="post"
-                                       enctype="multipart/form-data" value=""
-                                       accept="image/*">
+                                <input id="input-dim-2Edit" type="file" multiple="true" method="post"
+                                       enctype="multipart/form-data" value="" accept="image/*">
                                 <script>
                                     $("#input-dim-2Edit").fileinput({
                                         uploadUrl: "/admin/categories?action=upCat",
@@ -386,11 +344,10 @@
                     });
                     $(".loc-p").each(function () {
                         $(this).attr("placeholder", map[$(this).attr("locres")]);
-                    })
+                    });
                     table.fnStandingRedraw();
                 });
     })
 </script>
-</body>
 </html>
 

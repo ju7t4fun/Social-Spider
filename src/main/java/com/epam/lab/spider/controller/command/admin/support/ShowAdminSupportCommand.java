@@ -39,6 +39,6 @@ public class ShowAdminSupportCommand implements ActionCommand {
             map.put(user, count.containsKey(user.getId()) ? count.get(user.getId()) : 0);
         }
         request.setAttribute("users", map);
-        request.getRequestDispatcher("../jsp/admin/inbox.jsp").forward(request, response);
+        request.getRequestDispatcher("../jsp/admin/admin_support.jsp").forward(request, response);
     }
 }
