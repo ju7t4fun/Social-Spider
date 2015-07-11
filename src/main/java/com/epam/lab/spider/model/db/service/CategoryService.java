@@ -25,7 +25,7 @@ public class CategoryService implements BaseService<Category> {
     private CategoryDAO cdao = factory.create(CategoryDAO.class);
     private CategoryHasTaskDAO chtdao = factory.create(CategoryHasTaskDAO.class);
 
-    private  UserHasCategoryDAO udao = factory.create(UserHasCategoryDAO.class);
+    private UserHasCategoryDAO udao = factory.create(UserHasCategoryDAO.class);
 
 
     @Override
@@ -71,9 +71,9 @@ public class CategoryService implements BaseService<Category> {
 //                    assertTransaction(chtdao.insert(connection, id, task.getId()));
 //                }
                 cdao.update(connection, id, category);
-               chtdao.deleteByCategoryId(connection, id);
+                chtdao.deleteByCategoryId(connection, id);
                 for (Task task : category.getTasks()) {
-                   chtdao.insert(connection, id, task.getId());
+                    chtdao.insert(connection, id, task.getId());
                 }
                 connection.commit();
             } catch (SQLTransactionException e) {
@@ -96,8 +96,10 @@ public class CategoryService implements BaseService<Category> {
         try {
             Connection connection = PoolConnection.getConnection();
             try {
+                connection.setAutoCommit(false);
                 chtdao.deleteByCategoryId(connection, id);
-                cdao.delete(connection, id);
+                assertTransaction(cdao.delete(connection, id));
+                connection.commit();
             } catch (SQLTransactionException e) {
                 connection.rollback();
                 return false;
