@@ -145,9 +145,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Admin</a></li>
-                        <li><i class="fa fa-edit"></i>Edit</li>
-                        <li><i class="fa fa-list-alt"></i>Categories</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="admin"/></a></li>
+                        <li><i class="fa fa-desktop"></i><l:resource key="edit"/></li>
+                        <li><i class="fa fa-list-alt"></i><l:resource key="categories"/></li>
                     </ol>
                 </div>
             </div>
@@ -161,14 +161,14 @@
                                     <table width="100%" border="0" class="row-border tableHeader" id="categoryTable">
                                         <thead>
                                         <tr style="align-content: center">
-                                            <th>id</th>
-                                            <th>Category name</th>
-                                            <th>Delete</th>
+                                            <th><l:resource key="owner.id"/></th>
+                                            <th><l:resource key="category.name"/></th>
+                                            <th><l:resource key="edit"/> / <l:resource key="delete"/></th>
                                         </tr>
                                         </thead>
                                     </table>
                                     <a class="btn btn-primary" data-toggle="modal"
-                                       data-target="#modal_category" href="#">Add category</a>
+                                       data-target="#modal_category" href="#"><l:resource key="add.category"/></a>
                                 </div>
                             </div>
                         </div>
@@ -186,14 +186,14 @@
         <div class="modal-content" style="height: auto; width: 820px">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h4 class="modal-title">Add category</h4>
+                <h4 class="modal-title"><l:resource key="add.category"/></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
                         <form id="modal_form" class="form-horizontal">
-                            <input type="text" name="category" class="form-control" id="catName" style="width:770px; margin-left: 15px"
-                                   placeholder="Category name">
+<l:resource key="category.name"><input type="text" name="category" class="form-control" id="catName" style="width:770px; margin-left: 15px"
+                                   placeholder=""></l:resource>
 
                             <div id="compForm" class="container kv-main" style="width:800px;  margin-top:20px;">
                                 <input id="input-dim-2" type="file" multiple="true" method="post"
@@ -208,7 +208,7 @@
                             </div>
                         </form>
                         <div style="float: right; margin-top: 10px">
-                            <a id="add_category_btn" class="btn btn-primary">Add</a>
+                            <a id="add_category_btn" class="btn btn-primary"><l:resource key="add"/></a>
                         </div>
                     </div>
                 </div>
@@ -224,7 +224,7 @@
         <div class="modal-content" style="height: auto; width: 820px">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h4 class="modal-title">Edit category</h4>
+                <h4 class="modal-title"><l:resource key="edit.category"/></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -235,8 +235,8 @@
                                        placeholder="Category name" >
                             </div>
                             <div>
-                                <input type="text" name="category" class="form-control" id="catNameEdit"
-                                       placeholder="Category name" style="width:770px; margin-left: 15px">
+                                <l:resource key="category.name"><input type="text" name="category" class="form-control" id="catNameEdit"
+                                       placeholder=""></l:resource>
                             </div>
 
                             <div id="compFormEdit" class="container kv-main" style="width:800px;  margin-top:20px;">
@@ -251,8 +251,8 @@
                                 </script>
                             </div>
 
-                            <div style="float: right; margin-top: 10px">
-                                <a id="edit_category_btn" class="btn btn-primary">Confirm</a>
+                            <div style="position: absolute; top: 420px;right: 2% ">
+                                <button type="submit" class="btn btn-primary"><l:resource key="confirm"/></button>
                             </div>
                         </form>
                     </div>

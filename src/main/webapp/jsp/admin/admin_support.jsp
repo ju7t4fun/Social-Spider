@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -104,14 +105,14 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-envelope-o"></i> Support</h3>
+                    <h3 class="page-header"><i class="fa fa-envelope-o"></i> <l:resource key="support"/></h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-envelope-o"></i>Support</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="admin"/></a></li>
+                        <li><i class="fa fa-envelope-o"></i><l:resource key="support"/></li>
                     </ol>
                 </div>
             </div>
@@ -180,28 +181,27 @@
                         <c:choose>
                             <c:when test="${current_user != null}">
                                 <div class="widget-foot">
-                                    <div class="form-inline">
+                                    <form class="form-inline">
                                         <div class="form-group" style="width: 80%">
-                                            <input id="message_text" style="width: 100%" type="text"
-                                                   class="form-control" placeholder="Type your message here...">
+                                            <l:resource key="header.typemessagehere"><input id="message_text" style="width: 100%" id="message_text" type="text"
+                                                   class="form-control" placeholder=""></l:resource>
                                         </div>
-                                        <a onclick="send(${current_user.id})" type="button" class="btn btn-info"
-                                           style="margin-left:5%">Надіслати</a>
-                                    </div>
+                                        <a onclick="send(${current_user.id})" class="btn btn-info" style="margin-left:5%" disabled><l:resource
+                                                key="header.send"/></a>
+                                    </form>
                                 </div>
                             </c:when>
                             <c:otherwise>
                                 <div class="widget-foot">
                                     <form class="form-inline">
                                         <div class="form-group" style="width: 80%">
-                                            <input id="message_text1" style="width: 100%;" id="message_text1"
+                                            <l:resource key="header.typemessagehere"><input id="message_text1" style="width: 100%;" id="message_text1"
                                                    type="text"
-                                                   class="form-control" placeholder="Type your message here..."
-                                                   disabled>
+                                                   class="form-control" placeholder=""
+                                                   disabled></l:resource>
                                         </div>
-                                        <input onclick="send(${current_user.id})" type="button" class="btn btn-info"
-                                               style="margin-left:5%"
-                                               value="Надіслати" disabled>
+                                        <a onclick="send(${current_user.id})" class="btn btn-info" style="margin-left:5%" disabled><l:resource
+                                                key="header.send"/></a>
                                     </form>
                                 </div>
                             </c:otherwise>
@@ -215,7 +215,7 @@
 <script>
     $(document).ready(function () {
         $("#support_inbox_a").scrollTop(10000);
-    });
+    })
 </script>
 </body>
 </html>

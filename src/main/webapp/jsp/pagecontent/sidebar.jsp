@@ -89,7 +89,7 @@
                         <ul class="sub">
                             <li>
                                 <a class="" href="${pageContext.request.contextPath}/admin/users">
-                                    <i class="fa fa-user-plus"></i><l:resource key="userslist"/></a>
+                                    <i class="fa fa-user-plus"></i><l:resource key="userlist"/></a>
                             </li>
                             <li>
                                 <a class="" href="${pageContext.request.contextPath}/admin/categories">
