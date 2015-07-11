@@ -2,6 +2,7 @@ package com.epam.lab.spider.job.util;
 
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
+import com.epam.lab.spider.job.exception.FindingEmptyResultException;
 import com.epam.lab.spider.job.exception.WallAlreadyStopped;
 import com.epam.lab.spider.job.exception.WallStopException;
 import com.epam.lab.spider.model.db.entity.Filter;
@@ -21,7 +22,7 @@ import java.util.Set;
  */
 public class GrabbingTypeVkSavedSyncUtil {
     public static final Logger LOG = Logger.getLogger(GrabbingTypeServerUtil.class);
-    public static List<Post> grabbing(Task.GrabbingType type,Owner owner, Vkontakte vk, Filter filter, SynchronizedData sync, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException, WallStopException, WallAlreadyStopped {
+    public static List<Post> grabbing(Task.GrabbingType type,Owner owner, Vkontakte vk, Filter filter, SynchronizedData sync, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException, WallStopException, WallAlreadyStopped, FindingEmptyResultException {
         if(sync!=null){
             if(sync.getPostOffset() == -1 || sync.getPostVkId() == -1){
                 throw  new WallAlreadyStopped();
@@ -30,7 +31,6 @@ public class GrabbingTypeVkSavedSyncUtil {
         List<PostOffsetDecorator> postsToPosting = new ArrayList<>();
         Integer lastVkId;
         Integer lastOffset;
-        boolean nextLoop = true;
         if(sync != null) {
             lastVkId = sync.getPostVkId();
             lastOffset = sync.getPostOffset();
@@ -38,52 +38,53 @@ public class GrabbingTypeVkSavedSyncUtil {
             lastVkId = 0;
             lastOffset = 0;
         }
-        for(int loopsCount = 0;nextLoop;loopsCount++) {
+        for (int loopsCount = 0; loopsCount < 10; loopsCount++) {
             List<PostOffsetDecorator> grabbedPosts;
             // get data
-            grabbedPosts = badRequestProtectGrabbing(type,vk, owner.getVkId(), null, lastVkId, lastOffset, filter);
+            try {
+                grabbedPosts = badRequestProtectGrabbing(type, vk, owner.getVkId(), null, lastVkId, lastOffset, filter);
+            } catch (FindingEmptyResultException e) {
+                if(loopsCount < 10 - 1){
+                    lastVkId = e.getVkId();
+                    lastOffset = e.getOffset();
+                    continue;
+                }
+                else throw e;
+            }
             boolean synchronization = false;
-            if(!grabbedPosts.isEmpty()){
-                PostOffsetDecorator vkPost = grabbedPosts.get(0);
-                if(vkPost.getOffset().equals(lastOffset) && vkPost.getId() == lastVkId) synchronization = true;
-            }
-            int payloadPost = grabbedPosts.size();
-            payloadPost-=synchronization?1:0;
-            if(payloadPost<=0){
-                // завершення виконання завдання
-                nextLoop = false;
-            }else {
-                if (!synchronization) {
-                    for (PostOffsetDecorator vkPost : grabbedPosts) {
-                        if(postsToPosting.size() >= countOfPosts){
-                            break;
-                        }
-                        boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));
-                        if (alreadyProceededPost) {
-                            LOG.debug("Post " + owner.getVkId() + "_" + vkPost.getId() + " already processed.");
-                        } else {
-                            postsToPosting.add(vkPost);
-                        }
+
+
+            if (!synchronization) {
+                for (PostOffsetDecorator vkPost : grabbedPosts) {
+                    if (postsToPosting.size() >= countOfPosts) {
+                        break;
                     }
-                } else {
-                    for (int i = 1; i < grabbedPosts.size() && i <= countOfPosts ; i++) {
-                        postsToPosting.add(grabbedPosts.get(i));
+                    boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));
+                    if (alreadyProceededPost) {
+                        LOG.debug("Post " + owner.getVkId() + "_" + vkPost.getId() + " already processed.");
+                    } else {
+                        postsToPosting.add(vkPost);
                     }
                 }
-                if (postsToPosting.size() >= countOfPosts) {
-                    LOG.info("Complete grabbing of post at owner#" + owner.getVkId() + " loops count " + loopsCount + ".");
-                    break;
-                } else {
-                    PostOffsetDecorator lastPost = postsToPosting.get(postsToPosting.size() - 1);
-                    lastVkId = lastPost.getId();
-                    lastOffset = lastPost.getOffset();
+            } else {
+                for (int i = 0; i < grabbedPosts.size() && i <= countOfPosts; i++) {
+                    postsToPosting.add(grabbedPosts.get(i));
                 }
             }
+            if (postsToPosting.size() >= countOfPosts) {
+                LOG.info("Complete grabbing of post at owner#" + owner.getVkId() + " loops count " + loopsCount + ".");
+                break;
+            } else {
+                PostOffsetDecorator lastPost = postsToPosting.get(postsToPosting.size() - 1);
+                lastVkId = lastPost.getId();
+                lastOffset = lastPost.getOffset();
+            }
+
         }
         return ((List<Post>)((List<? extends Post>)postsToPosting));
     }
 
-    private static List<PostOffsetDecorator> badRequestProtectGrabbing(Task.GrabbingType grabbingType, Vkontakte vk, Integer ownerId, Integer count, Integer lastPostId, Integer offset, Filter filter) throws InterruptedException, VKException, WallStopException {
+    private static List<PostOffsetDecorator> badRequestProtectGrabbing(Task.GrabbingType grabbingType, Vkontakte vk, Integer ownerId, Integer count, Integer lastPostId, Integer offset, Filter filter) throws InterruptedException, VKException, WallStopException, FindingEmptyResultException {
         boolean  badExecution = false;
         int currentAttempt = 0;
         int totalAttempt = 3;
@@ -91,7 +92,7 @@ public class GrabbingTypeVkSavedSyncUtil {
         do {
             try {
                 if (badExecution) {
-                    Thread.sleep(400);
+                    Thread.sleep(500);
                     badExecution = false;
                 }
                 postsOnTargetWall = simpleGrabbing(grabbingType, vk, ownerId, count, lastPostId, offset, filter);
@@ -113,7 +114,7 @@ public class GrabbingTypeVkSavedSyncUtil {
         }while (badExecution);
         return postsOnTargetWall;
     }
-    private static List<PostOffsetDecorator> simpleGrabbing(Task.GrabbingType grabbingType, Vkontakte vk, Integer ownerId, Integer count, Integer lastPostId, Integer offset, Filter filter) throws VKException,WallStopException {
+    private static List<PostOffsetDecorator> simpleGrabbing(Task.GrabbingType grabbingType, Vkontakte vk, Integer ownerId, Integer count, Integer lastPostId, Integer offset, Filter filter) throws VKException, WallStopException, FindingEmptyResultException {
         switch (grabbingType) {
             case BEGIN:
                 return vk.execute().getPostFromBeginWall(ownerId, count, lastPostId, offset, filter);

@@ -4,6 +4,7 @@ import com.epam.lab.spider.controller.utils.EventLogger;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
+import com.epam.lab.spider.job.exception.FindingEmptyResultException;
 import com.epam.lab.spider.job.exception.PostContentException;
 import com.epam.lab.spider.job.exception.WallAlreadyStopped;
 import com.epam.lab.spider.job.exception.WallStopException;
@@ -117,7 +118,7 @@ public class TaskJob implements Job {
         }else return post;
     }
 
-    public List<com.epam.lab.spider.model.vk.Post> grabbingWall(Wall wall, Task task) throws WallStopException, WallAlreadyStopped {
+    public List<com.epam.lab.spider.model.vk.Post> grabbingWall(Wall wall, Task task) throws WallStopException, WallAlreadyStopped, FindingEmptyResultException {
         List<com.epam.lab.spider.model.vk.Post> toPostingQueue = new ArrayList<>();
         Owner owner = wall.getOwner();
         Profile profile = wall.getProfile();
@@ -230,6 +231,9 @@ public class TaskJob implements Job {
                         try {
                             list = this.grabbingWall(wall, task);
                             postByWallMap.put(wall, list);
+                        }catch (FindingEmptyResultException x){
+                            // TODO: REFACTOR THIS
+                            syncMap.put(wall,new SynchronizedData(task,wall,x.getOffset(),x.getVkId()));
                         }catch (WallAlreadyStopped x){
                             LOG.debug("Wall already stopped.");
                         }catch (WallStopException x){
