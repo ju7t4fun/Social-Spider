@@ -85,6 +85,6 @@ function changeRole(id) {
     );
     function onAjaxSuccess(data) {
         toastrNotification(data.status, data.msg);
-        $('#personTable').DataTable().draw(false);
+        $('#personTable').language
     }
 }

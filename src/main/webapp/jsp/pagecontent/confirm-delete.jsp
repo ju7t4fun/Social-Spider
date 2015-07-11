@@ -1,6 +1,5 @@
-<link href="${pageContext.request.contextPath}/css/core.css" rel="stylesheet">
 <%@taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
-<!-- javascripts -->
+<link href="${pageContext.request.contextPath}/css/core.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/js/confirm-delete.js"></script>
 
 <div class="mod mod-effect-blur" id="mod-delete">

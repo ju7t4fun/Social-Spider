@@ -51,13 +51,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/ionRangeSlider/css/ion.rangeSlider.css"/>
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/assets/ionRangeSlider/css/ion.rangeSlider.skinFlat.css"/>
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-    <!--[if lt IE 9]>
-  <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
-  <!--<script src="${pageContext.request.contextPath}/js/respond.min.js"></script>-->
-    <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
-    <![endif]-->
 
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
@@ -339,7 +334,8 @@
                 for (var i = 0; i < response.owner.length; i++) {
                     list.append('<option value="' + response.owner[i].id + '">' + response.owner[i].name + '</option>');
                 }
-            };
+            }
+            ;
         }
         xmlhttp.send();
     });
