@@ -159,7 +159,7 @@
                                     <th><l:resource key="reg.surname"/></th>
                                     <th><l:resource key="login.email"/></th>
                                     <th><l:resource key="state"/></th>
-                                    <th>Role</th>
+                                    <th><l:resource key="role"/></th>
                                 </tr>
                                 </thead>
                             </table>

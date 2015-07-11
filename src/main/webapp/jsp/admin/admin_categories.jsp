@@ -208,7 +208,7 @@
                             </div>
                         </form>
                         <div style="float: right; margin-top: 10px">
-                            <a id="add_category_btn" class="btn btn-primary">Add</a>
+                            <a id="add_category_btn" class="btn btn-primary"><l:resource key="add"/></a>
                         </div>
                     </div>
                 </div>
