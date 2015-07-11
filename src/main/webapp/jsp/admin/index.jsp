@@ -17,7 +17,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-    <title>Task | All Tasks</title>
+    <title>Admin</title>
 
     <!-- Bootstrap CSS -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -64,10 +64,10 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-pie-chart"></i> Admin</h3>
+                    <h3 class="page-header"><i class="fa fa-pie-chart"></i> <l:resource key="admin"/></h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-pie-chart"></i>Charts</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-pie-chart"></i><l:resource key="charts"/></li>
                     </ol>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left">Visits</div>
+                            <div class="pull-left"><l:resource key="visits"/></div>
                             <div class="clearfix"></div>
                         </div>
                         <br>
@@ -87,16 +87,16 @@
                             <div class="col-lg-3">
                                 <input id="toDate" class="form-control" type="date">
                             </div>
-                            <input class="btn btn-default" type="button" onclick="redrawChart()" value="Show">
+                            <l:resource key="show"><input class="btn btn-default" type="button" onclick="redrawChart()" value=""></l:resource>
                         </div>
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" class="active">
-                                <a href="#home" aria-controls="home" role="tab" data-toggle="tab">Visitors</a></li>
+                                <a href="#home" aria-controls="home" role="tab" data-toggle="tab"><l:resource key="visitors"/></a></li>
                             <li role="presentation">
-                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Sex / Age</a>
+                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><l:resource key="charts.age"/></a>
                             </li>
                             <li role="presentation">
-                                <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Geo</a>
+                                <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab"><l:resource key="charts.geografy"/></a>
                             </li>
                         </ul>
 
@@ -140,16 +140,16 @@
                             <div class="col-lg-3">
                                 <input id="date" class="form-control" type="date">
                             </div>
-                            <input class="btn btn-default" type="button" onclick="redrawChartStats()" value="Show">
+                            <l:resource key="show"><input class="btn btn-default" type="button" onclick="redrawChartStats()" value="Show"></l:resource>
                         </div>
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" class="active">
-                                <a href="#task" aria-controls="task" role="tab" data-toggle="tab">Task</a></li>
+                                <a href="#task" aria-controls="task" role="tab" data-toggle="tab"><l:resource key="task"/></a></li>
                             <li role="presentation">
-                                <a href="#post" aria-controls="post" role="tab" data-toggle="tab">Post</a>
+                                <a href="#post" aria-controls="post" role="tab" data-toggle="tab"><l:resource key="post"/></a>
                             </li>
                             <li role="presentation">
-                                <a href="#error" aria-controls="error" role="tab" data-toggle="tab">Error</a>
+                                <a href="#error" aria-controls="error" role="tab" data-toggle="tab"><l:resource key="error"/></a>
                             </li>
                         </ul>
 

@@ -64,7 +64,7 @@
                         <ul class="sub">
                             <li>
                                 <a class="" href="${pageContext.request.contextPath}/admin/users"><l:resource
-                                        key="userslist"/></a>
+                                        key="userlist"/></a>
                             </li>
                             <li>
                                 <a class="" href="${pageContext.request.contextPath}/admin/categories"><l:resource

@@ -135,15 +135,15 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-list-alt"></i> User List</h3>
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> <l:resource key="userlist"/></h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Admin</a></li>
-                        <li><i class="fa fa-desktop"></i>Edit</li>
-                        <li><i class="fa fa-list-alt"></i>User List</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="admin"/></a></li>
+                        <li><i class="fa fa-desktop"></i><l:resource key="edit"/></li>
+                        <li><i class="fa fa-list-alt"></i><l:resource key="userlist"/></li>
                     </ol>
                 </div>
             </div>
@@ -151,7 +151,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left">Posted</div>
+                            <div class="pull-left"><l:resource key="userlist"/></div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="panel-body">
@@ -160,11 +160,11 @@
                                 <tbody>
                                 <thead>
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Surname</th>
-                                    <th>Email</th>
-                                    <th>State</th>
+                                    <th><l:resource key="owner.id"/></th>
+                                    <th><l:resource key="reg.name"/></th>
+                                    <th><l:resource key="reg.surname"/></th>
+                                    <th><l:resource key="login.email"/></th>
+                                    <th><l:resource key="state"/></th>
 
                                 </tr>
                                 </thead>

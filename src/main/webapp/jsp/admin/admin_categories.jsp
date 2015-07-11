@@ -19,7 +19,7 @@
 
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-    <title>All Posts</title>
+    <title>Admin | Categories</title>
 
     <!-- Bootstrap CSS -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -223,9 +223,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Admin</a></li>
-                        <li><i class="fa fa-desktop"></i>Edit</li>
-                        <li><i class="fa fa-list-alt"></i>Categories</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="admin"/></a></li>
+                        <li><i class="fa fa-desktop"></i><l:resource key="edit"/></li>
+                        <li><i class="fa fa-list-alt"></i><l:resource key="categories"/></li>
                     </ol>
                 </div>
             </div>
@@ -241,14 +241,14 @@
                                            class="row-border tableHeader" id="categoryTable">
                                         <thead>
                                         <tr style="align-content: center">
-                                            <th>id</th>
-                                            <th>Category name</th>
-                                            <th>Delete</th>
+                                            <th><l:resource key="owner.id"/></th>
+                                            <th><l:resource key="category.name"/></th>
+                                            <th><l:resource key="edit"/> / <l:resource key="delete"/></th>
                                         </tr>
                                         </thead>
                                     </table>
                                     <a class="btn btn-primary" data-toggle="modal"
-                                       data-target="#modal_category" href="#">Add category</a>
+                                       data-target="#modal_category" href="#"><l:resource key="add.category"/></a>
                                 </div>
                             </div>
                         </div>
@@ -266,7 +266,7 @@
         <div class="modal-content" style="height: 520px; width: 820px">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h4 class="modal-title">Add category</h4>
+                <h4 class="modal-title"><l:resource key="add.category"/></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -275,8 +275,8 @@
                               onsubmit="addCat(document.getElementById('catName').value)"
                               class="form-horizontal">
                             <div>
-                                <input type="text" name="category" class="form-control" id="catName"
-                                       placeholder="Category name">
+                                <l:resource key="category.name"><input type="text" name="category" class="form-control" id="catName"
+                                       placeholder=""></l:resource>
                             </div>
 
                             <div id="compForm" class="container kv-main" style="width:800px;  margin-top:20px;">
@@ -294,7 +294,7 @@
                             </div>
 
                             <div style="position: absolute; top: 420px;right: 2% ">
-                                <button type="submit" class="btn btn-primary">Add</button>
+                                <button type="submit" class="btn btn-primary"><l:resource key="add"/></button>
                             </div>
                         </form>
                     </div>
@@ -311,7 +311,7 @@
         <div class="modal-content" style="height: 520px; width: 820px">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h4 class="modal-title">Edit category</h4>
+                <h4 class="modal-title"><l:resource key="edit.category"/></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -320,12 +320,12 @@
                               onsubmit="editCat(document.getElementById('catNameEdit').value, document.getElementById('catIdEdit').value)"
                               class="form-horizontal">
                             <div hidden >
-                                <input type="text" name="categoryId" class="form-control" id="catIdEdit" readonly
-                                       placeholder="Category name">
+                                <l:resource key="category.name"><input type="text" name="categoryId" class="form-control" id="catIdEdit" readonly
+                                       placeholder=""></l:resource>
                             </div>
                             <div>
-                                <input type="text" name="category" class="form-control" id="catNameEdit"
-                                       placeholder="Category name">
+                                <l:resource key="category.name"><input type="text" name="category" class="form-control" id="catNameEdit"
+                                       placeholder=""></l:resource>
                             </div>
 
                             <div id="compFormEdit" class="container kv-main" style="width:800px;  margin-top:20px;">
@@ -343,7 +343,7 @@
                             </div>
 
                             <div style="position: absolute; top: 420px;right: 2% ">
-                                <button type="submit" class="btn btn-primary">Confirm</button>
+                                <button type="submit" class="btn btn-primary"><l:resource key="confirm"/></button>
                             </div>
                         </form>
                     </div>
