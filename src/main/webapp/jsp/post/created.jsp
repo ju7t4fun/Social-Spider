@@ -390,18 +390,18 @@
                 }
                 $.post(
                         "/post?action=publishPostId",
-                        {
-                            postId: publishPostId,
-                            date: $("#date").val(),
-                            time: $("#time").val(),
-                            date_delete: $("#time1").val(),
-                            time_delete: $("#time5").val(),
-                            checked: $("#check").prop('checked'),
-                            groups: $("#tokenize_focus").val().toString()
-                        },
+                {
+                    postId: publishPostId,
+                    date: $("#date").val(),
+                    time: $("#time").val(),
+                    date_delete: $("#time1").val(),
+                    time_delete: $("#time5").val(),
+                    checked: $("#check").prop('checked'),
+                    groups: $("#tokenize_focus").val().toString()
+                },
                         onAjaxSuccess
                 );
-                function onAjaxSuccess(response) {
+                    function onAjaxSuccess(response) {
                     for (var i = 0; i < response.length; i++)
                         toastrNotification(response[i].status, response[i].msg);
                     $("#publish_modal").modal('toggle');

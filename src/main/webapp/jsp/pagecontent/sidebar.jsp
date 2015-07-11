@@ -10,28 +10,32 @@
                 <ul class="sidebar-menu">
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
-                            <i class="icon_genius"></i>
+                            <i class="fa fa-credit-card"></i>
                             <span><l:resource key="post"/></span>
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="/post?action=created"><l:resource key="created"/></a></li>
-                            <li><a class="" href="/post?action=queued"><l:resource key="queued"/></a></li>
-                            <li><a class="" href="/post?action=posted"><l:resource key="posted"/></a></li>
-                            <li><a class="" href="/post?action=add"><l:resource key="addnewpost"/></a></li>
+                            <li><a class="" href="/post?action=created"><i class="fa fa-list"></i>
+                                <l:resource key="created"/></a></li>
+                            <li><a class="" href="/post?action=queued"><i class="fa fa-spinner"></i>
+                                <l:resource key="queued"/></a></li>
+                            <li><a class="" href="/post?action=posted"><i class="fa fa-check-square-o"></i>
+                                <l:resource key="posted"/></a></li>
+                            <li><a class="" href="/post?action=add"><i class="fa fa-plus-circle"></i>
+                                <l:resource key="addnewpost"/></a></li>
                         </ul>
                     </li>
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
-                            <i class="icon_document_alt"></i>
+                            <i class="fa fa-tasks"></i>
                             <span><l:resource key="task"/></span>
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="${pageContext.request.contextPath}/task"><l:resource
-                                    key="alltasks"/></a></li>
-                            <li><a class="" href="${pageContext.request.contextPath}/task?action=create"><l:resource
-                                    key="addnewtask"/></a></li>
+                            <li><a class="" href="${pageContext.request.contextPath}/task">
+                                <i class="fa fa-list"></i><l:resource key="alltasks"/></a></li>
+                            <li><a class="" href="${pageContext.request.contextPath}/task?action=create">
+                                <i class="fa fa-plus-circle"></i><l:resource key="addnewtask"/></a></li>
                         </ul>
                     </li>
                     <li>
@@ -50,50 +54,58 @@
             <c:when test="${user.role =='ADMIN'}">
                 <ul class="sidebar-menu">
                     <li class="sub-menu">
-                        <a href="${pageContext.request.contextPath}/admin/support" class="">
-                            <i class="fa fa-envelope-o"></i>
-                            <span><l:resource key="support"/></span>
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-rss"></i>
+                            <span>Feed</span>
+                            <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
+                        <ul class="sub">
+                            <li>
+                                <a href="${pageContext.request.contextPath}/task?action=showtasksforadmin" class="">
+                                    <i class="fa fa-tasks"></i>
+                                    <span>Tasks Binding</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/admin/addtask" class="">
+                                    <i class="fa fa-plus-circle"></i>
+                                    <span>Add task</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/admin/owner" class="">
+                                    <i class="fa fa-users"></i>
+                                    <span>Owner</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
-                            <i class="icon_genius"></i>
+                            <i class="fa fa-pencil-square-o"></i>
                             <span><l:resource key="edit"/></span>
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
                             <li>
-                                <a class="" href="${pageContext.request.contextPath}/admin/users"><l:resource
-                                        key="userslist"/></a>
+                                <a class="" href="${pageContext.request.contextPath}/admin/users">
+                                    <i class="fa fa-user-plus"></i><l:resource key="userslist"/></a>
                             </li>
                             <li>
-                                <a class="" href="${pageContext.request.contextPath}/admin/categories"><l:resource
-                                        key="category"/>
+                                <a class="" href="${pageContext.request.contextPath}/admin/categories">
+                                    <i class="fa fa-star"></i><l:resource key="category"/>
                                 </a>
                             </li>
                             <li>
-                                <a class="" href="${pageContext.request.contextPath}/admin/groups"><l:resource
-                                        key="groups"/></a>
+                                <a class="" href="${pageContext.request.contextPath}/admin/groups">
+                                    <i class="fa fa-users "></i><l:resource key="groups"/></a>
                             </li>
                         </ul>
                     </li>
-
                     <li class="sub-menu">
-                        <a href="${pageContext.request.contextPath}/task?action=showtasksforadmin" class="">
-                            <i class="icon_genius"></i>
-                            <span>Tasks Binding</span>
-                        </a>
-                    </li>
-                    <li class="sub-menu">
-                        <a href="${pageContext.request.contextPath}/admin/addtask" class="">
-                            <i class="icon_genius"></i>
-                            <span>Add task</span>
-                        </a>
-                    </li>
-                    <li class="sub-menu">
-                        <a href="${pageContext.request.contextPath}/admin/owner" class="">
-                            <i class="icon_genius"></i>
-                            <span>Owner</span>
+                        <a href="${pageContext.request.contextPath}/admin/support" class="">
+                            <i class="fa fa-envelope-o"></i>
+                            <span><l:resource key="support"/></span>
                         </a>
                     </li>
                 </ul>
@@ -102,25 +114,24 @@
 
         <div style="position:fixed; top: 510px; left: 10px;">
             <div class="btn-group" style="margin-right: 20px;">
-                <a style="border: 1px; color: #030303;
-                        border-radius: 20px;   border-bottom-right-radius: 0;
-                             border-top-right-radius: 0; font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
-                         font-weight: 700;width: 30px;
-                 height: 25px;" class="btn btn-default btn-sm" change="ua">UA</a>
-                <a style="border: 1px;color: #030303;
-                         border-radius: 20px; border-bottom-left-radius: 0;
-                     border-top-left-radius: 0; margin-left: -1px; font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
-                     font-weight: 700;width: 30px;
-                    height: 25px;" class="btn btn-default btn-sm" change="en"><span style="margin-left: -4px;">EN</span></a>
+                <a style="border: 1px; color: #3c454f; border-radius: 20px; border-bottom-right-radius: 0;
+                border-top-right-radius: 0; font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+                font-weight: 600; width: 25px; font-size: 8pt; height: 18px;" class="btn btn-default btn-sm btn-xs"
+                   change="ua">UA</a>
+                <a style="border: 1px;color: #3c454f; border-radius: 20px; border-bottom-left-radius: 0;
+                border-top-left-radius: 0; font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+                font-weight: 600; width: 25px; font-size: 8pt; height: 18px;" class="btn btn-default btn-sm btn-xs"
+                   change="en"><span style="margin-left: -4px;">EN
+                </span></a>
             </div>
             <div style="color:#fff;">
-                <h6>Social-Spider Corp. </h6>
+                <h6>Social Spider Corp. </h6>
                 <h6><l:resource key="address"/></h6>
-                <h6>(032)555-9876</h6>
+                <h6>(032) 987-98-76</h6>
 
-                <p><a href="mailto:example@gmail.com " style="color:#39afea"><h6>socialspider@gmail.com</h6></a></p>
+                <p><a href="mailto:epam.social.spider@gmail.com" style="color:#39afea"><h6>social.spider@gmail.com</h6>
+                </a></p>
             </div>
         </div>
     </div>
-
 </aside>

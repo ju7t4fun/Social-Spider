@@ -15,8 +15,6 @@ import java.util.List;
  */
 public class UserHasCategoryDAOImp extends BaseDAO implements UserHasCategoryDAO {
 
-
-
     private static final String SQL_INSERT_QUERY = "INSERT INTO user_has_category (category_id, user_id) VALUES (?, ?)";
     private static final String SQL_DELETE_QUERY = "DELETE FROM user_has_category WHERE category_id = ? AND user_id=?";
 
@@ -25,7 +23,6 @@ public class UserHasCategoryDAOImp extends BaseDAO implements UserHasCategoryDAO
 
     private static final String SQL_GET_ALL_CHOSEN = "SELECT * FROM category WHERE id IN (SELECT " +
             "   category_id FROM user_has_category AS id WHERE user_id=?)";
-
 
     @Override
     public boolean insert(Connection connection, int categoryId, int userId) throws SQLException {

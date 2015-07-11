@@ -104,6 +104,7 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
             user.setSurname(rs.getString("surname"));
             user.setEmail(rs.getString("email"));
             user.setState(User.State.valueOf(rs.getString("state").toUpperCase()));
+            user.setRole(User.Role.valueOf(rs.getString("role").toUpperCase()));
             users.add(user);
         }
         return users;

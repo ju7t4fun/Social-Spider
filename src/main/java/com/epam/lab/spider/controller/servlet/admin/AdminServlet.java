@@ -1,9 +1,10 @@
 package com.epam.lab.spider.controller.servlet.admin;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.admin.ShowAdminAllUsers;
 import com.epam.lab.spider.controller.command.admin.stats.GetServiceStatisticCommand;
 import com.epam.lab.spider.controller.command.admin.stats.GetVisitorsStatsCommand;
+import com.epam.lab.spider.controller.command.admin.users.ShowAdminAllUsers;
+import com.epam.lab.spider.controller.command.admin.users.UserChangeRoleCommand;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

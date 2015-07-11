@@ -1,5 +1,3 @@
-<%--<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">--%>
-
 <%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
 <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
