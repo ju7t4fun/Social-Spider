@@ -220,13 +220,13 @@
                     <h4><l:resource key="filter"/> </h4>
                     <br>
                     <span style="width:80px;display: inline-block"><l:resource key="likes"/> </span>
-                    <input type="number" name="likes" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="60" />
+                    <input type="number" min="0" name="likes" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="60" />
                     <br>
                     <span style="width:80px;display: inline-block"> <l:resource key="reposts"/> </span>
-                    <input type="number" name="reposts" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="10" />
+                    <input type="number" min="0" name="reposts" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="10" />
                     <br>
                     <span style="width:80px;display: inline-block"> <l:resource key="comments"/> </span>
-                    <input type="number" name="comments" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="0" />
+                    <input type="number" min="0" name="comments" style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;" value="0" />
                     <br>
                   </div>
 
@@ -252,7 +252,8 @@
                     <h4><l:resource key="repeat"/> </h4>
                     <input type="radio" name="repeat" value="REPEAT_DISABLE" checked> <l:resource key="do.not.repeat"/> <br>
                     <input type="radio" name="repeat" value="REPEAT_ON_TIME"> <l:resource key="repeat.every"/>
-                    <input type="number" name="repeat_days" style="width:40px;border: none;-webkit-appearance: none; "> <l:resource key="days"/>
+                    <input type="number" min="0" name="repeat_days" style="width:40px;border: none;-webkit-appearance:
+                    none; "> <l:resource key="days"/>
 
                   </div>
                   <div class="col-lg-6">
