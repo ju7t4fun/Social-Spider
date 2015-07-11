@@ -82,18 +82,20 @@
 <header class="back-header">
     <div class="container">
 
-        <form class="login-form" action="/forgot_password" method="post" id="register_form">
+        <form class="login-form" action="/forgot_password" method="post" id="email_form">
             <input type="hidden" name="action" value="sendMail">
 
             <div class="login-wrap">
                 <p class="login-img"><i class="icon_lock_alt"></i></p>
+
                 <p><l:resource key="restore.restore_message"/></p>
+
                 <div class="input-group">
                     <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
                     <l:resource key="login.email"><input type="email" value="${login}" name="email" id="email"
                                                          class="form-control" placeholder=""
                                                          style="border-color:#ffffff;"
-                                                         required/></l:resource>
+                            /></l:resource>
                 </div>
                 <button class="btn btn-primary btn-lg btn-block" type="submit"
                         style="margin-bottom:20px;margin-right:10px;"><l:resource key="button.send"/>
@@ -115,6 +117,33 @@
         });
     });
 </script>
+<script>
+    var Script = function () {
+        $().ready(function () {
+            $("#email_form").validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
+                    }
+                },
+                messages: {
+                    required: "Please enter email",
+                    email: "Please enter a valid email address.",
+                },
+                errorPlacement: function (error, element) {
+                    element.attr('title', error.text());
+                    $(".error").tooltip(
+                            {
+                                tooltipClass: "mytooltip",
+                                placement: 'top',
+                                html: true
+                            });
+                }
+            });
+        });
+    }();
+</script>
 <jsp:include page="../pagecontent/simple_footer.jsp"/>
 
 <!-- javascripts -->
@@ -124,10 +153,8 @@
 <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
 <!-- jquery validate js -->
-<script type="${pageContext.request.contextPath}/text/javascript" src="js/jquery.validate.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
 
-<!-- custom form validation script for this page-->
-<script src="${pageContext.request.contextPath}/js/form-validation-script.js"></script>
 <!--custome script for all page-->
 <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 <!-- EASING SCROLL SCRIPTS PLUGIN -->

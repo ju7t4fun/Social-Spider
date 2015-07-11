@@ -54,14 +54,6 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnStandingRedraw.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnSetFilteringDelay.js"></script>
 
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-    <!--[if lt IE 9]>
-    <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
-    <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
-    <![endif]-->
-
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
 
@@ -118,7 +110,6 @@
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-user"></i></i><a href="/">Admin</a></li>
                         <li><i class="fa fa-envelope-o"></i>Support</li>
                     </ol>
                 </div>
@@ -222,5 +213,10 @@
         </section>
     </section>
 </section>
+<script>
+    $(document).ready(function () {
+        $("#support_inbox_a").scrollTop(10000);
+    })
+</script>
 </body>
 </html>

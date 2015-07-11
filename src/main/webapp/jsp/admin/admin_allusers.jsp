@@ -57,23 +57,15 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnStandingRedraw.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnSetFilteringDelay.js"></script>
 
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-    <!--[if lt IE 9]>
-    <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
-    <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
-    <![endif]-->
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom-datatable.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom-datatable.js"></script>
-
 
     <script>
 
         function changeImage(e) {
-
             var dataString;
             if (e.title.valueOf() == "activated".valueOf()) {
                 e.src = "${pageContext.request.contextPath}/img/banned.jpg";
@@ -82,8 +74,11 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "/statuschanger",
-                    data: dataString
+                    url: "/admin/users?action=status",
+                    data: dataString,
+                    success: function (data) {
+                        toastrNotification(data.status, data.msg)
+                    }
                 });
                 return;
             }
@@ -95,8 +90,11 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "/statuschanger",
-                    data: dataString
+                    url: "/admin/users?action=status",
+                    data: dataString,
+                    success: function (data) {
+                        toastrNotification(data.status, data.msg)
+                    }
                 });
                 return;
             }
@@ -108,12 +106,13 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "/statuschanger",
-                    data: dataString
+                    url: "/admin/users?action=status",
+                    data: dataString,
+                    success: function (data) {
+                        toastrNotification(data.status, data.msg)
+                    }
                 });
-                return;
             }
-
         }
 
     </script>
@@ -124,12 +123,7 @@
 <jsp:include page="../pagecontent/header.jsp"/>
 <jsp:include page="../pagecontent/sidebar.jsp"/>
 
-<!-- container section start -->
-<%--<c:set var="mysrc" value="${pageContext.request.contextPath}/img/deleted.png" />--%>
 <section id="container" class="">
-    <!--main content start-->
-    <!--main content start-->
-
 
     <section id="main-content">
         <section class="wrapper">
@@ -142,7 +136,7 @@
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="/">Admin</a></li>
-                        <li><i class="fa fa-desktop"></i>Edit</li>
+                        <li><i class="fa fa-edit"></i>Edit</li>
                         <li><i class="fa fa-list-alt"></i>User List</li>
                     </ol>
                 </div>
@@ -151,7 +145,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left">Posted</div>
+                            <div class="pull-left">User List</div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="panel-body">
@@ -165,10 +159,9 @@
                                     <th>Surname</th>
                                     <th>Email</th>
                                     <th>State</th>
-
+                                    <th>Role</th>
                                 </tr>
                                 </thead>
-                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -176,10 +169,7 @@
             </div>
         </section>
     </section>
-
 </section>
-<!-- container section end -->
-
 </body>
 </html>
 

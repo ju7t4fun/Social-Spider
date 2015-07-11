@@ -1,23 +1,25 @@
-package com.epam.lab.spider.controller.servlet.admin.ajax;
+package com.epam.lab.spider.controller.command.admin.users;
 
+import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.model.db.entity.User;
+import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.db.service.UserService;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by Орест on 22.06.2015.
  */
+public class UserFillingTableCommand implements ActionCommand {
 
-import java.io.*;
-import java.sql.*;
-import java.util.List;
-import javax.servlet.ServletException;
-import javax.servlet.http.*;
-
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.UserService;
-import org.json.*;
-
-@SuppressWarnings("serial")
-public class UserFillingTableServlet extends HttpServlet {
     private String GLOBAL_SEARCH_TERM;
     private String COLUMN_NAME;
     private String DIRECTION;
@@ -26,11 +28,9 @@ public class UserFillingTableServlet extends HttpServlet {
     private String ID_SEARCH_TERM, NAME_SEARCH_TERM,
             SURNAME_SEARCH_TERM, EMAIL_SEARCH_TERM, STATE_SEARCH_TERM;
 
-    public static int TIMES = 0;
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String[] columnNames = {"id", "name", "surname", "email", "state"};
+    @Override
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String[] columnNames = {"id", "name", "surname", "email", "state", "role"};
 
         JSONObject jsonResult = new JSONObject();
         int listDisplayAmount = 5;
@@ -51,7 +51,9 @@ public class UserFillingTableServlet extends HttpServlet {
         if (pageSize != null) {
             try {
                 listDisplayAmount = Integer.parseInt(pageSize);
-            } catch (Exception e){listDisplayAmount = 5;}
+            } catch (Exception e) {
+                listDisplayAmount = 5;
+            }
             if (listDisplayAmount < 3 || listDisplayAmount > 50) {
                 listDisplayAmount = 10;
             }
@@ -69,7 +71,6 @@ public class UserFillingTableServlet extends HttpServlet {
         String colName = columnNames[column];
         int totalRecords = getTotalRecordCount();
 
-
         RECORD_SIZE = listDisplayAmount;
         GLOBAL_SEARCH_TERM = request.getParameter("sSearch");
         ID_SEARCH_TERM = request.getParameter("sSearch_0");
@@ -83,9 +84,7 @@ public class UserFillingTableServlet extends HttpServlet {
 
         try {
             jsonResult = getPersonDetails(totalRecords, request);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
 
@@ -94,7 +93,6 @@ public class UserFillingTableServlet extends HttpServlet {
         response.setHeader("Cache-Control", "no-store");
         PrintWriter out = response.getWriter();
         out.print(jsonResult);
-
     }
 
     public JSONObject getPersonDetails(int totalRecords, HttpServletRequest request)
@@ -105,8 +103,7 @@ public class UserFillingTableServlet extends HttpServlet {
         JSONArray array = new JSONArray();
         String searchSQL = "";
 
-        ;
-        String sql = "SELECT " + "id, name, surname, email, state FROM user ";
+        String sql = "SELECT " + "id, name, surname, email, state, role FROM user ";
 
         String globeSearch = " WHERE  id LIKE '%" + GLOBAL_SEARCH_TERM + "%'"
                 + " OR name LIKE '%" + GLOBAL_SEARCH_TERM + "%'"
@@ -134,14 +131,9 @@ public class UserFillingTableServlet extends HttpServlet {
             searchSQL = stateSearch;
         }
 
-
         sql += searchSQL;
         sql += " order by " + COLUMN_NAME + " " + DIRECTION;
         sql += " limit " + INITIAL + ", " + RECORD_SIZE;
-
-
-        //for searching
-
 
         List<User> resList = ServiceFactory.getInstance().create(UserService.class).getWithQuery(sql);
         if (resList != null) {
@@ -152,17 +144,15 @@ public class UserFillingTableServlet extends HttpServlet {
                 ja.put(resList.get(i).getSurname());
                 ja.put(resList.get(i).getEmail());
                 ja.put(resList.get(i).getState().toString());
+                ja.put(resList.get(i).getRole());
                 array.put(ja);
             }
         }
-
         String query = "SELECT COUNT(*) FROM user";
 
-        //for pagination
         if (GLOBAL_SEARCH_TERM != "" || ID_SEARCH_TERM != "" || NAME_SEARCH_TERM != "" ||
                 SURNAME_SEARCH_TERM != "" || EMAIL_SEARCH_TERM != "" || STATE_SEARCH_TERM != "") {
             query += searchSQL;
-
             UserService serv = ServiceFactory.getInstance().create(UserService.class);
             totalAfterSearch = serv.getCountWithQuery(query);
         }
@@ -170,23 +160,16 @@ public class UserFillingTableServlet extends HttpServlet {
             result.put("iTotalRecords", totalRecords);
             result.put("iTotalDisplayRecords", totalAfterSearch);
             result.put("aaData", array);
-        } catch (Exception e) {
-
+        } catch (Exception ignored) {
         }
-
         return result;
     }
 
     public int getTotalRecordCount() {
-
         String sql = "SELECT COUNT(*) FROM  user";
         UserService serv = ServiceFactory.getInstance().create(UserService.class);
         int totalRecords = serv.getCountWithQuery(sql);
-        System.out.println("Total Records : " + totalRecords + " omg");
-//        UserService serv = ServiceFactory.getInstance().create(UserService.class);
-//        int totalRecords = serv.getAll().size();
         return totalRecords;
     }
-
 
 }

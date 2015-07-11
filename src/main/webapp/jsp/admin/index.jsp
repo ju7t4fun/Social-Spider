@@ -17,7 +17,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-    <title>Task | All Tasks</title>
+    <title>Admin | Index</title>
 
     <!-- Bootstrap CSS -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -50,7 +50,11 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 </head>
-
+<script>
+    $(document).ready(function () {
+        document.body.scrollTop = 132;
+    })
+</script>
 <body>
 
 <jsp:include page="../pagecontent/header.jsp"/>
@@ -58,8 +62,6 @@
 
 <!-- container section start -->
 <section id="container1" class="">
-
-
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
@@ -74,104 +76,137 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <div class="pull-left">Visits</div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <br>
+                        <div class="panel-group m-bot20" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle collapsed" data-toggle="collapse"
+                                           data-parent="#accordion" href="#collapseOne">
+                                            Item #1 Visits Diagrams
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse in" style="height: auto;">
+                                    <div class="panel-body">
+                                        <div class="row" style="margin-left: 270px">
+                                            <div class="col-lg-3">
+                                                <input id="fromDate" class="form-control" type="date">
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <input id="toDate" class="form-control" type="date">
+                                            </div>
+                                            <input class="btn btn-default" type="button" onclick="redrawChart()"
+                                                   value="Show">
+                                        </div>
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <li role="presentation" class="active">
+                                                <a href="#home" aria-controls="home" role="tab" data-toggle="tab">Visitors</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Sex
+                                                    / Age</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#messages" aria-controls="messages" role="tab"
+                                                   data-toggle="tab">Geo</a>
+                                            </li>
+                                        </ul>
 
-                        <div class="row" style="margin-left: 270px">
-                            <div class="col-lg-3">
-                                <input id="fromDate" class="form-control" type="date">
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane active" id="home"
+                                                 style="height: 450px">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="line-diagram"
+                                                             style="height: 450px; min-width: 1100px"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="profile" style="height: 490px">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="gender-diagram" style="min-width: 700px; max-width:
+                                                        700px; height: 450px; margin: auto 230px"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="messages" style="height: 490px">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="pie-diagram"
+                                                             style="min-width: 480px; height: 400px; max-width: 480px;"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="city-diagram"
+                                                             style="min-width: 480px; height: 400px;
+                                                             max-width: 480px; position: relative; left: 480px;  top: -426px"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-lg-3">
-                                <input id="toDate" class="form-control" type="date">
-                            </div>
-                            <input class="btn btn-default" type="button" onclick="redrawChart()" value="Show">
-                        </div>
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active">
-                                <a href="#home" aria-controls="home" role="tab" data-toggle="tab">Visitors</a></li>
-                            <li role="presentation">
-                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Sex / Age</a>
-                            </li>
-                            <li role="presentation">
-                                <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Geo</a>
-                            </li>
-                        </ul>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapseTwo">
+                                            Item #2 Activity Diagrams
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse" style="height: 0;">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-lg-3">
+                                                <input id="date" class="form-control" type="date"
+                                                       onchange="redrawChartStats()">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <li role="presentation" class="active">
+                                                <a href="#task" aria-controls="task" role="tab"
+                                                   data-toggle="tab">Task</a></li>
+                                            <li role="presentation">
+                                                <a href="#post" aria-controls="post" role="tab"
+                                                   data-toggle="tab">Post</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#error" aria-controls="error" role="tab" data-toggle="tab">Error</a>
+                                            </li>
+                                        </ul>
 
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="home" style="height: 490px">
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div id="line-diagram" style="height: 450px; min-width: 998px"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="profile" style="height: 490px">
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div id="gender-diagram"
-                                             style="min-width: 700px; max-width: 700px; height: 450px; margin: auto
-                                             230px"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="messages" style="height: 490px">
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div id="pie-diagram"
-                                             style="min-width: 480px; height: 400px; max-width: 480px;"></div>
-                                    </div>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div id="city-diagram"
-                                             style="min-width: 480px; height: 400px; max-width: 480px; position: relative;
-                                     left: 480px;  top: -426px"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <br>
-
-                        <div class="row" style="margin-left: 270px">
-                            <div class="col-lg-3">
-                                <input id="date" class="form-control" type="date">
-                            </div>
-                            <input class="btn btn-default" type="button" onclick="redrawChartStats()" value="Show">
-                        </div>
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active">
-                                <a href="#task" aria-controls="task" role="tab" data-toggle="tab">Task</a></li>
-                            <li role="presentation">
-                                <a href="#post" aria-controls="post" role="tab" data-toggle="tab">Post</a>
-                            </li>
-                            <li role="presentation">
-                                <a href="#error" aria-controls="error" role="tab" data-toggle="tab">Error</a>
-                            </li>
-                        </ul>
-
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="task" style="height: 490px">
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div id="task-line-diagram" style="height: 450px; min-width: 1140px"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="post" style="height: 490px">
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div id="post-line-diagram" style="height: 450px; min-width: 1140px"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="error" style="height: 490px">
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div id="error-line-diagram" style="height: 450px; min-width: 1140px"></div>
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane active" id="task"
+                                                 style="height: 450px">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="task-line-diagram"
+                                                             style="height: 450px; min-width: 1100px"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="post" style="height: 490px">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="post-line-diagram"
+                                                             style="height: 450px; min-width: 1100px"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="error" style="height: 490px">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="error-line-diagram"
+                                                             style="height: 450px; min-width: 1100px"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -189,35 +224,7 @@
         $('#task-line-diagram').highcharts('StockChart', {
             rangeSelector: {
                 inputEnabled: false,
-                buttons: [{
-                    type: 'day',
-                    count: 1,
-                    text: 'day'
-                }, {
-                    type: 'week',
-                    count: 1,
-                    text: 'week'
-                }, {
-                    type: 'month',
-                    count: 1,
-                    text: '1m'
-                }, {
-                    type: 'month',
-                    count: 3,
-                    text: '3m'
-                }, {
-                    type: 'month',
-                    count: 6,
-                    text: '6m'
-                }, {
-                    type: 'year',
-                    count: 1,
-                    text: '1y'
-                }, {
-                    type: 'all',
-                    text: 'All'
-                }],
-                selected: 0
+                enabled: false
             },
 
             chart: {
@@ -236,35 +243,7 @@
         $('#post-line-diagram').highcharts('StockChart', {
             rangeSelector: {
                 inputEnabled: false,
-                buttons: [{
-                    type: 'day',
-                    count: 1,
-                    text: 'day'
-                }, {
-                    type: 'week',
-                    count: 1,
-                    text: 'week'
-                }, {
-                    type: 'month',
-                    count: 1,
-                    text: '1m'
-                }, {
-                    type: 'month',
-                    count: 3,
-                    text: '3m'
-                }, {
-                    type: 'month',
-                    count: 6,
-                    text: '6m'
-                }, {
-                    type: 'year',
-                    count: 1,
-                    text: '1y'
-                }, {
-                    type: 'all',
-                    text: 'All'
-                }],
-                selected: 0
+                enabled: false
             },
 
             chart: {
@@ -283,35 +262,7 @@
         $('#error-line-diagram').highcharts('StockChart', {
             rangeSelector: {
                 inputEnabled: false,
-                buttons: [{
-                    type: 'day',
-                    count: 1,
-                    text: 'day'
-                }, {
-                    type: 'week',
-                    count: 1,
-                    text: 'week'
-                }, {
-                    type: 'month',
-                    count: 1,
-                    text: '1m'
-                }, {
-                    type: 'month',
-                    count: 3,
-                    text: '3m'
-                }, {
-                    type: 'month',
-                    count: 6,
-                    text: '6m'
-                }, {
-                    type: 'year',
-                    count: 1,
-                    text: '1y'
-                }, {
-                    type: 'all',
-                    text: 'All'
-                }],
-                selected: 0
+                enabled: false
             },
 
             chart: {
