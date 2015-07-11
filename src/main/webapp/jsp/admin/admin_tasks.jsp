@@ -57,23 +57,13 @@
     <script src="http://jquery-datatables-column-filter.googlecode.com/svn/trunk/media/js/jquery.dataTables.columnFilter.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnStandingRedraw.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnSetFilteringDelay.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-    <!--[if lt IE 9]>
-    <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
-    <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
-    <![endif]-->
 
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom-datatable.js"></script>
-
-
-
 
 </head>
 
@@ -84,7 +74,6 @@
 
 <!-- container section start -->
 <%--<c:set var="mysrc" value="${pageContext.request.contextPath}/img/deleted.png" />--%>
-
 
 
 <section id="container" class="">
@@ -114,7 +103,9 @@
 
                         <div class="b-popup" id="popup_bind">
                             <div class="b-popup-content" style="height: 340px; width: 500px; margin-left: 470px;">
-                                <h4><div style="margin-left: 53px;" > <l:resource key="task.categoriesbinding"/></div></h4>
+                                <h4>
+                                    <div style="margin-left: 53px;"><l:resource key="task.categoriesbinding"/></div>
+                                </h4>
                                 <table style="margin-left: 55px; margin-top: 30px">
                                     <tr>
                                         <td>
@@ -138,7 +129,6 @@
 
                             </div>
                         </div>
-
 
 
                         <div class="panel-body">
@@ -168,9 +158,7 @@
 </section>
 
 
-
 <!-- container section end -->
-
 
 
 <script>
@@ -247,7 +235,7 @@
                 },
 
                 {
-                    "class": "dt-body-center", "targets": [1,4, 5]
+                    "class": "dt-body-center", "targets": [1, 4, 5]
                 }
 
             ]
@@ -302,7 +290,7 @@
     function sendSelectedField(id) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open("POST", "/task?action=bind&id=" + id);
-        var selectionCategory= document.getElementById("tokenize_category").options;
+        var selectionCategory = document.getElementById("tokenize_category").options;
 
 
         var categories = [];
@@ -354,7 +342,6 @@
     $(".dataTables_length").attr("hidden", "");
 
 
-
     function deleteTask(id) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('GET', '/task?action=deletetask&taskId=' + id, true);
@@ -374,7 +361,8 @@
             cell = cell + " " + parseDoc(args[i].toUpperCase());
         }
         return cell;
-    };
+    }
+    ;
 
     function parseDoc(arg) {
         var arg = arg.trim();
@@ -399,7 +387,8 @@
                 return '<img src=\"/img/restIcos/repost.jpg" style="width: 30px; height: 30px">';
         }
         return "";
-    };
+    }
+    ;
 </script>
 
 <style>

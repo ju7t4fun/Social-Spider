@@ -20,19 +20,28 @@ public class AddCategoryCommand implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
-        String name = request.getParameter("category");
         JSONObject json = new JSONObject();
-
-        Category category = new Category();
-        category.setName(name);
-        category.setImageUrl((String) request.getSession().getAttribute("urlCat"));
-        service.insert(category);
-
-
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        String name = request.getParameter("category");
+        if (name.split("\\|").length != 2) {
+            json.put("status", "warning");
+            json.put("msg", "Неправильний формат категорії (name_ua|name_en)");
+            response.getWriter().write(json.toString());
+            return;
+        }
+        Category category = new Category();
+        category.setName(name);
+        if (request.getSession().getAttribute("urlCat") != null)
+            category.setImageUrl((String) request.getSession().getAttribute("urlCat"));
+        if (service.insert(category)) {
+            json.put("status", "success");
+            json.put("msg", "Успішно додано");
+        } else {
+            json.put("status", "error");
+            json.put("msg", "Відбулася помилка при додаванні");
+        }
+        request.getSession().removeAttribute("urlCat");
         response.getWriter().write(json.toString());
     }
 

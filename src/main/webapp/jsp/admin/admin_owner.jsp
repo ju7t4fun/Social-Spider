@@ -60,14 +60,6 @@
     <script src="${pageContext.request.contextPath}/js/jquery.multi-select.js" type="text/javascript"></script>
     <link href="${pageContext.request.contextPath}/css/multi-select.css" media="screen" rel="stylesheet">
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-    <!--[if lt IE 9]>
-    <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
-    <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
-    <![endif]-->
-
-
     <%--Видалення--%>
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
@@ -258,13 +250,17 @@
 
                         <div class="b-popup" id="popup_bind">
                             <div class="b-popup-content" style="height: 340px; width: 500px; margin-left: 470px;">
-                                <h4><div style="margin-left: 53px;" ><l:resource key="owner.accbinding"/></div></h4>
+                                <h4>
+                                    <div style="margin-left: 53px;"><l:resource key="owner.accbinding"/></div>
+                                </h4>
                                 <table style="margin-left: 55px">
                                     <tr>
-                                        <th style="width:400px; "><div style="margin-left: -27px;"  > <l:resource key="owner.read"  /></div></th>
+                                        <th style="width:400px; ">
+                                            <div style="margin-left: -27px;"><l:resource key="owner.read"/></div>
+                                        </th>
                                     </tr>
 
-                                    <tr  >
+                                    <tr>
                                         <td>
                                             <select id="tokenize_read" multiple="multiple">
                                             </select>

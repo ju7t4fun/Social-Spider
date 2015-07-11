@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.command.admin;
+package com.epam.lab.spider.controller.command.admin.group;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
@@ -26,8 +26,6 @@ public class GroupBanUnbanCommand implements ActionCommand {
         HttpSession session = request.getSession();
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         String vkid = request.getParameter("vk_id");
-
-        System.out.println("in ban-unban servlet!!!  vkid: " + vkid);
 
         int vk_id = Integer.parseInt(vkid);
 

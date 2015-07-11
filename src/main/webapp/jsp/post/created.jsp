@@ -204,7 +204,7 @@
 
     <jsp:include page="../post/viewpost.jsp"/>
     <jsp:include page="../post/editpost.jsp"/>
-    <%--for confirm delete modal window(include script and css)--%>
+
     <jsp:include page="../pagecontent/confirm-delete.jsp"/>
 
     <section id="main-content">
@@ -390,18 +390,18 @@
                 }
                 $.post(
                         "/post?action=publishPostId",
-                {
-                    postId: publishPostId,
-                    date: $("#date").val(),
-                    time: $("#time").val(),
-                    date_delete: $("#time1").val(),
-                    time_delete: $("#time5").val(),
-                    checked: $("#check").prop('checked'),
-                    groups: $("#tokenize_focus").val().toString()
-                },
+                        {
+                            postId: publishPostId,
+                            date: $("#date").val(),
+                            time: $("#time").val(),
+                            date_delete: $("#time1").val(),
+                            time_delete: $("#time5").val(),
+                            checked: $("#check").prop('checked'),
+                            groups: $("#tokenize_focus").val().toString()
+                        },
                         onAjaxSuccess
                 );
-                    function onAjaxSuccess(response) {
+                function onAjaxSuccess(response) {
                     for (var i = 0; i < response.length; i++)
                         toastrNotification(response[i].status, response[i].msg);
                     $("#publish_modal").modal('toggle');
