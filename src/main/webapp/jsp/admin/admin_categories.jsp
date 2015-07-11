@@ -353,6 +353,8 @@
                         $(this).attr("placeholder", map[$(this).attr("locres")]);
                     })
 
+                    table.fnStandingRedraw();
+
 //                    reInit();
 
                 })
