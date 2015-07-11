@@ -88,10 +88,19 @@
         var taskToSendId;
         var table;
 
-
         jQuery(document).ready(function () {
-            table = $('#categoryTable').dataTable({
 
+            table = $('#categoryTable').dataTable({
+                language: {
+                    url:   "/controller?action=getLangJSON"
+                },
+                "initComplete": function () {
+//                    $(".dataTables_length").attr("hidden", "");
+                    var dataTables_filter_input = $(".dataTables_filter").find("input");
+                    dataTables_filter_input.attr("class", "form-control");
+                    dataTables_filter_input.attr("style", "width: 500px")
+
+                },
                 "bSort": true,
                 aaSorting: [],
                 "bPaginate": true,
@@ -139,11 +148,6 @@
 
             });
 
-//            $(".dataTables_filter").attr("hidden", "");
-            $(".dataTables_length").attr("hidden", "");
-            var dataTables_filter_input = $(".dataTables_filter").find("input");
-            dataTables_filter_input.attr("class", "form-control");
-            dataTables_filter_input.attr("style", "width: 500px")
 
         })
 
@@ -369,6 +373,7 @@
 </style>
 
 <script>
+
     $(".btn").click(function () {
         var lang = $(this).attr("change");
         var names = [];
@@ -387,9 +392,74 @@
                     $(".loc-p").each(function () {
                         $(this).attr("placeholder", map[$(this).attr("locres")]);
                     })
-                    table.fnStandingRedraw();
-                });
-    })
+
+//                    reInit();
+
+                })
+
+    });
+
+
+    function reInit() {
+        table = null;
+        $('#categoryTable').dataTable().fnDestroy();
+        table = $('#categoryTable').dataTable({
+            language: {
+                url:   "/controller?action=getLangJSON"
+            },
+            "bSort": true,
+            aaSorting: [],
+            "bPaginate": true,
+            "paging": true,
+            "bInfo": false,
+            "iDisplayStart": 0,
+            "bProcessing": true,
+            'iDisplayLength': 10,
+            "bServerSide": true,
+            "sAjaxSource": path + "/admin/categories?action=getcategory",
+            colVis: {
+                "align": "right",
+                "buttonText": "columns <img src=\"/img/caaret.png\"/>",
+            },
+
+            "columnDefs": [
+
+                {
+                    "targets": [0, 1, 2], "orderable": false
+                },
+
+
+                {
+                    "aTargets": [1], "createdCell": function (td, cellData, rowData, row, col) {
+
+                    var parts = cellData.split("|");
+
+
+                    $(td).html('<a  href="#" title="" >' + parts[0] + '</a>')
+                            .tooltip(
+                            {content: '<img src="' + parts[1] + '" width="300" height="200" width="300" />'},
+                            {tooltipClass: "i1"});
+
+                }
+                },
+
+                {
+                    "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
+
+                    $(td).html('<div class="btn-group"><a class="btn btn-success" data-toggle="modal" data-target="#modal_categoryEdit" onclick="setId(' +rowData[0] +  ', \'' + cellData  +'\''  +')"><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="removeCategory(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
+
+                }
+                }
+            ]
+
+        });
+
+        $(".dataTables_length").attr("hidden", "");
+        var dataTables_filter_input = $(".dataTables_filter").find("input");
+        dataTables_filter_input.attr("class", "form-control");
+        dataTables_filter_input.attr("style", "width: 500px")
+    }
+
 </script>
 </body>
 </html>
