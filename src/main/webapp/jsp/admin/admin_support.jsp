@@ -95,7 +95,6 @@
     </li>
 </div>
 
-
 <section id="container" class="">
 
     <jsp:include page="../pagecontent/header.jsp"/>
@@ -181,15 +180,14 @@
                         <c:choose>
                             <c:when test="${current_user != null}">
                                 <div class="widget-foot">
-                                    <form class="form-inline">
+                                    <div class="form-inline">
                                         <div class="form-group" style="width: 80%">
-                                            <input id="message_text" style="width: 100%" id="message_text" type="text"
+                                            <input id="message_text" style="width: 100%" type="text"
                                                    class="form-control" placeholder="Type your message here...">
                                         </div>
-                                        <input onclick="send(${current_user.id})" type="button" class="btn btn-info"
-                                               style="margin-left:5%"
-                                               value="Надіслати">
-                                    </form>
+                                        <a onclick="send(${current_user.id})" type="button" class="btn btn-info"
+                                           style="margin-left:5%">Надіслати</a>
+                                    </div>
                                 </div>
                             </c:when>
                             <c:otherwise>
@@ -208,7 +206,6 @@
                                 </div>
                             </c:otherwise>
                         </c:choose>
-
                     </section>
                 </div>
             </div>
@@ -218,7 +215,7 @@
 <script>
     $(document).ready(function () {
         $("#support_inbox_a").scrollTop(10000);
-    })
+    });
 </script>
 </body>
 </html>
