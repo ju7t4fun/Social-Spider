@@ -24,16 +24,16 @@ public class Run {
 
     public static void main(String[] args) throws VKException {
 //        TaskSynchronizedNewDataService taskSynchronizedNewDataService = new TaskSynchronizedNewDataService();
-//        taskSynchronizedNewDataService.createTableIfNotExist();
-
-        Vkontakte vk = new Vkontakte(4949213);
-        AccessToken token = new AccessToken();
-        token.setAccessToken("2c19ba70d24d0cfb18b20438ffdba37e038c1366e563f44d508580764dbe33e01a9ecc16e0ea5e0f2c452");
-        token.setUserId(1);
-        token.setExpirationMoment(new Date());
-        vk.setAccessToken(token);
-
-        vk.execute().getPostFromBeginWall(16697463,5, null,null,null);
+////        taskSynchronizedNewDataService.createTableIfNotExist();
+//
+//        Vkontakte vk = new Vkontakte(4949213);
+//        AccessToken token = new AccessToken();
+//        token.setAccessToken("2c19ba70d24d0cfb18b20438ffdba37e038c1366e563f44d508580764dbe33e01a9ecc16e0ea5e0f2c452");
+//        token.setUserId(1);
+//        token.setExpirationMoment(new Date());
+//        vk.setAccessToken(token);
+//
+//        vk.execute().getPostFromBeginWall(16697463,5, null,null,null);
 
 //        Parameters param = new Parameters();
 //        param.add("owner_id","-24056415");

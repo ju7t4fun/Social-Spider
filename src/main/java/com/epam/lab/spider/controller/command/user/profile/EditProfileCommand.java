@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Marian Voronovskyi on 21.06.2015.
@@ -29,12 +31,17 @@ public class EditProfileCommand implements ActionCommand {
 
         response.setContentType("application/json");
         User user = (User) session.getAttribute("user");
+        Pattern p = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ]");
+        Matcher m = p.matcher(value);
         if (name == null || name == "" || value == null || value == "") {
             response.getWriter().print(new JSONObject().put("status", "error").put("msg", UTF8.encoding(bundle.getString("notification.field.not.empty"))));
-        } else if (value.length() >= 25) {
+        } else if (value.length() >= 30) {
             response.getWriter().print(new JSONObject().put("status", "error").put("msg", UTF8.encoding(bundle.getString("notification.value.less.than"))));
-        } else if (value.matches("[a-zA-Z ]*\\d+.*")) {
+        } else if (value.matches("[a-zA-Zа-яА-ЯіІїЇєЄ ]*\\d+.*")) {
             response.getWriter().print(new JSONObject().put("status", "error").put("msg", UTF8.encoding(bundle.getString("notification.field.digits"))));
+        } else if (m.find()) {
+            response.getWriter().print(new JSONObject().put("status", "error").put("msg", UTF8.encoding(bundle
+                    .getString("notification.field.wrongnameformat"))));
         } else {
             try {
                 UserService userService = new UserService();

@@ -2,6 +2,7 @@ var owner_id = parseInt(Args.owner_id);
 var count = parseInt(Args.count);
 if(count == 0)count = 150;
 var offset = parseInt(Args.offset);
+if(offset>0)offset = offset ;
 var last_post_id = parseInt(Args.last_post_id);
 
 var likes = parseInt(Args.likes);
@@ -12,25 +13,40 @@ var total_loops = parseInt(Args.max_loops);
 var query_size = parseInt(Args.query_size);
 if(query_size == 0)query_size = 30;
 if(query_size > 100)query_size = 100;
-if(total_loops<1 ||total_loops>180) total_loops = 180;
+if(total_loops<1 ||total_loops>150) total_loops = 150;
 
-var basket_limit = (total_loops - (total_loops%query_size)) / query_size;
-if(basket_limit>24)basket_limit = 24;
+var block_offset_find = (parseInt(Args.block_offset_find) == 0);
 
-
-if(offset == 0){
+if(offset == 0 && last_post_id == 0 && block_offset_find){
     offset = API.wall.get({
         "owner_id" : owner_id,
         "filter": "owner",
         "count": 1,
         "offset": 0
     }).count - 1;
+    if(offset==0){
+        return {
+        data:"none",
+        items:[],
+        offset_map:[]
+        };
+    }
+}
+if(offset<0){
+    return {
+    data:"none",
+    items:[],
+    offset_map:[]
+    };
 }
 // пошук в останнього посту
+var shift = -1;
+var last_alive = false;
 var cycle_remainder = 0;
-var success_sync;
+var success_sync = false;
 if(last_post_id>0){
     var success = true;
+    var override = false;
     var range_swith_count = 0;
     var range_swith_count_max = 3;
     var x = 50;
@@ -50,42 +66,46 @@ if(last_post_id>0){
     if(max_y<0)max_y = 0;
     var y = x;
     var d = 0;
-    while(range_response.items[y].id > last_post_id ) {
-
-        if(y<max_y)y = y + 1;
-        else {
-        // жадібна реалізація глибокого пошуку
-        if(range_swith_count<range_swith_count_max){
-            range_swith_count = range_swith_count + 1;
-            d = d + y - x + 1;
-            y = 0;
-            x = 0;
-            ranging_offset = ranging_offset + 100;
-            //return  range_response.count;
-            if(ranging_offset > range_response.count){
+    last_alive = true;
+    if(range_response.items[y].id >= last_post_id ){
+        while(range_response.items[y].id > last_post_id ) {
+            if(y<max_y)y = y + 1;
+            else {
+            // жадібна реалізація глибокого пошуку
+            if(range_swith_count<range_swith_count_max){
+                range_swith_count = range_swith_count + 1;
+                d = d + y - x + 1;
+                y = 0;
+                x = 0;
+                ranging_offset = ranging_offset + 100;
+                //return  range_response.count;
+                if(ranging_offset > range_response.count){
+                    success = false;
+                    last_post_id = range_response.items[y].id;
+                }else{
+                    range_response = API.wall.get({
+                        "owner_id" : owner_id,
+                        "filter": "owner",
+                        "count": 100,
+                        "offset": ranging_offset
+                    });
+                    var max_y = range_response.items.length - 1;
+                    if(max_y<0)max_y = 0;
+                }
+            }
+            // елегантний аварійний і непонятний вихід із цикла
+            else{
                 success = false;
                 last_post_id = range_response.items[y].id;
-            }else{
-                range_response = API.wall.get({
-                    "owner_id" : owner_id,
-                    "filter": "owner",
-                    "count": 100,
-                    "offset": ranging_offset
-                });
-                var max_y = range_response.items.length - 1;
-                if(max_y<0)max_y = 0;
+            }
             }
         }
-        // елегантний аварійний і непонятний вихід із цикла
-        else{
-            success = false;
-            last_post_id = range_response.items[y].id;
+        if(success && range_response.items[y].id != last_post_id){
+            last_alive = false;
         }
-        }
-
     }
     //заборона пошуку при аварійному виході із цикла
-    if(success && range_swith_count<range_swith_count_max){
+    if(last_alive && success && range_swith_count<range_swith_count_max){
         while(range_response.items[y].id < last_post_id ) {
             if(y>0)y = y - 1;
             else {
@@ -122,10 +142,21 @@ if(last_post_id>0){
                 }
             }
         }
+        if(success && range_response.items[y].id != last_post_id){
+            last_alive = false;
+        }
     }
+   
     d = d + y - x;
+    
     if(success && range_response.items[y].id == last_post_id ){
-        offset = offset + d;
+        offset = offset + d+ shift;
+        //return {
+        //    d:d,
+        //    success:success,
+        //    id:range_response.items[y].id,
+        //    last_post_id:last_post_id
+        //};
     }
     //витрати на всяку фігню
     var max_operation = 1111 - 60;
@@ -141,7 +172,7 @@ if(last_post_id>0){
 var total_loops = total_loops - (total_loops%query_size);
 var basket_limit = total_loops / query_size;
 if(basket_limit>24)basket_limit = 20;
-var query_offset = offset;
+var query_offset = offset + 1;
 var calculeted_query_size = query_size;
 
 
@@ -166,11 +197,11 @@ do{
     i = response.items.length - 1;
     if(response.items.length>0 && result.length<count){
         do{
-            if(response.items[i].likes.count>=likes
+            if(response.items[i].likes.count>=likes 
             && response.items[i].reposts.count>=reposts
-            && response.items[i].comments.count>=comments
+            && response.items[i].comments.count>=comments 
             ){
-                offset_map.push(i);
+                offset_map.push(query_offset+i);
                 result.push(response.items[i]);
             }
             i = i - 1;
@@ -178,24 +209,32 @@ do{
     }
     basket = basket + 1;
 }while(response.items.length==query_size && basket<basket_limit);
-i = i + 1;
-var finish_offset = offset + (basket - 1) * query_size
+i = i + 2;
+var finish_offset = offset - (basket - 1) * query_size 
 - calculeted_query_size + i;
-
+var data_f; 
+if(result.length == 0){
+    if(finish_offset<=0) data_f = "none";
+    else data_f = "finding";
+} else data_f = "finded";
 return {
+    data:data_f,
+    last_offset:finish_offset,
+    last_id:response.items[i-1].id,
     synchonized:success_sync,
-    start_offset:offset,
-    finish_offset:finish_offset,
+    bound:[offset, finish_offset],
+    offset_map:offset_map,
     debug_info:{
+        last_alive:last_alive,
         cycle_remainder:cycle_remainder,
-        total_posts_count:response.count,
+        total_posts_count:response.count, 
         index:i,
         basket:basket,
         result_length:result.length,
         basket_limit:basket_limit,
         query_size:query_size,
         total_loops:total_loops
-    },
-    items:result,
-    offset_map:offset_map
+    }, 
+    items:result
+    
 };
