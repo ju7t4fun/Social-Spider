@@ -89,14 +89,14 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-list-alt"></i> <l:resource key="groups"/></h3>
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> Groups</h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="/"><l:resource key="admin"/></a></li>
-                        <li><i class="fa fa-desktop"></i><l:resource key="edit"/></li>
+                        <li><i class="fa fa-edit"></i><l:resource key="edit"/></li>
                         <li><i class="fa fa-list-alt"></i><l:resource key="groups"/></li>
                     </ol>
                 </div>

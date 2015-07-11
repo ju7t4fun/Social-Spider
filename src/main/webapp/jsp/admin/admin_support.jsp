@@ -181,26 +181,32 @@
                         <c:choose>
                             <c:when test="${current_user != null}">
                                 <div class="widget-foot">
-                                    <form class="form-inline">
+                                    <div class="form-inline">
                                         <div class="form-group" style="width: 80%">
-                                            <l:resource key="header.typemessagehere"><input id="message_text" style="width: 100%" id="message_text" type="text"
-                                                   class="form-control" placeholder=""></l:resource>
+                                            <l:resource key="header.typemessagehere"><input id="message_text"
+                                                                                            style="width: 100%"
+                                                                                            type="text"
+                                                                                            class="form-control"
+                                                                                            placeholder=""></l:resource>
                                         </div>
-                                        <a onclick="send(${current_user.id})" class="btn btn-info" style="margin-left:5%" disabled><l:resource
-                                                key="header.send"/></a>
-                                    </form>
+                                        <a onclick="send(${current_user.id})" class="btn btn-info"
+                                           style="margin-left:5%"><l:resource key="header.send"/></a>
+                                    </div>
                                 </div>
                             </c:when>
                             <c:otherwise>
                                 <div class="widget-foot">
                                     <form class="form-inline">
                                         <div class="form-group" style="width: 80%">
-                                            <l:resource key="header.typemessagehere"><input id="message_text1" style="width: 100%;" id="message_text1"
-                                                   type="text"
-                                                   class="form-control" placeholder=""
-                                                   disabled></l:resource>
+                                            <l:resource key="header.typemessagehere"><input id="message_text1"
+                                                                                            style="width: 100%;"
+                                                                                            type="text"
+                                                                                            class="form-control"
+                                                                                            placeholder=""
+                                                                                            disabled></l:resource>
                                         </div>
-                                        <a onclick="send(${current_user.id})" class="btn btn-info" style="margin-left:5%" disabled><l:resource
+                                        <a onclick="send(${current_user.id})" class="btn btn-info"
+                                           style="margin-left:5%" disabled><l:resource
                                                 key="header.send"/></a>
                                     </form>
                                 </div>

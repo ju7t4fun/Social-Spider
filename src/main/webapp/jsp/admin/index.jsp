@@ -17,7 +17,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-    <title>Admin</title>
+    <title>Admin | Index</title>
 
     <!-- Bootstrap CSS -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -66,10 +66,10 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-pie-chart"></i> <l:resource key="admin"/></h3>
+                    <h3 class="page-header"><i class="fa fa-pie-chart"></i> Admin</h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
-                        <li><i class="fa fa-pie-chart"></i><l:resource key="charts"/></li>
+                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+                        <li><i class="fa fa-pie-chart"></i>Charts</li>
                     </ol>
                 </div>
             </div>
@@ -112,31 +112,40 @@
                                             </li>
                                         </ul>
 
-                        <div class="row" style="margin-left: 270px">
-                            <div class="col-lg-3">
-                                <input id="fromDate" class="form-control" type="date">
-                            </div>
-                            <div class="col-lg-3">
-                                <input id="toDate" class="form-control" type="date">
-                            </div>
-                            <input class="btn btn-default" type="button" onclick="redrawChart()" value="Show">
-                        </div>
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active">
-                                <a href="#home" aria-controls="home" role="tab" data-toggle="tab">Visitors</a></li>
-                            <li role="presentation">
-                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Sex / Age</a>
-                            </li>
-                            <li role="presentation">
-                                <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Geo</a>
-                            </li>
-                        </ul>
-
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="home" style="height: 490px">
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div id="line-diagram" style="height: 450px; min-width: 998px"></div>
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane active" id="home"
+                                                 style="height: 450px">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="line-diagram"
+                                                             style="height: 450px; min-width: 1100px"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="profile" style="height: 490px">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="gender-diagram" style="min-width: 700px; max-width:
+                                                        700px; height: 450px; margin: auto 230px"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="messages" style="height: 490px">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="pie-diagram"
+                                                             style="min-width: 480px; height: 400px; max-width: 480px;"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="city-diagram"
+                                                             style="min-width: 480px; height: 400px;
+                                                             max-width: 480px; position: relative; left: 480px;  top: -426px"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
