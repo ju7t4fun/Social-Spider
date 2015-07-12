@@ -37,7 +37,7 @@ public class UploadFileFromURLCommand implements ActionCommand {
         Map<String, String> urlType = (Map<String, String>) request.getSession().getAttribute("files_url");
 
         String filePath;
-        String message ;
+        String message;
         String status;
         String fileName;
         try {
@@ -49,6 +49,10 @@ public class UploadFileFromURLCommand implements ActionCommand {
             SecureRandom random = new SecureRandom();
             fileName = new BigInteger(130, random).toString(32) +
                     extension;
+            File file = new File(filePath);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
             FileUtils.copyURLToFile(url, new File(filePath + File.separator + fileName));
             urlType.put(type.getPath() + "/" + fileName, type.toString());
             status = "success";
