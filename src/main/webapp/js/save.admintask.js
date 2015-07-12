@@ -15,8 +15,8 @@ $(document).ready(function () {
         options.repeat = 'REPEAT_DISABLE';//
         options.repeat_count = 2;//
 
-        options.start_time = $("input[name=start_time][type='radio']:checked").val();
-        options.work_time = $("input[name=work_time][type='radio']:checked").val();
+        options.start_time = 'INTERVAL';
+        options.work_time = 'ROUND_DAILY';
 
         var content_type = [];
         $("input[name=content_type]:checked").each(function () {
@@ -27,7 +27,7 @@ $(document).ready(function () {
 
         options.hashtags = $("input[name=wordsinput]").val();
 
-        options.signature = 'fasdfads';//
+        options.signature = '';//
 
         //group
         options.interval_min = $("input[name=interval_min][type='number']").val();

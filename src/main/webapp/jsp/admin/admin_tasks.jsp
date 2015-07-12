@@ -63,7 +63,6 @@
 
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom-datatable.js"></script>
 
 </head>
 
@@ -71,15 +70,7 @@
 <jsp:include page="../pagecontent/header.jsp"/>
 <jsp:include page="../pagecontent/sidebar.jsp"/>
 
-
-<!-- container section start -->
-<%--<c:set var="mysrc" value="${pageContext.request.contextPath}/img/deleted.png" />--%>
-
-
 <section id="container" class="">
-    <!--main content start-->
-    <!--main content start-->
-
 
     <section id="main-content">
         <section class="wrapper">
@@ -184,9 +175,10 @@
                 "buttonText": "columns <img src=\"/img/caaret.png\"/>",
             },
 
-            "columnDefs": [
-                {
-                    "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
+            "columnDefs": [{
+                "bVisible": false, "aTargets": [2]
+            }, {
+                "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
 
                     var codeChecked =
                             '<div class="onoffswitch"> <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch' + rowData[5] + '" onchange = "change(this,\'' + rowData[5] + '\' )"  checked >' +
@@ -196,54 +188,35 @@
                             '<div class="onoffswitch"> <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch' + rowData[5] + '" onchange = "change(this,\'' + rowData[5] + '\' )"   >' +
                             '<label class="onoffswitch-label" for="myonoffswitch' + rowData[5] + '" > <span class="onoffswitch-inner"></span> <span class="onoffswitch-switch"></span> </label> </div>';
 
-
                     if (cellData.valueOf() == 'running'.valueOf()) {
-
                         $(td).html(codeChecked);
                     } else {
                         $(td).html(codeNonChecked);
                     }
-
                 }
-
-                },
-
-                {
-                    "aTargets": [5], "createdCell": function (td, cellData, rowData, row, col) {
+            }, {
+                "aTargets": [5], "createdCell": function (td, cellData, rowData, row, col) {
                     $(td).html('<div class="btn-group"><a class="btn btn-danger" onclick="deleteTask(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
                 }
-                },
-
-                {
-                    "aTargets": [1], "createdCell": function (td, cellData, rowData, row, col) {
+            }, {
+                "aTargets": [1], "createdCell": function (td, cellData, rowData, row, col) {
                     $(td).html('<a class="btn btn-default" onclick="PopUpShow(' + rowData[5] + ')"><span class="fa fa-users"></span></a>');
                 }
-                },
-
-                {
-                    "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
+            }, {
+                "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
                     $(td).html(parseAttachment(cellData));
                 }
-                },
-
-                {
-                    "width": "30%", "targets": [0, 3]
-                },
-
-                {
-                    "class": "dt-body-left", "targets": [0]
-                },
-
-                {
-                    "class": "dt-body-center", "targets": [1, 4, 5]
-                }
-
-            ]
-
+            }, {
+                "width": "30%", "targets": [0, 3]
+            }, {
+                "width": "5px", "targets": [5]
+            }, {
+                "class": "dt-body-left", "targets": [0]
+            }, {
+                "class": "dt-body-center", "targets": [1, 4]
+            }]
         });
-
     });
-
 
     var taskToSendId;
 
@@ -276,7 +249,6 @@
         }
     }
 
-
     function PopUpHide() {
         sendSelectedField(taskToSendId);
         $("#popup_bind").hide();
@@ -286,12 +258,10 @@
         $("#popup_bind").hide();
     }
 
-
     function sendSelectedField(id) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open("POST", "/task?action=bind&id=" + id);
         var selectionCategory = document.getElementById("tokenize_category").options;
-
 
         var categories = [];
         for (var i = 0; i < selectionCategory.length; i++) {
@@ -316,7 +286,6 @@
 
     function change(obj, id) {
 
-
         var toState = 'STOPPED';
         if (obj.checked == true) {
             toState = 'running';
@@ -338,9 +307,8 @@
     var dataTables_filter_input = $(".dataTables_filter").find("input");
     dataTables_filter_input.attr("class", "form-control");
     dataTables_filter_input.attr("style", "width: 500px")
-    $(".dataTables_filter").attr("hidden", "");
-    $(".dataTables_length").attr("hidden", "");
-
+//    $(".dataTables_filter").attr("hidden", "");
+//    $(".dataTables_length").attr("hidden", "");
 
     function deleteTask(id) {
         var xmlhttp = new XMLHttpRequest();
@@ -362,11 +330,9 @@
         }
         return cell;
     }
-    ;
 
     function parseDoc(arg) {
-        var arg = arg.trim();
-        switch (arg) {
+        switch (arg.trim()) {
             case "PHOTO":
                 return '<img src=\"/img/icons/jpg-icon.png" style="width: 30px; height: 30px">';
             case "VIDEO":
@@ -376,23 +342,24 @@
             case "TEXT":
                 return '<img src=\"/img/icons/txt-icon.png" style="width: 30px; height: 30px">';
             case "DOC" :
-                return '<img src=\"/img/restIcos/doc.jpg" style="width: 30px; height: 30px">';
+                return '<img src=\"/img/icons/doc-icon.png" style="width: 30px; height: 30px">';
             case "HASH TAG" :
-                return '<img src=\"/img/restIcos/hashtag.jpg" style="width: 30px; height: 30px">';
+                return '<img src=\"/img/icons/hash-icon.png" style="width: 30px; height: 30px">';
             case "LINKS" :
-                return '<img src=\"/img/restIcos/links.jpg" style="width: 30px; height: 30px">';
+                return '<img src=\"/img/icons/link-icon.png" style="width: 30px; height: 30px">';
             case "PAGES" :
-                return '<img src=\"/img/restIcos/pages.jpg" style="width: 30px; height: 30px">';
+                return '<img src=\"/img/icons/page-icon.png" style="width: 30px; height: 30px">';
             case "REPOST" :
-                return '<img src=\"/img/restIcos/repost.jpg" style="width: 30px; height: 30px">';
+                return '<img src=\"/img/icons/repost-icon.png" style="width: 30px; height: 30px">';
         }
         return "";
     }
-    ;
+
 </script>
 
 <style>
     .onoffswitch {
+        margin-left: 53px;
         position: relative;
         width: 90px;
         -webkit-user-select: none;
@@ -429,7 +396,7 @@
         height: 30px;
         padding: 0;
         line-height: 30px;
-        font-size: 14px;
+        font-size: 13px;
         color: white;
         font-family: Trebuchet, Arial, sans-serif;
         font-weight: bold;
@@ -478,6 +445,5 @@
         right: 0px;
     }
 </style>
-
 </body>
 </html>
