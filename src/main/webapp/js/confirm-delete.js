@@ -1,7 +1,8 @@
 function deleteConfirmCreatedPost(id) {
-    $('#mod-delete').addClass('mod-show');
-    $('#delete_butt').click(function () {
-        $('#mod-delete').removeClass('mod-show');
+
+    constructor(confirm, cancel);
+
+    function confirm() {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('GET', '/post?action=remove&id=' + id, true);
         xmlhttp.onreadystatechange = function () {
@@ -13,24 +14,25 @@ function deleteConfirmCreatedPost(id) {
                         .remove()
                         .draw();
                 }
+                destroy(confirm, cancel);
             }
         };
         xmlhttp.send(null);
-    });
-    $('#cancel_butt').click(function () {
-        $('#mod-delete').removeClass('mod-show');
-    });
+    }
+
+    function cancel() {
+        destroy(confirm, cancel);
+    }
+
 }
 
 function deleteConfirmQueuedPost(id) {
-    $('#mod-delete').addClass('mod-show');
-    $('#delete_butt').click(function () {
-        $('#mod-delete').removeClass('mod-show');
+
+    constructor(confirm, cancel);
+
+    function confirm() {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open("POST", "http://localhost:8080/post?action=deletenewpost", true);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send("newPostId=" + id);
-
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4) {
                 var response = JSON.parse(xmlhttp.responseText);
@@ -38,18 +40,22 @@ function deleteConfirmQueuedPost(id) {
                 if (response.status === 'success') {
                     table.fnStandingRedraw();
                 }
+                destroy(confirm, cancel);
             }
-        }
-    });
-    $('#cancel_butt').click(function () {
-        $('#mod-delete').removeClass('mod-show');
-    });
+        };
+        xmlhttp.send("newPostId=" + id);
+    }
+
+    function cancel() {
+        destroy(confirm, cancel);
+    }
 }
 
 function deleteConfirmOwner(id) {
-    $('#mod-delete').addClass('mod-show');
-    $('#delete_butt').click(function () {
-        $('#mod-delete').removeClass('mod-show');
+
+    constructor(confirm, cancel);
+
+    function confirm() {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('GET', '/owner?action=remove&id=' + id, true);
         xmlhttp.onreadystatechange = function () {
@@ -60,19 +66,23 @@ function deleteConfirmOwner(id) {
                     $('#ownersTable').DataTable().row($(this).parents('tr'))
                         .remove().draw(false);
                 }
+                destroy(confirm, cancel);
             }
         };
-        xmlhttp.send(null);
-    });
-    $('#cancel_butt').click(function () {
-        $('#mod-delete').removeClass('mod-show');
-    });
+        xmlhttp.send();
+    }
+
+    function cancel() {
+        destroy(confirm, cancel);
+    }
+
 }
 
 function deleteConfirmPosted(id) {
-    $('#mod-delete').addClass('mod-show');
-    $('#delete_butt').click(function () {
-        $('#mod-delete').removeClass('mod-show');
+
+    constructor(confirm, cancel);
+
+    function confirm() {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open("GET", "http://localhost:8080//post?action=deleteNewPost&post_id=" + id, true);
         xmlhttp.onreadystatechange = function () {
@@ -82,19 +92,23 @@ function deleteConfirmPosted(id) {
                 if (response.status === 'success') {
                     $('#postsTable').DataTable().row($(this).parents('tr')).remove().draw(false);
                 }
+                destroy(confirm, cancel);
             }
-        }
+        };
         xmlhttp.send();
-    });
-    $('#cancel_butt').click(function () {
-        $('#mod-delete').removeClass('mod-show');
-    });
+    }
+
+    function cancel() {
+        destroy(confirm, cancel);
+    }
+
 }
 
 function deleteConfirmQueued(id) {
-    $('#mod-delete').addClass('mod-show');
-    $('#delete_butt').click(function () {
-        $('#mod-delete').removeClass('mod-show');
+
+    constructor(confirm, cancel);
+
+    function confirm() {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open("GET", "http://localhost:8080//post?action=deleteNewPost&post_id=" + id, true);
         xmlhttp.onreadystatechange = function () {
@@ -104,19 +118,22 @@ function deleteConfirmQueued(id) {
                 if (response.status === 'success') {
                     $('#queuedTable').DataTable().row($(this).parents('tr')).remove().draw(false);
                 }
+                destroy(confirm, cancel);
             }
-        }
+        };
         xmlhttp.send();
-    });
-    $('#cancel_butt').click(function () {
-        $('#mod-delete').removeClass('mod-show');
-    });
+    }
+
+    function cancel() {
+        destroy(confirm, cancel);
+    }
 }
 
 function deleteConfirmProfile(id) {
-    $('#mod-delete').addClass('mod-show');
-    $('#delete_butt').click(function () {
-        $('#mod-delete').removeClass('mod-show');
+
+    constructor(confirm, cancel);
+
+    function confirm() {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('GET', '/accounts?action=remove&id=' + id, true);
         xmlhttp.onreadystatechange = function () {
@@ -127,13 +144,15 @@ function deleteConfirmProfile(id) {
                     $('#accountsTable').DataTable().row($(this).parents('tr'))
                         .remove().draw(false);
                 }
+                destroy(confirm, cancel);
             }
         };
-        xmlhttp.send(null);
-    });
-    $('#cancel_butt').click(function () {
-        $('#mod-delete').removeClass('mod-show');
-    });
+        xmlhttp.send();
+    }
+
+    function cancel() {
+        destroy(confirm, cancel);
+    }
 }
 
 function deleteConfirmCategory(id) {
@@ -160,6 +179,7 @@ function deleteConfirmCategory(id) {
     }
 
 }
+
 
 // Додаємо привязку та показуємо вікно
 function constructor(confirm, cancel) {
