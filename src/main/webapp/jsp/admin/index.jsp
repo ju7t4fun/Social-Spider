@@ -90,10 +90,10 @@
                                     <div class="panel-body">
                                         <div class="row" style="margin-left: 270px">
                                             <div class="col-lg-3">
-                                                <input id="fromDate" class="form-control" type="date">
+                                                <input id="fromDate" class="form-control" type="date" onchange="changeDate()">
                                             </div>
                                             <div class="col-lg-3">
-                                                <input id="toDate" class="form-control" type="date">
+                                                <input id="toDate" class="form-control" type="date" onchange="changeDate()">
                                             </div>
                                             <input class="btn btn-default" type="button" onclick="redrawChart()"
                                                    value="Show">
@@ -312,6 +312,16 @@
 <%--Опрацювання діаграм відвідування--%>
 <script>
 
+    function changeDate() {
+        $('#fromDate').attr("min", "2015-07-01");
+        $('#fromDate').attr("max", $('#toDate').attr("value"));
+//        $('#fromDate').attr("value", response.date_from);
+
+        $('#toDate').attr("min", $('#fromDate').attr("value"));
+//        $('#toDate').attr("max", response.date_max);
+//        $('#toDate').attr("value", response.date_to);
+    }
+
     function drawLineDiagram(data) {
         $('#line-diagram').highcharts('StockChart', {
             rangeSelector: {
@@ -481,10 +491,6 @@
                     toastrNotification(response.status, response.msg);
                 else {
                     drawChart(response);
-                    $('#fromDate').attr("max", response.max);
-                    $('#fromDate').attr("value", response.date_from);
-                    $('#toDate').attr("max", response.max);
-                    $('#toDate').attr("value", response.date_to);
                 }
             }
         };
@@ -495,7 +501,7 @@
         var dateFrom = document.getElementById("fromDate").value;
         var dateTo = document.getElementById("toDate").value;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('GET', '/owner?action=stat&id=' + ownerId + '&date_from=' + dateFrom + "&date_to=" + dateTo, true);
+        xmlhttp.open('GET', '/admin?action=stats&date_from=' + dateFrom + "&date_to=" + dateTo, true);
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4) {
                 var response = JSON.parse(xmlhttp.responseText);
@@ -513,6 +519,13 @@
         drawGenderDiagram(response.bar);
         drawCountryDiagram(response.country);
         drawCityDiagram(response.city);
+        $('#fromDate').attr("min", "2015-07-01");
+        $('#fromDate').attr("max", response.date_to);
+        $('#fromDate').attr("value", response.date_from);
+
+        $('#toDate').attr("min", response.date_from);
+        $('#toDate').attr("max", response.date_max);
+        $('#toDate').attr("value", response.date_to);
     }
 
 </script>

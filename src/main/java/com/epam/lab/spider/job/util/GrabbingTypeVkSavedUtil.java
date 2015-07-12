@@ -80,6 +80,14 @@ public class GrabbingTypeVkSavedUtil {
         List<Post> postsToPosting = new ArrayList<>();
         SortedSet<Integer> sortedAlreadyAddSet = new TreeSet<>();
         sortedAlreadyAddSet.addAll(alreadyAddSet);
+        Integer lastPostId = null;
+        if(!sortedAlreadyAddSet.isEmpty()){
+            try {
+                lastPostId = sortedAlreadyAddSet.last();
+            }catch (NoSuchElementException x){
+                LOG.error("Помилка логіки.");
+            }
+        }
         List<Post> grabbedPosts = null;
         int localCount = sortedAlreadyAddSet.isEmpty()?countOfPosts:50;
         boolean badExecution = false;
@@ -90,7 +98,7 @@ public class GrabbingTypeVkSavedUtil {
                     Thread.sleep(400);
                     badExecution = false;
                 }
-                grabbedPosts = vk.execute().getNewPostFromWall(owner.getVkId(), localCount, sortedAlreadyAddSet.last(), null);
+                grabbedPosts = vk.execute().getNewPostFromWall(owner.getVkId(), localCount, lastPostId, null);
             } catch (VKException x) {
                 if (x.getExceptionCode() == VKException.VK_EXECUTE_RUNTIME_ERROR) {
                     badExecution = false;

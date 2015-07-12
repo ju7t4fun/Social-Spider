@@ -20,7 +20,7 @@ public class EventDAOImp extends BaseDAO implements EventDAO {
 
     private static final String SQL_INSERT_QUERY = "INSERT INTO event (user_id, type, title, message, shown)" +
             "VALUES (?, ?, ?, ?, ?)";
-    private static final String SQL_UPDATE_QUERY = "UPDATE event SET user_id = ?, type = ?, title = ? message = ?, " +
+    private static final String SQL_UPDATE_QUERY = "UPDATE event SET user_id = ?, type = ?, title = ?, message = ?, " +
             "shown = ?, time = ? WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "DELETE FROM event WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM event";
@@ -57,7 +57,7 @@ public class EventDAOImp extends BaseDAO implements EventDAO {
                 event.getTitle(),
                 event.getMessage(),
                 event.getShown(),
-                event.getTitle(),
+                event.getTime(),
                 id);
     }
 

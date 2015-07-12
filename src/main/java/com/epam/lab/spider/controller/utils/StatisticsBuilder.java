@@ -13,6 +13,8 @@ import java.util.*;
  */
 public class StatisticsBuilder {
 
+    private static long OFFSET = 10800000;
+
     private static final String[] categories = new String[]{"12-18", "18-21", "21-24", "24-27", "27-30", "30-35",
             "35-45", "45-100"};
     private List<Period> periods;
@@ -36,11 +38,11 @@ public class StatisticsBuilder {
                 try {
                     JSONArray row = new JSONArray();
                     Date date = format.parse(period.getDay());
-                    row.put(date.getTime());
+                    row.put(date.getTime() + OFFSET);
                     row.put(period.getViews());
                     views.put(row);
                     row = new JSONArray();
-                    row.put(date.getTime());
+                    row.put(date.getTime() + OFFSET);
                     row.put(period.getVisitors());
                     visitors.put(row);
                 } catch (ParseException ignored) {

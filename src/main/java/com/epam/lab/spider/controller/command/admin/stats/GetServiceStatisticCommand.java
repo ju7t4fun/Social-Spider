@@ -71,14 +71,14 @@ public class GetServiceStatisticCommand implements ActionCommand {
         while (cur <= end) {
             JSONArray row = new JSONArray();
             if (statistics.containsKey(cur)) {
-                row.put(cur);
+                row.put(cur + 10800000);
                 row.put(statistics.get(cur));
             } else {
-                row.put(cur);
+                row.put(cur + 10800000);
                 row.put(0);
             }
             array.put(row);
-            cur = cur + 360000;
+            cur = cur + 3600000;
         }
         return array;
     }

@@ -68,7 +68,7 @@ public class RegisterCommand implements ActionCommand {
             user.setSurname(surname);
             user.setPassword(new HashMD5().hash(password));
             user.setRole(User.Role.USER);
-            user.setAvatarURL("http://localhost:8080/upload/images/default-avatar.jpg");
+            user.setAvatarURL("http://localhost:8080/img/avatarDefault.png");
             userService.insert(user);
 
             // Якщо зареєстувався через вк привязати user_id до vk_id

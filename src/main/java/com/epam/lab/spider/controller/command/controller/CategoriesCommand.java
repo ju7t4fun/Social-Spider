@@ -26,7 +26,6 @@ public class CategoriesCommand implements ActionCommand {
             e.printStackTrace();
         }
         JSONArray jsonArray = new JSONArray(listCategory);
-        System.out.println(jsonArray);
         response.getWriter().print(jsonArray);
     }
 }

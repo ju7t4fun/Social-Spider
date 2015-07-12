@@ -56,7 +56,12 @@ public class UploadFileCommand implements ActionCommand {
                             SecureRandom random = new SecureRandom();
                             fileName = new BigInteger(130, random).toString(32) +
                                     FileType.parseFileFormat(fileName);
+                            File file = new File(filePath);
+                            if (!file.exists()) {
+                                file.mkdirs();
+                            }
                             item.write(new File(filePath + File.separator + fileName));
+
                             urlType.put(type.getPath() + "/" + fileName, type.toString());
                             //filesUrl.add(type.getPath() + "/" + fileName);
                             System.out.println("File uploaded successfully");
@@ -67,7 +72,8 @@ public class UploadFileCommand implements ActionCommand {
                     }
                 }
             } else {
-                jsonError = UTF8.encoding(bundle.getString("notification.request.error"));;
+                jsonError = UTF8.encoding(bundle.getString("notification.request.error"));
+                ;
             }
         } catch (Exception e) {
             e.printStackTrace();

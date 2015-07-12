@@ -83,10 +83,11 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-tasks"></i> Task</h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="index.html"><l:resource key="home"/></a></li>
-                        <li><i class="fa fa-desktop"></i><l:resource key="task"/></li>
-                        <li><i class="fa fa-list-alt"></i><l:resource key="addnewtask"/></li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-rss"></i>Feed</li>
+                        <li><i class="fa fa-plus-circle"></i>Add</li>
                     </ol>
                 </div>
             </div>
@@ -97,7 +98,7 @@
                     <div class="panel-group m-bot20" id="accordion" style="width:1100px;">
                         <div class="panel panel-default j4f-fix">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
+                                <h4 class="panel-title j4f-fix-title-background">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseOne">
                                         Step #1 | Basic settings
@@ -122,31 +123,44 @@
                                     <div class="col-lg-6">
                                         <h4><l:resource key="filter"/></h4>
                                         <br>
-                                        <span style="width:80px;display: inline-block"><l:resource key="likes"/> </span>
-                                        <input type="number" name="likes"
-                                               style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;"
-                                               value="60"/>
-                                        <br>
-                                        <span style="width:80px;display: inline-block"> <l:resource
-                                                key="reposts"/> </span>
-                                        <input type="number" name="reposts"
-                                               style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;"
-                                               value="10"/>
-                                        <br>
-                                        <span style="width:80px;display: inline-block"> <l:resource
-                                                key="comments"/> </span>
-                                        <input type="number" name="comments"
-                                               style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;"
-                                               value="0"/>
-                                        <br>
+                                        <table class="col-lg-6">
+                                            <tr>
+                                                <td style="text-align: left"><span style="width:80px;
+                                                    display:inline-block">
+                                                <l:resource key="likes"/></span></td>
+                                                <td><input id="likes" class="form-control" type="number" name="likes"
+                                                           min="0"
+                                                           max="1000" style="margin-left:15px;width:100px;"
+                                                           value="60"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: left"><span style="width:80px;
+                                                        display: inline-block; margin-top: 5px">
+                                                    <l:resource key="reposts"/> </span></td>
+                                                <td><input id="reposts" class="form-control" type="number"
+                                                           name="reposts" min="0"
+                                                           max="1000"
+                                                           style="margin-left:15px;width:100px; margin-top: 5px"
+                                                           value="10"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: left"><span style="width:80px;
+                                                        display: inline-block; margin-top: 5px">
+                                                    <l:resource key="comments"/> </span></td>
+                                                <td><input id="comments" class="form-control" type="number"
+                                                           name="comments" min="0"
+                                                           max="1000"
+                                                           style="margin-left:15px;width:100px; margin-top: 5px"
+                                                           value="0"/></td>
+                                            </tr>
+                                        </table>
                                     </div>
 
                                     <div class="col-lg-7">
                                         <h4><l:resource key="start.time"/></h4>
-                                        <input type="radio" name="start_time" value="INTERVAL" checked> <l:resource
-                                            key="interval"/>
-                                        <input type="radio" name="start_time" value="SCHEDULE" style="margin-left:15px;"
-                                               disabled> <l:resource key="schedule"/>
+
                                         <div class="interval_number_group">
                                             <br>
                                             <br>
@@ -197,14 +211,6 @@
                                             });
                                         </script>
 
-                                        <br>
-                                        <h4><l:resource key="work.time"/></h4>
-                                        <input type="radio" name="work_time" value="ROUND_DAILY" checked> <l:resource
-                                            key="around.the.clock"/>
-                                        <input type="radio" name="work_time" value="DAY_PERIOD"
-                                               style="margin-left:15px;" disabled> <l:resource key="select.time"/>
-
-                                        <br>
                                         <br>
                                         <%--[TIME_SELECT]--%>
                                         <h4><l:resource key="post.delay"/></h4>
@@ -260,7 +266,7 @@
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
+                                <h4 class="panel-title j4f-fix-title-background">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseTwo">
                                         Step #2 | Advanced settings
@@ -317,10 +323,28 @@
             </div>
         </section>
     </section>
-    <!--main content end-->
 </section>
-<!-- container section end -->
 <script>
+
+    $("#likes").keyup(function (data) {
+        var v = this.value;
+        if ($.isNumeric(v) === false) {
+            this.value = this.value.slice(0, -1);
+        }
+    });
+    $("#reposts").keyup(function (data) {
+        var v = this.value;
+        if ($.isNumeric(v) === false) {
+            this.value = this.value.slice(0, -1);
+        }
+    });
+    $("#comments").keyup(function (data) {
+        var v = this.value;
+        if ($.isNumeric(v) === false) {
+            this.value = this.value.slice(0, -1);
+        }
+    });
+
     $(document).ready(function () {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('GET', '/owner?action=getOwnerWall', true);
@@ -335,8 +359,7 @@
                     list.append('<option value="' + response.owner[i].id + '">' + response.owner[i].name + '</option>');
                 }
             }
-            ;
-        }
+        };
         xmlhttp.send();
     });
 </script>
@@ -356,7 +379,6 @@
 <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
 <script src="${pageContext.request.contextPath}/js/form-component.js"></script>
 <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
-
 
 </body>
 </html>
