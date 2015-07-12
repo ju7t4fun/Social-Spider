@@ -12,8 +12,8 @@ import com.epam.lab.spider.job.util.*;
 import com.epam.lab.spider.model.db.entity.*;
 
 
-import com.epam.lab.spider.model.db.entity.Attachment;
 import com.epam.lab.spider.model.db.entity.Post;
+import com.epam.lab.spider.model.db.factory.SynchronizedDataFactoryImpl;
 import com.epam.lab.spider.model.db.service.*;
 import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
 import com.epam.lab.spider.model.vk.*;
@@ -24,6 +24,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
 
+import static com.epam.lab.spider.model.db.service.TaskSynchronizedNewDataService.getSynchronizedDataFactory;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
@@ -154,7 +155,7 @@ public class TaskJob implements Job {
                             postByWallMap.put(wall, list);
                         }catch (FindingEmptyResultException x){
                             // TODO: REFACTOR THIS
-                            syncMap.put(wall,new SynchronizedData(task,wall,x.getOffset(),x.getVkId()));
+                            syncMap.put(wall, getSynchronizedDataFactory().createSynchronizedData(task, wall, x.getOffset(), x.getVkId()));
                         }catch (WallAlreadyStopped x){
                             LOG.debug("Wall already stopped.");
                         }catch (WallStopException x){
@@ -163,14 +164,14 @@ public class TaskJob implements Job {
                             LOG.info(message);
                             EventLogger eventLogger = EventLogger.getLogger(task.getUserId());
                             eventLogger.warn(title, message);
-                            syncMap.put(wall,new SynchronizedData(task,wall,-1,-1));
+                            syncMap.put(wall, getSynchronizedDataFactory().createSynchronizedData(task, wall, -1, -1));
                             //postByWallMap.put(wall, new ArrayList<com.epam.lab.spider.model.vk.Post>());
                         }
                     }
                 }
                 List<com.epam.lab.spider.model.vk.Post> postToRepost = new ArrayList<>();
                 {
-                    if (task.getGrabbingMode() == Task.GrabbingMode.TOTAL) {
+                    if (task.getGrabbingMode() == Task.GrabbingMode.PER_GROUP) {
                         for (Map.Entry<Wall, List<com.epam.lab.spider.model.vk.Post>> entity : postByWallMap.entrySet()) {
                             Wall wall = entity.getKey();
                             List<com.epam.lab.spider.model.vk.Post> postsPrepareToPosting = entity.getValue();
@@ -200,7 +201,7 @@ public class TaskJob implements Job {
                                     }
                                     if(vkPost instanceof PostOffsetDecorator){
                                         PostOffsetDecorator decoratedPost = (PostOffsetDecorator) vkPost;
-                                        SynchronizedData sync = new SynchronizedData(task,wall,decoratedPost);
+                                        SynchronizedData sync = getSynchronizedDataFactory().createSynchronizedData(task, wall, decoratedPost);
                                         switch (task.getGrabbingType()) {
                                             case BEGIN:
                                             case END:
@@ -223,10 +224,11 @@ public class TaskJob implements Job {
                             }
                             blockMap.put(entity.getKey(), addedToProcessingBlocks);
                         }
-                    } else if (task.getGrabbingMode() == Task.GrabbingMode.PER_GROUP) {
+                    } else if (task.getGrabbingMode() == Task.GrabbingMode.TOTAL) {
                         Random random = new Random();
                         int currentPostCount = 0;
                         while (currentPostCount < task.getPostCount() && !postByWallMap.isEmpty()) {
+                            //випадковим чимном вибираємо кошик, з якого буде братись пост
                             int basket = random.nextInt(postByWallMap.size());
 
                             // перебір мапи
@@ -242,8 +244,12 @@ public class TaskJob implements Job {
                                 postByWallMap.remove(currentEntry.getKey());
                                 continue;
                             }
+                            int postIndex;
+                            boolean isRandomPostIndex = false;
                             // вибір випадкового поста з корзини
-                            int postIndex = random.nextInt(basketOfPreparePost.size());
+                            if(isRandomPostIndex)postIndex = random.nextInt(basketOfPreparePost.size());
+                            // вибір першого поста з корзини
+                            else postIndex =  0;
                             // витягаємо та видаляємо з корзини вибраний пост
                             com.epam.lab.spider.model.vk.Post vkPost = basketOfPreparePost.remove(postIndex);
                             try {
@@ -271,7 +277,7 @@ public class TaskJob implements Job {
                                 }
                                 if(vkPost instanceof PostOffsetDecorator){
                                     PostOffsetDecorator decoratedPost = (PostOffsetDecorator) vkPost;
-                                    SynchronizedData sync = new SynchronizedData(task,wall,decoratedPost);
+                                    SynchronizedData sync = getSynchronizedDataFactory().createSynchronizedData(task,wall,decoratedPost);
                                     SynchronizedData oldSync = syncMap.get(wall);
                                     if(oldSync == null ){
                                         syncMap.put(wall,sync);

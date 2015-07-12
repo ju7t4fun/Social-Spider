@@ -5,10 +5,7 @@ import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.job.exception.FindingEmptyResultException;
 import com.epam.lab.spider.job.exception.WallAlreadyStopped;
 import com.epam.lab.spider.job.exception.WallStopException;
-import com.epam.lab.spider.model.db.entity.Filter;
-import com.epam.lab.spider.model.db.entity.Owner;
-import com.epam.lab.spider.model.db.entity.SynchronizedData;
-import com.epam.lab.spider.model.db.entity.Task;
+import com.epam.lab.spider.model.db.entity.*;
 import com.epam.lab.spider.model.vk.Post;
 import com.epam.lab.spider.model.vk.PostOffsetDecorator;
 import org.apache.log4j.Logger;
@@ -21,7 +18,7 @@ import java.util.Set;
  * Created by hell-engine on 7/10/2015.
  */
 public class GrabbingTypeVkSavedSyncUtil {
-    public static final Logger LOG = Logger.getLogger(GrabbingTypeServerUtil.class);
+    public static final Logger LOG = Logger.getLogger(GrabbingTypeVkSavedSyncUtil.class);
     public static List<Post> grabbing(Task.GrabbingType type, Task.ContentType contentType,Owner owner, Vkontakte vk, Filter filter, SynchronizedData sync, Set<Integer> alreadyAddSet, int countOfPosts) throws InterruptedException, VKException, WallStopException, WallAlreadyStopped, FindingEmptyResultException {
         if(sync!=null){
             if(sync.getPostOffset() == -1 || sync.getPostVkId() == -1){
@@ -67,7 +64,8 @@ public class GrabbingTypeVkSavedSyncUtil {
                 LOG.info("Complete grabbing of post at owner#" + owner.getVkId() + " loops count " + loopsCount + ".");
                 break;
             } else {
-                PostOffsetDecorator lastPost = postsToPosting.get(postsToPosting.size() - 1);
+                LOG.info("Need MOREEE validated post! Owner#" + owner.getVkId() + " GrabbedResponseSize: " + grabbedPosts.size() + ".");
+                PostOffsetDecorator lastPost = grabbedPosts.get(grabbedPosts.size() - 1);
                 lastVkId = lastPost.getId();
                 lastOffset = lastPost.getOffset();
             }
