@@ -146,7 +146,7 @@
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="/"><l:resource key="admin"/></a></li>
-                        <li><i class="fa fa-desktop"></i><l:resource key="edit"/></li>
+                        <li><i class="fa fa-edit"></i><l:resource key="edit"/></li>
                         <li><i class="fa fa-list-alt"></i><l:resource key="categories"/></li>
                     </ol>
                 </div>
@@ -235,8 +235,8 @@
                                        placeholder="Category name" >
                             </div>
                             <div>
-                                <l:resource key="category.name"><input type="text" name="category" class="form-control" id="catNameEdit"
-                                       placeholder=""></l:resource>
+<l:resource key="category.name"><input type="text" name="category" class="form-control" id="catNameEdit"
+                                       placeholder="" style="width:770px; margin-left: 15px"></l:resource>
                             </div>
 
                             <div id="compFormEdit" class="container kv-main" style="width:800px;  margin-top:20px;">
@@ -251,8 +251,8 @@
                                 </script>
                             </div>
 
-                            <div style="position: absolute; top: 420px;right: 2% ">
-                                <button type="submit" class="btn btn-primary"><l:resource key="confirm"/></button>
+                            <div style="float: right; margin-top: 10px">
+                                <a id="edit_category_btn" class="btn btn-primary"><l:resource key="confirm"/></a>
                             </div>
                         </form>
                     </div>

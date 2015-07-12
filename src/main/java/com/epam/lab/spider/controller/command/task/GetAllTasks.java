@@ -36,14 +36,14 @@ public class GetAllTasks implements ActionCommand {
         User user = null;
 
         try {
-            user = (User)request.getSession().getAttribute("user");
+            user = (User) request.getSession().getAttribute("user");
         } catch (Exception ex) {
             ex.printStackTrace();
             return;
         }
 
         String taskType = request.getParameter("taskType");
-        if (user.getRole() == User.Role.ADMIN && taskType!=null && taskType.equals("forAdmin")) {
+        if (user.getRole() == User.Role.ADMIN && taskType != null && taskType.equals("forAdmin")) {
             tasks = service.getAllLimitedAdmin(start, size);
             tasksCount = service.getCountAdmin();
         } else {
@@ -72,8 +72,7 @@ public class GetAllTasks implements ActionCommand {
                     StringBuilder sourceStringBuilder = new StringBuilder();
                     List<Wall> sourceWalls = wallService.getSourceByTaskId(task.getId());
                     for (Wall wall : sourceWalls) {
-                        String vkOwnerId =
-                                wall.getOwner().getName().toString();
+                        String vkOwnerId = wall.getOwner().getName();
                         sourceStringBuilder.append(vkOwnerId).append(", ");
                     }
                     String source = "";
@@ -117,7 +116,9 @@ public class GetAllTasks implements ActionCommand {
                     row.put(task.getId());
 
                     array.put(row);
-                } catch (Exception ex) {ex.printStackTrace();}
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
 
                 System.out.println(row.toString());
 
