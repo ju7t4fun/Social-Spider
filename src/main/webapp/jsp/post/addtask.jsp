@@ -28,6 +28,15 @@
   <!-- font icon -->
   <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet" />
   <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet" />
+  <!-- Tokenize styles -->
+  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css" />
+  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/just4fun.fix.css" />
+  <!-- Range Slider styles -->
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/ionRangeSlider/css/normalize.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/ionRangeSlider/css/ion.rangeSlider.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/ionRangeSlider/css/ion.rangeSlider.skinHTML5.css" />
+  <!-- radios-for-buttons -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
   <!-- Custom styles -->
   <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
@@ -40,15 +49,7 @@
   <script src="${pageContext.request.contextPath}/assets/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
   <script src="${pageContext.request.contextPath}/js/j4f-number-cases.js"></script>
 
-  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css" />
-  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/just4fun.fix.css" />
 
-  <!-- Range Slider styles -->
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/ionRangeSlider/css/normalize.css" />
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/ionRangeSlider/css/ion.rangeSlider.css" />
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/ionRangeSlider/css/ion.rangeSlider.skinHTML5.css" />
-  <!-- radios-for-buttons -->
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
   <!--[if lt IE 9]>
@@ -101,7 +102,7 @@
           <div class="panel-group m-bot20" id="accordion" style="width:1100px;">
             <div class="panel panel-default j4f-fix">
               <div class="panel-heading">
-                <h4 class="panel-title">
+                <h4 class="panel-title j4f-fix-title-background">
                   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
                     <l:resource key="addtask.step1"/>
                   </a>
@@ -161,7 +162,8 @@
                             <l:resource key="grabbingModeSummaryCount"/>
                             <%--<l:resource key="grabbingModeSummaryGrabbed"><span></span></l:resource><span>/</span>--%>
                             <%--<l:resource key="grabbingModeSummaryPosted"><span></span></l:resource><span> : </span>--%>
-                            <span id="post-count-to-grabbing-mode-1"></span><span>/</span>
+                            <span id="post-count-to-grabbing-mode-1"></span>
+                            <span>/</span>
                             <span id="post-count-to-posting-mode-1"></span><span>.</span>
                           </div>
                         </label>
@@ -177,7 +179,8 @@
                             <l:resource key="grabbingModeSummaryCount"/>
                             <%--<l:resource key="grabbingModeSummaryGrabbed"><span></span></l:resource><span>/</span>--%>
                             <%--<l:resource key="grabbingModeSummaryPosted"><span></span></l:resource><span> : </span>--%>
-                            <span id="post-count-to-grabbing-mode-2"></span><span>/</span>
+                            <span id="post-count-to-grabbing-mode-2"></span>
+                            <span>/</span>
                             <span id="post-count-to-posting-mode-2"></span><span>.</span>
                           </div>
                         </label>
@@ -318,7 +321,7 @@
             </div>
             <div class="panel panel-default">
               <div class="panel-heading">
-                <h4 class="panel-title">
+                <h4 class="panel-title j4f-fix-title-background">
                   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
                     <l:resource key="addtask.step2"/>
                   </a>
@@ -505,7 +508,7 @@
             </div>
             <div class="panel panel-default">
               <div class="panel-heading">
-                <h4 class="panel-title">
+                <h4 class="panel-title j4f-fix-title-background">
                   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
                     <l:resource key="addtask.step3"/>
                   </a>
@@ -543,7 +546,7 @@
             </div>
             <div class="panel panel-default" hidden>
               <div class="panel-heading">
-                <h4 class="panel-title">
+                <h4 class="panel-title j4f-fix-title-background">
                   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
                     <l:resource key="addtask.step4"/>
                     <div class="col-lg-6">
