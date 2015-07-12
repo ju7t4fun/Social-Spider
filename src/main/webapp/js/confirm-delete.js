@@ -69,7 +69,7 @@ function deleteConfirmOwner(id) {
                 destroy(confirm, cancel);
             }
         };
-        xmlhttp.send();
+        xmlhttp.send(null);
     }
 
     function cancel() {
