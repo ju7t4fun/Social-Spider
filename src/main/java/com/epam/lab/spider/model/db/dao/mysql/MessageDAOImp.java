@@ -19,8 +19,8 @@ public class MessageDAOImp extends BaseDAO implements MessageDAO {
     private static final String SQL_INSERT_QUERY = "INSERT INTO message (user_id, text, type, deleted, is_read) " +
             "VALUES (?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_QUERY = "UPDATE message SET user_id = ?, text = ?, date = ?, type " +
-            "= ?, deleted = ?, id_read = ? WHERE id = ?";
-    private static final String SQL_DELETED_QUERY = "UPDATE message SET deleted = ? WHERE id = ?";
+            "= ?, deleted = ?, is_read = ? WHERE id = ?";
+    private static final String SQL_DELETED_QUERY = "UPDATE message SET deleted = 1 WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM message";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM message WHERE id = ?";
     private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT * FROM message WHERE user_id = ? AND deleted = 0";
