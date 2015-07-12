@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertNull;
@@ -47,7 +48,7 @@ public class EventServiceTest {
         Boolean check = edao.insert(connection, event);
         assertTrue(check);
     }
-/*
+
     @Test
     public void testUpdate() throws Exception {
         edao.insert(connection, event);
@@ -55,10 +56,11 @@ public class EventServiceTest {
         newEvent.setUserId(1);
         newEvent.setTitle("NewTitle");
         newEvent.setMessage("NewMessage");
+        newEvent.setTime(new Date());
         Boolean check = edao.update(connection, 1, newEvent);
         assertTrue(check);
     }
-*/
+
     @Test
     public void testDelete() throws Exception {
         edao.insert(connection, event);
