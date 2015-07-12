@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.owner;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.model.db.entity.Owner;
 import com.epam.lab.spider.model.db.entity.User;
@@ -27,6 +28,7 @@ public class EditOwnerNameCommand implements ActionCommand {
         int ownerId = Integer.parseInt(request.getParameter("id"));
         User user = (User) request.getSession().getAttribute("user");
         String name = request.getParameter("name");
+        name = ReplaceHtmlTags.reaplaceAll(name);
         HttpSession session = request.getSession();
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         JSONObject json = new JSONObject();

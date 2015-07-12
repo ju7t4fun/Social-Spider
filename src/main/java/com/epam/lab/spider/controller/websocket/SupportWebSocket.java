@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.websocket;
 
 import com.epam.lab.spider.controller.utils.EventLogger;
+import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
 import com.epam.lab.spider.model.db.entity.Message;
 import com.epam.lab.spider.model.db.entity.User;
 import com.epam.lab.spider.model.db.service.MessageService;
@@ -59,6 +60,7 @@ public class SupportWebSocket {
 
     @OnMessage
     public void onMessage(String message, Session session) {
+        message = ReplaceHtmlTags.reaplaceAll(message);
         String[] args = message.split("\\|");
         if (LOG.isDebugEnabled())
             LOG.debug("onMessage. Execute command " + Command.valueOf(args[0].toUpperCase()) + " params " + Arrays

@@ -32,7 +32,7 @@ if(offset == 0 && last_post_id == 0 && block_offset_find){
         };
     }
 }
-if(offset<0){
+if(offset< 0){
     return {
     data:"none",
     items:[],
@@ -168,6 +168,15 @@ if(last_post_id>0){
     if(total_loops==0||total_loops>cycle_remainder)total_loops = cycle_remainder;
     success_sync = success;
 
+}
+// перевірка чи не нульвоий індекс
+if(offset < 0 && last_post_id != 0){
+        return {
+        data:"none",
+        items:[],
+        offset_map:[],
+        offset:offset
+        };
 }
 var total_loops = total_loops - (total_loops%query_size);
 var basket_limit = total_loops / query_size;

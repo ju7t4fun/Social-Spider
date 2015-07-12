@@ -2,8 +2,11 @@ package com.epam.lab.spider.model.db.service;
 
 import com.epam.lab.spider.model.db.PoolConnection;
 import com.epam.lab.spider.model.db.dao.TaskSynchronizedNewDataDAO;
-import com.epam.lab.spider.model.db.dao.mysql.TaskSynchronizedNewDataDAOImpl;
+import com.epam.lab.spider.model.db.dao.mysql.TaskSynchronizedNewDataAuditableDAOImpl;
 import com.epam.lab.spider.model.db.entity.*;
+import com.epam.lab.spider.model.db.factory.SynchronizedDataAbstractFactory;
+import com.epam.lab.spider.model.db.factory.SynchronizedDataAuditableFactoryImpl;
+import com.epam.lab.spider.model.db.factory.SynchronizedDataFactoryImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -12,9 +15,26 @@ import java.sql.SQLException;
  * Created by hell-engine on 7/10/2015.
  */
 public class TaskSynchronizedNewDataService {
-    public static TaskSynchronizedNewDataDAO taskSynchronizedNewDataDAO = new TaskSynchronizedNewDataDAOImpl();
-    public static boolean created = false;
+    private static final boolean AUDITABLE = true;
+    private static TaskSynchronizedNewDataDAO taskSynchronizedNewDataDAO;
 
+
+    private static final SynchronizedDataAbstractFactory synchronizedDataFactory;
+
+    static {
+        if (AUDITABLE) {
+            synchronizedDataFactory = new SynchronizedDataAuditableFactoryImpl();
+        } else {
+            synchronizedDataFactory = new SynchronizedDataFactoryImpl();
+        }
+        taskSynchronizedNewDataDAO = synchronizedDataFactory.createTaskSynchronizedNewDataDAO();
+    }
+
+    private static boolean created = false;
+
+    public static SynchronizedDataAbstractFactory getSynchronizedDataFactory() {
+        return synchronizedDataFactory;
+    }
     public void createTableIfNotExist(){
         if(!created) {
             try (Connection connection = PoolConnection.getConnection()) {
@@ -25,59 +45,41 @@ public class TaskSynchronizedNewDataService {
             }
         }
     }
-    public boolean insert(Integer taskId, Integer wallId, Integer offset, Integer lastId ){
+    protected boolean insert(Task task, Wall wall, Integer offset, Integer lastId ){
+        return insert(task.getId(),wall.getId(),offset,lastId);
+    }
+    protected boolean insert(Integer taskId, Integer wallId, Integer offset, Integer lastId ){
             try (Connection connection = PoolConnection.getConnection()) {
                 createTableIfNotExist();
-                return taskSynchronizedNewDataDAO.insert(connection,taskId,wallId,offset,lastId);
+                return taskSynchronizedNewDataDAO.insert(connection,synchronizedDataFactory.createSynchronizedData(taskId,wallId,offset,lastId));
             } catch (SQLException e) {
                 e.printStackTrace();
                 return false;
             }
     }
-    public boolean insert(Task task, Wall wall, Integer offset, Integer lastId ){
+    protected boolean update(SynchronizedData sync){
         try (Connection connection = PoolConnection.getConnection()) {
             createTableIfNotExist();
-            return taskSynchronizedNewDataDAO.insert(connection,task.getId(),wall.getId(),offset,lastId);
+            return taskSynchronizedNewDataDAO.update(connection,sync);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-    public boolean update(SynchronizedData sync){
-        try (Connection connection = PoolConnection.getConnection()) {
-            createTableIfNotExist();
-            return taskSynchronizedNewDataDAO.insert(connection,sync.getTaskId(),sync.getWallId(),sync.getPostOffset(),sync.getPostVkId());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    public boolean delete(Integer taskId, Integer wallId){
-        try (Connection connection = PoolConnection.getConnection()) {
-            createTableIfNotExist();
-            return taskSynchronizedNewDataDAO.delete(connection, taskId, wallId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    public boolean delete(Task task, Wall wall){
-        try (Connection connection = PoolConnection.getConnection()) {
-            createTableIfNotExist();
-            return taskSynchronizedNewDataDAO.delete(connection, task.getId(), wall.getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+//    public boolean delete(Task task, Wall wall){
+//        return delete(task.getId(), wall.getId());
+//    }
+//    public boolean delete(Integer taskId, Integer wallId){
+//        try (Connection connection = PoolConnection.getConnection()) {
+//            createTableIfNotExist();
+//            return taskSynchronizedNewDataDAO.delete(connection, taskId, wallId);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
     public SynchronizedData getBy(Task task, Wall wall){
-        try (Connection connection = PoolConnection.getConnection()) {
-            createTableIfNotExist();
-            return taskSynchronizedNewDataDAO.getById(connection, task.getId(), wall.getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return getBy(task.getId(),wall.getId());
     }
     public SynchronizedData getBy(Integer taskId, Integer wallId){
         try (Connection connection = PoolConnection.getConnection()) {
@@ -88,15 +90,24 @@ public class TaskSynchronizedNewDataService {
             return null;
         }
     }
-
-    public boolean save(Integer taskId, Integer wallId, Integer offset, Integer lastId ){
-        this.delete(taskId,wallId);
-        return this.insert(taskId,wallId,offset,lastId);
+    public boolean save(SynchronizedData syncNew){
+        try (Connection connection = PoolConnection.getConnection()) {
+            createTableIfNotExist();
+            SynchronizedData sync = taskSynchronizedNewDataDAO.getById(connection, syncNew.getTaskId(), syncNew.getWallId());
+            if(sync!=null){
+                sync.syncWith(syncNew);
+                return taskSynchronizedNewDataDAO.update(connection,sync);
+            }
+            else return taskSynchronizedNewDataDAO.insert(connection,syncNew);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     public boolean save(Task task, Wall wall, Integer offset, Integer lastId ){
         return this.save(task.getId(), wall.getId(), offset, lastId);
     }
-    public boolean save(SynchronizedData sync){
-        return this.save(sync.getTaskId(),sync.getWallId(),sync.getPostOffset(),sync.getPostVkId());
+    public boolean save(Integer taskId, Integer wallId, Integer offset, Integer lastId ){
+        return save(synchronizedDataFactory.createSynchronizedData(taskId,wallId,offset,lastId));
     }
 }

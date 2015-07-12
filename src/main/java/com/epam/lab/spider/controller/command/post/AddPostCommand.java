@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
 import com.epam.lab.spider.model.db.entity.Attachment;
 import com.epam.lab.spider.model.db.entity.NewPost;
 import com.epam.lab.spider.model.db.entity.Post;
@@ -40,11 +41,14 @@ public class AddPostCommand implements ActionCommand {
 
         Map<String, String> urlType = (Map<String, String>) request.getSession().getAttribute("files_url");
         String message = request.getParameter("message");
+        message = ReplaceHtmlTags.reaplaceAll(message);
         String title = request.getParameter("title");
+        title = ReplaceHtmlTags.reaplaceAll(title);
         if (title.length() != 0) {
             message = title + "\n" + message;
         }
         String tagArr = request.getParameter("tags");
+        tagArr = ReplaceHtmlTags.reaplaceAll(tagArr);
         if (tagArr.length() != 0) {
             String[] tags = tagArr.split(",");
             message = message + "\n";

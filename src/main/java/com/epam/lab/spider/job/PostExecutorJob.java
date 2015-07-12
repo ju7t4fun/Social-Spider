@@ -134,12 +134,13 @@ public class PostExecutorJob implements Job {
                 for (int i = 1; i < attachmentsList.size(); i++) {
                     attachmentsStringBuilder.append(", ").append(attachmentsList.get(i));
                 }
-                LOG.debug("Attachments: " + attachmentsStringBuilder.toString());
+                String textMessage = newPost.getPost().getMessage().replaceAll("%owner%",owner.getDomain());
 
+                LOG.debug("Attachments: " + attachmentsStringBuilder.toString());
                 Parameters parameters = new Parameters();
                 parameters.add("owner_id", owner.getVkId());
                 parameters.add("attachments", attachmentsStringBuilder.toString());
-                parameters.add("message", newPost.getPost().getMessage());
+                parameters.add("message", textMessage);
                 parameters.setRequestMethod(Request.Method.POST);
                 if (owner.getVkId() < 0) {
                     parameters.add("from_group", 1);

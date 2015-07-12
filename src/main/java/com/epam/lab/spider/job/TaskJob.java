@@ -12,8 +12,8 @@ import com.epam.lab.spider.job.util.*;
 import com.epam.lab.spider.model.db.entity.*;
 
 
-import com.epam.lab.spider.model.db.entity.Attachment;
 import com.epam.lab.spider.model.db.entity.Post;
+import com.epam.lab.spider.model.db.factory.SynchronizedDataFactoryImpl;
 import com.epam.lab.spider.model.db.service.*;
 import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
 import com.epam.lab.spider.model.vk.*;
@@ -24,6 +24,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
 
+import static com.epam.lab.spider.model.db.service.TaskSynchronizedNewDataService.getSynchronizedDataFactory;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
@@ -33,92 +34,13 @@ public class TaskJob implements Job {
     public static final Logger LOG = Logger.getLogger(TaskJob.class);
     WallService wallService = new WallService();
     TaskService taskService = new TaskService();
-    TaskSynchronizedDataService synchronizedService = new TaskSynchronizedDataService();
+    static TaskSynchronizedDataService synchronizedService = new TaskSynchronizedDataService();
 
     static TaskSynchronizedNewDataService syncNewService = new TaskSynchronizedNewDataService();
 
-    public Post processingPost(com.epam.lab.spider.model.vk.Post vkPost,  Task task)throws PostContentException {
-        return processingPost(vkPost, task.getContentType(), task.getHashTags());
-    }
 
-    public Post processingPost(com.epam.lab.spider.model.vk.Post vkPost,  Task.ContentType contentType) throws PostContentException {
-        return processingPost(vkPost, contentType, null);
-    }
-    public Post processingPost(com.epam.lab.spider.model.vk.Post vkPost,  Task.ContentType contentType, String hashTags) throws PostContentException {
-        Post post = new Post();
-        Task.ContentType newPostContentType = new Task.ContentType();
-        StringBuilder messageBuilder = new StringBuilder();
-        String pureText = vkPost.getText().trim();
-        //TODO: REMOVE ALL HASH TAGS FROM SOURCE TEXT
-        if(!contentType.hasHashtags()){
 
-        }
-        if (contentType.hasText()) {
-            if(!pureText.isEmpty()) {
-                messageBuilder.append(pureText);
-                newPostContentType.setType(Task.ContentType.TEXT);
-            }
-        }
-        if(contentType.hasReposts()){
-            List<com.epam.lab.spider.model.vk.Post> copyHistoryList = vkPost.getCopyHistory();
-            if(!copyHistoryList.isEmpty()){
-                post = processingPost(copyHistoryList.get(0),  contentType);
-                String innerMessage = post.getMessage();
-                messageBuilder.append("\n").append(innerMessage);
-                newPostContentType.setType(Task.ContentType.REPOSTS);
-
-            }
-        }
-        {
-            if(hashTags!=null)messageBuilder.append("\n").append(hashTags);
-            post.setMessage(messageBuilder.toString().trim());
-        }
-        for (com.epam.lab.spider.model.vk.Attachment vkAttachment : vkPost.getAttachments()) {
-            if (contentType.hasPhoto() && vkAttachment instanceof Photo) {
-                Attachment attachment = new Attachment();
-                attachment.setType(Attachment.Type.PHOTO);
-                attachment.setPayload(((Photo) vkAttachment).getPhoto604().toString());
-                post.addAttachment(attachment);
-                newPostContentType.setType(Task.ContentType.PHOTO);
-            }
-            if (contentType.hasAudio() && vkAttachment instanceof Audio) {
-                Attachment attachment = new Attachment();
-                Audio audio = (Audio) vkAttachment;
-                String attachString = "audio" + audio.getOwnerId() + "_" + audio.getId();
-                attachment.setPayload(attachString);
-                attachment.setMode(Attachment.Mode.CODE);
-                attachment.setType(Attachment.Type.AUDIO);
-                post.addAttachment(attachment);
-                newPostContentType.setType(Task.ContentType.AUDIO);
-            }
-            if (contentType.hasDoc() && vkAttachment instanceof Doc) {
-                Attachment attachment = new Attachment();
-                Doc doc = (Doc) vkAttachment;
-                String attachString = "doc" + doc.getOwnerId() + "_" + doc.getId();
-                attachment.setPayload(attachString);
-                attachment.setMode(Attachment.Mode.CODE);
-                attachment.setType(Attachment.Type.DOC);
-                post.addAttachment(attachment);
-                newPostContentType.setType(Task.ContentType.DOCUMENTS);
-            }
-            if (contentType.hasVideo() && vkAttachment instanceof Video) {
-                Attachment attachment = new Attachment();
-                Video video = (Video) vkAttachment;
-                String attachString = "video" + video.getOwnerId() + "_" + video.getId();
-                attachment.setPayload(attachString);
-                attachment.setMode(Attachment.Mode.CODE);
-                attachment.setType(Attachment.Type.VIDEO);
-                post.addAttachment(attachment);
-                newPostContentType.setType(Task.ContentType.VIDEO);
-            }
-        }
-        if(newPostContentType.getType().intValue()==0){
-            throw new PostContentException();
-//            return null;
-        }else return post;
-    }
-
-    public List<com.epam.lab.spider.model.vk.Post> grabbingWall(Wall wall, Task task) throws WallStopException, WallAlreadyStopped, FindingEmptyResultException {
+    public static List<com.epam.lab.spider.model.vk.Post> grabbingWall(Wall wall, Task task) throws WallStopException, WallAlreadyStopped, FindingEmptyResultException {
         List<com.epam.lab.spider.model.vk.Post> toPostingQueue = new ArrayList<>();
         Owner owner = wall.getOwner();
         Profile profile = wall.getProfile();
@@ -141,15 +63,15 @@ public class TaskJob implements Job {
 
                 case BEGIN:
                 case END:
-                    toPostingQueue =  GrabbingTypeVkSavedSyncUtil.grabbing(task.getGrabbingType(), owner, vk, filter,
-                            syncNewService.getBy(task, wall), alreadyAddSet, countOfPosts);
+                    toPostingQueue =  GrabbingTypeVkSavedSyncUtil.grabbing(task.getGrabbingType(), task.getContentType(),
+                            owner, vk, filter, syncNewService.getBy(task, wall), alreadyAddSet, countOfPosts);
                     break;
                 case RANDOM:
-                    toPostingQueue = GrabbingTypeVkSavedUtil.grabbingRandom(owner, vk, filter, alreadyAddSet,
+                    toPostingQueue = GrabbingTypeVkSavedUtil.grabbingRandom(task.getContentType(),owner, vk, filter, alreadyAddSet,
                             countOfPosts);
                     break;
                 case NEW:
-                    toPostingQueue = GrabbingTypeVkSavedUtil.grabbingNew(owner, vk, alreadyAddSet,countOfPosts);
+                    toPostingQueue = GrabbingTypeVkSavedUtil.grabbingNew(task.getContentType(),owner, vk, alreadyAddSet,countOfPosts);
                     break;
             }
 
@@ -233,7 +155,7 @@ public class TaskJob implements Job {
                             postByWallMap.put(wall, list);
                         }catch (FindingEmptyResultException x){
                             // TODO: REFACTOR THIS
-                            syncMap.put(wall,new SynchronizedData(task,wall,x.getOffset(),x.getVkId()));
+                            syncMap.put(wall, getSynchronizedDataFactory().createSynchronizedData(task, wall, x.getOffset(), x.getVkId()));
                         }catch (WallAlreadyStopped x){
                             LOG.debug("Wall already stopped.");
                         }catch (WallStopException x){
@@ -242,14 +164,14 @@ public class TaskJob implements Job {
                             LOG.info(message);
                             EventLogger eventLogger = EventLogger.getLogger(task.getUserId());
                             eventLogger.warn(title, message);
-                            syncMap.put(wall,new SynchronizedData(task,wall,-1,-1));
+                            syncMap.put(wall, getSynchronizedDataFactory().createSynchronizedData(task, wall, -1, -1));
                             //postByWallMap.put(wall, new ArrayList<com.epam.lab.spider.model.vk.Post>());
                         }
                     }
                 }
                 List<com.epam.lab.spider.model.vk.Post> postToRepost = new ArrayList<>();
                 {
-                    if (task.getGrabbingMode() == Task.GrabbingMode.TOTAL) {
+                    if (task.getGrabbingMode() == Task.GrabbingMode.PER_GROUP) {
                         for (Map.Entry<Wall, List<com.epam.lab.spider.model.vk.Post>> entity : postByWallMap.entrySet()) {
                             Wall wall = entity.getKey();
                             List<com.epam.lab.spider.model.vk.Post> postsPrepareToPosting = entity.getValue();
@@ -259,7 +181,7 @@ public class TaskJob implements Job {
                                     switch (task.getType()) {
                                         // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
                                         case COPY: {
-                                            Post post = processingPost(vkPost, task);
+                                            Post post = PostProcessingUtil.processingPost(vkPost, task);
                                             addedToProcessingPosts.addFirst(post);
                                             break;
                                         }
@@ -270,7 +192,7 @@ public class TaskJob implements Job {
                                             break;
                                         }
                                         case FAVORITE: {
-                                            Post post = processingPost(vkPost, task);
+                                            Post post = PostProcessingUtil.processingPost(vkPost, task);
                                             System.out.println("-------------" + post);
                                             Feed feed = new Feed();
                                             feed.processing(post, task);
@@ -279,7 +201,7 @@ public class TaskJob implements Job {
                                     }
                                     if(vkPost instanceof PostOffsetDecorator){
                                         PostOffsetDecorator decoratedPost = (PostOffsetDecorator) vkPost;
-                                        SynchronizedData sync = new SynchronizedData(task,wall,decoratedPost);
+                                        SynchronizedData sync = getSynchronizedDataFactory().createSynchronizedData(task, wall, decoratedPost);
                                         switch (task.getGrabbingType()) {
                                             case BEGIN:
                                             case END:
@@ -302,10 +224,11 @@ public class TaskJob implements Job {
                             }
                             blockMap.put(entity.getKey(), addedToProcessingBlocks);
                         }
-                    } else if (task.getGrabbingMode() == Task.GrabbingMode.PER_GROUP) {
+                    } else if (task.getGrabbingMode() == Task.GrabbingMode.TOTAL) {
                         Random random = new Random();
                         int currentPostCount = 0;
                         while (currentPostCount < task.getPostCount() && !postByWallMap.isEmpty()) {
+                            //випадковим чимном вибираємо кошик, з якого буде братись пост
                             int basket = random.nextInt(postByWallMap.size());
 
                             // перебір мапи
@@ -321,8 +244,12 @@ public class TaskJob implements Job {
                                 postByWallMap.remove(currentEntry.getKey());
                                 continue;
                             }
+                            int postIndex;
+                            boolean isRandomPostIndex = false;
                             // вибір випадкового поста з корзини
-                            int postIndex = random.nextInt(basketOfPreparePost.size());
+                            if(isRandomPostIndex)postIndex = random.nextInt(basketOfPreparePost.size());
+                            // вибір першого поста з корзини
+                            else postIndex =  0;
                             // витягаємо та видаляємо з корзини вибраний пост
                             com.epam.lab.spider.model.vk.Post vkPost = basketOfPreparePost.remove(postIndex);
                             try {
@@ -330,7 +257,7 @@ public class TaskJob implements Job {
                                     // опрацьовуємо пост за правилами заданими в таску
                                     // якщо тип таску пост - додаємо пост до опрацювання та зберігаємо в базу
                                     case COPY: {
-                                        Post post = processingPost(vkPost, task);
+                                        Post post = PostProcessingUtil.processingPost(vkPost, task);
                                         addedToProcessingPosts.addFirst(post);
                                         break;
                                     }
@@ -341,7 +268,7 @@ public class TaskJob implements Job {
                                         break;
                                     }
                                     case FAVORITE: {
-                                        Post post = processingPost(vkPost, task);
+                                        Post post = PostProcessingUtil.processingPost(vkPost, task);
                                         System.out.println("-------------" + post);
                                         Feed feed = new Feed();
                                         feed.processing(post, task);
@@ -350,7 +277,7 @@ public class TaskJob implements Job {
                                 }
                                 if(vkPost instanceof PostOffsetDecorator){
                                     PostOffsetDecorator decoratedPost = (PostOffsetDecorator) vkPost;
-                                    SynchronizedData sync = new SynchronizedData(task,wall,decoratedPost);
+                                    SynchronizedData sync = getSynchronizedDataFactory().createSynchronizedData(task,wall,decoratedPost);
                                     SynchronizedData oldSync = syncMap.get(wall);
                                     if(oldSync == null ){
                                         syncMap.put(wall,sync);
