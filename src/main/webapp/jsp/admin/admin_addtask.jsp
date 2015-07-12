@@ -138,7 +138,8 @@
                                                 <td style="text-align: left"><span style="width:80px;
                                                         display: inline-block; margin-top: 5px">
                                                     <l:resource key="reposts"/> </span></td>
-                                                <td><input class="form-control" type="number" name="reposts" min="0"
+                                                <td><input id="reposts" class="form-control" type="number"
+                                                           name="reposts" min="0"
                                                            max="1000"
                                                            style="margin-left:15px;width:100px; margin-top: 5px"
                                                            value="10"/>
@@ -148,7 +149,8 @@
                                                 <td style="text-align: left"><span style="width:80px;
                                                         display: inline-block; margin-top: 5px">
                                                     <l:resource key="comments"/> </span></td>
-                                                <td><input class="form-control" type="number" name="comments" min="0"
+                                                <td><input id="comments" class="form-control" type="number"
+                                                           name="comments" min="0"
                                                            max="1000"
                                                            style="margin-left:15px;width:100px; margin-top: 5px"
                                                            value="0"/></td>
@@ -324,8 +326,23 @@
 </section>
 <script>
 
-    $("#likes").keyup(function(data) {
-        alert(data.relatedTarget)
+    $("#likes").keyup(function (data) {
+        var v = this.value;
+        if ($.isNumeric(v) === false) {
+            this.value = this.value.slice(0, -1);
+        }
+    });
+    $("#reposts").keyup(function (data) {
+        var v = this.value;
+        if ($.isNumeric(v) === false) {
+            this.value = this.value.slice(0, -1);
+        }
+    });
+    $("#comments").keyup(function (data) {
+        var v = this.value;
+        if ($.isNumeric(v) === false) {
+            this.value = this.value.slice(0, -1);
+        }
     });
 
     $(document).ready(function () {
