@@ -23,15 +23,16 @@ public class GrabbingTypeVkSavedUtil {
         Integer grabbingLimitSize = 10;
         Random random = new Random();
         boolean endOfContent = false;
+        int currentAttempt = 0;
+        int totalAttempt = 3;
         postGrabbingAndFiltering:
         for(int loopsCount = 0;true;loopsCount++) {
             List<Post> grabbedPosts = null;
-            boolean manyRequest = false, badExecution = false;
+            boolean badExecution = false;
             do {
                 try {
-                    if (manyRequest|| badExecution) {
-                        Thread.sleep(400);
-                        manyRequest = false;
+                    if (badExecution) {
+                        Thread.sleep(250);
                         badExecution = false;
                     }
                     grabbedPosts = vk.execute().getRandomPostFromWall(owner.getVkId(),grabbingSize,filter,grabbingLimitSize, random.nextInt(255));
@@ -39,18 +40,17 @@ public class GrabbingTypeVkSavedUtil {
                         endOfContent = true;
                     }
                 } catch (VKException x) {
-                    if(x.getExceptionCode()==VKException.VK_MANY_REQUESTS)manyRequest=true;
-                    else if(x.getExceptionCode() == VKException.VK_EXECUTE_RUNTIME_ERROR){
-                        badExecution = false;
+                    if(x.getExceptionCode() == VKException.VK_EXECUTE_RUNTIME_ERROR){
+                        if(currentAttempt<totalAttempt){
+                            badExecution = true;
+                            currentAttempt++;
+                        }else throw x;
                         // послаблення ліміту
                         grabbingLimitSize = (int)(grabbingLimitSize.doubleValue() * 0.8);
                     }
                     else throw x;
                 }
-                catch (NullPointerException x){
-                    badExecution = true;
-                }
-            }while (manyRequest || badExecution);
+            }while (badExecution);
 
             for (Post vkPost : grabbedPosts) {
                 boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));
@@ -92,19 +92,22 @@ public class GrabbingTypeVkSavedUtil {
         int localCount = sortedAlreadyAddSet.isEmpty()?countOfPosts:50;
         boolean badExecution = false;
         boolean unlimitedUpdate = true;
+        int currentAttempt = 0;
+        int totalAttempt = 3;
         do {
             try {
                 if (badExecution) {
-                    Thread.sleep(400);
+                    Thread.sleep(250);
                     badExecution = false;
                 }
                 grabbedPosts = vk.execute().getNewPostFromWall(owner.getVkId(), localCount, lastPostId, null);
             } catch (VKException x) {
                 if (x.getExceptionCode() == VKException.VK_EXECUTE_RUNTIME_ERROR) {
-                    badExecution = false;
+                    if(currentAttempt<totalAttempt){
+                        badExecution = true;
+                        currentAttempt++;
+                    }else throw x;
                 } else throw x;
-            } catch (NullPointerException x) {
-                badExecution = true;
             }
         } while (badExecution);
 
@@ -120,6 +123,37 @@ public class GrabbingTypeVkSavedUtil {
                     if (isNeededSize) break;
                 }
             }
+        }
+        return postsToPosting;
+    }
+    public static List<Post> testOverLoop(Vkontakte vk) throws InterruptedException, VKException {
+        List<Post> postsToPosting = new ArrayList<>();
+
+
+        List<Post> grabbedPosts = null;
+
+        boolean badExecution = false;
+        int currentAttempt = 0;
+        int totalAttempt = 3;
+        do {
+            try {
+                if (badExecution) {
+                    Thread.sleep(250);
+                    badExecution = false;
+                }
+                grabbedPosts = vk.execute().testOverLoop();
+            } catch (VKException x) {
+                if (x.getExceptionCode() == VKException.VK_EXECUTE_RUNTIME_ERROR) {
+                    if(currentAttempt<totalAttempt){
+                        badExecution = true;
+                        currentAttempt++;
+                    }else throw x;
+                } else throw x;
+            }
+        } while (badExecution);
+
+        for (Post vkPost : grabbedPosts) {
+            postsToPosting.add(vkPost);
         }
         return postsToPosting;
     }

@@ -165,6 +165,13 @@ public class Execute extends Methods {
         Response response = request("execute.getNewPostFromWall", param).execute();
         return Post.parseItem(response.root().child("items").get(0));
     }
+    public List<Post> testOverLoop(Integer ... args)
+            throws VKException {
+        Parameters param = new Parameters();
+        param.add("owner_id", 1);
+        Response response = request("execute.overLoop", param).execute();
+        return Post.parseItem(response.root().child("items").get(0));
+    }
     /**
      *
      */
