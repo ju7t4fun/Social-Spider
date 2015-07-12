@@ -97,7 +97,7 @@
                     <div class="panel-group m-bot20" id="accordion" style="width:1100px;">
                         <div class="panel panel-default j4f-fix">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
+                                <h4 class="panel-title j4f-fix-title-background">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseOne">
                                         Step #1 | Basic settings
@@ -260,7 +260,7 @@
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
+                                <h4 class="panel-title j4f-fix-title-background">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseTwo">
                                         Step #2 | Advanced settings
