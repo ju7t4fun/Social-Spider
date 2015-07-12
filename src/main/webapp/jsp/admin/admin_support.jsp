@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -54,13 +55,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnStandingRedraw.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnSetFilteringDelay.js"></script>
 
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-    <!--[if lt IE 9]>
-    <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
-    <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
@@ -101,7 +96,6 @@
     </li>
 </div>
 
-
 <section id="container" class="">
 
     <jsp:include page="../pagecontent/header.jsp"/>
@@ -111,15 +105,14 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-envelope-o"></i> Support</h3>
+                    <h3 class="page-header"><i class="fa fa-envelope-o"></i> <l:resource key="support"/></h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-user"></i></i><a href="/">Admin</a></li>
-                        <li><i class="fa fa-envelope-o"></i>Support</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="admin"/></a></li>
+                        <li><i class="fa fa-envelope-o"></i><l:resource key="support"/></li>
                     </ol>
                 </div>
             </div>
@@ -188,39 +181,47 @@
                         <c:choose>
                             <c:when test="${current_user != null}">
                                 <div class="widget-foot">
-                                    <form class="form-inline">
+                                    <div class="form-inline">
                                         <div class="form-group" style="width: 80%">
-                                            <input id="message_text" style="width: 100%" id="message_text" type="text"
-                                                   class="form-control" placeholder="Type your message here...">
+                                            <l:resource key="header.typemessagehere"><input id="message_text"
+                                                                                            style="width: 100%"
+                                                                                            type="text"
+                                                                                            class="form-control"
+                                                                                            placeholder=""></l:resource>
                                         </div>
-                                        <input onclick="send(${current_user.id})" type="button" class="btn btn-info"
-                                               style="margin-left:5%"
-                                               value="Надіслати">
-                                    </form>
+                                        <a onclick="send(${current_user.id})" class="btn btn-info"
+                                           style="margin-left:5%"><l:resource key="header.send"/></a>
+                                    </div>
                                 </div>
                             </c:when>
                             <c:otherwise>
                                 <div class="widget-foot">
                                     <form class="form-inline">
                                         <div class="form-group" style="width: 80%">
-                                            <input id="message_text1" style="width: 100%;" id="message_text1"
-                                                   type="text"
-                                                   class="form-control" placeholder="Type your message here..."
-                                                   disabled>
+                                            <l:resource key="header.typemessagehere"><input id="message_text1"
+                                                                                            style="width: 100%;"
+                                                                                            type="text"
+                                                                                            class="form-control"
+                                                                                            placeholder=""
+                                                                                            disabled></l:resource>
                                         </div>
-                                        <input onclick="send(${current_user.id})" type="button" class="btn btn-info"
-                                               style="margin-left:5%"
-                                               value="Надіслати" disabled>
+                                        <a onclick="send(${current_user.id})" class="btn btn-info"
+                                           style="margin-left:5%" disabled><l:resource
+                                                key="header.send"/></a>
                                     </form>
                                 </div>
                             </c:otherwise>
                         </c:choose>
-
                     </section>
                 </div>
             </div>
         </section>
     </section>
 </section>
+<script>
+    $(document).ready(function () {
+        $("#support_inbox_a").scrollTop(10000);
+    })
+</script>
 </body>
 </html>

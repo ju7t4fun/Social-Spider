@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.category;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
 import com.epam.lab.spider.model.db.entity.Category;
 import com.epam.lab.spider.model.db.service.CategoryService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
@@ -21,30 +22,35 @@ public class EditCategory implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        request.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         String name = request.getParameter("category");
-
-        System.out.println("im in!!!");
+        name = ReplaceHtmlTags.reaplaceAll(name);
         JSONObject json = new JSONObject();
-
+        if (name.split("\\|").length != 2) {
+            json.put("status", "warning");
+            json.put("msg", "Неправильний формат категорії (name_ua|name_en)");
+            response.getWriter().write(json.toString());
+            return;
+        }
         try {
             int id = Integer.parseInt(request.getParameter("catIdEdit"));
             Category category = service.getById(id);
-           if (name!=null) {
-               category.setName(name);
-           }
+            category.setName(name);
             String newImgUrl = (String) request.getSession().getAttribute("urlCat");
-            if (newImgUrl!=null) {
+            if (newImgUrl != null) {
                 category.setImageUrl(newImgUrl);
             }
-            service.update(id, category);
+            if (service.update(id, category)) {
+                json.put("status", "success");
+                json.put("msg", "Успішно змінено");
+            } else {
+                json.put("status", "error");
+                json.put("msg", "Відбулася помилка при редагуванні");
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
         response.getWriter().write(json.toString());
     }
 }

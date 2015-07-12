@@ -1,4 +1,4 @@
-package com.epam.lab.spider.controller.command.admin;
+package com.epam.lab.spider.controller.command.admin.group;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.model.db.entity.Category;

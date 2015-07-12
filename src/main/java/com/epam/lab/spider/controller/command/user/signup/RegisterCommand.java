@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.user.signup;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.utils.hash.HashMD5;
 import com.epam.lab.spider.controller.utils.hash.HashSHA;
@@ -36,6 +37,8 @@ public class RegisterCommand implements ActionCommand {
         String gRecaptchaResponse = request
                 .getParameter("g-recaptcha-response");
 
+        name = ReplaceHtmlTags.reaplaceAll(name);
+        surname = ReplaceHtmlTags.reaplaceAll(surname);
         // Очищуємо сесію від мусору
         HttpSession session = request.getSession();
         session.removeAttribute("name");

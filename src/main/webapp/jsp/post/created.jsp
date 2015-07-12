@@ -204,7 +204,7 @@
 
     <jsp:include page="../post/viewpost.jsp"/>
     <jsp:include page="../post/editpost.jsp"/>
-    <%--for confirm delete modal window(include script and css)--%>
+
     <jsp:include page="../pagecontent/confirm-delete.jsp"/>
 
     <section id="main-content">

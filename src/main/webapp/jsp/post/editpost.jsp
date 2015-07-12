@@ -1,5 +1,3 @@
-<%--<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">--%>
-
 <%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
 <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
@@ -44,7 +42,7 @@
                         <br>
                         <div class="form-group">
                             <div id="upload-from">
-                                <div class="btn-group" style="margin-left: -15px;">
+                                <div class="btn-group" style="margin-left: -30px;">
                                     <button type="button" class="btn btn-primary"><l:resource
                                             key="newpost.upload"/></button>
                                     <button type="button" class="btn btn-primary dropdown-toggle"
@@ -80,7 +78,7 @@
                                     }
                                 </script>
                                 <div id="compForm" class="container kv-main" style="width:700px;
-                                                margin-top:20px; margin-left: -126px;" >
+                                                margin-top:20px; margin-left: -141px;" >
                                     <input id="input-dim-2" type="file"
                                            multiple="true" method="post"
                                            enctype="multipart/form-data"
@@ -93,7 +91,7 @@
                                     </script>
                                 </div>
                                 <div class="container kv-main" id="uriForm" style="width:600px;
-                                                margin-top:20px; margin-left: -126px;">
+                                                margin-top:20px; margin-left: -141px;">
                                     <form class="bs-example bs-example-form" role="form">
                                         <div class="row">
                                             <div class="col-lg-6">
@@ -158,7 +156,7 @@
                             $('#fl').hide();
                         </script>
                         <div class="form-group" >
-                            <div class="col-xs-5 col-xs-offset-3" style="margin-top: 3px;">
+                            <div class="col-xs-5 col-xs-offset-3" style="margin-top: 3px; margin-left: -15px;">
                                 <button onclick="saveEditedPost();" class="btn btn-default"><l:resource key="newpost.save"/></button>
                             </div>
                         </div>

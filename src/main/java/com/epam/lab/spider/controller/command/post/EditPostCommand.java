@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
 import com.epam.lab.spider.model.db.entity.Attachment;
 import com.epam.lab.spider.model.db.entity.Post;
 import com.epam.lab.spider.model.db.service.PostService;
@@ -38,6 +39,7 @@ public class EditPostCommand implements ActionCommand {
             attachments.add(attachment);
         }
         String postText = request.getParameter("text");
+        postText = ReplaceHtmlTags.reaplaceAll(postText);
         JSONObject jsonObject = new JSONObject();
 
         Post post = service.getById(postID);

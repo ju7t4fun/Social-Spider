@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.servlet.admin;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.admin.CategoriesCommand;
+import com.epam.lab.spider.controller.command.admin.category.CategoriesCommand;
 import com.epam.lab.spider.controller.command.category.*;
 
 import javax.servlet.ServletException;

@@ -1,4 +1,5 @@
 <%--<script type='text/javascript' src='${pageContext.request.contextPath}/js/jquery-11.0.min.js'></script>--%>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <script type='text/javascript' src='${pageContext.request.contextPath}/js/unitegallery.min.js'></script>
 
 <link rel='stylesheet' href='${pageContext.request.contextPath}/css/unite-gallery.css' type='text/css'/>
@@ -11,7 +12,7 @@
         <div class="modal-content" style="width: 840px; position: relative; left: -100px;">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h3 class="modal-title">Post</h3>
+                <h3 class="modal-title"><l:resource key="post"/></h3>
             </div>
             <div class="modal-body" style="position: relative; left: 70px; top: -21px;">
                 <div class="row">

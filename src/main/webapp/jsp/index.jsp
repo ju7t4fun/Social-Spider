@@ -59,7 +59,7 @@
             <jsp:forward page="admin/index.jsp"/>
         </c:when>
         <c:when test="${user.role == 'USER'}">
-            <jsp:forward page="feed/index.jsp"/>
+            <jsp:forward page="user/feed.jsp"/>
         </c:when>
         <c:otherwise>
             <header class="header dark-bg" style="background: rgb(26, 39, 50)">
@@ -123,7 +123,6 @@
                 <h2 class="section-heading"><l:resource key="index.whatyouneed" /></h2>
                 <hr class="light">
                 <p class="text-faded"><l:resource key="index.whatyouneedtext" /></p>
-                <a href="#" class="btn btn-default btn-xl"><l:resource key="index.getstarted" /></a>
             </div>
         </div>
     </div>

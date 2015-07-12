@@ -16,8 +16,8 @@ public class Category {
 
     private Integer id;
     private String name;
-    private String imageUrl;
-
+    private String imageUrl = "http://localhost:8080/img/categories/nophoto.png";
+    private Set<Task> tasks = null;
 
     @Override
     public boolean equals(Object o) {
@@ -34,8 +34,6 @@ public class Category {
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
-
-    private Set<Task> tasks = null;
 
     public Integer getId() {
         return id;
