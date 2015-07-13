@@ -1,9 +1,38 @@
 var scriptLocaleStorage = new Map();
 var scriptCallBack = [];
+//var updateNeed = true, updating = false;
 function update(){
     scriptCallBack.forEach(function(value) {
         value(scriptLocaleStorage);
     })
+}
+scriptLocaleStorage.set("x","2");
+function j4fBundlePut(key,value){
+    scriptLocaleStorage.set(key,value);
+}
+function j4fBundleMark(key){
+    scriptLocaleStorage.set(key,key);
+}
+function j4fBundle(key){
+    return scriptLocaleStorage.get(key);
+}
+function scriptStorageUpdate(){
+    var names = [];
+    scriptLocaleStorage.forEach(function(value, key) {
+        names.push(key);
+    });
+    var myJsonString = JSON.stringify(names);
+    $.post("/controller?action=locale", {names: myJsonString})
+        .done(function (data) {
+            var map = data;
+            scriptLocaleStorage.forEach(function(value, key, storageMap) {
+                var tmp =  map[key];
+                if(tmp!=null){
+                    storageMap.set(key,tmp);
+                }
+            });
+            update();
+        });
 }
 $(document).ready(function () {
     $(".btn").click(function () {
@@ -16,7 +45,7 @@ $(document).ready(function () {
             names.push(key);
         })
         var myJsonString = JSON.stringify(names);
-        $.post("http://localhost:8080/controller?action=locale&lang=".concat(lang), {names: myJsonString})
+        $.post("/controller?action=locale&lang=".concat(lang), {names: myJsonString})
             .done(function (data) {
                 var map = data;
                 $(".loc-t").each(function () {

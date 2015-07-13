@@ -38,9 +38,9 @@ $(document).ready(function () {
 
 
         var filter = new Object() ;
-        filter.likes = $("input[name=likes][type='number']").val();
-        filter.reposts = $("input[name=reposts][type='number']").val();
-        filter.comments = $("input[name=comments][type='number']").val();
+        filter.likes = $("input[name=likes]").val();
+        filter.reposts = $("input[name=reposts]").val();
+        filter.comments = $("input[name=comments]").val();
         filter.min_time = 3600;
         filter.max_time = 7*24*3600;
 

@@ -7,3 +7,7 @@
 .j4f-fix-full-width {
     width: 100%;
 }
+.j4f-fix-spinner-un-script {
+    border: none;
+    -webkit-appearance: none;
+}
