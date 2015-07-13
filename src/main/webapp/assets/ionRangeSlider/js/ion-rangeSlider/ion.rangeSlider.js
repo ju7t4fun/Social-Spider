@@ -943,7 +943,6 @@
                 this.labels.p_single_left = this.checkEdges(this.labels.p_single_left, this.labels.p_single);
                 // TODO: REFACTOR THIS CODE
                 if(this.labels.p_single_left<-10)this.labels.p_single_left = -10;
-                console.log([this.labels.w_single, this.labels.p_single, this.labels.p_single_left]);
             } else {
 
                 this.labels.w_from = this.$cache.from.outerWidth(false);
