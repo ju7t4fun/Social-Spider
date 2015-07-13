@@ -35,6 +35,9 @@ function scriptStorageUpdate(){
         });
 }
 $(document).ready(function () {
+    scriptStorageUpdate();
+});
+$(document).ready(function () {
     $(".btn").click(function () {
         var lang = $(this).attr("change");
         var names = [];

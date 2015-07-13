@@ -327,13 +327,13 @@
                                                    href="#filter-no-slider-pills"
                                                    data-toggle="tab">
 
-                                                    <input type="radio" name="repeat" value="REPEAT_DISABLE" checked>
+                                                    <input type="radio" name="slider" value="SLIDER_DISABLE" checked>
                                                     <l:resource key="filterSliderDisable"/>
                                                 </a>
                                                 <a class="btn btn-default" aria-expanded="true"
                                                    href="#filter-with-slider-pills"
                                                    data-toggle="tab">
-                                                    <input type="radio" name="repeat" value="REPEAT_ON_TIME">
+                                                    <input type="radio" name="slider" value="SLIDER_ENABLE">
                                                     <l:resource key="filterSliderEnable"/>
                                                 </a>
                                             </div>
@@ -362,7 +362,7 @@
                                             </div>
 
                                             <%--<div style="clear:both;">--%>
-                                            <%--<!-- флоат? БЛЕАТЬ ЯКИЙ НАФ1Г ФЛОАТ В КОЛОНКАХ БУТСТРАПУ!!!!?? --></div>--%>
+                                            <%--<!-- флоат? ЯКИЙ НАФ1Г ФЛОАТ В КОЛОНКАХ БУТСТРАПУ!!!!?? --></div>--%>
 
                                             <script type="text/javascript">
                                                 $(document).ready(function () {
@@ -617,7 +617,8 @@
                                                    href="#repeat-day-repeat-pills" data-toggle="tab">
                                                     <input type="radio" name="repeat" value="REPEAT_ON_TIME">
                                                     <l:resource key="repeat.every"/>
-                                                    <span id="repeat_days_text"></span><l:resource key="days"/>
+                                                    <span id="repeat_days_text"></span>
+                                                    <%--<l:resource key="days"/>--%>
                                                 </a>
                                             </div>
                                         </div>
@@ -633,14 +634,21 @@
                                                     <input type="text" id="repeat_count_slider"/>
                                                 </div>
                                                 <script type="text/javascript">
+                                                    j4fBundleMark("nmbDayGen");
+                                                    j4fBundleMark("nmbDayNom");
+                                                    j4fBundleMark("nmbDayPlu");
                                                     $(document).ready(function () {
                                                         var $repeat_count_slider = $("#repeat_count_slider"),
                                                                 $range_repeat_count1 = $("[name='repeat_days']"),
                                                                 $repeat_count_text = $("#repeat_days_text");
                                                         $(".repeat_count_group").hide();
+                                                        var decoreFunction = function(num){
+                                                            return unitsAuto(num,{gen:"nmbDayGen",nom:"nmbDayNom", plu:"nmbDayPlu"});
+                                                        };
+
                                                         var track = function (data) {
                                                             $range_repeat_count1.val(data.from);
-                                                            $repeat_count_text.text(data.from);
+                                                            $repeat_count_text.text(data.from+" "+decoreFunction(data.from));
                                                         };
 
 
@@ -653,6 +661,7 @@
                                                             from_max: 90,
                                                             from: 1,
                                                             step: 1,
+                                                            postfix:decoreFunction ,
                                                             postfix: " days",
                                                             decorate_both: false,
                                                             onStart: track,
@@ -685,6 +694,9 @@
                                                 <input type="text" id="post_delay_slider" value="" name="interval"/>
                                             </div>
                                             <script type="text/javascript">
+                                                j4fBundleMark("nmbSecondGen");
+                                                j4fBundleMark("nmbSecondNom");
+                                                j4fBundleMark("nmbSecondPlu");
                                                 $(document).ready(function () {
                                                     var $range = $("#post_delay_slider"),
                                                             $result_min = $("[name='post_delay_min']"),
@@ -697,6 +709,7 @@
                                                     };
 
                                                     $range.ionRangeSlider({
+                                                        force_edges: false,
                                                         hide_min_max: true,
                                                         keyboard: true,
                                                         min: 0,
@@ -705,8 +718,9 @@
                                                         to: 15,
                                                         type: 'double',
                                                         step: 1,
-//                          grid: true,
-                                                        postfix: " sec",
+                                                        postfix: function(num){
+                                                            return unitsAuto(num,{nom:"nmbSecondNom",gen:"nmbSecondGen", plu:"nmbSecondPlu"});
+                                                        },
                                                         decorate_both: false,
                                                         onStart: track,
                                                         onChange: track,
@@ -754,12 +768,14 @@
                                                            name="interval"/>
                                                 </div>
                                                 <script type="text/javascript">
+                                                    j4fBundleMark("nmbMinuteGen");
+                                                    j4fBundleMark("nmbMinuteNom");
+                                                    j4fBundleMark("nmbMinutePlu");
                                                     $(document).ready(function () {
                                                         var $range = $("#interval_slider"),
                                                                 $result_min = $("[name='interval_min']"),
                                                                 $result_max = $("[name='interval_max']");
                                                         $(".interval_number_group").hide();
-//                        $result_max.hide();
 
                                                         var track = function (data) {
                                                             $result_min.val(data.from);
@@ -775,8 +791,9 @@
                                                             to: 15,
                                                             type: 'double',
                                                             step: 1,
-//                          grid: true,
-                                                            postfix: " min",
+                                                            postfix: function(num){
+                                                                return unitsAuto(num,{gen:"nmbMinuteGen",nom:"nmbMinuteNom", plu:"nmbMinutePlu"});
+                                                            },
                                                             decorate_both: false,
                                                             onStart: track,
                                                             onChange: track,
@@ -909,7 +926,6 @@
 
     <script type="text/javascript">
         j4fBundlePut('x', "${bundle.x}")
-        scriptStorageUpdate();
         $(document).ready(function () {
             $(".show-when-jquery-unsupported").hide();
             $(".show-when-jquery-supported").show();

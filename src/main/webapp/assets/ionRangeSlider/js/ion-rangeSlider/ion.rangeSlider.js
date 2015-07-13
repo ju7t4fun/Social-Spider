@@ -963,6 +963,11 @@
                 this.labels.p_single_left = this.toFixed(this.labels.p_single_left);
                 this.labels.p_single_left = this.checkEdges(this.labels.p_single_left, this.labels.p_single);
 
+                // TODO: REFACTOR THIS CODE
+                if(this.labels.p_from_left<-10)this.labels.p_from_left = -10;
+                if(this.labels.p_to_left<-10)this.labels.p_to_left = -10;
+                if(this.labels.p_single_left<-10)this.labels.p_single_left = -10;
+
             }
         },
 
@@ -1635,16 +1640,26 @@
             var decorated = "",
                 o = this.options;
 
+            var number ;
+            if(o.type == 'single'){
+                number = parseInt(num);
+            }else{
+                number = parseInt(num.split(o.values_separator).pop());
+            }
+
             if(typeof o.decorated_function == 'function'){
-            //alert(o.decorated_function);
-                return o.decorated_function(num);
+                return o.decorated_function(number);
             }
 
             if (o.prefix) {
                 decorated += o.prefix;
             }
 
-            decorated += num;
+
+
+            console.log({value:num, type:typeof num,number:number,double: o.type})
+
+            decorated += " " + num;
 
             if (o.max_postfix) {
                 if (o.values.length && num === o.p_values[o.max]) {
@@ -1662,9 +1677,10 @@
 
             if (o.postfix) {
                 if(typeof o.postfix == 'function'){
-                    decorated += o.postfix(num);
+                    var world = o.postfix(number);
+                    decorated += " "+ world
                 }else
-                decorated += o.postfix;
+                decorated += " "+o.postfix;
             }
 
             return decorated;
