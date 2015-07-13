@@ -196,7 +196,7 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <div id="grabbing-count-group" class="form-group">
+                                        <div id="grabbing-count-group" class="form-group row">
                                             <div id="post_count_number_group">
                                                 <span><l:resource key="amount.of.posts"/>  </span>
                                                 <input type="number" name="post_count"
@@ -321,6 +321,7 @@
 
                                         <div id="filter-slider-visible-group" class="form-group">
                                             <h4><l:resource key="filter"/></h4>
+
                                             <div class="btn-group btn-group-justified" data-toggle="buttons">
                                                 <a class="btn btn-default active" aria-expanded="true"
                                                    href="#filter-no-slider-pills"
@@ -361,7 +362,7 @@
                                             </div>
 
                                             <%--<div style="clear:both;">--%>
-                                                <%--<!-- флоат? БЛЕАТЬ ЯКИЙ НАФ1Г ФЛОАТ В КОЛОНКАХ БУТСТРАПУ!!!!?? --></div>--%>
+                                            <%--<!-- флоат? БЛЕАТЬ ЯКИЙ НАФ1Г ФЛОАТ В КОЛОНКАХ БУТСТРАПУ!!!!?? --></div>--%>
 
                                             <script type="text/javascript">
                                                 $(document).ready(function () {
@@ -369,25 +370,25 @@
                                                 });
                                             </script>
                                         </div>
-                                        <div class="tab-content" >
+                                        <div class="tab-content">
                                             <div class="tab-pane fade active in" id="filter-no-slider-pills"></div>
-                                            <div class="tab-pane fade" id="filter-with-slider-pills">
+                                            <div class="tab-pane fade row" id="filter-with-slider-pills">
                                                 <div class="col-lg-offset-1 col-lg-10">
                                                     <input type="text" id="filter_likes_slider"/>
                                                     <input type="text" id="filter_repost_slider"/>
                                                     <input type="text" id="filter_comment_slider"/>
                                                 </div>
                                                 <script type="text/javascript">
-                                                    var filterValue = new Object(), newFilterPrefix = new Object(),newFilterPostfix = new Object();
-                                                    j4fBundleMark ("srcFilterLikes");
-                                                    j4fBundleMark ("srcFilterReposts");
-                                                    j4fBundleMark ("srcFilterComments");
-                                                    j4fBundleMark ("nmbFilterMultiGen")
-                                                    j4fBundleMark ("nmbFilterMultiNom");
-                                                    j4fBundleMark ("nmbFilterMultiPlu");
-                                                    j4fBundleMark ("srcFilterLikesDisable");
-                                                    j4fBundleMark ("srcFilterRepostsDisable");
-                                                    j4fBundleMark ("srcFilterCommentsDisable");
+                                                    var filterValue = new Object(), newFilterPrefix = new Object(), newFilterPostfix = new Object();
+                                                    j4fBundleMark("srcFilterLikes");
+                                                    j4fBundleMark("srcFilterReposts");
+                                                    j4fBundleMark("srcFilterComments");
+                                                    j4fBundleMark("nmbFilterMultiGen")
+                                                    j4fBundleMark("nmbFilterMultiNom");
+                                                    j4fBundleMark("nmbFilterMultiPlu");
+                                                    j4fBundleMark("srcFilterLikesDisable");
+                                                    j4fBundleMark("srcFilterRepostsDisable");
+                                                    j4fBundleMark("srcFilterCommentsDisable");
                                                     var getPostfix;
                                                     $(document).ready(function () {
                                                         var $filter_likes_slider = $("#filter_likes_slider"),
@@ -402,12 +403,12 @@
                                                             from: 60,
                                                             step: 1,
                                                             decorate_both: false,
-                                                            decorated_function:function(num){
-                                                                return unitAutoDecorate(num,"srcFilterLikes",{
-                                                                    nom:"nmbFilterMultiNom",
-                                                                    gen:"nmbFilterMultiGen",
-                                                                    plu:"nmbFilterMultiPlu"
-                                                                        },"srcFilterLikesDisable")
+                                                            decorated_function: function (num) {
+                                                                return unitAutoDecorate(num, "srcFilterLikes", {
+                                                                    nom: "nmbFilterMultiNom",
+                                                                    gen: "nmbFilterMultiGen",
+                                                                    plu: "nmbFilterMultiPlu"
+                                                                }, "srcFilterLikesDisable")
                                                             }
                                                         });
                                                         $filter_repost_slider.ionRangeSlider({
@@ -418,12 +419,12 @@
                                                             from: 10,
                                                             step: 1,
                                                             decorate_both: false,
-                                                            decorated_function:function(num){
-                                                                return unitAutoDecorate(num,"srcFilterReposts",{
-                                                                    nom:"nmbFilterMultiNom",
-                                                                    gen:"nmbFilterMultiGen",
-                                                                    plu:"nmbFilterMultiPlu"
-                                                                },"srcFilterRepostsDisable")
+                                                            decorated_function: function (num) {
+                                                                return unitAutoDecorate(num, "srcFilterReposts", {
+                                                                    nom: "nmbFilterMultiNom",
+                                                                    gen: "nmbFilterMultiGen",
+                                                                    plu: "nmbFilterMultiPlu"
+                                                                }, "srcFilterRepostsDisable")
                                                             }
                                                         });
                                                         $filter_comment_slider.ionRangeSlider({
@@ -434,12 +435,12 @@
                                                             from: 0,
                                                             step: 1,
                                                             decorate_both: false,
-                                                            decorated_function:function(num){
-                                                                return unitAutoDecorate(num,"srcFilterComments",{
-                                                                    nom:"nmbFilterMultiNom",
-                                                                    gen:"nmbFilterMultiGen",
-                                                                    plu:"nmbFilterMultiPlu"
-                                                                },"srcFilterCommentsDisable")
+                                                            decorated_function: function (num) {
+                                                                return unitAutoDecorate(num, "srcFilterComments", {
+                                                                    nom: "nmbFilterMultiNom",
+                                                                    gen: "nmbFilterMultiGen",
+                                                                    plu: "nmbFilterMultiPlu"
+                                                                }, "srcFilterCommentsDisable")
                                                             }
                                                         });
                                                         var filterSliderLikesData = $filter_likes_slider.data("ionRangeSlider"),
@@ -449,7 +450,7 @@
                                                         var backTrackLikes = function (value) {
                                                             if (filterValue.likes != value) {
                                                                 filterSliderLikesData.update({
-                                                                    from:value
+                                                                    from: value
                                                                 });
                                                                 filterValue.likes = value;
                                                             }
@@ -457,7 +458,7 @@
                                                         var backTrackRepost = function (value) {
                                                             if (filterValue.reposts != value) {
                                                                 filterSliderRepostsData.update({
-                                                                    from:value
+                                                                    from: value
                                                                 });
                                                                 filterValue.reposts = value;
                                                             }
@@ -465,7 +466,7 @@
                                                         var backTrackComments = function (value) {
                                                             if (filterValue.comments != value) {
                                                                 filterSliderCommentsData.update({
-                                                                    from:value
+                                                                    from: value
                                                                 });
                                                                 filterValue.comments = value;
                                                             }
@@ -477,20 +478,20 @@
                                                             downClass: 'danger',
                                                             upIcon: 'fa fa-thumbs-up',
                                                             downIcon: 'fa fa-thumbs-down',
-                                                            onUpdate:backTrackLikes
+                                                            onUpdate: backTrackLikes
                                                         });
                                                         $('.filter-number-spinner[name="reposts"]').bootstrapNumber({
                                                             upClass: 'success',
                                                             downClass: 'danger',
                                                             upIcon: 'glyphicon glyphicon-share-alt',
-                                                            onUpdate:backTrackRepost
+                                                            onUpdate: backTrackRepost
 
                                                         });
                                                         $('.filter-number-spinner[name="comments"]').bootstrapNumber({
                                                             upClass: 'success',
                                                             downClass: 'danger',
                                                             upIcon: 'fa fa-comment',
-                                                            onUpdate:backTrackComments
+                                                            onUpdate: backTrackComments
                                                         });
                                                         var $likes_count_input = $("[name='likes']"),
                                                                 $reposts_count_input = $("[name='reposts']"),
@@ -541,8 +542,8 @@
                                                         });
 
                                                         scriptCallBack.push(function (map) {
-                                                            newFilterPrefix.likes    = map.get("srcFilterLikes");
-                                                            newFilterPrefix.reposts  = map.get("srcFilterReposts");
+                                                            newFilterPrefix.likes = map.get("srcFilterLikes");
+                                                            newFilterPrefix.reposts = map.get("srcFilterReposts");
                                                             newFilterPrefix.comments = map.get("srcFilterComments");
                                                             newFilterPostfix.nom = map.get("nmbFilterMultiNom");
                                                             newFilterPostfix.gen = map.get("nmbFilterMultiGen");
@@ -557,7 +558,7 @@
                                                             //alert(typeof getPostfix == 'function')
                                                             filterSliderLikesData.update({
                                                                 prefix: newFilterPrefix.likes + " ",
-                                                                postfix:getPostfix
+                                                                postfix: getPostfix
                                                             });
                                                             filterSliderRepostsData.update({
                                                                 prefix: newFilterPrefix.reposts + " "
@@ -622,7 +623,7 @@
                                         </div>
                                         <div class="tab-content">
                                             <div class="tab-pane fade active in" id="repeat-no-repeat-pills"></div>
-                                            <div class="tab-pane fade" id="repeat-day-repeat-pills">
+                                            <div class="tab-pane fade row" id="repeat-day-repeat-pills">
                                                 <div class="repeat_count_group">
                                                     <input type="number" name="repeat_days"
                                                            style="width:40px;border: none;-webkit-appearance: none; "
@@ -666,7 +667,7 @@
 
                                     </div>
                                     <div class="col-lg-6">
-                                        <div id="post-delay-group" class="form-group">
+                                        <div id="post-delay-group" class="form-group row">
                                             <h4><l:resource key="post.delay"/></h4>
 
                                             <div class="post_delay_number_group">
@@ -735,7 +736,7 @@
                                             </div>
                                         </div>
                                         <div class="tab-content">
-                                            <div class="tab-pane fade active in" id="start-time-interval-pills">
+                                            <div class="tab-pane fade active in row" id="start-time-interval-pills">
                                                 <div class="interval_number_group">
                                                     <%--[INTERVAL_SLIDER]--%>
                                                     <span>Between </span>
@@ -788,8 +789,7 @@
                                             <div class="tab-pane fade " id="start-time-sch-pills"></div>
                                         </div>
                                         <div id="work-time-group" class="form-group">
-                                            <h4><l:resource key="work.time"/></h4>
-
+                                            <l:resource key="work.time"><h4></h4></l:resource>
                                             <div class="btn-group btn-group-justified" data-toggle="buttons">
                                                 <a class="btn btn-default active" aria-expanded="true"
                                                    href="#work-time-all-day-pills" data-toggle="tab">
@@ -904,33 +904,33 @@
         </section>
         <!--main content end-->
     </section>
-        <!-- container section end -->
-        <script src="${pageContext.request.contextPath}/js/bootstrap-number-input.js"></script>
+    <!-- container section end -->
+    <script src="${pageContext.request.contextPath}/js/bootstrap-number-input.js"></script>
 
-        <script type="text/javascript">
-            j4fBundlePut('x',"${bundle.x}")
-            scriptStorageUpdate();
-            $(document).ready(function () {
-                $(".show-when-jquery-unsupported").hide();
-                $(".show-when-jquery-supported").show();
-            });
-        </script>
-        <!-- javascripts -->
-        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-        <!-- nice scroll -->
-        <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
-        <!-- gritter -->
+    <script type="text/javascript">
+        j4fBundlePut('x', "${bundle.x}")
+        scriptStorageUpdate();
+        $(document).ready(function () {
+            $(".show-when-jquery-unsupported").hide();
+            $(".show-when-jquery-supported").show();
+        });
+    </script>
+    <!-- javascripts -->
+    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+    <!-- nice scroll -->
+    <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <!-- gritter -->
 
-        <!-- custom gritter script for this page only-->
-        <script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>
-        <!--custome script for all page-->
-        <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
-        <script src="${pageContext.request.contextPath}/js/jquery.tokenize.task.js"></script>
-        <!--custom tagsinput-->
-        <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
-        <script src="${pageContext.request.contextPath}/js/form-component.js"></script>
-        //switch unjquery mode
+    <!-- custom gritter script for this page only-->
+    <script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>
+    <!--custome script for all page-->
+    <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.tokenize.task.js"></script>
+    <!--custom tagsinput-->
+    <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
+    <script src="${pageContext.request.contextPath}/js/form-component.js"></script>
+    //switch unjquery mode
 </body>
 </html>
 
