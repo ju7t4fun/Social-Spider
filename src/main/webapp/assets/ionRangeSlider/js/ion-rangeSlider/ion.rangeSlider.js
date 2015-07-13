@@ -306,6 +306,8 @@
             decorate_both: true,
             values_separator: " — ",
 
+            decorated_function:"",
+
             disable: false,
 
             onStart: null,
@@ -939,7 +941,9 @@
                 this.labels.p_single = this.labels.w_single / this.coords.w_rs * 100;
                 this.labels.p_single_left = this.coords.p_single + (this.coords.p_handle / 2) - (this.labels.p_single / 2);
                 this.labels.p_single_left = this.checkEdges(this.labels.p_single_left, this.labels.p_single);
-
+                // TODO: REFACTOR THIS CODE
+                if(this.labels.p_single_left<-10)this.labels.p_single_left = -10;
+                console.log([this.labels.w_single, this.labels.p_single, this.labels.p_single_left]);
             } else {
 
                 this.labels.w_from = this.$cache.from.outerWidth(false);
@@ -1632,6 +1636,11 @@
             var decorated = "",
                 o = this.options;
 
+            if(typeof o.decorated_function == 'function'){
+            //alert(o.decorated_function);
+                return o.decorated_function(num);
+            }
+
             if (o.prefix) {
                 decorated += o.prefix;
             }
@@ -1653,6 +1662,9 @@
             }
 
             if (o.postfix) {
+                if(typeof o.postfix == 'function'){
+                    decorated += o.postfix(num);
+                }else
                 decorated += o.postfix;
             }
 

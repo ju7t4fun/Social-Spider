@@ -112,9 +112,7 @@
                         <div role="tabpanel" class="tab-pane active" id="tabs-1">
                             <div class="col-lg-12">
                                 <div class="panel panel-default">
-
                                     <div class="panel-body">
-
                                         <div class="col-lg-12">
                                             <table id="activeTasksTable">
                                                 <thead>
@@ -130,8 +128,6 @@
                                             </table>
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>

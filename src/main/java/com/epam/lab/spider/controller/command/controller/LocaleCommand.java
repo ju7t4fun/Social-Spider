@@ -2,6 +2,7 @@ package com.epam.lab.spider.controller.command.controller;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
+import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,18 +22,21 @@ import java.util.ResourceBundle;
  * Created by Boyarsky Vitaliy on 09.06.2015.
  */
 public class LocaleCommand implements ActionCommand {
-
+    private static final Logger LOG = Logger.getLogger(LocaleCommand.class);
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String lang = request.getParameter("lang");
-        if (lang.equals("undefined"))
-            return;
-        Locale locale = new Locale(lang);
-        ResourceBundle bundle = ResourceBundle.getBundle("locale/messages", locale);
-        HttpSession session = request.getSession();
-        session.setAttribute("bundle", bundle);
-        Cookie cookie = new Cookie("language", lang);
-        cookie.setMaxAge(24 * 60 * 60 * 60);
-
+            ResourceBundle bundle;
+            HttpSession session = request.getSession();
+            Cookie cookie = null;
+        if (lang!= null && !lang.equals("undefined")) {
+            Locale locale = new Locale(lang);
+            bundle = ResourceBundle.getBundle("locale/messages", locale);
+            session.setAttribute("bundle", bundle);
+            cookie = new Cookie("language", lang);
+            cookie.setMaxAge(24 * 60 * 60 * 60);
+        }else{
+            bundle = (ResourceBundle) session.getAttribute("bundle");
+        }
         String namesJson = request.getParameter("names");
 
         JSONObject resultJson = new JSONObject();
@@ -43,10 +47,14 @@ public class LocaleCommand implements ActionCommand {
             obj = parser.parse(namesJson);
             JSONArray jsonArray = (JSONArray) obj;
             for (int i = 0; i < jsonArray.size(); i++) {
-                String name = (String) jsonArray.get(i);
-
-                String value = UTF8.encoding(bundle.getString(name));
-                resultJson.put(name, value);
+                    String name = null;
+                try {
+                    name = (String) jsonArray.get(i);
+                    String value = UTF8.encoding(bundle.getString(name));
+                    resultJson.put(name, value);
+                }catch (java.util.MissingResourceException x){
+                    LOG.error("MissingResource:"+name);
+                }
             }
         } catch (ParseException | ClassCastException e) {
             e.printStackTrace();
@@ -54,7 +62,7 @@ public class LocaleCommand implements ActionCommand {
 
         String result = resultJson.toString();
         response.setContentType("application/json;charset=UTF-8");
-        response.addCookie(cookie);
+        if(cookie!=null)response.addCookie(cookie);
         //response.sendRedirect("/");
         PrintWriter out = response.getWriter();
         out.print(result);
