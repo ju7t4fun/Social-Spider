@@ -27,8 +27,11 @@ public class Run {
     public static final Logger LOG = Logger.getLogger(Run.class);
 
     public static void main(String[] args) throws VKException {
-        String s = "<script>alert(1);</script>";
-        System.out.println(ReplaceHtmlTags.reaplaceAll(s));
+//        String s = "<script>alert(1);</script>";
+//        System.out.println(ReplaceHtmlTags.reaplaceAll(s));
+
+        PostService p = new PostService();
+        p.delete(4790);
     }
 
 }

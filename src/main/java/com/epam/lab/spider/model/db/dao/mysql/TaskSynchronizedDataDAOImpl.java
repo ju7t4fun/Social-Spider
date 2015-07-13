@@ -21,6 +21,9 @@ public class TaskSynchronizedDataDAOImpl extends BaseDAO implements TaskSynchron
             "task_synchronized_data " +
             "WHERE task_id = ? AND wall_id = ? ORDER BY processing_number DESC LIMIT ?;";
 
+    private static final String SQL_DELETE_BY_TASK_ID = "DELETE FROM task_synchronized_data WHERE task_id = ?";
+    private static final String SQL_DELETE_BY_Wall_ID = "DELETE FROM task_synchronized_data WHERE wall_id = ?";
+
     private static final String SQL_SET_VK_INNER_POST_ID = "INSERT INTO task_synchronized_data (task_id, wall_id, " +
             "vk_inner_post_id) VALUES (?, ?, ?)";
     private static final String SQL_CHECK_VK_INNER_POST_ID = "SELECT count(*)>0 FROM task_synchronized_data WHERE " +
@@ -28,6 +31,19 @@ public class TaskSynchronizedDataDAOImpl extends BaseDAO implements TaskSynchron
     private static final String SQL_STATISTICS_EXECUTION_QUERY = "SELECT COUNT(*) AS count, DATE_FORMAT" +
             "(task_synchonized_data, '%Y-%m-%d %H') AS date FROM task_synchronized_data WHERE task_synchonized_data " +
             "> ? AND task_synchonized_data <= ? GROUP BY UNIX_TIMESTAMP (task_synchonized_data) DIV 3600;";
+
+
+
+    @Override
+    public boolean deleteByTaskId(Connection connection, int taskId) throws SQLException {
+        return changeQuery(connection, SQL_DELETE_BY_TASK_ID, taskId);
+    }
+
+    @Override
+    public boolean deleteByWallId(Connection connection, int wallId) throws SQLException {
+        return changeQuery(connection, SQL_DELETE_BY_Wall_ID, wallId);
+    }
+
 
     @Override
     public Integer getIdLastProcessedPost(Connection connection, Integer taskId, Integer wallId) throws SQLException {

@@ -26,6 +26,8 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
             "delete_time = ?, state = ?, deleted = ?, user_id = ?, vk_post_id = ? WHERE id = ?";
     // private static final String SQL_DELETE_QUERY = "DELETE FROM new_post WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE new_post SET deleted = true WHERE id = ?";
+    private static final String SQL_DELETE_BY_WALLID_QUERY = "UPDATE new_post SET deleted = true WHERE wall_id = ?";
+    private static final String SQL_DELETE_BY_POSTID_QUERY = "UPDATE new_post SET deleted = true WHERE post_id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM new_post WHERE deleted = 0";
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM new_post WHERE id = ? AND deleted = 0";
     private static final String SQL_SELECT_CREATED_BY_DATE_LE = "SELECT * FROM new_post WHERE state in " +
@@ -183,6 +185,16 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     @Override
     public boolean delete(Connection connection, int id) throws SQLException {
         return changeQuery(connection, SQL_DELETE_QUERY, id);
+    }
+
+    @Override
+    public boolean deleteByPostId(Connection connection, int postDd) throws SQLException {
+        return changeQuery(connection, SQL_DELETE_BY_POSTID_QUERY, postDd);
+    }
+
+    @Override
+    public boolean deleteByWallId(Connection connection, int wallId) throws SQLException {
+        return changeQuery(connection, SQL_DELETE_BY_WALLID_QUERY, wallId);
     }
 
     @Override

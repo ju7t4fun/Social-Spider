@@ -17,4 +17,5 @@ public interface AttachmentDAO extends CRUD<Attachment>,SavableDAO<Attachment> {
 
     boolean deleteByPostId(Connection connection, int id) throws SQLException;
 
+
 }

@@ -4,6 +4,7 @@ import com.epam.lab.spider.model.db.PoolConnection;
 import com.epam.lab.spider.model.db.SQLTransactionException;
 import com.epam.lab.spider.model.db.dao.TaskDestinationDAO;
 import com.epam.lab.spider.model.db.dao.TaskSourceDAO;
+import com.epam.lab.spider.model.db.dao.TaskSynchronizedDataDAO;
 import com.epam.lab.spider.model.db.dao.WallDAO;
 import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.entity.Wall;
@@ -22,6 +23,8 @@ public class WallService implements BaseService<Wall> {
     private WallDAO wdao = factory.create(WallDAO.class);
     private TaskSourceDAO tsdao = factory.create(TaskSourceDAO.class);
     private TaskDestinationDAO tddao = factory.create(TaskDestinationDAO.class);
+    private TaskSynchronizedDataDAO tsyncdao = factory.create(TaskSynchronizedDataDAO.class);
+    private NewPostService newPostService = new NewPostService();
 
     @Override
     public boolean insert(Wall wall) {
@@ -78,6 +81,7 @@ public class WallService implements BaseService<Wall> {
                 connection.setAutoCommit(false);
                 tsdao.deleteByWallId(connection, id);
                 tddao.deleteByWallId(connection, id);
+                newPostService.deleteByWallId(connection, id);
                 wdao.delete(connection, id);
                 connection.commit();
             } catch (SQLTransactionException e) {
@@ -94,6 +98,42 @@ public class WallService implements BaseService<Wall> {
         }
         return true;
     }
+
+    public boolean deleteWithConnection(Connection connection, int id) {
+
+        try {
+            List<Wall> walls = getAllByProfileIDWithConnection(connection, id);
+            for (Wall wall : walls) {
+                tsdao.deleteByWallId(connection, wall.getId());
+                tddao.deleteByWallId(connection, wall.getId());
+                tsyncdao.deleteByWallId(connection, wall.getId());
+                newPostService.deleteByWallId(connection, wall.getId());
+                wdao.delete(connection, wall.getId());
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean deleteByOwnerId(Connection connection, int ownerId) {
+
+        try {
+            List<Wall> walls = getByOwnerIdWithConnection(connection, ownerId);
+            for (Wall wall : walls) {
+                tsdao.deleteByWallId(connection, wall.getId());
+                tddao.deleteByWallId(connection, wall.getId());
+                tsyncdao.deleteByWallId(connection, wall.getId());
+                newPostService.deleteByWallId(connection, wall.getId());
+                wdao.delete(connection, wall.getId());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
 
     public boolean deleteByOwnerAndProfileIDAndPermission(int owner_id, int profile_id, int wallid, Wall.Permission
             permission) {
@@ -158,6 +198,15 @@ public class WallService implements BaseService<Wall> {
         return null;
     }
 
+    public List<Wall> getAllByProfileIDWithConnection(Connection connection, int id) {
+
+        try {
+            return wdao.getAllByProfileID(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public List<Wall> getSourceByTaskId(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
@@ -229,6 +278,16 @@ public class WallService implements BaseService<Wall> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public List<Wall> getByOwnerIdWithConnection(Connection connection, int id) {
+        try {
+            return wdao.getByOwnerId(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 

@@ -20,4 +20,6 @@ public interface UserHasCategoryDAO {
 
     List<Category> getAllChosen(Connection connection, int userId) throws SQLException;
 
+    boolean deleteByCatID(Connection connection, int categoryId) throws SQLException;
+
 }

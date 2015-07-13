@@ -3,6 +3,7 @@ package com.epam.lab.spider.model.db.service;
 import com.epam.lab.spider.model.db.PoolConnection;
 import com.epam.lab.spider.model.db.SQLTransactionException;
 import com.epam.lab.spider.model.db.dao.CategoryDAO;
+import com.epam.lab.spider.model.db.dao.CategoryHasPostDAO;
 import com.epam.lab.spider.model.db.dao.CategoryHasTaskDAO;
 import com.epam.lab.spider.model.db.dao.UserHasCategoryDAO;
 import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
@@ -24,7 +25,7 @@ public class CategoryService implements BaseService<Category> {
     private static final DAOFactory factory = DAOFactory.getInstance();
     private CategoryDAO cdao = factory.create(CategoryDAO.class);
     private CategoryHasTaskDAO chtdao = factory.create(CategoryHasTaskDAO.class);
-
+    private CategoryHasPostDAO chpdao = factory.create(CategoryHasPostDAO.class);
     private UserHasCategoryDAO udao = factory.create(UserHasCategoryDAO.class);
 
 
@@ -98,7 +99,9 @@ public class CategoryService implements BaseService<Category> {
             try {
                 connection.setAutoCommit(false);
                 chtdao.deleteByCategoryId(connection, id);
-                assertTransaction(cdao.delete(connection, id));
+                udao.deleteByCatID(connection, id);
+                chpdao.deleteByCategoryId(connection, id);
+                cdao.delete(connection, id);
                 connection.commit();
             } catch (SQLTransactionException e) {
                 connection.rollback();

@@ -25,4 +25,8 @@ public interface TaskSynchronizedDataDAO {
 
     Map<Long, Integer> statisticsExecution(Connection connection, String date) throws SQLException;
 
+    boolean deleteByTaskId(Connection connection, int taskId) throws SQLException;
+
+    boolean deleteByWallId(Connection connection, int wallId) throws SQLException;
+
 }
