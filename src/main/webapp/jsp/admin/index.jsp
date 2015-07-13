@@ -301,6 +301,8 @@
                 drawTaskDiagram(response.task);
                 drawPostDiagram(response.posted);
                 drawErrorDiagram(response.errors);
+                $("#date").attr("min", "2015-07-01");
+                $("#date").attr("max", response.date);
                 $("#date").val(response.date);
             }
         };
@@ -313,11 +315,8 @@
     function changeDate() {
         $('#fromDate').attr("min", "2015-07-01");
         $('#fromDate').attr("max", $('#toDate').attr("value"));
-//        $('#fromDate').attr("value", response.date_from);
 
         $('#toDate').attr("min", $('#fromDate').attr("value"));
-//        $('#toDate').attr("max", response.date_max);
-//        $('#toDate').attr("value", response.date_to);
     }
 
     function drawLineDiagram(data) {

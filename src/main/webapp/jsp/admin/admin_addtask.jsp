@@ -42,7 +42,6 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/save.admintask.js"></script>
     <script src="${pageContext.request.contextPath}/assets/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
 
-
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/just4fun.fix.css"/>
 
@@ -66,7 +65,6 @@
             }
         }, 500);
     </script>
-
 
 </head>
 
@@ -316,10 +314,9 @@
                     <div class="col-lg-offset-2 col-lg-9">
                         <button id="task-save" type="submit" class="btn btn-primary"><l:resource
                                 key="newpost.save"/></button>
-                        <button type="reset" class="btn btn-default"><l:resource key="newpost.reset"/></button>
+
                     </div>
                 </div>
-
             </div>
         </section>
     </section>

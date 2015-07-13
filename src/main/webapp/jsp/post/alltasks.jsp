@@ -34,7 +34,6 @@
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
 
-
     <!-- javascripts -->
     <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
     <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
@@ -77,13 +76,13 @@
 
 </head>
 
-<>
-
 <!-- container section start -->
 <section id="container" class="">
 
     <jsp:include page="../pagecontent/header.jsp"/>
     <jsp:include page="../pagecontent/sidebar.jsp"/>
+
+    <jsp:include page="../pagecontent/confirm-delete.jsp"/>
 
     <!--main content start-->
     <section id="main-content">
@@ -452,15 +451,7 @@
 
 
     function deleteTask(id) {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('GET', '/task?action=deletetask&taskId=' + id, true);
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4) {
-                table.fnStandingRedraw();
-            }
-
-        };
-        xmlhttp.send();
+        deleteConfirmTask(id);
     }
 
 
