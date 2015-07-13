@@ -40,12 +40,13 @@
                         </div>
                         <!-- Add file -->
                         <br>
+
                         <div class="form-group">
                             <div id="upload-from">
                                 <div class="btn-group" style="margin-left: -30px;">
                                     <button type="button" class="btn btn-primary"><l:resource
                                             key="newpost.upload"/></button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                    <button id="toggle_button" type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">
                                         <span class="caret"></span>
@@ -78,17 +79,11 @@
                                     }
                                 </script>
                                 <div id="compForm" class="container kv-main" style="width:700px;
-                                                margin-top:20px; margin-left: -141px;" >
+                                                margin-top:20px; margin-left: -141px;">
                                     <input id="input-dim-2" type="file"
                                            multiple="true" method="post"
                                            enctype="multipart/form-data"
                                            accept="audio/*,video/*,image/*" value="">
-                                    <script>
-                                        $("#input-dim-2").fileinput({
-                                            uploadUrl: "http://localhost:8080/controller?action=upload",
-                                            maxFileCount: 10
-                                        });
-                                    </script>
                                 </div>
                                 <div class="container kv-main" id="uriForm" style="width:600px;
                                                 margin-top:20px; margin-left: -141px;">
@@ -155,9 +150,10 @@
                             $('#sc').hide();
                             $('#fl').hide();
                         </script>
-                        <div class="form-group" >
+                        <div class="form-group">
                             <div class="col-xs-5 col-xs-offset-3" style="margin-top: 3px; margin-left: -15px;">
-                                <button onclick="saveEditedPost();" class="btn btn-default"><l:resource key="newpost.save"/></button>
+                                <button onclick="saveEditedPost();" class="btn btn-default"><l:resource
+                                        key="newpost.save"/></button>
                             </div>
                         </div>
                     </div>
@@ -167,7 +163,9 @@
     </div>
 </div>
 <script>
+
     function editPost(id) {
+        var fileInputCount = 0;
         $("#remove_all").click();
         $('#compForm').hide();
         $('#uriForm').hide();
@@ -206,8 +204,13 @@
                 }
                 return atr;
             }
-
-            if (response.attachments.length != 0) {
+            var attachmentLength = response.attachments.length;
+            if (attachmentLength != 0) {
+                if (attachmentLength >= 10) {
+                    $('#toggle_button').attr('disabled', 'disabled');
+                } else {
+                    fileInputCount = 10 - response.attachments.length;
+                }
                 var row = $("<tr></tr>");
 
                 for (var i = 0; i < response.attachments.length; i++) {
@@ -222,6 +225,8 @@
                     attach.append(row);
                 }
                 $("td:empty").remove();
+            } else {
+                fileInputCount = 10;
             }
 
             $('#attachments td')
@@ -234,6 +239,9 @@
 
             $('#attachments td').on("click", function () {
                 var elemID = $(this).closest('td').attr('id');
+                if (fileInputCount < 10 && $("#toggle_button").is(":disabled")) {
+                    $('#toggle_button').removeAttr('disabled');
+                }
                 $.post(
                         "http://localhost:8080/post?action=deleteattach",
                         {
@@ -246,9 +254,15 @@
                     var response = data;
                     $('#postsTable').DataTable().draw(false);
                     toastrNotification(response.status, response.message);
+                    $("#input-dim-2").empty();
+                    fileInputCount = fileInputCount + 1;
+                    fileInput(fileInputCount);
                 }
             });
+            fileInput(fileInputCount);
         }
+
+
     }
     function saveEditedPost() {
         var id = $("#id").val();
@@ -267,6 +281,14 @@
             $("#edit_post").modal('toggle');
             toastrNotification(response.status, response.message);
         }
+    }
+</script>
+<script>
+    function fileInput(fileCount) {
+        $("#input-dim-2").fileinput({
+            uploadUrl: "http://localhost:8080/controller?action=upload",
+            maxFileCount: fileCount
+        });
     }
 </script>
 <style>
