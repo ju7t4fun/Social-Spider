@@ -261,8 +261,6 @@
             });
             fileInput(fileInputCount);
         }
-
-
     }
     function saveEditedPost() {
         var id = $("#id").val();
