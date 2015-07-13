@@ -76,14 +76,14 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-list-alt"></i> Task Binding</h3>
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> <l:resource key="task"/></h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Admin</a></li>
-                        <li><i class="fa fa-desktop"></i>Task Binding</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="admin"/></a></li>
+                        <li><i class="fa fa-desktop"></i><l:resource key="task"/></li>
                     </ol>
                 </div>
             </div>
@@ -128,12 +128,12 @@
                                     <table id="tasksTable">
                                         <thead>
                                         <tr style="align-content: center">
-                                            <th>Grabbing</th>
-                                            <th>Binding</th>
-                                            <th>Type</th>
-                                            <th>Content</th>
-                                            <th>On/Off</th>
-                                            <th>Delete</th>
+                                            <th><l:resource key="grabbing"/></th>
+                                            <th><l:resource key="binding"/></th>
+                                            <th><l:resource key="notification.type"/></th>
+                                            <th><l:resource key="newpost.content"/></th>
+                                            <th><l:resource key="on.off"/></th>
+                                            <th><l:resource key="delete"/></th>
                                         </tr>
                                         </thead>
                                     </table>

@@ -66,10 +66,10 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-pie-chart"></i> Admin</h3>
+                    <h3 class="page-header"><i class="fa fa-pie-chart"></i><l:resource key="admin"/></h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
-                        <li><i class="fa fa-pie-chart"></i>Charts</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-pie-chart"></i><l:resource key="charts"/></li>
                     </ol>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                                     <h4 class="panel-title">
                                         <a class="accordion-toggle collapsed" data-toggle="collapse"
                                            data-parent="#accordion" href="#collapseOne">
-                                            Item #1 Visits Diagrams
+                                            <l:resource key="visit.diagrams"/>
                                         </a>
                                     </h4>
                                 </div>
@@ -95,20 +95,18 @@
                                             <div class="col-lg-3">
                                                 <input id="toDate" class="form-control" type="date" onchange="changeDate()">
                                             </div>
-                                            <input class="btn btn-default" type="button" onclick="redrawChart()"
-                                                   value="Show">
+                                            <a onclick="redrawChart()" class="btn btn-default"><l:resource key="show"/></a>
                                         </div>
                                         <ul class="nav nav-tabs" role="tablist">
                                             <li role="presentation" class="active">
-                                                <a href="#home" aria-controls="home" role="tab" data-toggle="tab">Visitors</a>
+                                                <a href="#home" aria-controls="home" role="tab" data-toggle="tab"><l:resource key="visitors"/></a>
                                             </li>
                                             <li role="presentation">
-                                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Sex
-                                                    / Age</a>
+                                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><l:resource key="charts.age"/></a>
                                             </li>
                                             <li role="presentation">
                                                 <a href="#messages" aria-controls="messages" role="tab"
-                                                   data-toggle="tab">Geo</a>
+                                                   data-toggle="tab"><l:resource key="charts.geografy"/></a>
                                             </li>
                                         </ul>
 
@@ -154,7 +152,7 @@
                                     <h4 class="panel-title">
                                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
                                            href="#collapseTwo">
-                                            Item #2 Activity Diagrams
+                                            <l:resource key="activity.diagrams"/>
                                         </a>
                                     </h4>
                                 </div>
@@ -170,13 +168,13 @@
                                         <ul class="nav nav-tabs" role="tablist">
                                             <li role="presentation" class="active">
                                                 <a href="#task" aria-controls="task" role="tab"
-                                                   data-toggle="tab">Task</a></li>
+                                                   data-toggle="tab"><l:resource key="task"/></a></li>
                                             <li role="presentation">
                                                 <a href="#post" aria-controls="post" role="tab"
-                                                   data-toggle="tab">Post</a>
+                                                   data-toggle="tab"><l:resource key="post"/></a>
                                             </li>
                                             <li role="presentation">
-                                                <a href="#error" aria-controls="error" role="tab" data-toggle="tab">Error</a>
+                                                <a href="#error" aria-controls="error" role="tab" data-toggle="tab"><l:resource key="error"/></a>
                                             </li>
                                         </ul>
 

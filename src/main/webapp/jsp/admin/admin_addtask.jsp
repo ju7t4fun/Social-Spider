@@ -83,11 +83,11 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-tasks"></i> Task</h3>
+                    <h3 class="page-header"><i class="fa fa-tasks"></i> <l:resource key="addnewtask"/></h3>
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
-                        <li><i class="fa fa-rss"></i>Feed</li>
-                        <li><i class="fa fa-plus-circle"></i>Add</li>
+                        <li><i class="fa fa-rss"></i><l:resource key="feed"/></li>
+                        <li><i class="fa fa-plus-circle"></i><l:resource key="addnewtask"/></li>
                     </ol>
                 </div>
             </div>
@@ -101,7 +101,7 @@
                                 <h4 class="panel-title j4f-fix-title-background">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseOne">
-                                        Step #1 | Basic settings
+                                        <l:resource key="basic.settings"/>
                                     </a>
                                 </h4>
                             </div>
@@ -269,7 +269,7 @@
                                 <h4 class="panel-title j4f-fix-title-background">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseTwo">
-                                        Step #2 | Advanced settings
+                                        <l:resource key="advanced.settings"/>
                                     </a>
                                 </h4>
                             </div>
