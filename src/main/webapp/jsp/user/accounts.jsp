@@ -169,7 +169,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left"><l:resource key="owner"/></div>
+                            <div class="pull-left"><l:resource key="vkaccounts"/></div>
                             <div class="clearfix"></div>
                         </div>
 
