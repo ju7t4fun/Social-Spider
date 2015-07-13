@@ -20,6 +20,7 @@ public class ProfileService implements BaseService<Profile> {
     private static DAOFactory factory = DAOFactory.getInstance();
     private static ProfileDAO pdao = factory.create(ProfileDAO.class);
     private static WallDAO wdao = factory.create(WallDAO.class);
+    private  static  WallService wallService = ServiceFactory.getInstance().create(WallService.class);
 
     @Override
     public boolean insert(Profile profile) {
@@ -47,7 +48,8 @@ public class ProfileService implements BaseService<Profile> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                wdao.deleteByProfileId(connection, id);
+                System.out.println("wwwwwww");
+                wallService.deleteWithConnection(connection, id);
                 pdao.delete(connection, id);
                 connection.commit();
             } catch (SQLTransactionException e) {

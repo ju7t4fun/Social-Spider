@@ -22,6 +22,7 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
             "deleted = ? WHERE id = ?";
     //private static final String SQL_DELETE_QUERY = "DELETE FROM wall WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE wall SET deleted = 1 WHERE id = ?";
+    private static final String SQL_DELETE_BY_OWNER_ID_QUERY = "UPDATE wall SET deleted = 1 WHERE owner_id = ?";
     private static final String SQL_DELETE_BY_OWNERID_AND_PERMISSION_QUERY = "UPDATE wall SET deleted = 1 WHERE " +
             "owner_id = ? AND profile_id=? AND permission=?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM wall WHERE deleted = 0";
@@ -87,6 +88,11 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     @Override
     public boolean delete(Connection connection, int id) throws SQLException {
         return changeQuery(connection, SQL_DELETE_QUERY, id);
+    }
+
+    @Override
+    public boolean deleteByOwnerId(Connection connection, int ownerDd) throws SQLException {
+        return changeQuery(connection, SQL_DELETE_BY_OWNER_ID_QUERY, ownerDd);
     }
 
     @Override

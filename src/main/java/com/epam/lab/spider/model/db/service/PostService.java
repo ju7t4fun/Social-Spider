@@ -4,6 +4,7 @@ import com.epam.lab.spider.model.db.PoolConnection;
 import com.epam.lab.spider.model.db.SQLTransactionException;
 import com.epam.lab.spider.model.db.dao.AttachmentDAO;
 import com.epam.lab.spider.model.db.dao.CategoryHasPostDAO;
+import com.epam.lab.spider.model.db.dao.NewPostDAO;
 import com.epam.lab.spider.model.db.dao.PostDAO;
 import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
@@ -31,6 +32,8 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
     private DAOFactory factory = DAOFactory.getInstance();
     private PostDAO pdao = factory.create(PostDAO.class);
     private AttachmentDAO adao = factory.create(AttachmentDAO.class);
+    private CategoryHasPostDAO chpdao = factory.create(CategoryHasPostDAO.class);
+    private NewPostDAO npdao = factory.create(NewPostDAO.class);
 
     @Override
     public boolean save(Post entity) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException,
@@ -115,9 +118,12 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                if (pdao.getById(connection, id).getAttachments().size() > 0)
-                    assertTransaction(adao.deleteByPostId(connection, id));
-                assertTransaction(pdao.delete(connection, id));
+                if (pdao.getById(connection, id).getAttachments().size() > 0) {
+                    adao.deleteByPostId(connection, id);
+                }
+                chpdao.deleteByPostId(connection, id);
+                npdao.deleteByPostId(connection, id);
+                pdao.delete(connection, id);
                 connection.commit();
             } catch (SQLTransactionException e) {
                 connection.rollback();

@@ -104,7 +104,8 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                assertTransaction(npdao.delete(connection, id));
+//                assertTransaction(npdao.delete(connection, id));
+                npdao.delete(connection, id);
                 connection.commit();
             } catch (SQLTransactionException e) {
                 connection.rollback();
@@ -118,6 +119,16 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return true;
+    }
+
+    public boolean deleteByWallId(Connection connection, int wallId) {
+            try {
+               npdao.deleteByWallId(connection,wallId);
+            }catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
         return true;
     }
 

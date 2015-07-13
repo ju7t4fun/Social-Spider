@@ -53,4 +53,8 @@ public interface NewPostDAO extends CRUD<NewPost>, SavableDAO<NewPost> {
             throws SQLException;
 
     Map<Long, Integer> statisticsPosting(Connection connection, String date) throws SQLException;
+
+    boolean deleteByWallId(Connection connection, int wallId) throws SQLException;
+
+    boolean deleteByPostId(Connection connection, int postDd) throws SQLException;
 }

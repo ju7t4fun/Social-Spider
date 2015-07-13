@@ -61,6 +61,7 @@ public class AttachmentDAOImp extends BaseDAO implements AttachmentDAO {
         return changeQuery(connection, SQL_DELETE_QUERY, id);
     }
 
+
     @Override
     public List<Attachment> select(Connection connection, String query, Object... args) throws SQLException {
         List<Attachment> attachments = new ArrayList<>();
