@@ -273,8 +273,6 @@
                                                 <button class="btn btn-info" data-toggle="modal"
                                                         data-target="#myModal"><l:resource key="newpost.publish"/>
                                                 </button>
-                                                <button type="reset" class="btn btn-default"><l:resource
-                                                        key="newpost.reset"/></button>
                                             </div>
                                         </div>
                                         <script>

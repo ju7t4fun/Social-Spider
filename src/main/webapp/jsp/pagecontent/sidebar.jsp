@@ -112,7 +112,7 @@
             </c:when>
         </c:choose>
 
-        <div style="position:fixed; top: 510px; left: 10px;">
+        <div style=" position: absolute; bottom: 10px; left: 6px;">
             <div class="btn-group" style="margin-right: 20px;">
                 <a style="border: 1px; color: #3c454f; border-radius: 20px; border-bottom-right-radius: 0;
                 border-top-right-radius: 0; font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;

@@ -221,7 +221,6 @@
                     if (i % 2 != 0) {
                         row = $('<tr></tr>');
                     }
-
                     attach.append(row);
                 }
                 $("td:empty").remove();
