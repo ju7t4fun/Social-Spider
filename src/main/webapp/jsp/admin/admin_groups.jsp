@@ -89,7 +89,7 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-list-alt"></i> Groups</h3>
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> <l:resource key="groups"/></h3>
                 </div>
             </div>
             <div class="row">
