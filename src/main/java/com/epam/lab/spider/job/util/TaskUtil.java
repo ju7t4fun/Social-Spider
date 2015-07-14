@@ -26,12 +26,11 @@ public class TaskUtil {
      * @return time in second between task.intervalMin and task.intervalMax
      */
     public static int getRandomTaskRunDeleay(Task task){
-        return random.nextInt((task.getIntervalMax()-task.getIntervalMin())+60+1) + task.getIntervalMin()*60;
+        return random.nextInt((task.getIntervalMax()-task.getIntervalMin())*60+1) + task.getIntervalMin()*60;
     }
 
     public static boolean setNewTaskRunTimeAndUpdate(Task task){
-        int delay = TaskUtil.getRandomTaskRunDeleay(task);
-        task.setNextTaskRunDate(new Date(System.currentTimeMillis()+delay*1000));
+        setNewTaskRunTime(task);
         return taskService.updateTimeToNextRun(task);
     }
     public static void setNewTaskRunTime(Task task){
@@ -45,8 +44,7 @@ public class TaskUtil {
         }
     }
     public static boolean changeStageToRunning(Task task){
-        int delay = TaskUtil.getRandomTaskRunDeleay(task);
-        task.setNextTaskRunDate(new Date(System.currentTimeMillis()+delay*1000));
+        setNewTaskRunTime(task);
         task.setState(Task.State.RUNNING);
         return taskService.updateNextTimeRunAndState(task);
     }
