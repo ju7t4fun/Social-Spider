@@ -264,10 +264,6 @@
                     else {
                         $('#modal_stat').modal('show');
                         drawChart(response);
-                        $('#fromDate').attr("max", response.max);
-                        $('#fromDate').attr("value", response.date_from);
-                        $('#toDate').attr("max", response.max);
-                        $('#toDate').attr("value", response.date_to);
                     }
                 }
             };
@@ -286,6 +282,7 @@
                         toastrNotification(response.status, response.msg);
                     else
                         drawChart(response);
+
                 }
             };
             xmlhttp.send();
@@ -296,6 +293,13 @@
             drawGenderDiagram(response.bar);
             drawCountryDiagram(response.country);
             drawCityDiagram(response.city);
+            $('#fromDate').attr("min", "2015-07-01");
+            $('#fromDate').attr("max", response.date_max);
+            $('#fromDate').val(response.date_from);
+
+            $('#toDate').attr("min", response.date_from);
+            $('#toDate').attr("max", response.date_max);
+            $('#toDate').val(response.date_to);
         }
 
     </script>
@@ -474,7 +478,6 @@
         </div>
     </div>
 </div>
-</div>
 <script>
 
     // Додаємо привязку
@@ -524,7 +527,6 @@
         })
 
     }
-
 
 </script>
 </body>
