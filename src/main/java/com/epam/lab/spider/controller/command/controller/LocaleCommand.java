@@ -54,6 +54,8 @@ public class LocaleCommand implements ActionCommand {
                     resultJson.put(name, value);
                 }catch (java.util.MissingResourceException x){
                     LOG.error("MissingResource:"+name);
+                }catch (RuntimeException x){
+                    LOG.error(x);
                 }
             }
         } catch (ParseException | ClassCastException e) {

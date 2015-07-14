@@ -61,7 +61,16 @@ public class LocaleTag extends BodyTagSupport {
         Long begin = System.nanoTime();
         HttpSession session = pageContext.getSession();
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
-        String value = UTF8.encoding(bundle.getString(key));
+        String value;
+        try {
+            value = UTF8.encoding(bundle.getString(key));
+        }catch (java.util.MissingResourceException x){
+            value = key.toUpperCase();
+            LOG.error("MissingResource:"+key);
+        }catch (RuntimeException x){
+            value = key.toUpperCase();
+            LOG.error(x);
+        }
 
         if (getBodyContent() != null) {
             String body = this.getBodyContent().getString();

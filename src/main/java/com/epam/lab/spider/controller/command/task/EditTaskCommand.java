@@ -62,7 +62,7 @@ public class EditTaskCommand implements ActionCommand {
                 }else{
                     wallMap.put("selected", "false");
                 }
-                wallMap.put("text", wall.getOwner().getName());
+                wallMap.put("text", wall.getOwner().getName()+"("+wall.getProfile().getName()+")");
                 sourceWalls.add(wallMap);
             }
             request.setAttribute("sourceWalls",sourceWalls);
@@ -76,7 +76,7 @@ public class EditTaskCommand implements ActionCommand {
                 }else{
                     wallMap.put("selected", "false");
                 }
-                wallMap.put("text", wall.getOwner().getName());
+                wallMap.put("text", wall.getOwner().getName()+"("+wall.getProfile().getName()+")");
                 destinationWalls.add(wallMap);
             }
             request.setAttribute("destinationWalls",destinationWalls);

@@ -44,7 +44,7 @@ public class CreateTaskCommand implements ActionCommand {
             wallMap = new HashMap<>();
             wallMap.put("id", wall.getId().toString());
             wallMap.put("selected", "false");
-            wallMap.put("text", wall.getOwner().getName());
+            wallMap.put("text", wall.getOwner().getName()+"("+wall.getProfile().getName()+")");
             sourceWalls.add(wallMap);
         }
         request.setAttribute("sourceWalls",sourceWalls);
@@ -54,7 +54,7 @@ public class CreateTaskCommand implements ActionCommand {
             wallMap = new HashMap<>();
             wallMap.put("id", wall.getId().toString());
             wallMap.put("selected", "false");
-            wallMap.put("text", wall.getOwner().getName());
+            wallMap.put("text", wall.getOwner().getName()+"("+wall.getProfile().getName()+")");
             destinationWalls.add(wallMap);
         }
         request.setAttribute("destinationWalls",destinationWalls);
@@ -62,7 +62,7 @@ public class CreateTaskCommand implements ActionCommand {
 
         request.setAttribute("task_id","0");
         request.setAttribute("posting_type",Task.Type.COPY);
-        request.setAttribute("grabbing_type",Task.GrabbingType.NEW);
+        request.setAttribute("grabbing_type",Task.GrabbingType.BEGIN);
         request.setAttribute("repeat", Task.Repeat.REPEAT_DISABLE);
         request.setAttribute("repeat_count", "10");
 

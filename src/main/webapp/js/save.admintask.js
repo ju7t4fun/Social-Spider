@@ -41,7 +41,7 @@ $(document).ready(function () {
         options.post_count = 1;
         options.post_delay_min = $("input[name=post_delay_min][type='number']").val();
         options.post_delay_max = $("input[name=post_delay_max][type='number']").val();
-        options.grabbing_mode = 'total';
+        options.grabbing_mode = 'PER_GROUP';
 
 
         var filter = new Object();

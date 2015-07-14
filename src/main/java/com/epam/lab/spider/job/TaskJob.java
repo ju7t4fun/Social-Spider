@@ -171,7 +171,9 @@ public class TaskJob implements Job {
                 }
                 List<com.epam.lab.spider.model.vk.Post> postToRepost = new ArrayList<>();
                 {
-                    if (task.getGrabbingMode() == Task.GrabbingMode.PER_GROUP) {
+                    // для режиму вибірки з кожної групи
+                    // або для нових постів в усіх випадках
+                    if (task.getGrabbingMode() == Task.GrabbingMode.PER_GROUP || (task.getGrabbingMode() == Task.GrabbingMode.TOTAL && task.getGrabbingType() == Task.GrabbingType.NEW) ) {
                         for (Map.Entry<Wall, List<com.epam.lab.spider.model.vk.Post>> entity : postByWallMap.entrySet()) {
                             Wall wall = entity.getKey();
                             List<com.epam.lab.spider.model.vk.Post> postsPrepareToPosting = entity.getValue();
@@ -224,7 +226,9 @@ public class TaskJob implements Job {
                             }
                             blockMap.put(entity.getKey(), addedToProcessingBlocks);
                         }
-                    } else if (task.getGrabbingMode() == Task.GrabbingMode.TOTAL) {
+                    } else
+                    // тільки для режиму вибірки з кінця з почаку чи рандомні пости
+                    if (task.getGrabbingMode() == Task.GrabbingMode.TOTAL) {
                         Random random = new Random();
                         int currentPostCount = 0;
                         while (currentPostCount < task.getPostCount() && !postByWallMap.isEmpty()) {
