@@ -54,11 +54,17 @@ $(document).ready(function () {
                 if (data.warning != null) {
                     setTimeout(function () {
                         toastrNotification("success", "Succeed Saved. But..."+data.warning);
+                        setTimeout(function () {
+                            location.href = "/task";
+                        }, 2000);
                     }, 500);
                 }
                 else {
                     setTimeout(function () {
                         toastrNotification("success", "Succeed Saved. All Saved Correctly!");
+                        setTimeout(function () {
+                            location.href = "/task";
+                        }, 2000);
                     }, 500);
                 }
             })

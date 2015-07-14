@@ -65,11 +65,16 @@ $(document).ready(function () {
                 $("#task-id-loc").text("Task #"+data.newId);
                 if (data.warning != null) {
                     toastrNotification("success", "Succeed Saved. But..." + data.warning);
-                    location.href = "/task?action=showtasksforadmin";
+                    setTimeout(function () {
+                        location.href = "/task?action=showtasksforadmin";
+                    }, 1200);
                 }
                 else {
                     toastrNotification("success", "Succeed Saved. All Saved Correctly!");
-                    location.href = "/task?action=showtasksforadmin";
+                    setTimeout(function () {
+                        location.href = "/task?action=showtasksforadmin";
+                    }, 1200);
+
                 }
             })
             .fail(function (jqXHR) {
