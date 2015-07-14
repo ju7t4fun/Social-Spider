@@ -21,6 +21,7 @@ import org.quartz.*;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.epam.lab.spider.model.db.service.TaskSynchronizedNewDataService.getSynchronizedDataFactory;
@@ -370,8 +371,9 @@ public class TaskJob implements Job {
 
                     }
                     int countGrabSuccess = addedToProcessingPosts.size();
-                    String title = "Task #" + task.getId() + " have grabbed post " + countGrabSuccess + "/" + countGrabMax + ".";
-                    String info = title + " Planned Post Action Count: " + newPosts.size();
+                    String newString = new SimpleDateFormat("H:mm:ss").format(task.getNextTaskRunDate());
+                    String title = "Task #" + task.getId() + " have grabbed post " + countGrabSuccess + "/" + countGrabMax + ". ";
+                    String info = title + " Planned Post Action Count: " + newPosts.size()+". Next run at "+newString;
                     if(task.getType() != Task.Type.FAVORITE) {
                         EventLogger eventLogger = EventLogger.getLogger(task.getUserId());
                         eventLogger.info(title, info);

@@ -145,10 +145,8 @@ public class PostExecutorJob implements Job {
                 if (owner.getVkId() < 0) {
                     parameters.add("from_group", 1);
                 }
-                Long response ;
-                if (true) {
-                            response = vk.wall().post(parameters);
-                }
+                Long response = vk.wall().post(parameters);
+
                 EventLogger eventLogger = EventLogger.getLogger(newPost.getUserId());
                 if(response!=null){
                     newPost.setState(NewPost.State.POSTED);
@@ -156,7 +154,7 @@ public class PostExecutorJob implements Job {
                     SavableServiceUtil.safeSave(newPost);
                     String info = "Success to posting wall" + wall.getOwner().getVkId() + "_" + newPost.getVkPostId();
                     LOG.info(info);
-                    //eventLogger.info(info, info);
+                    if(false)eventLogger.info(info, info);
                 }else{
                     String error = "Failed to posting wall" + wall.getOwner().getVkId() + "_" + newPost.getVkPostId();
                     LOG.error(error);
@@ -183,6 +181,10 @@ public class PostExecutorJob implements Job {
                         LOG.error("Posting has failed. Wall is locked.");
                     }
                     break;
+                    case 214:{
+                        Locker.getInstance().lock(wall, DataLock.Mode.POST_LIMIT);
+                        LOG.error("Posting has failed. Wall is locked. Post Limit is expired!");
+                    }
                     default: {
                         LOG.error("Posting has failed. Corrupted new_post #" + newPost.getId(), x);
                         x.printStackTrace();

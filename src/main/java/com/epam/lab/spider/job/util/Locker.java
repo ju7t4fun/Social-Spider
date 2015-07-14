@@ -74,9 +74,9 @@ public class Locker {
                 EventLogger eventLogger = EventLogger.getLogger(wall.getProfile().getUserId());
                 if (mode == DataLock.Mode.ACCESS_DENY) {
 
-                    eventLogger.error("Error. Access Deny.", "Wall is locked. Access deny. Bind another account and unblock.");
+                    eventLogger.error("Error. Access Deny.", "Wall #"+wall.getOwner().getVkId()+" is locked. Access deny. Bind another account and unblock.");
                 } else if (mode == DataLock.Mode.DEFAULT || mode == DataLock.Mode.POST_LIMIT) {
-                    eventLogger.error("Error. Limit of Post.", "Wall is locked. Limit of Post per group has expired. Please wait to next day and unblock.");
+                    eventLogger.error("Error. Limit of Post.", "Wall #"+wall.getOwner().getVkId()+" is locked. Limit of Post per group has expired. Please wait to next day and unblock.");
                 }
                 dataLockService.createLock(table, index, mode, wall.getProfile().getUserId());
             }
@@ -118,9 +118,9 @@ public class Locker {
 
                 EventLogger eventLogger = EventLogger.getLogger(profile.getUserId());
                 if (mode == DataLock.Mode.DEFAULT || mode == DataLock.Mode.AUTH_KEY) {
-                    eventLogger.error("Error. Reauthorized NEED!", "Profile is locked. Please reauthorized to VK and unblock!");
+                    eventLogger.error("Error. Reauthorized NEED!", "Profile #"+profile.getVkId()+" is locked. Please reauthorized to VK and unblock!");
                 } else if (mode == DataLock.Mode.CAPTCHA) {
-                    eventLogger.error("Error.  Captcha NEED!", "Profile is locked. Captcha input need! " +
+                    eventLogger.error("Error.  Captcha NEED!", "Profile #"+profile.getVkId()+" is locked. Captcha input need! " +
                             "Type captcha in VK and enlarge post delay or/and grabbing interval to resistance this error. Finally unblock account.");
                 }
 
