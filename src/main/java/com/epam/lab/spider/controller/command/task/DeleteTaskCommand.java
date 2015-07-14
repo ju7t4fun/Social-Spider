@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 public class DeleteTaskCommand implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        // TODO АХУЄТЬ А ДАВАЙТЕ Я З ПІД НЕЗАЛОГОВАНОГО ЮЗЕРА ВИДАЛЮ ВСІ ТАСКИ
         String strId = request.getParameter("taskId");
 
         if (strId!=null) {

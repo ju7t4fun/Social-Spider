@@ -14,7 +14,7 @@ public class Attachment {
     private Mode mode = Mode.URL;
 
     public enum Type {
-        AUDIO, PHOTO, VIDEO, DOC
+        AUDIO, PHOTO, VIDEO, DOC, OTHER
     }
     public enum Mode{
         URL,CODE

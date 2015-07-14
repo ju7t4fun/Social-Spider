@@ -5,6 +5,8 @@ $(document).ready(function () {
             source.push($(this).attr("value"));
         });
 
+        var task_id = $("input[name=task_id]").val();
+
         var destination = [];
         //destination.push(-1);
 
@@ -13,7 +15,7 @@ $(document).ready(function () {
 
         options.posting_type = 'FAVORITE';//
         options.repeat = 'REPEAT_DISABLE';//
-        options.repeat_count = 2;//
+        options.repeat_count = 10;//
 
         options.start_time = 'INTERVAL';
         options.work_time = 'ROUND_DAILY';
@@ -39,9 +41,9 @@ $(document).ready(function () {
 
 
         var filter = new Object();
-        filter.likes = $("input[name=likes][type='number']").val();
-        filter.reposts = $("input[name=reposts][type='number']").val();
-        filter.comments = $("input[name=comments][type='number']").val();
+        filter.likes = $("input[name=likes]").val();
+        filter.reposts = $("input[name=reposts]").val();
+        filter.comments = $("input[name=comments]").val();
         filter.min_time = 3600;
         filter.max_time = 7 * 24 * 3600;
 
@@ -52,9 +54,11 @@ $(document).ready(function () {
             destination: destination,
             filter: filter
         });
-        alert(myJsonString);
+        //alert(myJsonString);
         $.post("/task?action=save", {data: myJsonString})
             .done(function (data) {
+                $("input[name=task_id]").val(data.newId);
+                $("#task-id-loc").text("Task #"+data.newId);
                 if (data.warning != null) {
                     setTimeout(function () {
                         toastrNotification("success", "Succeed Saved. But..." + data.warning);

@@ -124,7 +124,7 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
                 task.getStartTimeType().toString().toUpperCase(),
                 //set field at #3
                 task.getWorkTimeLimit().toString().toUpperCase(),
-                task.getNextTaskRunDate().toString(),
+                task.getNextTaskRunDate(),
                 task.getIntervalMin(),
                 task.getIntervalMax(),
                 task.getGrabbingSize(),

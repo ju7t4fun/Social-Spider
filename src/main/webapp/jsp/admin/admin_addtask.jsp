@@ -31,6 +31,7 @@
     <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- Custom styles -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
     <%--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>--%>
@@ -40,7 +41,8 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/save.admintask.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.js"></script>
+    <script src="${pageContext.request.contextPath}/js/j4f-number-cases.js"></script>
 
 
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
@@ -87,11 +89,19 @@
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
                         <li><i class="fa fa-rss"></i>Feed</li>
-                        <li><i class="fa fa-plus-circle"></i>Add</li>
+                        <li><i class="fa fa-plus-circle"></i><span id="task-id-loc">
+                        <c:choose>
+                            <c:when test="${task_id != '0'}">
+                                Task #${task_id}
+                            </c:when>
+                            <c:otherwise>
+                                Add
+                            </c:otherwise>
+                        </c:choose></span></li>
                     </ol>
                 </div>
             </div>
-
+            <input type="hidden" name="task_id" value="${task_id}">
             <div class="row">
                 <div class="col-lg-6">
                     <!--collapse start-->
@@ -112,155 +122,28 @@
                                         <select name="groups" id="tokenize_focus" multiple="multiple"
                                                 class="tokenize-sample">
                                             <c:forEach items="${owners}" var="owner">
-                                                <option value="${owner.wallId}">${owner.name}</option>
+                                                <%--<option value="${owner.wallId}">${owner.name}</option>--%>
+                                                <c:choose>
+                                                    <c:when test="${wall.selected eq 'true'}">
+                                                        <option value="${owner.wallId}" selected="selected">${owner.name}</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${owner.wallId}">${owner.name}</option>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </c:forEach>
                                         </select>
                                         <script type="text/javascript">
                                             $('select#tokenize_focus').tokenize({displayDropdownOnFocus: true});
                                         </script>
+                                        <jsp:include page="../task/edit-task-start-time-group.jsp"/>
+                                        <jsp:include page="../task/edit-task-post-delay-group.jsp"/>
                                     </div>
-
                                     <div class="col-lg-6">
-                                        <h4><l:resource key="filter"/></h4>
-                                        <br>
-                                        <table class="col-lg-6">
-                                            <tr>
-                                                <td style="text-align: left"><span style="width:80px;
-                                                    display:inline-block">
-                                                <l:resource key="likes"/></span></td>
-                                                <td><input id="likes" class="form-control" type="number" name="likes"
-                                                           min="0"
-                                                           max="1000" style="margin-left:15px;width:100px;"
-                                                           value="60"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="text-align: left"><span style="width:80px;
-                                                        display: inline-block; margin-top: 5px">
-                                                    <l:resource key="reposts"/> </span></td>
-                                                <td><input id="reposts" class="form-control" type="number"
-                                                           name="reposts" min="0"
-                                                           max="1000"
-                                                           style="margin-left:15px;width:100px; margin-top: 5px"
-                                                           value="10"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="text-align: left"><span style="width:80px;
-                                                        display: inline-block; margin-top: 5px">
-                                                    <l:resource key="comments"/> </span></td>
-                                                <td><input id="comments" class="form-control" type="number"
-                                                           name="comments" min="0"
-                                                           max="1000"
-                                                           style="margin-left:15px;width:100px; margin-top: 5px"
-                                                           value="0"/></td>
-                                            </tr>
-                                        </table>
+                                        <jsp:include page="../task/edit-task-filter-group.jsp"/>
                                     </div>
 
-                                    <div class="col-lg-7">
-                                        <h4><l:resource key="start.time"/></h4>
 
-                                        <div class="interval_number_group">
-                                            <br>
-                                            <br>
-                                            <%--[INTERVAL_SLIDER]--%>
-                                            <span>Between </span>
-                                            <input type="number" name="interval_min"
-                                                   style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;"
-                                                   value="3"/>
-                                            <span> and </span>
-                                            <input type="number" name="interval_max"
-                                                   style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;"
-                                                   value="10"/>
-                                            <span> minutes.</span>
-                                        </div>
-                                        <div>
-                                            <input type="text" id="interval_slider" value="" name="interval"/>
-                                        </div>
-                                        <script type="text/javascript">
-                                            $(document).ready(function () {
-                                                var $range = $("#interval_slider"),
-                                                        $result_min = $("[name='interval_min']"),
-                                                        $result_max = $("[name='interval_max']");
-                                                $(".interval_number_group").hide();
-//                        $result_max.hide();
-
-                                                var track = function (data) {
-                                                    $result_min.val(data.from);
-                                                    $result_max.val(data.to);
-                                                };
-
-                                                $range.ionRangeSlider({
-                                                    hide_min_max: true,
-                                                    keyboard: true,
-                                                    min: 0,
-                                                    max: 120,
-                                                    from: 5,
-                                                    to: 15,
-                                                    type: 'double',
-                                                    step: 1,
-//                          grid: true,
-                                                    postfix: " min",
-                                                    decorate_both: false,
-                                                    onStart: track,
-                                                    onChange: track,
-                                                    onFinish: track,
-                                                    onUpdate: track
-                                                });
-                                            });
-                                        </script>
-
-                                        <br>
-                                        <%--[TIME_SELECT]--%>
-                                        <h4><l:resource key="post.delay"/></h4>
-
-                                        <div class="post_delay_number_group">
-                                            <span>Between </span>
-                                            <input type="number" name="post_delay_min"
-                                                   style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;"
-                                                   value="10"/>
-                                            <span> and </span>
-                                            <input type="number" name="post_delay_max"
-                                                   style="margin-left:15px;width:50px;border: none;-webkit-appearance: none;"
-                                                   value="25"/>
-                                            <span> seconds.</span>
-                                        </div>
-                                        <div>
-                                            <input type="text" id="post_delay_slider" value="" name="interval"/>
-                                        </div>
-                                        <script type="text/javascript">
-                                            $(document).ready(function () {
-                                                var $range = $("#post_delay_slider"),
-                                                        $result_min = $("[name='post_delay_min']"),
-                                                        $result_max = $("[name='post_delay_max']");
-                                                $(".post_delay_number_group").hide();
-
-                                                var track = function (data) {
-                                                    $result_min.val(data.from);
-                                                    $result_max.val(data.to);
-                                                };
-
-                                                $range.ionRangeSlider({
-                                                    hide_min_max: true,
-                                                    keyboard: true,
-                                                    min: 0,
-                                                    max: 120,
-                                                    from: 5,
-                                                    to: 15,
-                                                    type: 'double',
-                                                    step: 1,
-//                          grid: true,
-                                                    postfix: " sec",
-                                                    decorate_both: false,
-                                                    onStart: track,
-                                                    onChange: track,
-                                                    onFinish: track,
-                                                    onUpdate: track
-                                                });
-                                            });
-                                        </script>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -275,37 +158,11 @@
                             </div>
                             <div id="collapseTwo" class="panel-collapse collapse">
                                 <div class="panel-body">
-                                    <div class="col-md-8">
-                                        <h4><l:resource key="content.type"/></h4>
-
-                                        <div class="col-md-6">
-                                            <input type="checkbox" name="content_type" value="text" checked> <l:resource
-                                                key="text"/> <br>
-                                            <input type="checkbox" name="content_type" value="photo" checked>
-                                            <l:resource key="photo"/> <br>
-                                            <input type="checkbox" name="content_type" value="audio" checked>
-                                            <l:resource key="audio"/> <br>
-                                            <input type="checkbox" name="content_type" value="video" checked>
-                                            <l:resource key="video"/> <br>
+                                    <div class="col-lg-6">
+                                        <jsp:include page="../task/edit-task-content-type-group.jsp"/>
                                         </div>
-
-                                        <div class="col-md-6">
-                                            <input type="checkbox" name="content_type" value="repost" checked>
-                                            <l:resource key="deep.copy"/> <br>
-                                            <input type="checkbox" name="content_type" value="link"> <l:resource
-                                                key="links"/> <br>
-                                            <input type="checkbox" name="content_type" value="hashtag"> <l:resource
-                                                key="hashtags"/> <br>
-                                            <input type="checkbox" name="content_type" value="docs" checked> <l:resource
-                                                key="documents"/> <br>
-                                            <input type="checkbox" name="content_type" value="page"> <l:resource
-                                                key="pages"/> <br>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <h4><l:resource key="hashtags"/></h4>
-                                            <input type="text" name="wordsinput" id="tagsinput"
-                                                   class="tagsinput"
-                                                   value="socialspider"/>
+                                        <div class="col-lg-6">
+                                            <jsp:include page="../task/edit-task-tag-group.jsp"/>
                                         </div>
                                     </div>
                                 </div>
@@ -361,6 +218,17 @@
             }
         };
         xmlhttp.send();
+    });
+</script>
+
+<script src="${pageContext.request.contextPath}/js/bootstrap-number-input.js"></script>
+
+<script type="text/javascript">
+    j4fBundlePut('x', "${bundle.x}")
+    $(document).ready(function () {
+        $(".j4f-disable-at-admin").hide();
+        $(".show-when-jquery-unsupported").hide();
+        $(".show-when-jquery-supported").show();
     });
 </script>
 <!-- javascripts -->

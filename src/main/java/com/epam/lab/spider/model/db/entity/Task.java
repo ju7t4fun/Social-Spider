@@ -22,7 +22,7 @@ public class Task {
     private Integer id;
     private Integer userId;
     private Integer filterId;
-    private Type type;
+    private Type type = Type.COPY;
     private State state = State.STOPPED;
     private Boolean deleted = false;
 
@@ -39,7 +39,7 @@ public class Task {
     private GrabbingMode grabbingMode = GrabbingMode.PER_GROUP;
     private GrabbingType grabbingType = GrabbingType.BEGIN;
     private ActionAfterPosting actionAfterPosting = ActionAfterPosting.DO_NOTHING;
-    private String signature;
+    private String signature ;
     private String hashTags;
     // in minutes
     private Integer intervalMin = 3;
@@ -101,6 +101,8 @@ public class Task {
         public static final int LINKS = 1<<6;
         public static final int PAGES = 1<<7;
         public static final int REPOSTS = 1<<8;
+        public static final int SIMPLE_TITLE = 1<<9;
+        public static final int TEXT_TITLE = 1<<10;
 
         public boolean hasText(){
             return (type & TEXT)!=0 ;
@@ -128,6 +130,12 @@ public class Task {
         }
         public boolean hasReposts(){
             return (type & REPOSTS)!=0 ;
+        }
+        public boolean hasSimpleTitle(){
+            return (type & SIMPLE_TITLE)!=0 ;
+        }
+        public boolean hasTextTitle(){
+            return (type & TEXT_TITLE)!=0 ;
         }
 
         public ContentType() {

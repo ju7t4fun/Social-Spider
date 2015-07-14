@@ -13,7 +13,6 @@ import com.epam.lab.spider.model.db.entity.*;
 
 
 import com.epam.lab.spider.model.db.entity.Post;
-import com.epam.lab.spider.model.db.factory.SynchronizedDataFactoryImpl;
 import com.epam.lab.spider.model.db.service.*;
 import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
 import com.epam.lab.spider.model.vk.*;
@@ -341,7 +340,10 @@ public class TaskJob implements Job {
                     // моментальний ріпостинг
                     for (com.epam.lab.spider.model.vk.Post vkPost : postToRepost) {
                         String wallEntityCode = "wall" + vkPost.getOwnerId() + "_" + vkPost.getId();
-                        RepostUtil.makeRepost(wall.getProfile(), wallEntityCode, wall.getOwner());
+                        String sign = "";
+                        if(task.getSignature()!=null)sign = task.getSignature()+" ";
+                        if(task.getHashTags()!=null)sign+= task.getHashTags();
+                        RepostUtil.makeRepost(wall.getProfile(), wallEntityCode, wall.getOwner(), sign);
                     }
 
                 }
@@ -355,7 +357,7 @@ public class TaskJob implements Job {
                 for (Map.Entry<Wall, SynchronizedData> entry : syncMap.entrySet()) {
                     syncNewService.save(entry.getValue());
                 }
-                TaskUtil.setNewTaskRunTime(task);
+                TaskUtil.setNewTaskRunTimeAndUpdate(task);
                 {
                     int countGrabMax = task.getPostCount();
                     switch (task.getGrabbingMode()) {

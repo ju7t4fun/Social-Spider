@@ -4,10 +4,7 @@ import com.epam.lab.spider.job.exception.PostContentException;
 import com.epam.lab.spider.model.db.entity.Attachment;
 import com.epam.lab.spider.model.db.entity.Post;
 import com.epam.lab.spider.model.db.entity.Task;
-import com.epam.lab.spider.model.vk.Audio;
-import com.epam.lab.spider.model.vk.Doc;
-import com.epam.lab.spider.model.vk.Photo;
-import com.epam.lab.spider.model.vk.Video;
+import com.epam.lab.spider.model.vk.*;
 
 import java.util.List;
 
@@ -22,18 +19,24 @@ public class PostProcessingUtil {
     public static Post processingPost(com.epam.lab.spider.model.vk.Post vkPost,  Task.ContentType contentType) throws PostContentException {
         return processingPost(vkPost, contentType, null,null);
     }
-    public static Post processingPost(com.epam.lab.spider.model.vk.Post vkPost,  Task.ContentType contentType, String hashTags, String signature) throws PostContentException {
+    public static Post processingPost(com.epam.lab.spider.model.vk.Post vkPost,  Task.ContentType contentType, String hashTags, String sign) throws PostContentException {
         Post post = new Post();
         Task.ContentType newPostContentType = new Task.ContentType();
         StringBuilder messageBuilder = new StringBuilder();
-        if(signature != null && !signature.isEmpty()){
-            messageBuilder.append("[%owner%|").append(signature.trim()).append("]").append("\n");
+        String signature = sign.trim();
+        if(contentType.hasTextTitle() && signature != null && !signature.isEmpty() ) {
+            messageBuilder.append("[%owner%|").append(signature).append("]").append("\n");
+        }else if(contentType.hasSimpleTitle()){
+            messageBuilder.append("[%owner%|%owner_name%]").append("\n");
+            if(signature != null && !signature.isEmpty()){
+                messageBuilder.append(signature).append("\n");
+            }
+        }else {
+            if(signature != null && !signature.isEmpty()){
+                messageBuilder.append(signature).append("\n");
+            }
         }
         String pureText = vkPost.getText().trim();
-        //TODO: REMOVE ALL HASH TAGS FROM SOURCE TEXT
-        if(!contentType.hasHashtags()){
-
-        }
         if (contentType.hasText()) {
             if(!pureText.isEmpty()) {
                 messageBuilder.append(pureText);
@@ -92,6 +95,26 @@ public class PostProcessingUtil {
                 post.addAttachment(attachment);
                 newPostContentType.setType(Task.ContentType.VIDEO);
             }
+            if (contentType.hasDoc() && vkAttachment instanceof Page) {
+                Attachment attachment = new Attachment();
+                Page page = (Page) vkAttachment;
+                String attachString = "page" + page.getOwnerId() + "_" + page.getId();
+                attachment.setPayload(attachString);
+                attachment.setMode(Attachment.Mode.CODE);
+                attachment.setType(Attachment.Type.OTHER);
+                post.addAttachment(attachment);
+                newPostContentType.setType(Task.ContentType.PAGES);
+            }
+            if (contentType.hasDoc() && vkAttachment instanceof Link) {
+                Attachment attachment = new Attachment();
+                Link link = (Link) vkAttachment;
+                String attachString = "link" + link.getOwnerId() + "_" + link.getId();
+                attachment.setPayload(attachString);
+                attachment.setMode(Attachment.Mode.CODE);
+                attachment.setType(Attachment.Type.OTHER);
+                post.addAttachment(attachment);
+                newPostContentType.setType(Task.ContentType.LINKS);
+            }
         }
         if(newPostContentType.getType().intValue()==0){
             throw new PostContentException();
@@ -100,10 +123,6 @@ public class PostProcessingUtil {
     }
     public static boolean checkContent(com.epam.lab.spider.model.vk.Post vkPost,  Task.ContentType contentType){
         String pureText = vkPost.getText().trim();
-        //TODO: REMOVE ALL HASH TAGS FROM SOURCE TEXT
-        if(!contentType.hasHashtags()){
-
-        }
         if (contentType.hasText()) {
             if(!pureText.isEmpty()) {
                 return true;
@@ -126,6 +145,12 @@ public class PostProcessingUtil {
                 return true;
             }
             if (contentType.hasVideo() && vkAttachment instanceof Video) {
+                return true;
+            }
+            if (contentType.hasLinks() && vkAttachment instanceof Link) {
+                return true;
+            }
+            if (contentType.hasPages() && vkAttachment instanceof Page) {
                 return true;
             }
         }

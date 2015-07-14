@@ -6,7 +6,7 @@
  * @return {String}
  */
 function units3x(num, cases) {
-    num = Math.abs(num);
+    if(num<0)num = - num;
 
     var word = '';
 
@@ -24,6 +24,7 @@ function units3x(num, cases) {
     return word;
 }
 function units2x(num, cases) {
+    if(num<0)num = - num;
     num = Math.abs(num);
     if(num == 1){
         return cases.nom;

@@ -34,6 +34,7 @@ public class TaskServlet extends HttpServlet {
             commands.put("default", new ShowAllTasksCommand());
             commands.put("create", new CreateTaskCommand());
             commands.put("save", new SaveTaskCommand());
+            commands.put("edit", new EditTaskCommand());
 
             commands.put("stateChange", new StateChangeTaskCommand());
             commands.put("gettasks", new GetAllTasks());
