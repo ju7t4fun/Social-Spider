@@ -41,6 +41,9 @@ public class AddPostCommand implements ActionCommand {
 
         Map<String, String> urlType = (Map<String, String>) request.getSession().getAttribute("files_url");
         String message = request.getParameter("message");
+        if (message == null || message == "") {
+            message = "Empty post";
+        }
         message = ReplaceHtmlTags.reaplaceAll(message);
         String title = request.getParameter("title");
         title = ReplaceHtmlTags.reaplaceAll(title);

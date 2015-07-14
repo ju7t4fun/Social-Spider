@@ -84,7 +84,7 @@ function deleteConfirmPosted(id) {
 
     function confirm() {
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", "http://localhost:8080//post?action=deleteNewPost&post_id=" + id, true);
+        xmlhttp.open("GET", "http://localhost:8080/post?action=deleteNewPost&post_id=" + id, true);
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4) {
                 var response = JSON.parse(xmlhttp.responseText);
@@ -110,7 +110,7 @@ function deleteConfirmQueued(id) {
 
     function confirm() {
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", "http://localhost:8080//post?action=deleteNewPost&post_id=" + id, true);
+        xmlhttp.open("GET", "http://localhost:8080/post?action=deleteNewPost&post_id=" + id, true);
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4) {
                 var response = JSON.parse(xmlhttp.responseText);
