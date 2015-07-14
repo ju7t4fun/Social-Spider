@@ -15,7 +15,11 @@ import org.apache.log4j.Logger;
 // Незаблоковує стіну при помилці доступу при ріпості.
 public class RepostUtil {
     public static final Logger LOG = Logger.getLogger(RepostUtil.class);
-    public static boolean makeRepost(Profile profile, String postObject, Owner groupOwner)  {
+    public static boolean makeRepost(Profile profile, String postObject, Owner groupOwner, String sign)  {
+        String signature = null;
+        if(sign!=null){
+            signature=  sign.trim();
+        }
         try{
         Vkontakte vk = new Vkontakte();
 
@@ -24,7 +28,7 @@ public class RepostUtil {
         accessToken.setUserId(profile.getVkId());
         accessToken.setExpirationMoment(profile.getExtTime().getTime());
         vk.setAccessToken(accessToken);
-        return makeRepost(vk,postObject, groupOwner);
+        return makeRepost(vk,postObject, groupOwner, signature);
         } catch (VKException x) {
             switch (x.getExceptionCode()) {
                 case VKException.VK_CAPTCHA_NEEDED: {
@@ -48,12 +52,15 @@ public class RepostUtil {
         return false;
     }
 
-    public static boolean makeRepost(Vkontakte vk, String postObject, Owner groupOwner) throws InterruptedException, VKException{
+    public static boolean makeRepost(Vkontakte vk, String postObject, Owner groupOwner, String sign) throws InterruptedException, VKException{
         Parameters parameters = new Parameters();
         parameters.add("object",postObject);
+        if(sign != null && !sign.isEmpty()){
+            parameters.add("message",sign);
+        }
         if(groupOwner!=null) {
             if (groupOwner.getVkId() < 0) parameters.add("group_id", -groupOwner.getVkId());
-            else {
+            else if(vk.getAccessToken().getUserId() != groupOwner.getVkId()) {
                 LOG.error("Method destined to repost in group or himself! To repost himself set groupOwner in null!");
                 // TODO: SEND EVENT TO USER
                 return false;

@@ -43,10 +43,42 @@
                         <a href="/accounts"><i class="fa fa-vk"></i> <l:resource key="myaccounts"/></a>
                     </li>
                     <li>
+                        <a  href="#unlock" class="force-unlock-unlock"><i class="fa fa-gears"></i> <l:resource key="userForceUnlock"/></a>
+                    </li>
+                    <li>
                         <a href="/login?action=signOut"><i class="fa fa-sign-out"></i> <l:resource key="logout"/></a>
                     </li>
                 </ul>
             </li>
         </ul>
     </div>
+    <script>
+        $(document).ready(function () {
+            $(".force-unlock-unlock").click(function(){
+                $.ajax("/controller?action=unlock", {
+                    type:  "GET" ,
+
+                    statusCode: {
+                        200: function (response) {
+                            toastrNotification("success", "Unblocked!" );
+                        },
+                        204: function (response) {
+                            toastrNotification("info", "No data to unblock..." );
+                        },
+                        400: function (response) {
+                            toastrNotification("error", "Error.");
+                        },
+                        401: function (response) {
+                            toastrNotification("error", "Login NEED!");
+                        },
+                        404: function (response) {
+                            toastrNotification("error", "Впр...404..");
+                        }
+                    }
+                });
+
+            })
+        });
+
+    </script>
 </header>

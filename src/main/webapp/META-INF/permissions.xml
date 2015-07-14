@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<permissions>
+    <role type="GUEST">
+        <url_pattern url="/">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/login">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/register">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/forgot_password">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/controller">
+            <param>*</param>
+        </url_pattern>
+    </role>
+    <role type="USER">
+        <url_pattern url="/">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/accounts">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/profile">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/login">
+            <param>signOut</param>
+        </url_pattern>
+        <url_pattern url="/controller">
+            <param>*</param>
+        </url_pattern>
+
+        <url_pattern url="/feeds">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/notification">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/owner">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/post">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/wall">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/categories">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/task">
+            <param>default</param>
+            <param>create</param>
+            <param>save</param>
+            <param>edit</param>
+
+            <param>stateChange</param>
+            <param>gettasks</param>
+            <param>deletetask</param>
+            <param>optionFilling</param>
+            <param>bind</param>
+        </url_pattern>
+    </role>
+    <role type="ADMIN">
+        <!-- Робота з профілями-->
+        <url_pattern url="/">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/accounts">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/profile">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/login">
+            <param>signOut</param>
+        </url_pattern>
+        <url_pattern url="/controller">
+            <param>*</param>
+        </url_pattern>
+
+        <!-- Адмінка-->
+        <url_pattern url="/admin">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/admin/support">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/admin/users">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/admin/categories">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/admin/groups">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/admin/owner">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/admin/addtask">
+            <param>*</param>
+        </url_pattern>
+        <url_pattern url="/task">
+            <param>showtasksforadmin</param>
+            <param>stateChange</param>
+            <param>gettasks</param>
+            <param>deletetask</param>
+            <param>optionFilling</param>
+            <param>bind</param>
+        </url_pattern>
+    </role>
+    <role type="ALL">
+        <url_pattern url="assets"></url_pattern>
+        <url_pattern url="css"></url_pattern>
+        <url_pattern url="fonts"></url_pattern>
+        <url_pattern url="img"></url_pattern>
+        <url_pattern url="js"></url_pattern>
+        <url_pattern url="json"></url_pattern>
+        <url_pattern url="jsp"></url_pattern>
+        <url_pattern url="META-INF"></url_pattern>
+        <url_pattern url="plugin"></url_pattern>
+        <url_pattern url="sound"></url_pattern>
+        <url_pattern url="WEB-INF"></url_pattern>
+        <url_pattern url="websocket"></url_pattern>
+        <url_pattern url="api"></url_pattern>
+        <url_pattern url="upload"></url_pattern>
+    </role>
+</permissions>

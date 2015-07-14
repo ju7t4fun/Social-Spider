@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.category;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
 import com.epam.lab.spider.model.db.entity.Category;
 import com.epam.lab.spider.model.db.service.CategoryService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
@@ -24,6 +25,7 @@ public class AddCategoryCommand implements ActionCommand {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         String name = request.getParameter("category");
+        name = ReplaceHtmlTags.reaplaceAll(name);
         if (name.split("\\|").length != 2) {
             json.put("status", "warning");
             json.put("msg", "Неправильний формат категорії (name_ua|name_en)");

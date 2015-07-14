@@ -171,7 +171,7 @@
                                         <l:resource key="newpost.postdate">
                                             <input id="date" name="date" type="date"
                                                    min="${date}" value="${date}"
-                                                   class="form-control input-md">
+                                                   class="form-control input-md" onchange="changeData()">
                                         </l:resource>
                                     </div>
                                 </div>
@@ -260,13 +260,20 @@
                     for (var i = 0; i < response.owner.length; i++) {
                         list.append('<option value="' + response.owner[i].id + '">' + response.owner[i].name + '</option>');
                     }
+                    $("#date").attr("min", response.date);
                     $("#date").val(response.date);
                     $("#time").val(response.time);
+                    $("#time1").attr("min", response.del_date);
                     $("#time1").val(response.del_date);
                     $("#time5").val(response.del_time);
                 }
             };
             xmlhttp.send();
+        }
+
+        function changeData() {
+            $("#time1").val($("#date").val())
+            $("#time1").attr("min", $("#date").val());
         }
 
         // Скриваємо видалення
@@ -278,6 +285,11 @@
         // Опрацювання публікування поста
         $(document).ready(function () {
             $("#submit_modal").click(function () {
+                if ($("#check").prop('checked'))
+                    if ($("#time5").val() < $("#time").val()) {
+                        toastrNotification('warning', "НЕ можна вибрати час видалення меншим за час постингу");
+                        return;
+                    }
                 if ($("#tokenize_focus").val() == null) {
                     toastrNotification('warning', "Не вибрано груп");
                     return;

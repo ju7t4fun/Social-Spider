@@ -34,7 +34,6 @@
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
 
-
     <!-- javascripts -->
     <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
     <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
@@ -77,13 +76,13 @@
 
 </head>
 
-<>
-
 <!-- container section start -->
 <section id="container" class="">
 
     <jsp:include page="../pagecontent/header.jsp"/>
     <jsp:include page="../pagecontent/sidebar.jsp"/>
+
+    <jsp:include page="../pagecontent/confirm-delete.jsp"/>
 
     <!--main content start-->
     <section id="main-content">
@@ -122,7 +121,7 @@
                                                     <th>Type</th>
                                                     <th>Content</th>
                                                     <th>On/Off</th>
-                                                    <th>Delete</th>
+                                                    <th>Action</th>
                                                 </tr>
                                                 </thead>
                                             </table>
@@ -148,7 +147,7 @@
                                                     <th>Type</th>
                                                     <th>Content</th>
                                                     <th>On/Off</th>
-                                                    <th>Delete</th>
+                                                    <th>Action</th>
                                                 </tr>
                                                 </thead>
                                             </table>
@@ -302,7 +301,7 @@
 
                 {
                     "aTargets": [5], "createdCell": function (td, cellData, rowData, row, col) {
-                    $(td).html('<div class="btn-group"><a class="btn btn-danger" onclick="deleteTask(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
+                    $(td).html('<div class="btn-group"><a class="btn btn-success" href="/task?action=edit&taskId=' + cellData + '" ><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="deleteTask(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
                 }
                 },
 
@@ -372,7 +371,7 @@
 
                 {
                     "aTargets": [5], "createdCell": function (td, cellData, rowData, row, col) {
-                    $(td).html('<div class="btn-group"><a class="btn btn-danger" onclick="deleteActiveTask(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
+                    $(td).html('<div class="btn-group"><a class="btn btn-success" href="/task?action=edit&taskId=' + cellData + '" ><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="deleteActiveTask(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
                 }
                 },
 
@@ -452,15 +451,7 @@
 
 
     function deleteTask(id) {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('GET', '/task?action=deletetask&taskId=' + id, true);
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4) {
-                table.fnStandingRedraw();
-            }
-
-        };
-        xmlhttp.send();
+        deleteConfirmTask(id);
     }
 
 

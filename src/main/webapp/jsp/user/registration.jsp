@@ -124,7 +124,7 @@
                 </div>
 
                 <i class="btn btn-primary btn-lg btn-block" onclick="submitRegistration();"
-                   style="margin-bottom:20px;margin-right:10px;"><l:resource key="reg.signup"/>
+                   style="margin-bottom:20px;margin-right:10px;font-style: normal;"><l:resource key="reg.signup"/>
                 </i>
                 <script>
                     function submitRegistration() {

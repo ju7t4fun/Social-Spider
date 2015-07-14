@@ -11,14 +11,14 @@ import java.util.List;
 public class UserUnlock {
     private static DataLockService dataLockService = new DataLockService();
     private static final Locker LOCKER = Locker.getInstance();
-    public static void forseFullUserUnlock(Integer userId){
+    public static boolean forceFullUserUnlock(Integer userId){
         List<DataLock> locks = dataLockService.dataLockByUser(userId);
         for(DataLock lock:locks){
             LOCKER.unLock(lock);
         }
-
+        return !locks.isEmpty();
     }
     public static void main(String[] args){
-        forseFullUserUnlock(1);
+        forceFullUserUnlock(1);
     }
 }

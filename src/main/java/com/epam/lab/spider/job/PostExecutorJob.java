@@ -135,7 +135,7 @@ public class PostExecutorJob implements Job {
                     attachmentsStringBuilder.append(", ").append(attachmentsList.get(i));
                 }
                 String textMessage = newPost.getPost().getMessage().replaceAll("%owner%",owner.getDomain());
-
+                textMessage = textMessage.replaceAll("%owner_name%", owner.getName());
                 LOG.debug("Attachments: " + attachmentsStringBuilder.toString());
                 Parameters parameters = new Parameters();
                 parameters.add("owner_id", owner.getVkId());
@@ -145,35 +145,8 @@ public class PostExecutorJob implements Job {
                 if (owner.getVkId() < 0) {
                     parameters.add("from_group", 1);
                 }
-                Long response = null;
-                if (true) {
-                    boolean manyRequest = false;
+                Long response = vk.wall().post(parameters);
 
-                    do {
-                        try {
-                            if (manyRequest) {
-                                Thread.sleep(400);
-                                manyRequest = false;
-                            }
-                            response = vk.wall().post(parameters);
-                        } catch (VKException x) {
-                            if (x.getExceptionCode() == VKException.VK_MANY_REQUESTS) manyRequest = true;
-                            else throw x;
-                        }
-                        // фікс кривої архітектури
-                        // перехоплення NullPointerException by UnknownHostException
-                        catch (NullPointerException x){
-                            try {
-                                Thread.sleep(500);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    } while (manyRequest);
-                }
                 EventLogger eventLogger = EventLogger.getLogger(newPost.getUserId());
                 if(response!=null){
                     newPost.setState(NewPost.State.POSTED);
@@ -181,7 +154,7 @@ public class PostExecutorJob implements Job {
                     SavableServiceUtil.safeSave(newPost);
                     String info = "Success to posting wall" + wall.getOwner().getVkId() + "_" + newPost.getVkPostId();
                     LOG.info(info);
-                    eventLogger.info(info, info);
+                    if(false)eventLogger.info(info, info);
                 }else{
                     String error = "Failed to posting wall" + wall.getOwner().getVkId() + "_" + newPost.getVkPostId();
                     LOG.error(error);
@@ -208,6 +181,10 @@ public class PostExecutorJob implements Job {
                         LOG.error("Posting has failed. Wall is locked.");
                     }
                     break;
+                    case 214:{
+                        Locker.getInstance().lock(wall, DataLock.Mode.POST_LIMIT);
+                        LOG.error("Posting has failed. Wall is locked. Post Limit is expired!");
+                    }
                     default: {
                         LOG.error("Posting has failed. Corrupted new_post #" + newPost.getId(), x);
                         x.printStackTrace();

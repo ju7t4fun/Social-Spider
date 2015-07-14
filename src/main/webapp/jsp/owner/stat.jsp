@@ -18,7 +18,7 @@
             <div>
                 <div class="row" style="margin-left: 270px">
                     <div class="col-lg-3">
-                        <input id="fromDate" class="form-control" type="date">
+                        <input id="fromDate" class="form-control" type="date" onchange="changeDate()">
                     </div>
                     <div class="col-lg-3">
                         <input id="toDate" class="form-control" type="date">
@@ -74,6 +74,13 @@
     </div>
 </div>
 <script>
+
+    function changeDate() {
+        $('#fromDate').attr("min", "2015-07-01");
+        $('#fromDate').attr("max", $('#toDate').attr("value"));
+
+        $("#toDate").attr("min", $("#fromDate").val());
+    }
 
     function drawLineDiagram(data) {
         $('#line-diagram').highcharts('StockChart', {

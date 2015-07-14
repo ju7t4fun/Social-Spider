@@ -180,6 +180,30 @@ function deleteConfirmCategory(id) {
 
 }
 
+function deleteConfirmTask(id) {
+    constructor(confirm, cancel);
+
+    function confirm() {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('GET', '/task?action=deletetask&taskId=' + id, true);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                var response = JSON.parse(xmlhttp.responseText);
+                toastrNotification(response.status, response.msg);
+                if (response.status === 'success') {
+                    $('#tasksTable').DataTable().row($(this).parents('tr')).remove().draw(false);
+                }
+                destroy(confirm, cancel);
+            }
+        };
+        xmlhttp.send();
+    }
+
+    function cancel() {
+        destroy(confirm, cancel);
+    }
+}
+
 
 // Додаємо привязку та показуємо вікно
 function constructor(confirm, cancel) {

@@ -13,7 +13,6 @@ import com.epam.lab.spider.model.db.entity.*;
 
 
 import com.epam.lab.spider.model.db.entity.Post;
-import com.epam.lab.spider.model.db.factory.SynchronizedDataFactoryImpl;
 import com.epam.lab.spider.model.db.service.*;
 import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
 import com.epam.lab.spider.model.vk.*;
@@ -22,6 +21,7 @@ import org.quartz.*;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.epam.lab.spider.model.db.service.TaskSynchronizedNewDataService.getSynchronizedDataFactory;
@@ -301,6 +301,8 @@ public class TaskJob implements Job {
                                 }
                             } catch (PostContentException x) {
                                 LOG.error("Post Content Type Fail. Object: post" + vkPost.getOwnerId() + "_" + vkPost.getId());
+                            } catch (NullPointerException x){
+                                LOG.error("Post Content Type Fail. NullPointerException.");
                             }
                             // заблоковуємо пост
                             // виконується якщо пост додато до потингу
@@ -341,7 +343,10 @@ public class TaskJob implements Job {
                     // моментальний ріпостинг
                     for (com.epam.lab.spider.model.vk.Post vkPost : postToRepost) {
                         String wallEntityCode = "wall" + vkPost.getOwnerId() + "_" + vkPost.getId();
-                        RepostUtil.makeRepost(wall.getProfile(), wallEntityCode, wall.getOwner());
+                        String sign = "";
+                        if(task.getSignature()!=null)sign = task.getSignature()+" ";
+                        if(task.getHashTags()!=null)sign+= task.getHashTags();
+                        RepostUtil.makeRepost(wall.getProfile(), wallEntityCode, wall.getOwner(), sign);
                     }
 
                 }
@@ -355,20 +360,22 @@ public class TaskJob implements Job {
                 for (Map.Entry<Wall, SynchronizedData> entry : syncMap.entrySet()) {
                     syncNewService.save(entry.getValue());
                 }
-                TaskUtil.setNewTaskRunTime(task);
+                TaskUtil.setNewTaskRunTimeAndUpdate(task);
                 {
                     int countGrabMax = task.getPostCount();
                     switch (task.getGrabbingMode()) {
-                        case TOTAL:
+                        case PER_GROUP:
                             countGrabMax = activeSourceInTask * task.getPostCount();
                             break;
-                        case PER_GROUP:
+                        case TOTAL:
                             countGrabMax = task.getPostCount();
                             break;
+
                     }
                     int countGrabSuccess = addedToProcessingPosts.size();
-                    String title = "Task #" + task.getId() + " have grabbed post " + countGrabSuccess + "/" + countGrabMax + ".";
-                    String info = title + " Planned Post Action Count: " + newPosts.size();
+                    String newString = new SimpleDateFormat("H:mm:ss").format(task.getNextTaskRunDate());
+                    String title = "Task #" + task.getId() + " have grabbed post " + countGrabSuccess + "/" + countGrabMax + ". ";
+                    String info = title + " Planned Post Action Count: " + newPosts.size()+". Next run at "+newString;
                     if(task.getType() != Task.Type.FAVORITE) {
                         EventLogger eventLogger = EventLogger.getLogger(task.getUserId());
                         eventLogger.info(title, info);

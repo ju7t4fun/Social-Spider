@@ -4,6 +4,12 @@ $(document).ready(function () {
         $("#tokenize_focus > option[selected]").each(function () {
             source.push($(this).attr("value"));
         });
+        if (source.length == 0) {
+            toastrNotification("warning", "НЕ вибрано груп");
+            return
+        }
+
+        var task_id = $("input[name=task_id]").val();
 
         var destination = [];
         //destination.push(-1);
@@ -13,7 +19,7 @@ $(document).ready(function () {
 
         options.posting_type = 'FAVORITE';//
         options.repeat = 'REPEAT_DISABLE';//
-        options.repeat_count = 2;//
+        options.repeat_count = 10;//
 
         options.start_time = 'INTERVAL';
         options.work_time = 'ROUND_DAILY';
@@ -39,9 +45,9 @@ $(document).ready(function () {
 
 
         var filter = new Object();
-        filter.likes = $("input[name=likes][type='number']").val();
-        filter.reposts = $("input[name=reposts][type='number']").val();
-        filter.comments = $("input[name=comments][type='number']").val();
+        filter.likes = $("input[name=likes]").val();
+        filter.reposts = $("input[name=reposts]").val();
+        filter.comments = $("input[name=comments]").val();
         filter.min_time = 3600;
         filter.max_time = 7 * 24 * 3600;
 
@@ -52,22 +58,31 @@ $(document).ready(function () {
             destination: destination,
             filter: filter
         });
-        alert(myJsonString);
+        console.log(myJsonString);
         $.post("/task?action=save", {data: myJsonString})
             .done(function (data) {
+                $("input[name=task_id]").val(data.newId);
+                $("#task-id-loc").text("Task #"+data.newId);
                 if (data.warning != null) {
+                    toastrNotification("success", "Succeed Saved. But..." + data.warning);
                     setTimeout(function () {
-                        toastrNotification("success", "Succeed Saved. But..." + data.warning);
-                    }, 500);
+                        location.href = "/task?action=showtasksforadmin";
+                    }, 1200);
                 }
                 else {
+                    toastrNotification("success", "Succeed Saved. All Saved Correctly!");
                     setTimeout(function () {
-                        toastrNotification("success", "Succeed Saved. All Saved Correctly!");
-                    }, 500);
+                        location.href = "/task?action=showtasksforadmin";
+                    }, 1200);
+
                 }
             })
-            .fail(function () {
-                toastrNotification("error", "Saved  error.");
+            .fail(function (jqXHR) {
+                if(jqXHR.status == 401){
+                    toastrNotification("error", "Death session. Please ReLogin.");
+                }else{
+                    toastrNotification("error", "Saved  error.");
+                }
             });
 
     });

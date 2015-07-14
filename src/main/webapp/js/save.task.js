@@ -3,6 +3,8 @@
  */
 $(document).ready(function () {
     $("#task-save").click(function () {
+
+        var task_id = $("input[name=task_id]").val();
         var source = [];
         $("#tokenize_focus_source_walls > option[selected]").each(function () {
             source.push( $(this).attr("value"));
@@ -44,22 +46,34 @@ $(document).ready(function () {
         filter.min_time = 3600;
         filter.max_time = 7*24*3600;
 
-        var myJsonString = JSON.stringify({source:source,destination:destination,options:options,content_type:content_type,filter:filter});
+        var myJsonString = JSON.stringify({taskId:task_id,source:source,destination:destination,options:options,content_type:content_type,filter:filter});
         $.post("task?action=save", {data: myJsonString})
             .done(function(data) {
+                $("input[name=task_id]").val(data.newId);
+                $("#task-id-loc").text("Task #"+data.newId);
                 if (data.warning != null) {
                     setTimeout(function () {
                         toastrNotification("success", "Succeed Saved. But..."+data.warning);
+                        setTimeout(function () {
+                            location.href = "/task";
+                        }, 2000);
                     }, 500);
                 }
                 else {
                     setTimeout(function () {
                         toastrNotification("success", "Succeed Saved. All Saved Correctly!");
+                        setTimeout(function () {
+                            location.href = "/task";
+                        }, 2000);
                     }, 500);
                 }
             })
-            .fail(function() {
-                toastrNotification("error", "Saved have error.");
+            .fail(function (jqXHR) {
+                if(jqXHR.status == 401){
+                    toastrNotification("error", "Death session. Please ReLogin.");
+                }else{
+                    toastrNotification("error", "Saved  error.");
+                }
             });
 
     });

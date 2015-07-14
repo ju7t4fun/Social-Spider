@@ -1642,9 +1642,9 @@
 
             var number ;
             if(o.type == 'single'){
-                number = parseInt(num);
+                number = parseInt(num.replace(" ", ""));
             }else{
-                number = parseInt(num.split(o.values_separator).pop());
+                number = parseInt(num.split(o.values_separator).pop().replace(" ", ""));
             }
 
             if(typeof o.decorated_function == 'function'){
@@ -1654,10 +1654,6 @@
             if (o.prefix) {
                 decorated += o.prefix;
             }
-
-
-
-            console.log({value:num, type:typeof num,number:number,double: o.type})
 
             decorated += " " + num;
 

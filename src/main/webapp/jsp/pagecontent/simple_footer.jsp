@@ -14,7 +14,7 @@
             <a class="btn btn-default btn-sm" change="en" href="#">EN</a>
     </div>
     <div style="color:#fff;">
-        <h5>Social-Spider Corp. </h5>
+        <h5>Social-Spider Corp.</h5>
         <h5><l:resource key="address"/></h5>
         <h5>(032)555-9876</h5>
         <p><a href="mailto:example@gmail.com " style="color:#39afea"><h4 >socialspider@gmail.com</h4></a></p>

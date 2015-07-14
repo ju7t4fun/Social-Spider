@@ -42,13 +42,16 @@ public class GetOwnerCommand implements ActionCommand {
         JSONObject result = new JSONObject();
         JSONArray table = new JSONArray();
         for (Owner owner : owners) {
-            JSONArray row = new JSONArray();
-            row.put(owner.getVkId());
-            row.put(owner.getName());
-            row.put(owner.getId());
-            row.put(owner.getId());
-            row.put(owner.getId());
-            table.put(row);
+            try {
+                JSONArray row = new JSONArray();
+                row.put(owner.getVkId());
+                row.put(owner.getName());
+                row.put(owner.getId());
+                row.put(owner.getId());
+                row.put(owner.getId());
+                table.put(row);
+            } catch (NullPointerException ignored) {
+            }
         }
         result.put("iTotalDisplayRecords", count);
         result.put("aaData", table);
