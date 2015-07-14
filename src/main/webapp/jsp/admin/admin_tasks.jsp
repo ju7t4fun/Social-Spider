@@ -70,20 +70,22 @@
 <jsp:include page="../pagecontent/header.jsp"/>
 <jsp:include page="../pagecontent/sidebar.jsp"/>
 
+<jsp:include page="../pagecontent/confirm-delete.jsp"/>
+
 <section id="container" class="">
 
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-list-alt"></i> Task Binding</h3>
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> <l:resource key="task"/></h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/">Admin</a></li>
-                        <li><i class="fa fa-desktop"></i>Task Binding</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="admin"/></a></li>
+                        <li><i class="fa fa-desktop"></i><l:resource key="task"/></li>
                     </ol>
                 </div>
             </div>
@@ -107,13 +109,13 @@
                                 </table>
                                 <br>
 
-                                <div align="right">
+                                <div style="float: right">
                                     <a href="javascript:PopUpHide()">
-                                        <button class="btn btn-info" style="margin-right: 54px"><l:resource
+                                        <button class="btn btn-info"><l:resource
                                                 key="newpost.save"/></button>
                                     </a>
                                     <a href="javascript:PopUpHideS()">
-                                        <button class="btn btn-danger" style="margin-right: 54px"><l:resource
+                                        <button class="btn btn-danger"><l:resource
                                                 key="cancel"/></button>
                                     </a>
                                 </div>
@@ -128,12 +130,12 @@
                                     <table id="tasksTable">
                                         <thead>
                                         <tr style="align-content: center">
-                                            <th>Grabbing</th>
-                                            <th>Binding</th>
-                                            <th>Type</th>
-                                            <th>Content</th>
-                                            <th>On/Off</th>
-                                            <th>Delete</th>
+                                            <th><l:resource key="grabbing"/></th>
+                                            <th><l:resource key="binding"/></th>
+                                            <th><l:resource key="notification.type"/></th>
+                                            <th><l:resource key="newpost.content"/></th>
+                                            <th><l:resource key="on.off"/></th>
+                                            <th><l:resource key="delete"/></th>
                                         </tr>
                                         </thead>
                                     </table>
@@ -285,12 +287,10 @@
     }
 
     function change(obj, id) {
-
         var toState = 'STOPPED';
         if (obj.checked == true) {
             toState = 'running';
         }
-
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('GET', '/task?action=stateChange&taskId=' + id + '&toState=' + toState, true);
         xmlhttp.onreadystatechange = function () {
@@ -299,7 +299,6 @@
                     table.fnStandingRedraw();
                 }
             }
-
         };
         xmlhttp.send();
     }
@@ -307,19 +306,11 @@
     var dataTables_filter_input = $(".dataTables_filter").find("input");
     dataTables_filter_input.attr("class", "form-control");
     dataTables_filter_input.attr("style", "width: 500px")
-//    $(".dataTables_filter").attr("hidden", "");
-//    $(".dataTables_length").attr("hidden", "");
+    //    $(".dataTables_filter").attr("hidden", "");
+    //    $(".dataTables_length").attr("hidden", "");
 
     function deleteTask(id) {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('GET', '/task?action=deletetask&taskId=' + id, true);
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4) {
-                table.fnStandingRedraw();
-            }
-
-        };
-        xmlhttp.send();
+        deleteConfirmTask(id);
     }
 
     function parseAttachment(arg) {

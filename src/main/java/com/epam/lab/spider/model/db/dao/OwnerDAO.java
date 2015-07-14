@@ -37,8 +37,14 @@ public interface OwnerDAO extends CRUD<Owner> {
 
     int getCountAllUnique(Connection connection) throws SQLException;
 
-    List<Owner> getAllGroupsWithSearch(Connection connection, String nameToSearch, int start, int ammount) throws SQLException;
+    List<Owner> getAllGroupsWithSearch(Connection connection, String nameToSearch, int start, int ammount) throws
+            SQLException;
 
     int getCountAllUniqueWithSearch(Connection connection, String nameToSearch) throws SQLException;
 
+    List<Owner> getAllByVkId(Connection connection, int vkId) throws SQLException;
+
+    boolean isBannedByVkId(Connection connection, int id) throws SQLException;
+
+    boolean hasUserGroup(Connection connection, int id, int userId) throws SQLException;
 }

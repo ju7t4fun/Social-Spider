@@ -56,26 +56,26 @@
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
                             <i class="fa fa-rss"></i>
-                            <span>Feed</span>
+                            <span><l:resource key="feed"/></span>
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
                             <li>
                                 <a href="${pageContext.request.contextPath}/task?action=showtasksforadmin" class="">
                                     <i class="fa fa-tasks"></i>
-                                    <span>Tasks Binding</span>
+                                    <span><l:resource key="task"/></span>
                                 </a>
                             </li>
                             <li>
                                 <a href="${pageContext.request.contextPath}/admin/addtask" class="">
                                     <i class="fa fa-plus-circle"></i>
-                                    <span>Add task</span>
+                                    <span><l:resource key="addnewtask"/></span>
                                 </a>
                             </li>
                             <li>
                                 <a href="${pageContext.request.contextPath}/admin/owner" class="">
                                     <i class="fa fa-users"></i>
-                                    <span>Owner</span>
+                                    <span><l:resource key="owner"/></span>
                                 </a>
                             </li>
                         </ul>
@@ -112,7 +112,7 @@
             </c:when>
         </c:choose>
 
-        <div style="position:fixed; top: 510px; left: 10px;">
+        <div style=" position: absolute; bottom: 10px; left: 6px;">
             <div class="btn-group" style="margin-right: 20px;">
                 <a style="border: 1px; color: #3c454f; border-radius: 20px; border-bottom-right-radius: 0;
                 border-top-right-radius: 0; font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;

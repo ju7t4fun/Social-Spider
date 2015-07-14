@@ -102,6 +102,7 @@ public class GrabbingTypeVkSavedUtil {
                 }
                 grabbedPosts = vk.execute().getNewPostFromWall(owner.getVkId(), localCount, lastPostId, null);
             } catch (VKException x) {
+                x.printStackTrace();
                 if (x.getExceptionCode() == VKException.VK_EXECUTE_RUNTIME_ERROR) {
                     if(currentAttempt<totalAttempt){
                         badExecution = true;

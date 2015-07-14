@@ -4,6 +4,10 @@ $(document).ready(function () {
         $("#tokenize_focus > option[selected]").each(function () {
             source.push($(this).attr("value"));
         });
+        if (source.length == 0) {
+            toastrNotification("warning", "НЕ вибрано груп");
+            return
+        }
 
         var task_id = $("input[name=task_id]").val();
 
@@ -54,20 +58,18 @@ $(document).ready(function () {
             destination: destination,
             filter: filter
         });
-        //alert(myJsonString);
+        console.log(myJsonString);
         $.post("/task?action=save", {data: myJsonString})
             .done(function (data) {
                 $("input[name=task_id]").val(data.newId);
                 $("#task-id-loc").text("Task #"+data.newId);
                 if (data.warning != null) {
-                    setTimeout(function () {
-                        toastrNotification("success", "Succeed Saved. But..." + data.warning);
-                    }, 500);
+                    toastrNotification("success", "Succeed Saved. But..." + data.warning);
+                    location.href = "/task?action=showtasksforadmin";
                 }
                 else {
-                    setTimeout(function () {
-                        toastrNotification("success", "Succeed Saved. All Saved Correctly!");
-                    }, 500);
+                    toastrNotification("success", "Succeed Saved. All Saved Correctly!");
+                    location.href = "/task?action=showtasksforadmin";
                 }
             })
             .fail(function () {

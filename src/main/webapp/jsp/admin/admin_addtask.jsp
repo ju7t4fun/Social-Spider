@@ -44,7 +44,6 @@
     <script src="${pageContext.request.contextPath}/assets/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.js"></script>
     <script src="${pageContext.request.contextPath}/js/j4f-number-cases.js"></script>
 
-
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/just4fun.fix.css"/>
 
@@ -69,7 +68,6 @@
         }, 500);
     </script>
 
-
 </head>
 
 <body>
@@ -85,17 +83,17 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-tasks"></i> Task</h3>
+                    <h3 class="page-header"><i class="fa fa-tasks"></i> <l:resource key="addnewtask"/></h3>
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
-                        <li><i class="fa fa-rss"></i>Feed</li>
+                        <li><i class="fa fa-rss"></i><l:resource key="feed"/></li>
                         <li><i class="fa fa-plus-circle"></i><span id="task-id-loc">
                         <c:choose>
                             <c:when test="${task_id != '0'}">
                                 Task #${task_id}
                             </c:when>
                             <c:otherwise>
-                                Add
+                                <l:resource key="addnewtask"/>
                             </c:otherwise>
                         </c:choose></span></li>
                     </ol>
@@ -111,7 +109,7 @@
                                 <h4 class="panel-title j4f-fix-title-background">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseOne">
-                                        Step #1 | Basic settings
+                                        <l:resource key="basic.settings"/>
                                     </a>
                                 </h4>
                             </div>
@@ -152,7 +150,7 @@
                                 <h4 class="panel-title j4f-fix-title-background">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseTwo">
-                                        Step #2 | Advanced settings
+                                        <l:resource key="advanced.settings"/>
                                     </a>
                                 </h4>
                             </div>
@@ -173,10 +171,9 @@
                     <div class="col-lg-offset-2 col-lg-9">
                         <button id="task-save" type="submit" class="btn btn-primary"><l:resource
                                 key="newpost.save"/></button>
-                        <button type="reset" class="btn btn-default"><l:resource key="newpost.reset"/></button>
+
                     </div>
                 </div>
-
             </div>
         </section>
     </section>

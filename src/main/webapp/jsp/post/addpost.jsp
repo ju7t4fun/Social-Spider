@@ -273,8 +273,6 @@
                                                 <button class="btn btn-info" data-toggle="modal"
                                                         data-target="#myModal"><l:resource key="newpost.publish"/>
                                                 </button>
-                                                <button type="reset" class="btn btn-default"><l:resource
-                                                        key="newpost.reset"/></button>
                                             </div>
                                         </div>
                                         <script>
@@ -321,7 +319,9 @@
                                         <l:resource key="newpost.postdate"><input id="date" name="date" type="date"
                                                                                   min="${date}" value="${date}"
                                                                                   placeholder=""
-                                                                                  class="form-control input-md"></l:resource>
+                                                                                  class="form-control input-md"
+                                                                                  onchange="changeData()"
+                                                ></l:resource>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -377,8 +377,7 @@
                                 </div>
                             </div>
                             <button id="submit_modal" type="button" style="margin-left: 455px;margin-top: -80px;"
-                                    class="btn btn-primary"
-                                    data-dismiss="modal">
+                                    class="btn btn-primary">
                                 <l:resource key="newpost.save"/>
                             </button>
                         </form>
@@ -389,12 +388,28 @@
     </div>
 
     <script>
+
+        function changeData() {
+            $("#time1").val($("#date").val())
+            $("#time1").attr("min", $("#date").val());
+        }
+
         $("#time3, #time4").hide();
         $('#check').click(function () {
             $("#time3, #time4").toggle(this.checked);
         });
         $(document).ready(function () {
             $("#submit_modal").click(function () {
+                if ($("#check").prop('checked'))
+                    if ($("#time5").val() < $("#time").val()) {
+                        toastrNotification('warning', "НЕ можна вибрати час видалення меншим за час постингу");
+                        return;
+                    }
+                if ($("#tokenize_focus").val() == null) {
+                    toastrNotification('warning', "Не вибрано груп");
+                    return;
+                }
+                $("#myModal").modal('toggle');
                 $.post(
                         "/post?action=addPost",
                         {

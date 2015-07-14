@@ -119,14 +119,7 @@
                     }
                 }, {
                     "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
-                        var button = '<div class="btn-group">';
-                        if (rowData[4])
-                            button = button + '<a class="btn btn-success';
-                        else
-                            button = button + '<a class="btn btn-warning';
-                        button = button + '" href="/accounts?action=refresh"><i class="icon_refresh"></i></a>' +
-                                '<a class="btn btn-danger" href="javascript:removeAccount(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>'
-                        $(td).html(button);
+                        $(td).html('<a class="btn btn-danger" href="javascript:removeAccount(' + cellData + ')"><i class="icon_close_alt2"></i></a>');
                     }
                 }, {
                     "bVisible": false, "aTargets": [4]
@@ -169,7 +162,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="pull-left"><l:resource key="owner"/></div>
+                            <div class="pull-left"><l:resource key="vkaccounts"/></div>
                             <div class="clearfix"></div>
                         </div>
 
@@ -193,7 +186,8 @@
                                         <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href=""><span
                                                 class="caret"></span></a>
                                         <ul class="dropdown-menu">
-                                            <li><a href="javascript:openNoExtension()"><l:resource key="no.extension"/></a></li>
+                                            <li><a href="javascript:openNoExtension()"><l:resource
+                                                    key="no.extension"/></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -210,7 +204,7 @@
         <h4><l:resource key="add.account.manually"/></h4>
 
         <div class="col-lg-12">
-            <p> <l:resource key="access.text1"/> </p>
+            <p><l:resource key="access.text1"/></p>
             <a href="https://oauth.vk.com/authorize?client_id=4949213&scope=wall,groups,photos,audio,video,docs,stats&redirect_uri=https://oauth.vk.com/blank.html&display=page&v=5.27&response_type=token&revoke=1"
                target="_blank" class="btn btn-info" type="button"
                style="margin-left: 38%"><i class="fa fa-vk"></i> <l:resource key="get.access"/></a>
@@ -222,7 +216,8 @@
                 </small>
             </blockquote>
             <p><l:resource key="access.text3"/></p>
-            <l:resource key="token"><input id="token_form_id" class="form-control" type="text" placeholder=""></l:resource>
+            <l:resource key="token"><input id="token_form_id" class="form-control" type="text"
+                                           placeholder=""></l:resource>
             <br>
 
             <div style="float: right">

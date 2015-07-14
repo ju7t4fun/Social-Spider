@@ -417,7 +417,8 @@
                                                                          class="form-control"
                                                                          placeholder=""></l:resource>
                             </div>
-                            <div style="position: relative; top: 10px; left: 497px;">
+                            <br>
+                            <div style="float: right">
                                 <a type="submit" onclick="addNewOwner()" class="btn btn-primary"><l:resource
                                         key="add"/></a>
                             </div>
@@ -463,10 +464,11 @@
                                                                      class="form-control"
                                                                      placeholder=""></l:resource>
                     </div>
-                    <div style="position: relative; top: 10px; left: 497px;">
+                    <div style="float: right; margin-right: 10px">
+                        <br>
                         <a id="submit_edit" class="btn btn-primary"><l:resource key="edit"/></a>
+                        <a id="submit_cancel_edit" class="btn btn-primary"><l:resource key="cancel"/></a>
                     </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -474,9 +476,26 @@
 </div>
 </div>
 <script>
+
+    // Додаємо привязку
+    function constructorEdit(confirm, cancel) {
+        $('#submit_edit').bind("click", confirm);
+        $('#submit_cancel_edit').bind("click", cancel);
+    }
+
+    // Видаляємо привязку
+    function destroyEdit(confirm, cancel) {
+        $('#submit_edit').unbind("click", confirm);
+        $('#submit_cancel_edit').unbind("click", cancel);
+        $('#edit_group').modal('hide');
+    }
+
     function getGroupName(name, id) {
         $("#group_name").val(name);
-        $("#submit_edit").click(function () {
+
+        constructorEdit(submitEdit, cancelEdit);
+
+        function submitEdit() {
             var ownerText = $("#group_name").val();
             $.post(
                     "/owner?action=editowner",
@@ -491,10 +510,22 @@
                 if (response.status === 'success') {
                     $('#ownersTable').DataTable().draw(false);
                     $('#edit_group').modal('hide');
+                    destroyEdit(submitEdit, cancelEdit);
                 }
             }
-        });
+        }
+
+        function cancelEdit() {
+            destroyEdit(submitEdit, cancelEdit);
+        }
+
+        $('#edit_group').on('hidden.bs.modal', function (e) {
+            destroyEdit(submitEdit, cancelEdit);
+        })
+
     }
+
+
 </script>
 </body>
 </html>

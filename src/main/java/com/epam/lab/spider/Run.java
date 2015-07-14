@@ -26,13 +26,20 @@ import java.util.regex.Pattern;
 public class Run {
     public static final Logger LOG = Logger.getLogger(Run.class);
 
-    public static void main(String[] args) throws VKException {
-//        String s = "<script>alert(1);</script>";
-//        System.out.println(ReplaceHtmlTags.reaplaceAll(s));
-
-        PostService p = new PostService();
-        p.delete(4790);
+    public static int fib(int number) {
+        if (number <= 2) return number;
+        return fib(number - 1) + fib(number - 2);
     }
 
+    public static void main(String[] args) throws VKException {
+        int minNumber = 10, maxNumber = 100;
+        int countCouples = 0;
+        for (int i = minNumber; i < maxNumber; i++) {
+            int numberFib = fib(i);
+            System.out.print(numberFib + " ");
+            if (numberFib % 2 == 0) countCouples++;
+        }
+        System.out.print("\nCount couples = " + countCouples);
+    }
 }
 

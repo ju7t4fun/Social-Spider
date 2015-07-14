@@ -117,11 +117,7 @@ public class GetAllTasks implements ActionCommand {
 
                     array.put(row);
                 } catch (Exception ex) {
-                    ex.printStackTrace();
                 }
-
-                System.out.println(row.toString());
-
             }
         }
 

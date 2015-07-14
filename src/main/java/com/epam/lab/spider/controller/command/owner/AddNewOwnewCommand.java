@@ -74,6 +74,20 @@ public class AddNewOwnewCommand implements ActionCommand {
                 response.getWriter().write(json.toString());
                 return;
             }
+
+            if (service.hasUserGroup(id, user.getId())) {
+                json.put("status", "warning");
+                json.put("msg", "Користувач має цю групу");
+                response.getWriter().write(json.toString());
+                return;
+            }
+            if (service.isBannedByVkId(id)) {
+                json.put("status", "warning");
+                json.put("msg", "Група забанена");
+                response.getWriter().write(json.toString());
+                return;
+            }
+
             Owner owner = new Owner();
             owner.setVk_id(id);
             owner.setUserId(user.getId());
