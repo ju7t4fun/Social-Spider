@@ -361,12 +361,13 @@ public class TaskJob implements Job {
                 {
                     int countGrabMax = task.getPostCount();
                     switch (task.getGrabbingMode()) {
-                        case TOTAL:
+                        case PER_GROUP:
                             countGrabMax = activeSourceInTask * task.getPostCount();
                             break;
-                        case PER_GROUP:
+                        case TOTAL:
                             countGrabMax = task.getPostCount();
                             break;
+
                     }
                     int countGrabSuccess = addedToProcessingPosts.size();
                     String title = "Task #" + task.getId() + " have grabbed post " + countGrabSuccess + "/" + countGrabMax + ".";
