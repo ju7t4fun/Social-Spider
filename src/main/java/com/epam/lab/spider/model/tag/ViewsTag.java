@@ -29,16 +29,16 @@ public class ViewsTag extends BodyTagSupport {
     public int doStartTag() throws JspException {
         List<Profile> profiles = service.getByUserId(userId);
         for (Profile profile : profiles) {
-            Vkontakte vk = new Vkontakte(profile.getAppId());
-            AccessToken accessToken = new AccessToken();
-            accessToken.setAccessToken(profile.getAccessToken());
-            accessToken.setUserId(profile.getVkId());
-            accessToken.setExpirationMoment(profile.getExtTime().getTime());
-            vk.setAccessToken(accessToken);
             try {
+                Vkontakte vk = new Vkontakte(profile.getAppId());
+                AccessToken accessToken = new AccessToken();
+                accessToken.setAccessToken(profile.getAccessToken());
+                accessToken.setUserId(profile.getVkId());
+                accessToken.setExpirationMoment(profile.getExtTime().getTime());
+                vk.setAccessToken(accessToken);
                 vk.stats().trackVisitor();
                 return SKIP_BODY;
-            } catch (VKException ignored) {
+            } catch (Exception ignored) {
             }
         }
         return SKIP_BODY;
