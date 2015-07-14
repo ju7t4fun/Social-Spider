@@ -148,7 +148,7 @@
                 {src: '../img/2.jpg', fade: 2000, delay: 9000},
                 {src: '../img/4.jpg', fade: 2000, delay: 9000},
             ]
-        });1
+        });
     });
 </script>
 

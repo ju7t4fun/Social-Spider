@@ -108,6 +108,7 @@ public class SavableServiceUtil<E> {
                 return savableService.save(entity, connection);
             } catch (SQLTransactionException|SavableTransactionException x) {
                 connection.rollback();
+                LOG.error("SQL ROLLBACK",x);
                 return false;
             } finally {
                 if (connection != null) {
@@ -116,7 +117,8 @@ public class SavableServiceUtil<E> {
                 }
             }
         } catch (SQLException x) {
-            x.printStackTrace();
+            LOG.error("SQL ROLLBACK",
+                    x);
             return false;
         }
     }

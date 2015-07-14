@@ -301,6 +301,8 @@ public class TaskJob implements Job {
                                 }
                             } catch (PostContentException x) {
                                 LOG.error("Post Content Type Fail. Object: post" + vkPost.getOwnerId() + "_" + vkPost.getId());
+                            } catch (NullPointerException x){
+                                LOG.error("Post Content Type Fail. NullPointerException.");
                             }
                             // заблоковуємо пост
                             // виконується якщо пост додато до потингу
