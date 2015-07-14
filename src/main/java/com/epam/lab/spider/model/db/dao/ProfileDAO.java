@@ -19,4 +19,7 @@ public interface ProfileDAO extends CRUD<Profile> {
 
     List<Profile> getInWall(Connection connection, int owner_id) throws SQLException;
 
+    List<Profile> getByUserId(Connection connection, Integer id, int page, int size) throws SQLException;
+
+    int getCountByUserId(Connection connection, Integer id) throws SQLException;
 }

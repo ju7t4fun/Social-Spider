@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * Created by Boyarsky Vitaliy on 12.06.2015.
  */
-public class User {
+public class User implements Comparable<User> {
 
     private static final ServiceFactory factory = ServiceFactory.getInstance();
     private static final TaskService taskService = factory.create(TaskService.class);
@@ -40,17 +40,9 @@ public class User {
     private Set<Profile> profiles = null;
     private Set<Task> tasks = null;
 
-
-    public User() {
-
-    }
-
-    public enum Role {
-        ADMIN, USER
-    }
-
-    public enum State {
-        CREATED, ACTIVATED, BANNED
+    @Override
+    public int compareTo(User o) {
+        return o.getId().compareTo(id);
     }
 
     public Set<Task> getTasks() {
@@ -63,10 +55,13 @@ public class User {
         return tasks;
     }
 
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
+    }
+
     public boolean addTask(Task task) {
         return getTasks().add(task);
     }
-
 
     public boolean removeTask(Task task) {
         return getTasks().remove(task);
@@ -80,6 +75,10 @@ public class User {
                 profiles = new HashSet<>(profileService.getByUserId(id));
         }
         return profiles;
+    }
+
+    public void setProfiles(Set<Profile> profiles) {
+        this.profiles = profiles;
     }
 
     public boolean addProfile(Profile profile) {
@@ -162,14 +161,6 @@ public class User {
         this.deleted = deleted;
     }
 
-    public void setProfiles(Set<Profile> profiles) {
-        this.profiles = profiles;
-    }
-
-    public void setTasks(Set<Task> tasks) {
-        this.tasks = tasks;
-    }
-
     public String getAvatarURL() {
         return avatarURL;
     }
@@ -177,7 +168,6 @@ public class User {
     public void setAvatarURL(String avatarURL) {
         this.avatarURL = avatarURL;
     }
-
 
     @Override
     public String toString() {
@@ -195,6 +185,15 @@ public class User {
                 ", tasks=" + tasks +
                 ", avatarURL=" + avatarURL +
                 '}';
+    }
+
+    public enum Role {
+        ADMIN, USER
+    }
+
+
+    public enum State {
+        CREATED, ACTIVATED, BANNED
     }
 
 }

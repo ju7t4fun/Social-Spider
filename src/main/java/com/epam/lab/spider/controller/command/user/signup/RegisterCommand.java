@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.user.signup;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.utils.hash.HashMD5;
 import com.epam.lab.spider.controller.utils.hash.HashSHA;
@@ -33,7 +34,11 @@ public class RegisterCommand implements ActionCommand {
         String surname = UTF8.encoding(request.getParameter("surname"));
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String gRecaptchaResponse = request
+                .getParameter("g-recaptcha-response");
 
+        name = ReplaceHtmlTags.reaplaceAll(name);
+        surname = ReplaceHtmlTags.reaplaceAll(surname);
         // Очищуємо сесію від мусору
         HttpSession session = request.getSession();
         session.removeAttribute("name");
@@ -42,7 +47,11 @@ public class RegisterCommand implements ActionCommand {
         session.removeAttribute("email");
 
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
-
+        if (gRecaptchaResponse == "" || gRecaptchaResponse == null) {
+            request.setAttribute("toastr_notification", "error|Captcha error");
+            request.getRequestDispatcher("jsp/user/registration.jsp").forward(request, response);
+            return;
+        }
         User user = userService.getByEmail(email);
         if (user != null && !user.getDeleted()) {
             // Користувач з таким email-ом існує
@@ -59,7 +68,7 @@ public class RegisterCommand implements ActionCommand {
             user.setSurname(surname);
             user.setPassword(new HashMD5().hash(password));
             user.setRole(User.Role.USER);
-            user.setAvatarURL("http://localhost:8080/upload/images/default-avatar.jpg");
+            user.setAvatarURL("http://localhost:8080/img/avatarDefault.png");
             userService.insert(user);
 
             // Якщо зареєстувався через вк привязати user_id до vk_id

@@ -3,10 +3,13 @@ package com.epam.lab.spider.model.db.service;
 import com.epam.lab.spider.model.db.PoolConnection;
 import com.epam.lab.spider.model.db.SQLTransactionException;
 import com.epam.lab.spider.model.db.dao.CategoryDAO;
+import com.epam.lab.spider.model.db.dao.CategoryHasPostDAO;
 import com.epam.lab.spider.model.db.dao.CategoryHasTaskDAO;
+import com.epam.lab.spider.model.db.dao.UserHasCategoryDAO;
 import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.entity.Category;
 import com.epam.lab.spider.model.db.entity.Task;
+import com.epam.lab.spider.model.db.entity.UserHasCategory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -22,6 +25,9 @@ public class CategoryService implements BaseService<Category> {
     private static final DAOFactory factory = DAOFactory.getInstance();
     private CategoryDAO cdao = factory.create(CategoryDAO.class);
     private CategoryHasTaskDAO chtdao = factory.create(CategoryHasTaskDAO.class);
+    private CategoryHasPostDAO chpdao = factory.create(CategoryHasPostDAO.class);
+    private UserHasCategoryDAO udao = factory.create(UserHasCategoryDAO.class);
+
 
     @Override
     public boolean insert(Category category) {
@@ -29,9 +35,14 @@ public class CategoryService implements BaseService<Category> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                assertTransaction(cdao.insert(connection, category));
+//                assertTransaction(cdao.insert(connection, category));
+//                for (Task task : category.getTasks()) {
+//                    assertTransaction(chtdao.insert(connection, category.getId(), task.getId()));
+//                }
+//                connection.commit();
+                cdao.insert(connection, category);
                 for (Task task : category.getTasks()) {
-                    assertTransaction(chtdao.insert(connection, category.getId(), task.getId()));
+                    chtdao.insert(connection, category.getId(), task.getId());
                 }
                 connection.commit();
             } catch (SQLTransactionException e) {
@@ -55,10 +66,15 @@ public class CategoryService implements BaseService<Category> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                assertTransaction(cdao.update(connection, id, category));
-                assertTransaction(chtdao.deleteByCategoryId(connection, id));
+//                assertTransaction(cdao.update(connection, id, category));
+//                assertTransaction(chtdao.deleteByCategoryId(connection, id));
+//                for (Task task : category.getTasks()) {
+//                    assertTransaction(chtdao.insert(connection, id, task.getId()));
+//                }
+                cdao.update(connection, id, category);
+                chtdao.deleteByCategoryId(connection, id);
                 for (Task task : category.getTasks()) {
-                    assertTransaction(chtdao.insert(connection, id, task.getId()));
+                    chtdao.insert(connection, id, task.getId());
                 }
                 connection.commit();
             } catch (SQLTransactionException e) {
@@ -81,12 +97,12 @@ public class CategoryService implements BaseService<Category> {
         try {
             Connection connection = PoolConnection.getConnection();
             try {
-//                connection.setAutoCommit(false);
-//                assertTransaction(chtdao.deleteByCategoryId(connection, id));
-//                assertTransaction(cdao.delete(connection, id));
-//                connection.commit();
+                connection.setAutoCommit(false);
                 chtdao.deleteByCategoryId(connection, id);
+                udao.deleteByCatID(connection, id);
+                chpdao.deleteByCategoryId(connection, id);
                 cdao.delete(connection, id);
+                connection.commit();
             } catch (SQLTransactionException e) {
                 connection.rollback();
                 return false;
@@ -123,15 +139,6 @@ public class CategoryService implements BaseService<Category> {
         return null;
     }
 
-
-    public List<Category> getAllWithSearch(String nameToSearch) {
-        try (Connection connection = PoolConnection.getConnection()) {
-            return cdao.getAllWithSearch(connection, nameToSearch);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public List<Category> getAllWithLimit(int start, int ammount) {
         try (Connection connection = PoolConnection.getConnection()) {
@@ -187,4 +194,74 @@ public class CategoryService implements BaseService<Category> {
         return null;
     }
 
+    public List<Category> getAllNonChosenCategories(int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return udao.getAllNonChosen(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Category> getAllChosenCategories(int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return udao.getAllChosen(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean deleteUserCategory(UserHasCategory us) {
+        try {
+            Connection connection = PoolConnection.getConnection();
+            try {
+                connection.setAutoCommit(false);
+                udao.deleteByCatIDAndUserID(connection, us.getCategoryID(), us.getUserId());
+                connection.commit();
+            } catch (SQLTransactionException e) {
+                connection.rollback();
+                return false;
+            } finally {
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean insertIntoUserHasCategories(UserHasCategory usHas) {
+        try {
+            Connection connection = PoolConnection.getConnection();
+            try {
+                connection.setAutoCommit(false);
+                udao.insert(connection, usHas.getCategoryID(), usHas.getUserId());
+                connection.commit();
+            } catch (SQLTransactionException e) {
+                connection.rollback();
+                return false;
+            } finally {
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public List<Category> getByPostId(int postId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return cdao.getByPostId(connection, postId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -28,6 +28,7 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
     private static final String SQL_CHECK_PASSWORD_QUERY = "SELECT * FROM user WHERE email = ? AND password = ? AND " +
             "deleted = false";
     private static final String SQL_UPDATE_BY_COL_NAME_QUERY = "UPDATE user SET {name} = ? WHERE id = ?";
+    private static final String SQL_GET_ALL_USER_QUERY = "SELECT * FROM user WHERE deleted = 0 AND role = 'USER'";
 
     @Override
     public boolean insert(Connection connection, User user) throws SQLException {
@@ -103,6 +104,7 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
             user.setSurname(rs.getString("surname"));
             user.setEmail(rs.getString("email"));
             user.setState(User.State.valueOf(rs.getString("state").toUpperCase()));
+            user.setRole(User.Role.valueOf(rs.getString("role").toUpperCase()));
             users.add(user);
         }
         return users;
@@ -139,6 +141,11 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
     public boolean updateByParameter(Connection connection, String name, String value, Integer id) throws SQLException {
         String replaceQuery = SQL_UPDATE_BY_COL_NAME_QUERY.replace("{name}", name);
         return changeQuery(connection, replaceQuery, value, id);
+    }
+
+    @Override
+    public List<User> getAllUser(Connection connection) throws SQLException {
+        return select(connection, SQL_GET_ALL_USER_QUERY);
     }
 
     public User getByEmailAndPass(Connection connection, String email, String password) throws SQLException {

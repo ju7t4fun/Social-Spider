@@ -17,7 +17,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-    <title>Task | All Tasks</title>
+    <title>Admin | Index</title>
 
     <!-- Bootstrap CSS -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -38,203 +38,494 @@
     <!-- nice scroll -->
     <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
-    <!-- chartjs -->
-    <script src="${pageContext.request.contextPath}/assets/chart-master/Chart.js"></script>
-    <!-- custom chart script for this page only-->
-    <script src="${pageContext.request.contextPath}/js/chartjs-custom.js"></script>
     <!--custome script for all page-->
     <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-    <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
-    <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
-
-
-
-    <%--Статистика--%>
-    <script>
-
-        $(document).ready(function () {
-            // Handler for .ready() called.
-            showGroupStat();
-        });
-
-
-        function showGroupStat() {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/admin?action=vkgroupstats', true);
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4) {
-                    var response = JSON.parse(xmlhttp.responseText);
-                    if (response.status == 'error')
-                        toastrNotification(response.status, response.msg);
-                    else {
-                        drawChart(response);
-                        $('#startDate').attr("max", response.max);
-                        $('#startDate').attr("value", response.date_from);
-                        $('#endDate').attr("max", response.max);
-                        $('#endDate').attr("value", response.date_to);
-                    }
-                }
-            };
-            xmlhttp.send();
-        }
-
-        function redrawChart() {
-            var dateFrom = document.getElementById("startDate").value;
-            var dateTo = document.getElementById("endDate").value;
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/admin?action=vkgroupstats&date_from=' + dateFrom + "&date_to=" + dateTo, true);
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4) {
-                    var response = JSON.parse(xmlhttp.responseText);
-                    if (response.status == 'error')
-                        toastrNotification(response.status, response.msg);
-                    else
-                        drawChart(response);
-                }
-            };
-            xmlhttp.send();
-        }
-
-        function drawChart(response) {
-            new Chart(document.getElementById("line").getContext("2d")).Line(response.line);
-            new Chart(document.getElementById("bar").getContext("2d")).Bar(response.bar);
-            new Chart(document.getElementById("pie").getContext("2d")).Pie(response.pie);
-            $("#country_list").empty();
-            for (var i = 0; i < response.pie.length; i++) {
-                $("#country_list").append('<li class="list-group-item row"><div style="border-radius: 4px; width: 20px; height: 20px; background: ' + response.pie[i].color + '"><span style="margin-left: 30px">  ' + response.pie[i].name + '</span></div></li>');
-            }
-            $("#day1").html(response.day);
-            $("#day2").html(response.day);
-            $("#visitors").html(response.visitors);
-            $("#dayVisitors").html(response.dayVisitors);
-        }
-
-    </script>
+    <%--for charts--%>
+    <%--line diagram lib--%>
+    <script src="${pageContext.request.contextPath}/js/highstock.js"></script>
+    <script src="${pageContext.request.contextPath}/js/exporting.js"></script>
+    <%--gender and pie diagram lib--%>
+    <script src="${pageContext.request.contextPath}/js/highcharts.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 </head>
-
+<script>
+    $(document).ready(function () {
+        document.body.scrollTop = 132;
+    })
+</script>
 <body>
 
 <jsp:include page="../pagecontent/header.jsp"/>
 <jsp:include page="../pagecontent/sidebar.jsp"/>
 
 <!-- container section start -->
-<section id="container" class="">
-
-
+<section id="container1" class="">
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-table"></i> Admin</h3>
+                    <h3 class="page-header"><i class="fa fa-pie-chart"></i><l:resource key="admin"/></h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-                        <li><i class="fa fa-table"></i>Charts</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-pie-chart"></i><l:resource key="charts"/></li>
                     </ol>
                 </div>
             </div>
-
-            <!-- page start-->
-
-
-
-                <div class="modal-body">
-                    <div class="row" >
-                        <!-- chart morris start -->
-
-                        <div class="col-lg-12">
-                            <section class="panel">
-                                <%--<header class="panel-heading" style="position: fixed; left: 300px; top:300px;">--%>
-                                <%--<Char>General Chart</Char>--%>
-                                <%--</header>--%>
-
-
-                                <div style="margin-left: 50px">
-                                    <label for="startDate" ><l:resource
-                                            key="charts.from"/></label>
-                                    <l:resource key="charts.startdate"><input id="startDate" name="date" type="date" style="width: 200px"
-                                                                              class="form-control"
-                                                                              ></l:resource>
-                                    <label for="endDate" ><l:resource key="charts.to"/></label>
-                                    <l:resource key="charts.enddate"><input id="endDate" name="date" type="date" style="width: 200px"
-                                                                            class="form-control" ></l:resource>
-
-                                    <a onclick="redrawChart()"  class="btn btn-default"><l:resource key="charts.update"/></a>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-group m-bot20" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle collapsed" data-toggle="collapse"
+                                           data-parent="#accordion" href="#collapseOne">
+                                            <l:resource key="visit.diagrams"/>
+                                        </a>
+                                    </h4>
                                 </div>
+                                <div id="collapseOne" class="panel-collapse in" style="height: auto;">
+                                    <div class="panel-body">
+                                        <div class="row" style="margin-left: 270px">
+                                            <div class="col-lg-3">
+                                                <input id="fromDate" class="form-control" type="date" onchange="changeDate()">
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <input id="toDate" class="form-control" type="date" onchange="changeDate()">
+                                            </div>
+                                            <a onclick="redrawChart()" class="btn btn-default"><l:resource key="show"/></a>
+                                        </div>
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <li role="presentation" class="active">
+                                                <a href="#home" aria-controls="home" role="tab" data-toggle="tab"><l:resource key="visitors"/></a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><l:resource key="charts.age"/></a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#messages" aria-controls="messages" role="tab"
+                                                   data-toggle="tab"><l:resource key="charts.geografy"/></a>
+                                            </li>
+                                        </ul>
 
-                                <div class="panel-body" style="margin-top: 50px;">
-                                    <div class="tab-pane" id="chartjs">
-                                        <div class="row">
-                                            <!-- Line -->
-                                            <div class="col-lg-6" >
-                                                <section class="panel">
-                                                    <header class="panel-heading" style="margin-left: 50px;">
-                                                        Unique visitors and views
-                                                    </header>
-                                                    <div style="margin-left: 50px; width: 600px">
-                                                        <l:resource key="charts.uniquevisitsdaily"/>
-                                                        <span id="day1"></span> <l:resource key="charts.days"/>:
-                                                        <span id="dayVisitors"></span><br>
-                                                        <l:resource key="charts.uniquevisits"/>
-                                                        <span id="day2"></span> <l:resource key="charts.days"/>:
-                                                        <span id="visitors"></span>
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane active" id="home"
+                                                 style="height: 450px">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="line-diagram"
+                                                             style="height: 450px; min-width: 1100px"></div>
                                                     </div>
-                                                    <div class="panel-body text-center"  >
-                                                        <canvas id="line" height="500" width="930" ></canvas>
-                                                    </div>
-                                                </section>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <!-- Bar -->
-                                        <div class="row">
-                                            <div class="col-lg-6" >
-                                                <section class="panel">
-                                                    <header class="panel-heading" style="margin-left: 50px;">
-                                                        <l:resource key="charts.age"/>
-                                                    </header>
-                                                    <div class="panel-body text-center">
-                                                        <canvas id="bar" height="500" width="930"></canvas>
+                                            <div role="tabpanel" class="tab-pane" id="profile" style="height: 490px">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="gender-diagram" style="min-width: 700px; max-width:
+                                                        700px; height: 450px; margin: auto 230px"></div>
                                                     </div>
-                                                </section>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <!-- Pie -->
-                                            <div class="col-lg-6" >
-                                                <section class="panel">
-                                                    <header class="panel-heading">
-                                                        <l:resource key="charts.geografy"/>
-                                                    </header>
-                                                    <div class="panel-body text-center">
-                                                        <canvas id="pie" height="400" width="400"></canvas>
+                                            <div role="tabpanel" class="tab-pane" id="messages" style="height: 490px">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="pie-diagram"
+                                                             style="min-width: 480px; height: 400px; max-width: 480px;"></div>
                                                     </div>
-                                                </section>
-                                            </div>
-                                            <div class="col-lg-6" style="margin-left: 5px">
-                                                <section class="panel" style="margin-top: 31px">
-                                                    <ul class="list-group" id="country_list">
-                                                    </ul>
-                                                </section>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="city-diagram"
+                                                             style="min-width: 480px; height: 400px;
+                                                             max-width: 480px; position: relative; left: 480px;  top: -426px"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </section>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapseTwo">
+                                            <l:resource key="activity.diagrams"/>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse" style="height: 0;">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-lg-3">
+                                                <input id="date" class="form-control" type="date"
+                                                       onchange="redrawChartStats()">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <li role="presentation" class="active">
+                                                <a href="#task" aria-controls="task" role="tab"
+                                                   data-toggle="tab"><l:resource key="task"/></a></li>
+                                            <li role="presentation">
+                                                <a href="#post" aria-controls="post" role="tab"
+                                                   data-toggle="tab"><l:resource key="post"/></a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#error" aria-controls="error" role="tab" data-toggle="tab"><l:resource key="error"/></a>
+                                            </li>
+                                        </ul>
+
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane active" id="task"
+                                                 style="height: 450px">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="task-line-diagram"
+                                                             style="height: 450px; min-width: 1100px"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="post" style="height: 490px">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="post-line-diagram"
+                                                             style="height: 450px; min-width: 1100px"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="error" style="height: 490px">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div id="error-line-diagram"
+                                                             style="height: 450px; min-width: 1100px"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-
-            <!-- page end-->
+            </div>
         </section>
     </section>
 </section>
-<!-- container section end -->
 
+<%--Побудова графіків постингу, грабінгу та помилок--%>
+<script>
+    function drawTaskDiagram(data) {
+        $('#task-line-diagram').highcharts('StockChart', {
+            rangeSelector: {
+                inputEnabled: false,
+                enabled: false
+            },
 
+            chart: {
+                alignTicks: false
+            },
+
+            series: [{
+                type: 'column',
+                name: 'Task',
+                data: data
+            }]
+        });
+    }
+
+    function drawPostDiagram(data) {
+        $('#post-line-diagram').highcharts('StockChart', {
+            rangeSelector: {
+                inputEnabled: false,
+                enabled: false
+            },
+
+            chart: {
+                alignTicks: false
+            },
+
+            series: [{
+                type: 'column',
+                name: 'Task',
+                data: data
+            }]
+        });
+    }
+
+    function drawErrorDiagram(data) {
+        $('#error-line-diagram').highcharts('StockChart', {
+            rangeSelector: {
+                inputEnabled: false,
+                enabled: false
+            },
+
+            chart: {
+                alignTicks: false
+            },
+
+            series: [{
+                type: 'column',
+                name: 'Error',
+                color: '#FF0000',
+                data: data
+            }]
+        });
+    }
+
+    function redrawChartStats() {
+        var date = document.getElementById("date").value;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('GET', '/admin?action=statsService&date=' + date, true);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                var response = JSON.parse(xmlhttp.responseText);
+                drawTaskDiagram(response.task);
+                drawPostDiagram(response.posted);
+                drawErrorDiagram(response.errors);
+                $("#date").val(response.date);
+            }
+        };
+        xmlhttp.send();
+    }
+
+    $(document).ready(function () {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('GET', '/admin?action=statsService', true);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                var response = JSON.parse(xmlhttp.responseText);
+                drawTaskDiagram(response.task);
+                drawPostDiagram(response.posted);
+                drawErrorDiagram(response.errors);
+                $("#date").attr("min", "2015-07-01");
+                $("#date").attr("max", response.date);
+                $("#date").val(response.date);
+            }
+        };
+        xmlhttp.send();
+    })
+</script>
+<%--Опрацювання діаграм відвідування--%>
+<script>
+
+    function changeDate() {
+        $('#fromDate').attr("min", "2015-07-01");
+        $('#fromDate').attr("max", $('#toDate').attr("value"));
+
+        $('#toDate').attr("min", $('#fromDate').attr("value"));
+    }
+
+    function drawLineDiagram(data) {
+        $('#line-diagram').highcharts('StockChart', {
+            rangeSelector: {
+                inputEnabled: false,
+                buttons: [{
+                    type: 'week',
+                    count: 1,
+                    text: 'week'
+                }, {
+                    type: 'month',
+                    count: 1,
+                    text: '1m'
+                }, {
+                    type: 'month',
+                    count: 3,
+                    text: '3m'
+                }, {
+                    type: 'month',
+                    count: 6,
+                    text: '6m'
+                }, {
+                    type: 'year',
+                    count: 1,
+                    text: '1y'
+                }, {
+                    type: 'all',
+                    text: 'All'
+                }],
+                selected: 1
+            },
+
+            series: [{
+                name: 'Views',
+                data: data.views
+            }, {
+                name: 'Visitors',
+                data: data.visitors
+            }]
+        });
+    }
+
+    function drawGenderDiagram(data) {
+        var categories = ['12-18', '18-21', '21-24', '24-27',
+            '27-30', '30-35', '35-45', ' 45-100'];
+        $('#gender-diagram').highcharts({
+            chart: {
+                type: 'bar'
+            },
+
+            title: {
+                text: 'Gender'
+            },
+
+            xAxis: [{
+                categories: categories,
+                reversed: false,
+                labels: {
+                    step: 1
+                }
+            }, { // mirror axis on right side
+                opposite: true,
+                reversed: false,
+                categories: categories,
+                linkedTo: 0,
+                labels: {
+                    step: 1
+                }
+            }],
+            yAxis: {
+                title: {
+                    text: null
+                },
+                labels: {
+                    formatter: function () {
+                        return Math.abs(this.value) + '%';
+                    }
+                }
+            },
+
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+
+            series: [{
+                name: 'Male',
+                data: data.male
+            }, {
+                name: 'Female',
+                data: data.female
+            }]
+        });
+    }
+
+    function drawCountryDiagram(data) {
+        $('#pie-diagram').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Country'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: "Brands",
+                colorByPoint: true,
+                data: data
+            }]
+        });
+    }
+
+    function drawCityDiagram(data) {
+        $('#city-diagram').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'City'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: "Brands",
+                colorByPoint: true,
+                data: data
+            }]
+        });
+    }
+
+    $(document).ready(function () {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('GET', '/admin?action=stats', true);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                var response = JSON.parse(xmlhttp.responseText);
+                if (response.status == 'error')
+                    toastrNotification(response.status, response.msg);
+                else {
+                    drawChart(response);
+                }
+            }
+        };
+        xmlhttp.send();
+    });
+
+    function redrawChart() {
+        var dateFrom = document.getElementById("fromDate").value;
+        var dateTo = document.getElementById("toDate").value;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('GET', '/admin?action=stats&date_from=' + dateFrom + "&date_to=" + dateTo, true);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                var response = JSON.parse(xmlhttp.responseText);
+                if (response.status == 'error')
+                    toastrNotification(response.status, response.msg);
+                else
+                    drawChart(response);
+            }
+        };
+        xmlhttp.send();
+    }
+
+    function drawChart(response) {
+        drawLineDiagram(response.line);
+        drawGenderDiagram(response.bar);
+        drawCountryDiagram(response.country);
+        drawCityDiagram(response.city);
+        $('#fromDate').attr("min", "2015-07-01");
+        $('#fromDate').attr("max", response.date_to);
+        $('#fromDate').attr("value", response.date_from);
+
+        $('#toDate').attr("min", response.date_from);
+        $('#toDate').attr("max", response.date_max);
+        $('#toDate').attr("value", response.date_to);
+    }
+
+</script>
 
 </body>
 </html>

@@ -1,9 +1,13 @@
 package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.Attachment;
-import com.epam.lab.spider.model.db.entity.NewPost;
+import com.epam.lab.spider.controller.vk.Parameters;
+import com.epam.lab.spider.controller.vk.VKException;
+import com.epam.lab.spider.controller.vk.Vkontakte;
+import com.epam.lab.spider.controller.vk.auth.AccessToken;
+import com.epam.lab.spider.model.db.entity.*;
 import com.epam.lab.spider.model.db.service.NewPostService;
+import com.epam.lab.spider.model.db.service.ProfileService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
 import com.epam.lab.spider.model.db.service.WallService;
 import org.json.JSONArray;
@@ -12,13 +16,15 @@ import org.json.JSONObject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by ����� on 6/28/2015.
+ * Created by Орест on 6/28/2015.
  */
 public class FillPostedPostsCommand implements ActionCommand {
 
@@ -40,6 +46,7 @@ public class FillPostedPostsCommand implements ActionCommand {
                 start = 0;
             }
         }
+
         if (pageSize != null) {
             try {
                 listDisplayAmount = Integer.parseInt(pageSize);
@@ -51,7 +58,6 @@ public class FillPostedPostsCommand implements ActionCommand {
             }
         }
 
-
         if (sortDirection != null) {
             if (!sortDirection.equals("asc"))
                 sortDirection = "desc";
@@ -60,7 +66,6 @@ public class FillPostedPostsCommand implements ActionCommand {
         }
 
         int totalRecords = getTotalRecordCount();
-
 
         GLOBAL_SEARCH_TERM = request.getParameter("sSearch");
 
@@ -153,18 +158,18 @@ public class FillPostedPostsCommand implements ActionCommand {
                 resList = newResList;
             }
 
+            resList = getStatistics(resList, ((User) request.getSession().getAttribute("user")).getId());
 
             for (int i = 0; i < resList.size(); ++i) {
                 JSONArray ja = new JSONArray();
                 NewPost currPost = resList.get(i);
                 if (currPost != null) {
 
-
                     //message
                     try {
                         String msg;
-                        if (currPost.getPost().getMessage().length() > 20) {
-                            msg = currPost.getPost().getMessage().substring(0, 19);
+                        if (currPost.getPost().getMessage().length() > 45) {
+                            msg = currPost.getPost().getMessage().substring(0, 42) + "...";
                         } else {
                             msg = currPost.getPost().getMessage();
                         }
@@ -173,7 +178,6 @@ public class FillPostedPostsCommand implements ActionCommand {
                         ex.printStackTrace();
                         ja.put("No MESSAGE!");
                     }
-
 
                     //group name
                     try {
@@ -185,67 +189,17 @@ public class FillPostedPostsCommand implements ActionCommand {
                         System.out.println(ex.getMessage());
                         ja.put("Empty Wall!");
                     }
-
-
-                    try {
-
-                        Set<Attachment> attachments = currPost.getPost().getAttachments();
-                        if (attachments.size() > 0) {
-                            Map<Attachment.Type, Integer> attachmentCount = new HashMap<>();
-                            for (Attachment attachment : attachments) {
-                                int count = 0;
-                                if (attachmentCount.containsKey(attachment.getType())) {
-                                    count = attachmentCount.get(attachment.getType());
-                                }
-                                count++;
-                                attachmentCount.put(attachment.getType(), count);
-                            }
-                            String group = null;
-                            for (Attachment.Type type : attachmentCount.keySet()) {
-                                group = group == null ? "" + type + "|" + attachmentCount.get(type) : group + "!" +
-                                        type +
-                                        "|" + attachmentCount.get(type);
-                            }
-                            ja.put(group);
-                        } else {
-                            ja.put("");
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        ja.put("");
-                    }
-
+                    ja.put(currPost.getFullId());
 
                     try {
-                        ja.put(currPost.getPostTime());
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+                        ja.put(dateFormat.format(currPost.getPostTime()));
                     } catch (Exception ex) {
                         ja.put("Unknown Time!");
                     }
 
-
-                    int likes;
-                    try {
-                        likes = currPost.getStats().getLikes();
-                    } catch (Exception ex) {
-                        likes = 0;
-                        ex.printStackTrace();
-                    }
-                    int reposts;
-                    try {
-                        reposts = currPost.getStats().getReposts();
-                    } catch (Exception ex) {
-                        reposts = 0;
-                        ex.printStackTrace();
-                    }
-                    int comments;
-                    try {
-                        comments = currPost.getStats().getComments();
-                    } catch (Exception ex) {
-                        comments = 0;
-                        ex.printStackTrace();
-                    }
-
-                    String data = likes + "|" + reposts + "|" + comments;
+                    NewPost.Stats stats = currPost.getStats();
+                    String data = stats.getLikes() + "|" + stats.getReposts() + "|" + stats.getComments();
 
                     ja.put(data);
                     ja.put(currPost.getPostId());
@@ -276,6 +230,28 @@ public class FillPostedPostsCommand implements ActionCommand {
         NewPostService serv = ServiceFactory.getInstance().create(NewPostService.class);
         int totalRecords = serv.getCountWithQuery(sql);
         return totalRecords;
+    }
+
+    private static ServiceFactory factory = ServiceFactory.getInstance();
+    private static WallService wallService = factory.create(WallService.class);
+
+    public static List<NewPost> getStatistics(List<NewPost> newPosts, int userId) {
+        List<Profile> profiles = factory.create(ProfileService.class).getByUserId(userId);
+
+        Vkontakte vk = new Vkontakte(4949213);
+        for (Profile profile : profiles) {
+            AccessToken accessToken = new AccessToken();
+            accessToken.setAccessToken(profile.getAccessToken());
+            accessToken.setUserId(profile.getVkId());
+            accessToken.setExpirationMoment(profile.getExtTime());
+            vk.setAccessToken(accessToken);
+            try {
+                return vk.execute().getPostStats(newPosts);
+            } catch (VKException e) {
+                continue;
+            }
+        }
+        return newPosts;
     }
 
 }

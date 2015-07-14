@@ -1,10 +1,7 @@
 package com.epam.lab.spider.controller.servlet.task;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.task.CreateTaskCommand;
-import com.epam.lab.spider.controller.command.task.SaveTaskCommand;
-import com.epam.lab.spider.controller.command.task.ShowAllTasksCommand;
-import com.epam.lab.spider.controller.command.task.StateChangeTaskCommand;
+import com.epam.lab.spider.controller.command.task.*;
 import com.epam.lab.spider.controller.command.wall.GetWallsCommand;
 
 import javax.servlet.ServletException;
@@ -37,8 +34,14 @@ public class TaskServlet extends HttpServlet {
             commands.put("default", new ShowAllTasksCommand());
             commands.put("create", new CreateTaskCommand());
             commands.put("save", new SaveTaskCommand());
+            commands.put("edit", new EditTaskCommand());
 
             commands.put("stateChange", new StateChangeTaskCommand());
+            commands.put("gettasks", new GetAllTasks());
+            commands.put("deletetask", new DeleteTaskCommand());
+            commands.put("showtasksforadmin", new ShowAllTasksAdmin());
+            commands.put("optionFilling", new FillCatOptions());
+            commands.put("bind", new BindCommand());
         }
 
     }

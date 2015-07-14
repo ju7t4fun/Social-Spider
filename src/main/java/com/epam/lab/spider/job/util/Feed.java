@@ -27,9 +27,7 @@ public class Feed {
         if (postService.insert(post)) {
             postService.bindWithCategories(post.getId(), categories);
             if (feedReceiver != null)
-                for (Category category : categories) {
-                    feedReceiver.send(category.getId(), "new|" + post.getId() + "|" + category.getName());
-                }
+                feedReceiver.send(post.getId(), "new|" + post.getId());
         }
         return false;
     }

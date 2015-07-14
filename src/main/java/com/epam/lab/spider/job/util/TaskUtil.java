@@ -29,10 +29,20 @@ public class TaskUtil {
         return random.nextInt((task.getIntervalMax()-task.getIntervalMin())+60+1) + task.getIntervalMin()*60;
     }
 
-    public static boolean setNewTaskRunTime(Task task){
+    public static boolean setNewTaskRunTimeAndUpdate(Task task){
         int delay = TaskUtil.getRandomTaskRunDeleay(task);
         task.setNextTaskRunDate(new Date(System.currentTimeMillis()+delay*1000));
         return taskService.updateTimeToNextRun(task);
+    }
+    public static void setNewTaskRunTime(Task task){
+        if(task.getStartTimeType() == Task.StartTimeType.INTERVAL && task.getWorkTimeLimit() == Task.WorkTimeLimit.ROUND_DAILY) {
+            int delay = TaskUtil.getRandomTaskRunDeleay(task);
+            task.setNextTaskRunDate(new Date(System.currentTimeMillis() + delay * 1000));
+        }else{
+            // TODO REFACTOR THIS
+            int delay = TaskUtil.getRandomTaskRunDeleay(task);
+            task.setNextTaskRunDate(new Date(System.currentTimeMillis() + delay * 1000));
+        }
     }
     public static boolean changeStageToRunning(Task task){
         int delay = TaskUtil.getRandomTaskRunDeleay(task);

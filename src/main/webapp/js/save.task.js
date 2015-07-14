@@ -3,6 +3,8 @@
  */
 $(document).ready(function () {
     $("#task-save").click(function () {
+
+        var task_id = $("input[name=task_id]").val();
         var source = [];
         $("#tokenize_focus_source_walls > option[selected]").each(function () {
             source.push( $(this).attr("value"));
@@ -28,8 +30,7 @@ $(document).ready(function () {
         options.actions = $("input[name=actions][type='radio']:checked").val();
         options.hashtags = $("input[name=wordsinput]").val();
         options.signature = $("textarea[name=addtext]").val();
-
-
+        //group
         options.interval_min = $("input[name=interval_min][type='number']").val();
         options.interval_max = $("input[name=interval_max][type='number']").val();
         options.post_count = $("input[name=post_count][type='number']").val();
@@ -39,35 +40,40 @@ $(document).ready(function () {
 
 
         var filter = new Object() ;
-        filter.likes = $("input[name=likes][type='number']").val();
-        filter.reposts = $("input[name=reposts][type='number']").val();
-        filter.comments = $("input[name=comments][type='number']").val();
+        filter.likes = $("input[name=likes]").val();
+        filter.reposts = $("input[name=reposts]").val();
+        filter.comments = $("input[name=comments]").val();
         filter.min_time = 3600;
         filter.max_time = 7*24*3600;
 
-
-
-        var myJsonString = JSON.stringify({source:source,destination:destination,options:options,content_type:content_type,filter:filter});
-
-
-
+        var myJsonString = JSON.stringify({taskId:task_id,source:source,destination:destination,options:options,content_type:content_type,filter:filter});
         $.post("task?action=save", {data: myJsonString})
             .done(function(data) {
+                $("input[name=task_id]").val(data.newId);
+                $("#task-id-loc").text("Task #"+data.newId);
                 if (data.warning != null) {
                     setTimeout(function () {
-                    alert(data.warning);
-                        toastrNotification("Succeed Saved. But...", data.warning);
+                        toastrNotification("success", "Succeed Saved. But..."+data.warning);
+                        setTimeout(function () {
+                            location.href = "/task";
+                        }, 2000);
                     }, 500);
                 }
                 else {
                     setTimeout(function () {
-                    alert("done");
-                        toastrNotification("Succeed Saved", "All Saved Correctly!");
+                        toastrNotification("success", "Succeed Saved. All Saved Correctly!");
+                        setTimeout(function () {
+                            location.href = "/task";
+                        }, 2000);
                     }, 500);
                 }
             })
-            .fail(function() {
-                alert( "error" );
+            .fail(function (jqXHR) {
+                if(jqXHR.status == 401){
+                    toastrNotification("error", "Death session. Please ReLogin.");
+                }else{
+                    toastrNotification("error", "Saved  error.");
+                }
             });
 
     });

@@ -40,9 +40,18 @@ public class PostServlet extends HttpServlet {
             commands.put("created", new ShowCreatedPostCommand());
             commands.put("posted", new ShowPostedPostCommand());
             commands.put("queued", new ShowQueuedPostCommand());
-            commands.put("deletenewpost", new DeleteNewPostCommand());
+            commands.put("deleteNewPost", new DeleteNewPostCommand());
             commands.put("getPostById", new GetPostByIdCommand());
             commands.put("savePostFromFeed", new SavePostFromFeedCommand());
+            commands.put("publishPostId", new PublishPostByIdCommand());
+            commands.put("getPostByIdWithoutHtml", new GetPostWithoutHtmlCommand());
+            commands.put("editpost", new EditPostCommand());
+            commands.put("deleteattach", new DeleteAttachmentCommand());
+            commands.put("postStats", new GetStatPostIdCommand());
+            commands.put("getPosted", new GetPostedPostCommand());
+            commands.put("getQueueded", new GetQueuededPostCommand());
+            commands.put("getPostedDate", new GetPostedDateCommand());
+            commands.put("changeTime", new ChangeTimePostedCommand());
         }
     }
 }

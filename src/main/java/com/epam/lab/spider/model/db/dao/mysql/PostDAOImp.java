@@ -28,7 +28,7 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM post WHERE id = ? AND deleted = false";
     private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT * FROM post WHERE user_id = ? AND deleted = 0";
     private static final String SQL_GET_BY_USER_ID_LIMIT_QUERY = "SELECT * FROM post WHERE user_id = ? AND deleted = " +
-            "0 LIMIT ?, ?";
+            "0 ORDER BY id DESC LIMIT ?, ?";
     private static final String SQL_GET_COUNT_BY_USER_ID = "SELECT COUNT(*) FROM post WHERE user_id=? AND deleted = 0";
 
     private static final String SQL_GET_BY_USER_ID_LIMIT_WITH_SEARCH_QUERY = "SELECT * FROM post WHERE user_id = ? " +
@@ -37,6 +37,10 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
             " message LIKE ? AND deleted = 0";
     private static final String SQL_GET_BY_CATEGORY_ID_QUERY = "SELECT post.* FROM  post JOIN category_has_post ON " +
             "post.id = category_has_post.post_id WHERE category_id = ? ORDER BY id DESC LIMIT ?, ?";
+    private static final String SQL_GET_BY_CATEGORY_FROM_USER_ID_QUERY = "SELECT DISTINCT category_has_post.post_id " +
+            "FROM category JOIN category_has_post ON category.id = category_has_post.category_id WHERE category_id IN" +
+            " (SELECT category.id FROM category JOIN user_has_category ON category.id = user_has_category.category_id" +
+            " WHERE user_id = ?) ORDER BY post_id DESC LIMIT ?, ?";
 
     @Override
     public boolean insert(Connection connection, Post post) throws SQLException {
@@ -72,6 +76,7 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
             post.setId(rs.getInt("id"));
             post.setMessage(rs.getString("message"));
             post.setDeleted(rs.getBoolean("deleted"));
+            post.setUserId(rs.getInt("user_id"));
             posts.add(post);
         }
         return posts;
@@ -137,6 +142,17 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
     public List<Post> getByCategoryId(Connection connection, int categoryId, int offset, int limit) throws
             SQLException {
         return select(connection, SQL_GET_BY_CATEGORY_ID_QUERY, categoryId, offset, limit);
+    }
+
+    @Override
+    public List<Integer> getByCategoryFromUser(Connection connection, int userId, int offset, int limit) throws
+            SQLException {
+        ResultSet rs = selectQuery(connection, SQL_GET_BY_CATEGORY_FROM_USER_ID_QUERY, userId, offset, limit);
+        List<Integer> id = new ArrayList<>();
+        while (rs.next()) {
+            id.add(rs.getInt("post_id"));
+        }
+        return id;
     }
 
 }

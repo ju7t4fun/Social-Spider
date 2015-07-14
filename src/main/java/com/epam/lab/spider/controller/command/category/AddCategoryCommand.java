@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.category;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
 import com.epam.lab.spider.model.db.entity.Category;
 import com.epam.lab.spider.model.db.service.CategoryService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
@@ -20,25 +21,31 @@ public class AddCategoryCommand implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("category");
         JSONObject json = new JSONObject();
-        try {
-            Category category = new Category();
-            category.setName(name);
-
-            if (service.insert(category)) {
-                json.put("status", "success");
-                json.put("msg", "Inserted category");
-            } else {
-                json.put("status", "error");
-                json.put("msg", "Error");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        String name = request.getParameter("category");
+        name = ReplaceHtmlTags.reaplaceAll(name);
+        if (name.split("\\|").length != 2) {
+            json.put("status", "warning");
+            json.put("msg", "Неправильний формат категорії (name_ua|name_en)");
+            response.getWriter().write(json.toString());
+            return;
+        }
+        Category category = new Category();
+        category.setName(name);
+        if (request.getSession().getAttribute("urlCat") != null)
+            category.setImageUrl((String) request.getSession().getAttribute("urlCat"));
+        if (service.insert(category)) {
+            json.put("status", "success");
+            json.put("msg", "Успішно додано");
+        } else {
+            json.put("status", "error");
+            json.put("msg", "Відбулася помилка при додаванні");
+        }
+        request.getSession().removeAttribute("urlCat");
         response.getWriter().write(json.toString());
     }
+
+
 }

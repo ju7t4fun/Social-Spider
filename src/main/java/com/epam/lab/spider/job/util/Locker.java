@@ -38,7 +38,7 @@ public class Locker {
     }
 
     public synchronized boolean isLock(Wall wall) {
-        return isLockOrNull("owner", wall.getOwner_id())
+        return isLockOrNull("owner", wall.getOwnerId())
                 || isLockOrNull("wall", wall.getId())
                 || isLockOrNull("profile", wall.getProfile_id());
 
@@ -74,9 +74,9 @@ public class Locker {
                 EventLogger eventLogger = EventLogger.getLogger(wall.getProfile().getUserId());
                 if (mode == DataLock.Mode.ACCESS_DENY) {
 
-                    eventLogger.error("Error", "Доступ до групи заборонено");
+                    eventLogger.error("Error. Access Deny.", "Wall #"+wall.getOwner().getVkId()+" is locked. Access deny. Bind another account and unblock.");
                 } else if (mode == DataLock.Mode.DEFAULT || mode == DataLock.Mode.POST_LIMIT) {
-                    eventLogger.error("Error", "Ліміт постів на групу вичерпано");
+                    eventLogger.error("Error. Limit of Post.", "Wall #"+wall.getOwner().getVkId()+" is locked. Limit of Post per group has expired. Please wait to next day and unblock.");
                 }
                 dataLockService.createLock(table, index, mode, wall.getProfile().getUserId());
             }
@@ -118,9 +118,10 @@ public class Locker {
 
                 EventLogger eventLogger = EventLogger.getLogger(profile.getUserId());
                 if (mode == DataLock.Mode.DEFAULT || mode == DataLock.Mode.AUTH_KEY) {
-                    eventLogger.error("Error", "Ключ доступу застарів");
+                    eventLogger.error("Error. Reauthorized NEED!", "Profile #"+profile.getVkId()+" is locked. Please reauthorized to VK and unblock!");
                 } else if (mode == DataLock.Mode.CAPTCHA) {
-                    eventLogger.error("Error", "Потрібен ввід каптчі");
+                    eventLogger.error("Error.  Captcha NEED!", "Profile #"+profile.getVkId()+" is locked. Captcha input need! " +
+                            "Type captcha in VK and enlarge post delay or/and grabbing interval to resistance this error. Finally unblock account.");
                 }
 
                 EventLogger.getLogger(profile.getUserId());
@@ -153,7 +154,7 @@ public class Locker {
 
             return set.isEmpty();
         } catch (NullPointerException x) {
-            LOG.debug("Object never used by here");
+            //LOG.debug("Object never used by here");
             return false;
         }
     }
@@ -180,21 +181,25 @@ public class Locker {
                 dataLockService.deleteLock(table, index, mode);
             }
         }
-        if (table.equals("profile")) {
-            Profile profile = profileService.getById(index);
-            List<Wall> walls = wallService.getWallsByProfileId(profile.getId());
-            for (Wall wall : walls) {
-                if (!isLock(wall)) {
-                    newPostService.setRestoredStageByWall(wall.getId());
+        // TODO: REWRITE TO USE RESTORE WITH CORRECT POST TIME
+        boolean needRestorePosts = false;
+        if(needRestorePosts) {
+            if (table.equals("profile")) {
+                Profile profile = profileService.getById(index);
+                List<Wall> walls = wallService.getWallsByProfileId(profile.getId());
+                for (Wall wall : walls) {
+                    if (!isLock(wall)) {
+                        newPostService.setRestoredStageByWall(wall.getId());
 //                    newPostService.setSpecialStageByWall(wall.getId(), NewPost.State.RESTORED);
+                    }
                 }
             }
-        }
-        if (table.equals("wall")) {
-            Wall wall = wallService.getById(index);
-            if (!isLock(wall)) {
-                newPostService.setRestoredStageByWall(wall.getId());
-                newPostService.setSpecialStageByWall(wall.getId(), NewPost.State.RESTORED);
+            if (table.equals("wall")) {
+                Wall wall = wallService.getById(index);
+                if (!isLock(wall)) {
+                    newPostService.setRestoredStageByWall(wall.getId());
+                    newPostService.setSpecialStageByWall(wall.getId(), NewPost.State.RESTORED);
+                }
             }
         }
     }

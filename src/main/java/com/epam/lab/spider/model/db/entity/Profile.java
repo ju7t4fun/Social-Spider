@@ -16,6 +16,7 @@ public class Profile {
     private String accessToken;
     private Date extTime;
     private Integer appId = 4949213;
+    private String name;
     private Boolean deleted = false;
 
     private Set<Wall> walls = null;
@@ -85,6 +86,14 @@ public class Profile {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

@@ -5,6 +5,7 @@ import org.apache.http.HttpEntity;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -28,7 +29,7 @@ public class ResponseXml implements Response {
         try {
             InputStream input = entity.getContent();
 
-            if(false){
+            if (false) {
                 StringWriter writer = new StringWriter();
                 IOUtils.copy(input, writer, "UTF-8");
                 String out;

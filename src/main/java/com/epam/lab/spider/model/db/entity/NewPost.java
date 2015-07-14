@@ -3,12 +3,16 @@ package com.epam.lab.spider.model.db.entity;
 import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
+import com.epam.lab.spider.controller.vk.api.Stats;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
+import com.epam.lab.spider.model.db.service.OwnerService;
 import com.epam.lab.spider.model.db.service.PostService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
 import com.epam.lab.spider.model.db.service.WallService;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Sasha on 12.06.2015.
@@ -17,6 +21,7 @@ public class NewPost {
 
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static PostService service = factory.create(PostService.class);
+    private static WallService wallService = factory.create(WallService.class);
 
     private Integer id;
     private Integer postId;
@@ -27,8 +32,19 @@ public class NewPost {
     private Boolean deleted = false;
     private Integer userId = 1;
     private Integer vkPostId;
+    private String fullId = null;
 
+    private Stats stats;
     private Post post;
+    private Owner owner = null;
+
+    public String getFullId() {
+        if (fullId != null)
+            return fullId;
+        if (vkPostId != null)
+            fullId = getOwner().getVkId() + "_" + vkPostId;
+        return fullId;
+    }
 
     public Integer getId() {
         return id;
@@ -39,7 +55,7 @@ public class NewPost {
     }
 
     public Integer getPostId() {
-        if(post!=null){
+        if (post != null) {
             return post.getId();
         }
         return postId;
@@ -105,6 +121,49 @@ public class NewPost {
         this.vkPostId = vkPostId;
     }
 
+    public Stats getStats() {
+        if (stats == null) {
+            try {
+                WallService wallService = new WallService();
+                Wall wall = wallService.getById(wallId);
+                Profile profile = wall.getProfile();
+                Vkontakte vk = new Vkontakte(profile.getAppId());
+                AccessToken accessToken = new AccessToken();
+                accessToken.setAccessToken(profile.getAccessToken());
+                accessToken.setUserId(profile.getVkId());
+                accessToken.setExpirationMoment(profile.getExtTime().getTime());
+                vk.setAccessToken(accessToken);
+                List<NewPost> posts = new ArrayList<>();
+                posts.add(this);
+                List<NewPost> postStats = vk.execute().getPostStats(posts);
+                stats = postStats.get(0).stats;
+            } catch (VKException e) {
+                stats = new Stats() {
+                    @Override
+                    public int getLikes() {
+                        return 0;
+                    }
+
+                    @Override
+                    public int getReposts() {
+                        return 0;
+                    }
+
+                    @Override
+                    public int getComments() {
+                        return 0;
+                    }
+                };
+            }
+        }
+
+        return stats;
+    }
+
+    public void setStats(Stats stats) {
+        this.stats = stats;
+    }
+
     public Post getPost() {
         if (post == null) {
             if (postId == null)
@@ -119,60 +178,6 @@ public class NewPost {
         this.post = post;
     }
 
-    public Stats getStats() {
-        System.out.println("VK_POST_ID " + vkPostId);
-        if (vkPostId != null) {
-            WallService wallService = new WallService();
-            Wall wall = wallService.getById(wallId);
-            Profile profile = wall.getProfile();
-            Vkontakte vk = new Vkontakte(profile.getAppId());
-            AccessToken accessToken = new AccessToken();
-            accessToken.setAccessToken(profile.getAccessToken());
-            accessToken.setUserId(profile.getVkId());
-            accessToken.setExpirationMoment(profile.getExtTime().getTime());
-            vk.setAccessToken(accessToken);
-            Parameters param = new Parameters();
-            param.add("posts", "" + wall.getOwner().getVkId() + "_" + this.vkPostId);
-//            param.add("extended", 1);
-            try {
-                final com.epam.lab.spider.model.vk.Post post = vk.wall().getById(param).get(0);
-                return new Stats() {
-                    @Override
-                    public int getLikes() {
-                        return post.getLikes().getCount();
-                    }
-
-                    @Override
-                    public int getReposts() {
-                        return post.getReposts().getCount();
-                    }
-
-                    @Override
-                    public int getComments() {
-                        return post.getComments().getCount();
-                    }
-                };
-            } catch (VKException e) {
-                e.printStackTrace();
-            }
-        }
-        return new Stats() {
-            @Override
-            public int getLikes() {
-                return 0;
-            }
-
-            @Override
-            public int getReposts() {
-                return 0;
-            }
-
-            @Override
-            public int getComments() {
-                return 0;
-            }
-        };
-    }
 
     public com.epam.lab.spider.controller.vk.api.Stats.Reach getPostReach() {
         if (vkPostId != null) {
@@ -187,14 +192,53 @@ public class NewPost {
             vk.setAccessToken(accessToken);
             Parameters param = new Parameters();
             param.add("owner_id", wall.getOwner().getVkId());
-            param.add("post_id", wallId);
+            param.add("post_id", vkPostId);
             try {
                 return vk.stats().getPostReach(param);
-            } catch (VKException e) {
-                e.printStackTrace();
+            } catch (VKException ignored) {
             }
         }
-        return null;
+        return new com.epam.lab.spider.controller.vk.api.Stats.Reach() {
+            @Override
+            public int getReachSubscribers() {
+                return 0;
+            }
+
+            @Override
+            public int getReachTotal() {
+                return 0;
+            }
+
+            @Override
+            public int getLinks() {
+                return 0;
+            }
+
+            @Override
+            public int getToGroup() {
+                return 0;
+            }
+
+            @Override
+            public int getJoinGroup() {
+                return 0;
+            }
+
+            @Override
+            public int getReport() {
+                return 0;
+            }
+
+            @Override
+            public int getHide() {
+                return 0;
+            }
+
+            @Override
+            public int getUnsubscribe() {
+                return 0;
+            }
+        };
     }
 
     @Override
@@ -211,6 +255,14 @@ public class NewPost {
                 ", vkPostId=" + vkPostId +
                 ", post=" + post +
                 '}';
+    }
+
+    public Owner getOwner() {
+        if (owner == null) {
+            WallService service = factory.create(WallService.class);
+            owner = service.getById(wallId).getOwner();
+        }
+        return owner;
     }
 
     public enum State {

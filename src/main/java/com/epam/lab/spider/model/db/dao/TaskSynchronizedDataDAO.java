@@ -2,6 +2,7 @@ package com.epam.lab.spider.model.db.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -9,17 +10,23 @@ import java.util.Set;
  */
 public interface TaskSynchronizedDataDAO {
 
-    public Integer getIdLastProcessedPost(Connection connection, Integer taskId, Integer wallId) throws SQLException;
+    Integer getIdLastProcessedPost(Connection connection, Integer taskId, Integer wallId) throws SQLException;
 
-    public Set<Integer> getProcessedPost(Connection connection, Integer taskId, Integer wallId, int limit) throws
+    Set<Integer> getProcessedPost(Connection connection, Integer taskId, Integer wallId, int limit) throws
             SQLException;
 
-    public boolean checkIdProcessedPost(Connection connection, Integer vkInnerPostId, Integer taskId, Integer wallId)
+    boolean checkIdProcessedPost(Connection connection, Integer vkInnerPostId, Integer taskId, Integer wallId)
             throws SQLException;
 
-    public boolean markIdLastProcessedPost(Connection connection, Integer vkInnerPostId, Integer taskId, Integer
+    boolean markIdLastProcessedPost(Connection connection, Integer vkInnerPostId, Integer taskId, Integer
             wallId) throws SQLException;
 
-    public boolean clearOldData(Connection connection) throws SQLException;
+    boolean clearOldData(Connection connection) throws SQLException;
+
+    Map<Long, Integer> statisticsExecution(Connection connection, String date) throws SQLException;
+
+    boolean deleteByTaskId(Connection connection, int taskId) throws SQLException;
+
+    boolean deleteByWallId(Connection connection, int wallId) throws SQLException;
 
 }

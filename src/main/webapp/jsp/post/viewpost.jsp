@@ -1,4 +1,5 @@
 <%--<script type='text/javascript' src='${pageContext.request.contextPath}/js/jquery-11.0.min.js'></script>--%>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <script type='text/javascript' src='${pageContext.request.contextPath}/js/unitegallery.min.js'></script>
 
 <link rel='stylesheet' href='${pageContext.request.contextPath}/css/unite-gallery.css' type='text/css'/>
@@ -11,7 +12,7 @@
         <div class="modal-content" style="width: 840px; position: relative; left: -100px;">
             <div class="modal-header">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-                <h3 class="modal-title">Post</h3>
+                <h3 class="modal-title"><l:resource key="post"/></h3>
             </div>
             <div class="modal-body" style="position: relative; left: 70px; top: -21px;">
                 <div class="row">
@@ -20,21 +21,13 @@
                             <div class="panel-body" style="width: 700px; margin-left: -15px;">
                                 <ul style="margin-left:-30px;">
                                     <li>
-                                        <br>
-                                        <tr>
-                                            <td style="text-align:left;padding-left:-300px;"><img
-                                                    src="${pageContext.request.contextPath}/img/post.png"
-                                                    style="margin:0px;"><strong
-                                                    id="group_name"></strong>
-                                            </td>
-                                        </tr>
                                         <tr>
                                             <td style="text-align:justify;">
                                                 <span id="post_text"></span>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <div id="gallery" style="display:none;">
+                                            <div id="gallery" style="display:none; margin-top: 20px;">
                                             </div>
                                         </tr>
                                     </li>
@@ -65,16 +58,33 @@
                 var div_gallery = $("#gallery");
                 for (var i = 0; i < response.attachments.length; i++) {
                     var image = $('<img>');
-                    if ((/\.(gif|jpg|jpeg|png)$/i).test(response.attachments[i].payload)) {
-                        image.attr("src", response.attachments[i].payload);
-                        image.attr("data-image", response.attachments[i].payload);
-                        image.attr("data-description", response.attachments[i].payload);
-                    } else {
-                        image.attr("src", "../img/poster.jpg");
-                        image.attr("data-type", "html5video");
-                        image.attr("data-image", "../img/poster.jpg");
-                        image.attr("data-videomp4", response.attachments[i].payload);
-                        image.attr("data-description", response.attachments[i].payload);
+                    switch (response.attachments[i].type) {
+                        case "photo":
+                            image.attr("src", response.attachments[i].url);
+                            image.attr("data-image", response.attachments[i].url);
+                            break;
+                        case "youtube":
+                            image.attr("data-type", "youtube");
+                            image.attr("data-videoid", response.attachments[i].url);
+                            break;
+                        case "vk_video":
+                            image.attr("src", "../img/poster.jpg");
+                            image.attr("data-type", "VKONTAKTE");
+                            image.attr("data-image", "../img/poster.jpg");
+                            image.attr("data-videoid", response.attachments[i].url);
+                            break;
+                        case "audio":
+                            image.attr("src", "../img/poster.jpg");
+                            image.attr("data-type", "html5video");
+                            image.attr("data-image", "../img/poster.jpg");
+                            image.attr("data-videomp4", response.attachments[i].url);
+                            break;
+                        case "video":
+                            image.attr("src", "../img/poster.jpg");
+                            image.attr("data-type", "html5video");
+                            image.attr("data-image", "../img/poster.jpg");
+                            image.attr("data-videomp4", response.attachments[i].url);
+                            break;
                     }
                     div_gallery.append(image);
                 }

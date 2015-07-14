@@ -6,8 +6,12 @@ import com.epam.lab.spider.model.db.entity.Event;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Boyarsky Vitaliy on 16.06.2015.
@@ -16,7 +20,7 @@ public class EventDAOImp extends BaseDAO implements EventDAO {
 
     private static final String SQL_INSERT_QUERY = "INSERT INTO event (user_id, type, title, message, shown)" +
             "VALUES (?, ?, ?, ?, ?)";
-    private static final String SQL_UPDATE_QUERY = "UPDATE event SET user_id = ?, type = ?, title = ? message = ?, " +
+    private static final String SQL_UPDATE_QUERY = "UPDATE event SET user_id = ?, type = ?, title = ?, message = ?, " +
             "shown = ?, time = ? WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "DELETE FROM event WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM event";
@@ -29,6 +33,9 @@ public class EventDAOImp extends BaseDAO implements EventDAO {
     private static final String SQL_GET_BY_USER_ID_PAGE_QUERY = "SELECT * FROM event WHERE user_id = ? ORDER BY time " +
             "DESC LIMIT ?,?";
     private static final String GET_COUNT_BY_USER_ID_QUERY = "SELECT COUNT(*) FROM event WHERE user_id = ?";
+    private static final String SQL_STATISTICS_ERROR_QUERY = "SELECT COUNT(*) AS count, DATE_FORMAT(time, '%Y-%m-%d " +
+            "%H') AS date FROM event WHERE type = 'ERROR' AND time > ? AND time <= ? GROUP BY UNIX_TIMESTAMP(time) " +
+            "DIV 3600;";
 
     @Override
     public boolean insert(Connection connection, Event event) throws SQLException {
@@ -50,7 +57,7 @@ public class EventDAOImp extends BaseDAO implements EventDAO {
                 event.getTitle(),
                 event.getMessage(),
                 event.getShown(),
-                event.getTitle(),
+                event.getTime(),
                 id);
     }
 
@@ -119,5 +126,23 @@ public class EventDAOImp extends BaseDAO implements EventDAO {
         if (rs.next())
             return rs.getInt("COUNT(*)");
         return 0;
+    }
+
+    @Override
+    public Map<Long, Integer> statisticsExecution(Connection connection, String date) throws SQLException {
+        String fromDate = date + " 00:00:00";
+        String toDate = date + "23:59:59";
+        ResultSet rs = selectQuery(connection, SQL_STATISTICS_ERROR_QUERY, fromDate, toDate);
+        Map<Long, Integer> statistics = new HashMap<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        while (rs.next()) {
+            String format = rs.getString("date") + ":00:00";
+            try {
+                statistics.put(dateFormat.parse(format).getTime(), rs.getInt("count"));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return statistics;
     }
 }

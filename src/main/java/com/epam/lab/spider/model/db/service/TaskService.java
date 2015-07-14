@@ -4,9 +4,11 @@ import com.epam.lab.spider.model.db.PoolConnection;
 import com.epam.lab.spider.model.db.SQLTransactionException;
 import com.epam.lab.spider.model.db.dao.*;
 import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
+import com.epam.lab.spider.model.db.dao.mysql.TaskSynchronizedDataDAOImpl;
 import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
 import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
 import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
+import com.epam.lab.spider.model.db.entity.CategoryHasTask;
 import com.epam.lab.spider.model.db.entity.Task;
 import com.epam.lab.spider.model.db.entity.Wall;
 import com.epam.lab.spider.model.db.service.savable.CustomizeSavableAction;
@@ -30,7 +32,8 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
     private TaskDAO tdao = factory.create(TaskDAO.class);
     private TaskSourceDAO tsdao = factory.create(TaskSourceDAO.class);
     private TaskDestinationDAO tddao = factory.create(TaskDestinationDAO.class);
-//    private CategoryHasTaskDAO chtdao = factory.create(CategoryHasTaskDAO.class);
+    private CategoryHasTaskDAO chtdao = factory.create(CategoryHasTaskDAO.class);
+    private TaskSynchronizedDataDAO taskSynchronizedDataDAO = factory.create(TaskSynchronizedDataDAO.class);
     private FilterDAO fdao = factory.create(FilterDAO.class);
 
     @Override
@@ -40,21 +43,21 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
 
     @Override
     public boolean save(Task entity, final Connection conn) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiseException {
-        return SavableServiceUtil.customSave(conn, entity, new Object[]{entity.getFilter()},null, new CustomizeSavableAction[]{
-            new CustomizeSavableAction() {
-                @Override
-                public void action(Object entity) throws SQLException {
-                    Task task = (Task) entity;
-                    tsdao.deleteByTaskId(conn, task.getId());
-                    for (Wall wall : task.getSource()) {
-                        assertTransaction(tsdao.insert(conn, task.getId(), wall.getId()));
-                    }
-                    tddao.deleteByTaskId(conn, task.getId());
-                    for (Wall wall : task.getDestination()) {
-                        assertTransaction(tddao.insert(conn, task.getId(), wall.getId()));
+        return SavableServiceUtil.customSave(conn, entity, new Object[]{entity.getFilter()}, null, new CustomizeSavableAction[]{
+                new CustomizeSavableAction() {
+                    @Override
+                    public void action(Object entity) throws SQLException {
+                        Task task = (Task) entity;
+                        tsdao.deleteByTaskId(conn, task.getId());
+                        for (Wall wall : task.getSource()) {
+                            assertTransaction(tsdao.insert(conn, task.getId(), wall.getId()));
+                        }
+                        tddao.deleteByTaskId(conn, task.getId());
+                        for (Wall wall : task.getDestination()) {
+                            assertTransaction(tddao.insert(conn, task.getId(), wall.getId()));
+                        }
                     }
                 }
-            }
         });
     }
 
@@ -128,11 +131,17 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                assertTransaction(fdao.delete(connection, tdao.getById(connection, id).getFilterId()));
-                assertTransaction(tddao.deleteByTaskId(connection, id));
-                assertTransaction(tsdao.deleteByTaskId(connection, id));
-//                assertTransaction(chtdao.deleteByTaskId(connection, id));
-                assertTransaction(tdao.delete(connection, id));
+//                assertTransaction(fdao.delete(connection, tdao.getById(connection, id).getFilterId()));
+//                assertTransaction(tddao.deleteByTaskId(connection, id));
+//                assertTransaction(tsdao.deleteByTaskId(connection, id));
+////                assertTransaction(chtdao.deleteByTaskId(connection, id));
+//                assertTransaction(tdao.delete(connection, id));
+
+                tddao.deleteByTaskId(connection, id);
+                tsdao.deleteByTaskId(connection, id);
+                chtdao.deleteByTaskId(connection, id);
+                taskSynchronizedDataDAO.deleteByTaskId(connection, id);
+                tdao.delete(connection, id);
                 connection.commit();
             } catch (SQLTransactionException e) {
                 connection.rollback();
@@ -187,6 +196,16 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
         return null;
     }
 
+
+    public Task getByIdNoLimit(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getByIdAdminRules(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Task> getRunnableByNextRunDate(Date date) {
         try (Connection connection = PoolConnection.getConnection()) {
             return tdao.getAllByNextRunDateLimitByState(connection, date, Task.State.RUNNING);
@@ -195,6 +214,7 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
         }
         return null;
     }
+
     public boolean updateTimeToNextRun(Task task) {
         try (Connection connection = PoolConnection.getConnection()) {
             return tdao.updateNextTimeRun(connection, task.getId(), task.getNextTaskRunDate());
@@ -203,6 +223,7 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
         }
         return false;
     }
+
     public boolean updateNextTimeRunAndState(Task task) {
         try (Connection connection = PoolConnection.getConnection()) {
             return tdao.updateNextTimeRunAndState(connection, task.getId(), task.getNextTaskRunDate(), task.getState());
@@ -211,6 +232,7 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
         }
         return false;
     }
+
     public boolean updateState(Task task) {
         try (Connection connection = PoolConnection.getConnection()) {
             return tdao.updateState(connection, task.getId(), task.getState());
@@ -224,6 +246,87 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
     public List<Task> getByCategoryId(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
             return tdao.getByCategoryId(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Task> getAllLimited(int userId, int start, int ammount) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getAllLimited(connection, userId, start, ammount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getCount(int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getCount(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public List<Task> getAllActiveLimited(int userId, int start, int ammount) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getAllActiveLimited(connection, userId, start, ammount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getActiveCount(int userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getActiveCount(connection, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public List<Task> getAllLimitedAdmin(int start, int ammount) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getAllLimitedAdmin(connection, start, ammount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getCountAdmin() {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return tdao.getCountAdmin(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public boolean deleteFromCHT(int categoryId, int taskId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return chtdao.delete(connection, categoryId, taskId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean insertIntoCHT(int categoryId, int taskId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return chtdao.insert(connection, categoryId, taskId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public List<CategoryHasTask> getAllCHTByTaskId(int taskId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return chtdao.getAllCHTByTaskId(connection, taskId);
         } catch (SQLException e) {
             e.printStackTrace();
         }

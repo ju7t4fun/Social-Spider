@@ -14,12 +14,11 @@ import java.util.List;
  */
 public class CategoryDAOImp extends BaseDAO implements CategoryDAO {
 
-    private static final String SQL_INSERT_QUERY = "INSERT INTO category (name) VALUES (?)";
-    private static final String SQL_UPDATE_QUERY = "UPDATE category SET name = ?";
+    private static final String SQL_INSERT_QUERY = "INSERT INTO category (name, image_url) VALUES (?, ?)";
+    private static final String SQL_UPDATE_QUERY = "UPDATE category SET name = ?, image_url = ? WHERE id = ? ";
     private static final String SQL_DELETE_QUERY = "DELETE FROM category WHERE id = ?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM category ORDER BY id desc ";
-    private static final String SQL_GET_ALL_WITH_SEARCH_QUERY = "SELECT * FROM category WHERE name LIKE ? " +
-            " ORDER BY id desc ";
+
     private static final String SQL_GET_BY_ID_QUERY = "SELECT * FROM category WHERE id = ?";
     private static final String SQL_GET_ALL_LIMITED_QUERY = "SELECT * FROM category ORDER BY id desc  LIMIT ?,?";
     private static final String SQL_GET_ALL_WITH_SEARCH_LIMITED_QUERY = "SELECT * FROM category WHERE name LIKE ? " +
@@ -31,11 +30,14 @@ public class CategoryDAOImp extends BaseDAO implements CategoryDAO {
             "ON category.id = category_has_task.category_id WHERE task_id = ?";
     private static final String SQL_GET_BY_USER_ID_QUERY = "SELECT category.* FROM category JOIN user_has_category ON" +
             " category.id = user_has_category.category_id WHERE user_id = ?";
+    private static final String SQL_GET_BY_POST_ID_QUERY = "SELECT category.* FROM category JOIN category_has_post ON" +
+            " category.id = category_has_post.category_id WHERE post_id = ?";
+
 
     @Override
     public boolean insert(Connection connection, Category category) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
-                category.getName());
+                category.getName(), category.getImageUrl());
         category.setId(getLastInsertId(connection));
         return res;
     }
@@ -43,7 +45,7 @@ public class CategoryDAOImp extends BaseDAO implements CategoryDAO {
     @Override
     public boolean update(Connection connection, int id, Category category) throws SQLException {
         return changeQuery(connection, SQL_UPDATE_QUERY,
-                category.getName(), id);
+                category.getName(), category.getImageUrl(),  id);
     }
 
     @Override
@@ -60,6 +62,7 @@ public class CategoryDAOImp extends BaseDAO implements CategoryDAO {
             category = new Category();
             category.setId(rs.getInt("id"));
             category.setName(rs.getString("name"));
+            category.setImageUrl(rs.getString("image_url"));
             categories.add(category);
         }
         return categories;
@@ -73,11 +76,6 @@ public class CategoryDAOImp extends BaseDAO implements CategoryDAO {
     @Override
     public List<Category> getAllWithLimit(Connection connection, int start, int ammount) throws SQLException {
         return select(connection, SQL_GET_ALL_LIMITED_QUERY, start, ammount);
-    }
-
-    @Override
-    public List<Category> getAllWithSearch(Connection connection, String nameToSearch) throws SQLException {
-        return select(connection, SQL_GET_ALL_WITH_SEARCH_QUERY, nameToSearch);
     }
 
     @Override
@@ -118,5 +116,11 @@ public class CategoryDAOImp extends BaseDAO implements CategoryDAO {
     public List<Category> getByUserId(Connection connection, int userId) throws SQLException {
         return select(connection, SQL_GET_BY_USER_ID_QUERY, userId);
     }
+
+    @Override
+    public List<Category> getByPostId(Connection connection, int postId) throws SQLException {
+        return select(connection, SQL_GET_BY_POST_ID_QUERY, postId);
+    }
+
 
 }

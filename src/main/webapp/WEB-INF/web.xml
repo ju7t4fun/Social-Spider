@@ -84,29 +84,16 @@
         <servlet-class>com.epam.lab.spider.controller.servlet.admin.AdminServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>StatusChangerServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.admin.ajax.StatusChangerServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>PostServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.PostServlet</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>SupportServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.admin.SupportServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>UserFillingTableServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.admin.ajax.UserFillingTableServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>OwnerServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.OwnerServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>PostBindingFillingTableServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.owner.ajax.PostBindingFillingTableServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProfileServlet</servlet-name>
@@ -117,35 +104,15 @@
         <url-pattern>/profile</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>OptionFillingServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.owner.ajax.OptionFillingServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UpdateWallServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.owner.ajax.UpdateWallServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UpdateWallServlet</servlet-name>
-        <url-pattern>/jsonhandler</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>NotificationServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.NotificationServlet</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>AddNewOwnerServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.owner.ajax.AddNewOwnerServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AddNewOwnerServlet</servlet-name>
-        <url-pattern>/AddNewOwnerServlet</url-pattern>
-    </servlet-mapping>
     <servlet>
         <servlet-name>FeedsServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.FeedsServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ShowUsersServlet</servlet-name>
+        <servlet-name>AdminUsersServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.admin.ShowUsersServlet</servlet-class>
     </servlet>
     <servlet>
@@ -156,6 +123,30 @@
         <servlet-name>CategoriesServlet</servlet-name>
         <servlet-class>com.epam.lab.spider.controller.servlet.admin.CategoriesServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserHasCategoriesServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.UserHasCategoriesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminAddTaskServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.AdminAddTaskServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminOwnerServlet</servlet-name>
+        <servlet-class>com.epam.lab.spider.controller.servlet.admin.AdminOwnerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminOwnerServlet</servlet-name>
+        <url-pattern>/admin/owner</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminAddTaskServlet</servlet-name>
+        <url-pattern>/admin/addtask</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserHasCategoriesServlet</servlet-name>
+        <url-pattern>/categories</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CategoriesServlet</servlet-name>
         <url-pattern>/admin/categories</url-pattern>
@@ -165,25 +156,16 @@
         <url-pattern>/admin/groups</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ShowUsersServlet</servlet-name>
+        <servlet-name>AdminUsersServlet</servlet-name>
         <url-pattern>/admin/users</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>FeedsServlet</servlet-name>
         <url-pattern>/feeds</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
         <servlet-name>NotificationServlet</servlet-name>
         <url-pattern>/notification</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>OptionFillingServlet</servlet-name>
-        <url-pattern>/OptionFillingServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PostBindingFillingTableServlet</servlet-name>
-        <url-pattern>/PostBindingFillingTableServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SupportServlet</servlet-name>
@@ -194,16 +176,8 @@
         <url-pattern>/owner</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>UserFillingTableServlet</servlet-name>
-        <url-pattern>/UserFillingTableServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>PostServlet</servlet-name>
         <url-pattern>/post</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>StatusChangerServlet</servlet-name>
-        <url-pattern>/statuschanger</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminServlet</servlet-name>
@@ -229,10 +203,23 @@
         <servlet-name>ControllerServlet</servlet-name>
         <url-pattern>/controller</url-pattern>
     </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>ApiServlet</servlet-name>
         <url-pattern>/api/method/*</url-pattern>
     </servlet-mapping>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/jsp/error/404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/jsp/error/403.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>401</error-code>
+        <location>/jsp/error/401.jsp</location>
+    </error-page>
     <welcome-file-list>
         <welcome-file>jsp/index.jsp</welcome-file>
     </welcome-file-list>

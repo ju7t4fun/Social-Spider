@@ -17,14 +17,29 @@ public interface TaskDAO extends CRUD<Task>,SavableDAO<Task> {
 
     List<Task> getByCategoryId(Connection connection, int id) throws SQLException;
 
-    public Task getByIdLimitByUserId(Connection connection, int id, int userId) throws SQLException;
+    Task getByIdLimitByUserId(Connection connection, int id, int userId) throws SQLException;
 
-    public List<Task> getAllByNextRunDateLimitByState(Connection connection, Date date, Task.State state) throws SQLException;
+     List<Task> getAllByNextRunDateLimitByState(Connection connection, Date date, Task.State state) throws SQLException;
 
-    public boolean updateNextTimeRun(Connection connection, int id, Date date) throws SQLException;
+   boolean updateNextTimeRun(Connection connection, int id, Date date) throws SQLException;
 
-    public boolean updateState(Connection connection, int id, Task.State state) throws SQLException;
+   boolean updateState(Connection connection, int id, Task.State state) throws SQLException;
 
-    public boolean updateNextTimeRunAndState(Connection connection, int id, Date date,Task.State state) throws SQLException;
+    boolean updateNextTimeRunAndState(Connection connection, int id, Date date,Task.State state) throws SQLException;
+
+    int getCount(Connection connection, int userId) throws SQLException;
+
+    List<Task> getAllLimited(Connection connection,int userId, int start, int ammount) throws SQLException;
+
+    List<Task> getAllActiveLimited(Connection connection, int userId, int start, int ammount) throws SQLException;
+
+    int getActiveCount(Connection connection, int userId) throws SQLException;
+
+    Task getByIdAdminRules(Connection connection, int id) throws SQLException;
+
+    List<Task> getAllLimitedAdmin(Connection connection, int start, int ammount) throws SQLException;
+
+    int getCountAdmin(Connection connection) throws SQLException;
+
 
 }

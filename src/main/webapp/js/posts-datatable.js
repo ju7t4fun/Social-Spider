@@ -1,13 +1,13 @@
 /**
- * Created by ����� on 6/27/2015.
+ * Created by Орест on 6/27/2015.
  */
 var table;
 
 
-function reloadData(grName) {
+function reloadData(postId) {
 
     document.getElementById("showAllBtnId").style.visibility = "visible";
-    var newUrl = path + "/post?action=fillpostedposts&groupNameToGroup="+grName;
+    var newUrl = "/post?action=getPosted&postId=" + postId;
     table.api().ajax.url(newUrl).load();
 
     document.getElementById("showAllBtnId").style.visibility = "visible";
@@ -18,132 +18,85 @@ jQuery(document).ready(function () {
     table = $('#postsTable').dataTable({
 
         "bPaginate": true,
-        aaSorting:[],
+        aaSorting: [],
         paging: true,
         "bInfo": false,
         "iDisplayStart": 0,
         "bProcessing": true,
         'iDisplayLength': 10,
         "bServerSide": true,
-        "sAjaxSource": path + "/post?action=fillpostedposts",
+        "sAjaxSource": "/post?action=getPosted",
         colVis: {
             "align": "right",
             "buttonText": "columns <img src=\"/img/caaret.png\"/>",
         },
+        //showAllBtnId
+        "sDom": '<"top"<"toolbar">f>t<"bottom"lp><"clear">',
 
-        "aoColumnDefs": [
-
-            {
-                "targets": [0,1,2,4,5,6], "orderable": false
-            },
-
-            {
-                "class": "dt-body-left", "targets": 0
-            },
-
-            {
-                "class": "dt-body-right", "targets": 6
-            },
-
-
-            {
-                "width": "60%", "targets": 0
-            },
-            {
-                "width": "10%", "targets": 3
-            },
-
-            {
-                "class": "dt-body-left", "targets": 4
-            },
-
-
-            {
-                "bVisible": false, "aTargets": [5]
-            },
-
-            {
-                "aTargets": [0], "createdCell": function (td, cellData, rowData, row, col) {
-
-                $(td).html('<a href="#" onclick="viewPost(' + rowData[5] + ')" data-toggle="modal" data-target="#myModal">' +
-                    cellData + '</a>');
-
+        "aoColumnDefs": [{
+            "targets": [0, 1, 2, 4, 5, 6], "orderable": false
+        }, {
+            "class": "dt-body-center", "targets": [4, 6]
+        }, {
+            "class": "dt-body-left", "targets": 0
+        }, {
+            "width": "50%", "targets": 0
+        }, {
+            "width": "10%", "targets": 3
+        }, {
+            "class": "dt-body-left", "targets": 4
+        }, {
+            "bVisible": false, "aTargets": [5]
+        }, {
+            "aTargets": [0], "createdCell": function (td, cellData, rowData, row, col) {
+                $(td).html('<a target="_blank" href="http://vk.com/wall' + rowData[2] + '" >' + cellData + '</a>');
             }
-            },
-
-            {
-                "aTargets": [1], "createdCell": function (td, cellData, rowData, row, col) {
-
-                var strCellValue ='<a href=\"javascript:reloadData(\''  + cellData.toString() + '\')\" >' + cellData + "</a>";
+        }, {
+            "aTargets": [1], "createdCell": function (td, cellData, rowData, row, col) {
+                var strCellValue = '<a href=\"javascript:reloadData(\'' + rowData[6] + '\')\" >' + cellData + "</a>";
                 $(td).html(strCellValue);
-
             }
-
-            },
-
-
-            {
-                "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
-
+        }, {
+            "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
                 var tokens = cellData.split("|");
-
-                $(td).html( '<img src=\"/img/like.png" width="23" height="23"> ' + tokens[0]  +'   <img src=\"/img/speaker.png" width="23" height="23"> ' +
-                     tokens[1] +   '    <img src=\"/img/comment.png" width="23" height="23"> ' + tokens[2]  );
-
+                $(td).html('<table onclick="openPostStats(\'' + rowData[6] + '\')"><tr>' +
+                    '<td><i style="color: #6c6c6c;" class="fa fa-heart"></i> <span class="badge bg-important">' + tokens[0] + '</span></td>' +
+                    '<td><i style="color: #6c6c6c;" class="fa fa-bullhorn"></i> <span class="badge bg-important">' + tokens[1] + '</span></td>' +
+                    '<td><i style="color: #6c6c6c;" class="fa fa-comment"></i> <span class="badge bg-important">' + tokens[2] + '</span></td>' +
+                    '</tr></table>');
             }
-            },
-
-            {
-                "aTargets": [2], "createdCell": function (td, cellData, rowData, row, col) {
-                $(td).html(parseAttachment(cellData));
+        }, {
+            "width": "30%", "targets": 4
+        }, {
+            "width": "5%", "targets": 6
+        }, {
+            "bVisible": false, "aTargets": [2]
+        }, {
+            "aTargets": [6], "createdCell": function (td, cellData, rowData, row, col) {
+                $(td).html('<a class="btn btn-danger" onclick="removePost(' + cellData + ')"><i' +
+                    ' class="icon_close_alt2"></i></a>');
             }
-            },
-
-            {
-                "aTargets": [6], "createdCell": function (td, cellData, rowData, row, col) {
-
-                $(td).html('<div class="btn-group"><a class="btn btn-success" href="#"><i class="icon_check_alt2"></i></a> <a class="btn btn-danger" onclick="removePost('  + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
-
-            }
-            }
-
-
-        ]
+        }]
 
     });
 
-    //            $(".dataTables_filter").attr("hidden", "");
-    $(".dataTables_length").attr("hidden", "");
+    //$(".dataTables_filter").attr("hidden", "");
+    //$(".dataTables_length").attr("hidden", "");
     var dataTables_filter_input = $(".dataTables_filter").find("input");
     dataTables_filter_input.attr("class", "form-control");
     dataTables_filter_input.attr("style", "width: 500px")
 
-
-    //$(".dataTables_filter").attr("hidden", "");
-
-
-    //$(".dataTables_length").attr("hidden", "");
-
+    $("div.toolbar").html('<input style="position: absolute; top: 35px; left: 35px; visibility: hidden" class="btn btn-default" type="button" id="showAllBtnId" onclick="myFunc()" value="Show All"/>');
 
     $('#refreshbtn').click(function () {
         table.fnStandingRedraw();
     });
 
-});
-
+})
+;
 
 function removePost(i) {
-
-    var xmlhttp = new  XMLHttpRequest();
-    xmlhttp.open("POST",path + "/post?action=deletenewpost",true);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send("newPostId="+i);
-
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4) {
-            table.fnStandingRedraw();
-        }
-    }
+    deleteConfirmPosted(i);
 };
 
 function parseAttachment(arg) {

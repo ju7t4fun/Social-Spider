@@ -3,10 +3,7 @@ package com.epam.lab.spider.controller.servlet;
 import com.epam.lab.spider.controller.command.ActionFactory;
 import com.epam.lab.spider.controller.command.category.AddCategoryCommand;
 import com.epam.lab.spider.controller.command.category.GetCategoryCommand;
-import com.epam.lab.spider.controller.command.controller.CategoriesCommand;
-import com.epam.lab.spider.controller.command.controller.UploadFileCommand;
-import com.epam.lab.spider.controller.command.controller.UploadFileFromURLCommand;
-import com.epam.lab.spider.controller.command.controller.LocaleCommand;
+import com.epam.lab.spider.controller.command.controller.*;
 import com.epam.lab.spider.controller.command.post.GetPostByIdCommand;
 
 import javax.servlet.ServletException;
@@ -38,11 +35,13 @@ public class ControllerServlet extends HttpServlet {
         public ApiActionFactory() {
             commands = new HashMap<>();
             commands.put("locale", new LocaleCommand());
+            commands.put("unlock", new UnlockCommand());
             commands.put("upload", new UploadFileCommand());
             commands.put("uploadurl", new UploadFileFromURLCommand());
             commands.put("categories", new CategoriesCommand());
             commands.put("getcategory", new GetCategoryCommand());
             commands.put("addcategory", new AddCategoryCommand());
+            commands.put("getLangJSON", new GetLangJSONCommand());
         }
     }
 

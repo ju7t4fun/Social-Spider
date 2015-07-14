@@ -24,29 +24,57 @@
     <!-- bootstrap theme -->
     <link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">
     <!--external css-->
+    <link href="${pageContext.request.contextPath}/css/core.css" rel="stylesheet">
+
     <!-- font icon -->
     <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- Custom styles -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
 
+    <!-- javascripts -->
+    <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
+    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+    <!-- nice scroll -->
+    <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <!-- gritter -->
+
+    <%--<!-- custom gritter script for this page only-->--%>
+    <script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>
+    <%--<!--custome script for all page-->--%>
+    <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
+
+    <%--for table--%>
+    <link href="http://cdn.datatables.net/1.10.3/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
+    <link href="http://datatables.net/release-datatables/extensions/ColVis/css/dataTables.colVis.css" rel="stylesheet"
+          type="text/css">
+    <script src="http://cdn.datatables.net/1.10.3/js/jquery.dataTables.min.js"></script>
+    <script src="http://datatables.net/release-datatables/extensions/ColVis/js/dataTables.colVis.js"></script>
+    <script src="http://jquery-datatables-column-filter.googlecode.com/svn/trunk/media/js/jquery.dataTables.columnFilter.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnStandingRedraw.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnSetFilteringDelay.js"></script>
+
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
+    <!--[if lt IE 9]>
+    <script src="${pageContext.request.contextPath}/js/html5shiv.js"></script>
+    <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/lte-ie7.js"></script>
+    <![endif]-->
 
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.js"></script>
-    <script src="js/respond.min.js"></script>
-    <script src="js/lte-ie7.js"></script>
-    <![endif]-->
+    <!--custom tagsinput-->
+    <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
 
 </head>
-
-<body>
 
 <!-- container section start -->
 <section id="container" class="">
@@ -54,11 +82,13 @@
     <jsp:include page="../pagecontent/header.jsp"/>
     <jsp:include page="../pagecontent/sidebar.jsp"/>
 
+    <jsp:include page="../pagecontent/confirm-delete.jsp"/>
+
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-12" style="margin-left: 13px ">
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
                         <li><i class="fa fa-desktop"></i>Task</li>
@@ -69,172 +99,476 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <section class="panel">
-                        <header class="panel-heading tab-bg-primary ">
-                            <ul class="nav nav-tabs">
-                                <li class="">
-                                    <a data-toggle="tab" href="#active">Active Tasks</a>
-                                </li>
-                                <li class="active">
-                                    <a data-toggle="tab" href="#all">All Tasks</a>
-                                </li>
 
-                            </ul>
-                        </header>
-                        <div class="panel-body">
-                            <div class="tab-content">
-                                <div id="active" class="tab-pane">
-                                    <div class="col-lg-12">
-                                        <table class="table table-striped table-advance table-hover">
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Grabbing</th>
-                                                <th>Posting</th>
-                                                <th>Account</th>
-                                                <th>Type</th>
-                                                <th>Content</th>
-                                                <th>Interval</th>
-                                                <th>On/Off</th>
-                                            </tr>
-                                            <tr>
-                                                <td>456423</td>
-                                                <td>testest</td>
-                                                <td>testtest</td>
-                                                <td>acc1</td>
-                                                <td>typetype</td>
-                                                <td>text, photo, links</td>
-                                                <td>interval</td>
-                                                <td>
-                                                    <div class="switch switch-square"
-                                                         data-on-label="<i class=' icon-ok'></i>"
-                                                         data-off-label="<i class='icon-remove'></i>">
-                                                        <input type="checkbox" checked="" />
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div id="all" class="tab-pane active">
-                                    <div class="col-lg-12">
-                                        <table class="table table-striped table-advance table-hover">
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Grabbing</th>
-                                                <th>Posting</th>
-                                                <th>Type</th>
-                                                <th>Content</th>
-                                                <th>Run Time</th>
-                                                <th>Limited</th>
-                                                <th>On/Off</th>
-                                            </tr>
-                                            <c:forEach items="${tasks}" var="task">
-                                            <tr>
-                                                <td><c:out value="${task.id}"/></td>
-                                                <td><c:out value="${task.source}"/></td>
-                                                <td><c:out value="${task.destination}"/></td>
-                                                <td><c:out value="${task.type}"/></td>
-                                                <td><c:out value="${task.contenttype}"/></td>
-                                                <td><c:out value="${task.time}"/></td>
-                                                <td><c:out value="${task.workLimit}"/></td>
-                                                <td>
-                                                    <div change="${task.id}" class="task-switch switch switch-square"
-                                                         data-on-label="<i class=' icon-ok'></i>"
-                                                         data-off-label="<i class='icon-remove'></i>">
-                                                        <input type="checkbox" ${task.active!=null?'checked':''} />
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            </c:forEach>
-                                        </table>
-                                        <script type="text/javascript">
-
-                                            function delayResultPrint(result){
-                                                setTimeout(function () {
-                                                    if (${toastr_notification!=null}) {
-//                                                        toastrNotification(result,result);
-                                                        toastr.info(result);
-                                                    }
-                                                }, 500);
-                                            }
-
-                                            $(document).ready(function () {
-                                                $(" div.task-switch").change(function () {
-                                                    $(this).children(".switch-on").each(function () {
-                                                        var row = $(this).parent().parent().parent();
-//                                                        $(row).css("background-color", "yellow");
-                                                        var id = $(this).parent().attr('change');
-                                                        $.post("task?action=stateChange&toState=RUNNING&taskId=".concat(id))
-                                                                .done(function (data) {
-//                                                                    $(row).css("background-color", "green");
-                                                                    alert(data.alert + id);
-                                                                    delayResultPrint(data.alert + id);
-                                                                })
-                                                                .fail(function (jqXHR, textStatus, errorThrown) {
-//                                                                    $(row).css("background-color", "red");
-                                                                    alert(textStatus + id);
-                                                                    delayResultPrint(textStatus + id);
-
-
-                                                                });
-                                                    });
-                                                    $(this).children(".switch-off").each(function () {
-                                                        var row = $(this).parent().parent().parent();
-//                                                        $(row).css("background-color", "yellow");
-                                                        var id = $(this).parent().attr('change');
-                                                        $.post("task?action=stateChange&toState=STOPPED&taskId=".concat(id))
-                                                                .done(function (data) {
-//                                                                    $(row).css("background-color", "green");
-                                                                    alert(data.alert + id);
-                                                                    delayResultPrint(data.alert + id);
-                                                                })
-                                                                .fail(function (jqXHR, textStatus, errorThrown) {
-//                                                                    $(row).css("background-color", "red");
-                                                                    alert(textStatus + id);
-                                                                    delayResultPrint(textStatus + id);
-                                                                });
-                                                    });
-
-                                                });
-                                            });
-                                        </script>
+                    <ul class="nav nav-tabs" role="tablist" style="margin-left: 13px ">
+                        <li role="presentation" class="active"><a href="#tabs-1" onclick="toActive()"
+                                                                  aria-controls="tabs-1"
+                                                                  role="tab" data-toggle="tab">Active Tasks</a></li>
+                        <li role="presentation"><a href="#tabs-2" onclick="toAll()" aria-controls="tabs-2" role="tab"
+                                                   data-toggle="tab">All Tasks</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="tabs-1">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="col-lg-12">
+                                            <table id="activeTasksTable">
+                                                <thead>
+                                                <tr style="align-content: center">
+                                                    <th>Grabbing</th>
+                                                    <th>Posting</th>
+                                                    <th>Type</th>
+                                                    <th>Content</th>
+                                                    <th>On/Off</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </section>
-                </div>
 
+
+                        <div id="tabs-2" role="tabpanel" class="tab-pane ">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
+
+                                    <div class="panel-body">
+
+                                        <div class="col-lg-12">
+                                            <table id="tasksTable">
+                                                <thead>
+                                                <tr style="align-content: center">
+                                                    <th>Grabbing</th>
+                                                    <th>Posting</th>
+                                                    <th>Type</th>
+                                                    <th>Content</th>
+                                                    <th>On/Off</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
-
     </section>
-    <!--main content end-->
 </section>
-<!-- container section end -->
-
-<!-- javascripts -->
-<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-<!-- nice scroll -->
-<script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
-<!-- gritter -->
-
-<!-- custom gritter script for this page only-->
-<script src="${pageContext.request.contextPath}/js/gritter.js" type="text/javascript"></script>
-<!--custome script for all page-->
-<script src="${pageContext.request.contextPath}/js/scripts.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
-<!--custom tagsinput-->
-<script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
-<script src="${pageContext.request.contextPath}/js/form-component.js"></script>
-<!--custom checkbox & radio-->
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/ga.js"></script>
-<!--custom switch-->
-<script src="${pageContext.request.contextPath}/js/bootstrap-switch.js"></script>
 
 
+<style>
+    .onoffswitch {
+        position: relative;
+        width: 90px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    .onoffswitch-checkbox {
+        display: none;
+    }
+
+    .onoffswitch-label {
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid #999999;
+        border-radius: 20px;
+    }
+
+    .onoffswitch-inner {
+        display: block;
+        width: 200%;
+        margin-left: -100%;
+        -moz-transition: margin 0.3s ease-in 0s;
+        -webkit-transition: margin 0.3s ease-in 0s;
+        -o-transition: margin 0.3s ease-in 0s;
+        transition: margin 0.3s ease-in 0s;
+    }
+
+    .onoffswitch-inner:before, .onoffswitch-inner:after {
+        display: block;
+        float: left;
+        width: 50%;
+        height: 30px;
+        padding: 0;
+        line-height: 30px;
+        font-size: 14px;
+        color: white;
+        font-family: Trebuchet, Arial, sans-serif;
+        font-weight: bold;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .onoffswitch-inner:before {
+        content: "ON";
+        padding-left: 10px;
+        background-color: #34C171;
+        color: #FFFFFF;
+    }
+
+    .onoffswitch-inner:after {
+        content: "OFF";
+        padding-right: 10px;
+        background-color: #EEEEEE;
+        color: #999999;
+        text-align: right;
+    }
+
+    .onoffswitch-switch {
+        display: block;
+        width: 18px;
+        margin: 6px;
+        background: #FFFFFF;
+        border: 2px solid #999999;
+        border-radius: 20px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 56px;
+        -moz-transition: all 0.3s ease-in 0s;
+        -webkit-transition: all 0.3s ease-in 0s;
+        -o-transition: all 0.3s ease-in 0s;
+        transition: all 0.3s ease-in 0s;
+    }
+
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+        margin-left: 0;
+    }
+
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+        right: 0px;
+    }
+</style>
+<script type="text/javascript">
+    var table;
+    var activeTable;
+
+    jQuery(document).ready(function () {
+        table = $('#tasksTable').dataTable({
+
+            "bFilter": false,
+            "bLengthChange": false,
+            "bSort": false,
+            "bPaginate": true,
+            "paging": true,
+            "bInfo": false,
+            "iDisplayStart": 0,
+            "bProcessing": true,
+            'iDisplayLength': 10,
+            "bServerSide": true,
+            "sAjaxSource": "http://localhost:8080/task?action=gettasks",
+            colVis: {
+                "align": "right",
+                "buttonText": "columns <img src=\"/img/caaret.png\"/>"
+            },
+
+            "columnDefs": [
+                {
+                    "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
+
+                    var codeChecked =
+                            '<div class="onoffswitch"> <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch' + rowData[5] + '" onchange = "change(this,\'' + rowData[5] + '\' )"  checked >' +
+                            '<label class="onoffswitch-label" for="myonoffswitch' + rowData[5] + '" > <span class="onoffswitch-inner"></span> <span class="onoffswitch-switch"></span> </label> </div>';
+
+                    var codeNonChecked =
+                            '<div class="onoffswitch"> <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch' + rowData[5] + '" onchange = "change(this,\'' + rowData[5] + '\' )"   >' +
+                            '<label class="onoffswitch-label" for="myonoffswitch' + rowData[5] + '" > <span class="onoffswitch-inner"></span> <span class="onoffswitch-switch"></span> </label> </div>';
+
+
+                    if (cellData.valueOf() == 'running'.valueOf()) {
+
+                        $(td).html(codeChecked);
+                    } else {
+                        $(td).html(codeNonChecked);
+                    }
+
+                }
+
+                },
+
+                {
+                    "aTargets": [5], "createdCell": function (td, cellData, rowData, row, col) {
+                    $(td).html('<div class="btn-group"><a class="btn btn-success" href="/task?action=edit&taskId=' + cellData + '" ><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="deleteTask(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
+                }
+                },
+
+                {
+                    "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
+                    $(td).html(parseAttachment(cellData));
+                }
+                },
+
+                {
+                    "width": "30%", "targets": [0, 1, 3]
+                },
+
+                {
+                    "class": "dt-body-left", "targets": [0, 1]
+                },
+
+                {
+                    "class": "dt-body-center", "targets": [4, 5]
+                }
+
+            ]
+
+        });
+
+
+        activeTable = $('#activeTasksTable').dataTable({
+            "bFilter": false,
+            "bLengthChange": false,
+            "bSort": false,
+            "bPaginate": true,
+            "paging": true,
+            "bInfo": false,
+            "iDisplayStart": 0,
+            "bProcessing": true,
+            'iDisplayLength': 10,
+            "bServerSide": true,
+            "sAjaxSource": "http://localhost:8080/task?action=gettasks&type=active",
+            colVis: {
+                "align": "right",
+                "buttonText": "columns <img src=\"/img/caaret.png\"/>"
+            },
+
+            "columnDefs": [
+                {
+                    "aTargets": [4], "createdCell": function (td, cellData, rowData, row, col) {
+
+                    var codeChecked =
+                            '<div class="onoffswitch"> <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch' + rowData[5] + '" onchange = "changeActive(this,\'' + rowData[5] + '\' )"  checked >' +
+                            '<label class="onoffswitch-label" for="myonoffswitch' + rowData[5] + '" > <span class="onoffswitch-inner"></span> <span class="onoffswitch-switch"></span> </label> </div>';
+
+                    var codeNonChecked =
+                            '<div class="onoffswitch"> <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch' + rowData[5] + '" onchange = "changeActive(this,\'' + rowData[5] + '\' )"   >' +
+                            '<label class="onoffswitch-label" for="myonoffswitch' + rowData[5] + '" > <span class="onoffswitch-inner"></span> <span class="onoffswitch-switch"></span> </label> </div>';
+
+
+                    if (cellData.valueOf() == 'running'.valueOf()) {
+
+                        $(td).html(codeChecked);
+                    } else {
+                        $(td).html(codeNonChecked);
+                    }
+
+                }
+
+                },
+
+                {
+                    "aTargets": [5], "createdCell": function (td, cellData, rowData, row, col) {
+                    $(td).html('<div class="btn-group"><a class="btn btn-success" href="/task?action=edit&taskId=' + cellData + '" ><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="deleteActiveTask(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
+                }
+                },
+
+                {
+                    "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
+                    $(td).html(parseAttachment(cellData));
+                }
+                },
+
+                {
+                    "width": "30%", "targets": [0, 1, 3]
+                },
+
+                {
+                    "class": "dt-body-left", "targets": [0, 1]
+                },
+
+                {
+                    "class": "dt-body-center", "targets": [4, 5]
+                }
+
+            ]
+
+        });
+
+        $(".ui-tabs").tabs();
+
+    });
+
+    function change(obj, id) {
+
+
+        var toState = 'STOPPED';
+        if (obj.checked == true) {
+            toState = 'running';
+        }
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('GET', '/task?action=stateChange&taskId=' + id + '&toState=' + toState, true);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                if (response.msg === 'error') {
+                    table.fnStandingRedraw();
+                }
+            }
+
+        };
+        xmlhttp.send();
+    }
+
+    function changeActive(obj, id) {
+
+
+        var toState = 'STOPPED';
+        if (obj.checked == true) {
+            toState = 'running';
+        }
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('GET', '/task?action=stateChange&taskId=' + id + '&toState=' + toState, true);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                activeTable.fnStandingRedraw();
+            }
+
+        };
+        xmlhttp.send();
+    }
+
+
+    $(".dataTables_length").attr("hidden", "");
+    var dataTables_filter_input = $(".dataTables_filter").find("input");
+    dataTables_filter_input.attr("class", "form-control");
+    dataTables_filter_input.attr("style", "width: 500px")
+    $(".dataTables_filter").attr("hidden", "");
+    $(".dataTables_length").attr("hidden", "");
+
+
+    function deleteTask(id) {
+        deleteConfirmTask(id);
+    }
+
+
+    function deleteActiveTask(id) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('GET', '/task?action=deletetask&taskId=' + id, true);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                activeTable.fnStandingRedraw();
+            }
+
+        };
+        xmlhttp.send();
+    }
+
+    function toActive() {
+        activeTable.fnStandingRedraw();
+    }
+
+    function toAll() {
+        table.fnStandingRedraw();
+    }
+
+    function parseAttachment(arg) {
+        var args = arg.split(",");
+        var cell = "";
+        for (var i = 0; i < args.length; i++) {
+            cell = cell + " " + parseDoc(args[i].toUpperCase());
+        }
+        return cell;
+    }
+    ;
+
+    function parseDoc(arg) {
+        var arg = arg.trim();
+        switch (arg) {
+            case "PHOTO":
+                return '<img src=\"/img/icons/jpg-icon.png" style="width: 30px; height: 30px">';
+            case "VIDEO":
+                return '<img src=\"/img/icons/mpg-icon.png" style="width: 30px; height: 30px">';
+            case "AUDIO":
+                return '<img src=\"/img/icons/mp3-icon.png" style="width: 30px; height: 30px">';
+            case "TEXT":
+                return '<img src=\"/img/icons/txt-icon.png" style="width: 30px; height: 30px">';
+            case "DOC" :
+                return '<img src=\"/img/restIcos/doc.jpg" style="width: 30px; height: 30px">';
+            case "HASH TAG" :
+                return '<img src=\"/img/restIcos/hashtag.jpg" style="width: 30px; height: 30px">';
+            case "LINKS" :
+                return '<img src=\"/img/restIcos/links.jpg" style="width: 30px; height: 30px">';
+            case "PAGES" :
+                return '<img src=\"/img/restIcos/pages.jpg" style="width: 30px; height: 30px">';
+            case "REPOST" :
+                return '<img src=\"/img/restIcos/repost.jpg" style="width: 30px; height: 30px">';
+        }
+        return "";
+    }
+    ;
+
+</script>
+
+<style>
+    .ui-tabs {
+        zoom: 1;
+    }
+
+    .ui-tabs .ui-tabs-nav {
+        list-style: none;
+        position: relative;
+        padding: 0;
+        margin: 0;
+    }
+
+    .ui-tabs .ui-tabs-nav li {
+        position: relative;
+        float: left;
+        margin: 0 3px -2px 0;
+        padding: 0;
+    }
+
+    .ui-tabs .ui-tabs-nav li a {
+        display: block;
+        padding: 10px 20px;
+        background: #f0f0f0;
+        border: 2px #ccc solid;
+        border-bottom-color: #ccc;
+        outline: none;
+    }
+
+    .ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
+        padding: 10px 20px 12px 20px;
+        background: #fff;
+        border-bottom-style: none;
+    }
+
+    .ui-tabs .ui-tabs-nav li.ui-tabs-selected a,
+    .ui-tabs .ui-tabs-nav li.ui-state-disabled a,
+    .ui-tabs .ui-tabs-nav li.ui-state-processing a {
+        cursor: default;
+    }
+
+    .ui-tabs .ui-tabs-nav li a,
+    .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {
+        cursor: pointer;
+    }
+
+    .ui-tabs .ui-tabs-panel {
+        display: block;
+        clear: both;
+        border: 2px #ccc solid;
+        padding: 10px;
+    }
+
+    .ui-tabs .ui-tabs-hide {
+        display: none;
+    }
+</style>
 
 </body>
 </html>

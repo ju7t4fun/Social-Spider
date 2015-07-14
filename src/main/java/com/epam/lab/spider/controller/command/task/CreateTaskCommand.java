@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.task;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.model.db.entity.Task;
 import com.epam.lab.spider.model.db.entity.User;
 import com.epam.lab.spider.model.db.entity.Wall;
 import com.epam.lab.spider.model.db.service.*;
@@ -42,6 +43,7 @@ public class CreateTaskCommand implements ActionCommand {
             if(wall.getPermission()!= Wall.Permission.READ)continue;
             wallMap = new HashMap<>();
             wallMap.put("id", wall.getId().toString());
+            wallMap.put("selected", "false");
             wallMap.put("text", wall.getOwner().getName());
             sourceWalls.add(wallMap);
         }
@@ -51,10 +53,49 @@ public class CreateTaskCommand implements ActionCommand {
             if(wall.getPermission()!= Wall.Permission.WRITE)continue;
             wallMap = new HashMap<>();
             wallMap.put("id", wall.getId().toString());
+            wallMap.put("selected", "false");
             wallMap.put("text", wall.getOwner().getName());
             destinationWalls.add(wallMap);
         }
         request.setAttribute("destinationWalls",destinationWalls);
-        request.getRequestDispatcher("jsp/post/addtask.jsp").forward(request, response);
+
+
+        request.setAttribute("task_id","0");
+        request.setAttribute("posting_type",Task.Type.COPY);
+        request.setAttribute("grabbing_type",Task.GrabbingType.NEW);
+        request.setAttribute("repeat", Task.Repeat.REPEAT_DISABLE);
+        request.setAttribute("repeat_count", "10");
+
+        request.setAttribute("signature", "");
+        request.setAttribute("hashtags", "socialspider");
+        request.setAttribute("start_time",Task.StartTimeType.INTERVAL);
+        request.setAttribute("work_time", Task.WorkTimeLimit.ROUND_DAILY);
+
+        request.setAttribute("interval_min", "3");
+        request.setAttribute("interval_max", "10");
+        request.setAttribute("post_count", "2");
+        request.setAttribute("post_delay_min", "25");
+        request.setAttribute("post_delay_max", "45");
+        request.setAttribute("grabbing_mode", Task.GrabbingMode.TOTAL);
+
+        request.setAttribute("likes", "60");
+        request.setAttribute("reposts", "5");
+        request.setAttribute("comments", "0");
+
+        request.setAttribute("TEXT","true");
+        request.setAttribute("PHOTO","true");
+        request.setAttribute("AUDIO","true");
+        request.setAttribute("VIDEO","true");
+        request.setAttribute("DOCUMENTS","true");
+        request.setAttribute("REPOSTS","true");
+
+
+
+        request.setAttribute("likes_max","1200");
+        request.setAttribute("reposts_max","600");
+        request.setAttribute("comments_max","300");
+        request.setAttribute("delay_limit","120");
+        request.setAttribute("interval_limit","120");
+        request.getRequestDispatcher("jsp/task/edit-task-master.jsp").forward(request, response);
     }
 }

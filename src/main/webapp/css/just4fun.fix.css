@@ -1,3 +1,16 @@
 .j4f-fix{
     overflow: inherit !important;
 }
+.j4f-fix-title-background{
+    background: none !important;
+}
+.j4f-fix-full-width {
+    width: 100%;
+}
+.j4f-fix-spinner-un-script {
+    border: none;
+    -webkit-appearance: none;
+}
+.j4f-disable-at-admin{
+
+}

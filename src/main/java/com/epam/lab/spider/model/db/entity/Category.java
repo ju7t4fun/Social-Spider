@@ -16,8 +16,24 @@ public class Category {
 
     private Integer id;
     private String name;
-
+    private String imageUrl = "http://localhost:8080/img/categories/nophoto.png";
     private Set<Task> tasks = null;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Category category = (Category) o;
+
+        return !(id != null ? !id.equals(category.id) : category.id != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 
     public Integer getId() {
         return id;
@@ -33,6 +49,14 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String image_url) {
+        this.imageUrl = image_url;
     }
 
     public Set<Task> getTasks() {
@@ -59,11 +83,7 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", tasks=" + tasks +
-                '}';
+        return name.replace("\\|", "-");
     }
 
 }

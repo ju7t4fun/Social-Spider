@@ -22,6 +22,7 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
             "deleted = ? WHERE id = ?";
     //private static final String SQL_DELETE_QUERY = "DELETE FROM wall WHERE id = ?";
     private static final String SQL_DELETE_QUERY = "UPDATE wall SET deleted = 1 WHERE id = ?";
+    private static final String SQL_DELETE_BY_OWNER_ID_QUERY = "UPDATE wall SET deleted = 1 WHERE owner_id = ?";
     private static final String SQL_DELETE_BY_OWNERID_AND_PERMISSION_QUERY = "UPDATE wall SET deleted = 1 WHERE " +
             "owner_id = ? AND profile_id=? AND permission=?";
     private static final String SQL_GET_ALL_QUERY = "SELECT * FROM wall WHERE deleted = 0";
@@ -54,12 +55,14 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
             " permission = 'write'";
     private static final String SQL_GET_READ_BY_OWNER_ID = "SELECT * FROM wall WHERE owner_id = ? AND deleted = false AND" +
             " permission = 'read'";
+    private static final String SQL_GET_WRITE_BY_ADMIN = "SELECT wall.* FROM wall JOIN profile ON profile.id = wall.profile_id JOIN user ON user.id = profile.user_id WHERE\n" +
+            " role = 'ADMIN' AND user.deleted = 0 AND profile.deleted = 0 AND wall.deleted = 0 AND wall.permission = 'READ';";
 
 
     @Override
     public boolean insert(Connection connection, Wall wall) throws SQLException {
         boolean res = changeQuery(connection, SQL_INSERT_QUERY,
-                wall.getOwner_id(),
+                wall.getOwnerId(),
                 wall.getProfile_id(),
                 wall.getPermission().toString().toUpperCase(),
                 wall.getDeleted());
@@ -70,7 +73,7 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     @Override
     public boolean update(Connection connection, int id, Wall wall) throws SQLException {
         return changeQuery(connection, SQL_UPDATE_QUERY,
-                wall.getOwner_id(),
+                wall.getOwnerId(),
                 wall.getProfile_id(),
                 wall.getPermission(),
                 wall.getDeleted(),
@@ -78,13 +81,18 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     }
 
     public boolean checkedExist(Connection connection, Wall wall) throws SQLException {
-        return select(connection, SQL_CHECK_EXIST_QUERY, wall.getProfile_id(), wall.getOwner_id(), wall.getPermission
+        return select(connection, SQL_CHECK_EXIST_QUERY, wall.getProfile_id(), wall.getOwnerId(), wall.getPermission
                 ().toString().toUpperCase()).size() > 0;
     }
 
     @Override
     public boolean delete(Connection connection, int id) throws SQLException {
         return changeQuery(connection, SQL_DELETE_QUERY, id);
+    }
+
+    @Override
+    public boolean deleteByOwnerId(Connection connection, int ownerDd) throws SQLException {
+        return changeQuery(connection, SQL_DELETE_BY_OWNER_ID_QUERY, ownerDd);
     }
 
     @Override
@@ -122,6 +130,11 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
     @Override
     public List<Wall> getWriteByOwnerId(Connection connection, int ownerId) throws SQLException {
         return select(connection, SQL_GET_WRITE_BY_OWNER_ID, ownerId);
+    }
+
+    @Override
+    public List<Wall> getWriteByAdmin(Connection connection) throws SQLException {
+        return select(connection, SQL_GET_WRITE_BY_ADMIN);
     }
 
     @Override

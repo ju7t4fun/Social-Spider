@@ -3,13 +3,13 @@ package com.epam.lab.spider.controller.vk;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class RequestPost implements Request {
 
     private static final Logger logger = Logger.getLogger(RequestPost.class);
 
-    private CloseableHttpClient client = HttpClients.createDefault();
+//    private CloseableHttpClient client = HttpClients.createDefault();
     private HttpPost httpPost;
     private Parameters parameters;
 
@@ -28,12 +28,20 @@ public class RequestPost implements Request {
     }
 
     private void buildingParameters(Parameters parameters) {
-        List<NameValuePair> param = new ArrayList<NameValuePair>();
+        // о да, серваку надо закодовані 2 рази в URL пост параметри
+        // втф???
+        List<NameValuePair> param = new ArrayList<>();
         for (String name : parameters.getKeys()) {
-            param.add(new BasicNameValuePair(name, parameters.get(name)));
+            String decode = parameters.get(name);
+            try {
+                decode = URLDecoder.decode(decode,"UTF-8" );
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            param.add(new BasicNameValuePair(name,decode ));
         }
         try {
-            httpPost.setEntity(new UrlEncodedFormEntity(param));
+            httpPost.setEntity(new UrlEncodedFormEntity(param,"UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -43,7 +51,8 @@ public class RequestPost implements Request {
     @Override
     public Response execute() throws VKException {
         try {
-            return ResponseFactory.getInstance(parameters.getResponseType(), client.execute(httpPost).getEntity());
+            //return ResponseFactory.getInstance(parameters.getResponseType(), client.execute(httpPost).getEntity());
+            return AlphaLimitVKExecutor.getInstance().execute(httpPost, parameters.getResponseType());
         } catch (IOException e) {
             e.printStackTrace();
         }

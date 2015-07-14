@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +18,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icons/favicon.png">
 
-    <title>Admin | All Users</title>
+    <title>Admin | Groups</title>
 
     <!-- Bootstrap CSS -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -56,6 +57,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnSetFilteringDelay.js"></script>
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/uniqueGroup.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
@@ -78,38 +80,52 @@
 <jsp:include page="../pagecontent/sidebar.jsp"/>
 
 
-<section id="main-content">
-    <section class="wrapper">
-        <div class="row">
-            <div class="col-lg-12">
-                <h3 class="page-header" style="width: 100%"><i class="fa fa-list-alt"></i>Groups</h3>
+<section id="container" class="">
+    <!--main content start-->
+    <!--main content start-->
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <div id="active" class="tab-pane active">
-                                    <div class="col-lg-12">
-                                        <table width="100%" border="0" margin="0" padding="0"
-                                               class="row-border tableHeader" id="groupTable">
-                                            <thead>
-                                            <tr style="align-content: center">
-                                                <th>Vk ID</th>
-                                                <th>Name</th>
-                                                <th>Ban/Unban</th>
-                                            </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
+
+    <section id="main-content">
+        <section class="wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> <l:resource key="groups"/></h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ol class="breadcrumb">
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="admin"/></a></li>
+                        <li><i class="fa fa-edit"></i><l:resource key="edit"/></li>
+                        <li><i class="fa fa-list-alt"></i><l:resource key="groups"/></li>
+                    </ol>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div id="active" class="tab-pane active">
+                                <div class="col-lg-12">
+                                    <table width="100%" border="0" margin="0" padding="0"
+                                           class="row-border tableHeader" id="groupTable">
+                                        <thead>
+                                        <tr style="align-content: center">
+                                            <th><l:resource key="vk.id"/></th>
+                                            <th><l:resource key="owner.name"/></th>
+                                            <th><l:resource key="ban.status"/></th>
+                                        </tr>
+                                        </thead>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
+        </section>
     </section>
+
 </section>
 
 

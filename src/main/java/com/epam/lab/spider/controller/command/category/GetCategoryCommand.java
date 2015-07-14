@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created by Marian Voronovskyi on 29.06.2015.
@@ -59,11 +60,17 @@ public class GetCategoryCommand implements ActionCommand {
         }
         JSONObject result = new JSONObject();
         JSONArray table = new JSONArray();
+
+        HttpSession session = request.getSession();
+        ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
+        int lang = Integer.parseInt(bundle.getString("categoryLangCode"));
+        System.out.println("code = " + lang);
+
         for (Category category : categories) {
             JSONArray row = new JSONArray();
             row.put(category.getId());
+            row.put(category.getName().split("\\|")[lang] + "|" + category.getImageUrl());
             row.put(category.getName());
-            row.put(category.getId());
             table.put(row);
         }
         System.out.println(categories.size());

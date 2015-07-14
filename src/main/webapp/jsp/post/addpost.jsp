@@ -103,7 +103,7 @@
                         <div class="panel-body">
                             <div class="padd">
 
-                                <div class="form quick-post">
+                                <div class="form quick-post" style="width: 90%;">
                                     <!-- Edit profile form (not working)-->
                                     <form id="post_form" class="form-horizontal"
                                           action="/post" method="GET">
@@ -130,7 +130,7 @@
                                         <!-- Tags -->
 
                                         <div class="form-group">
-                                            <div style="width:1100px;">
+                                            <div style="width:963px; margin-left: -4px;">
                                                 <label class="control-label col-lg-2" for="tagsinput"
                                                        style="margin-right:20px;"><l:resource
                                                         key="newpost.tags"/></label>
@@ -147,7 +147,7 @@
                                                     key="newpost.addfile"/></label>
 
                                             <div id="upload-from">
-                                                <div class="btn-group">
+                                                <div class="btn-group" style="margin-left: -15px;">
                                                     <button type="button" class="btn btn-primary"><l:resource
                                                             key="newpost.upload"/></button>
                                                     <button type="button" class="btn btn-primary dropdown-toggle"
@@ -264,7 +264,7 @@
                                             $('#fl').hide();
                                         </script>
                                         <!-- Buttons -->
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin-left: -13px;">
                                             <br>
                                             <!-- Buttons -->
                                             <div id="scrl" class="col-lg-offset-2 col-lg-9">
@@ -273,8 +273,6 @@
                                                 <button class="btn btn-info" data-toggle="modal"
                                                         data-target="#myModal"><l:resource key="newpost.publish"/>
                                                 </button>
-                                                <button type="reset" class="btn btn-default"><l:resource
-                                                        key="newpost.reset"/></button>
                                             </div>
                                         </div>
                                         <script>
@@ -321,7 +319,9 @@
                                         <l:resource key="newpost.postdate"><input id="date" name="date" type="date"
                                                                                   min="${date}" value="${date}"
                                                                                   placeholder=""
-                                                                                  class="form-control input-md"></l:resource>
+                                                                                  class="form-control input-md"
+                                                                                  onchange="changeData()"
+                                                ></l:resource>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -377,8 +377,7 @@
                                 </div>
                             </div>
                             <button id="submit_modal" type="button" style="margin-left: 455px;margin-top: -80px;"
-                                    class="btn btn-primary"
-                                    data-dismiss="modal">
+                                    class="btn btn-primary">
                                 <l:resource key="newpost.save"/>
                             </button>
                         </form>
@@ -389,12 +388,28 @@
     </div>
 
     <script>
+
+        function changeData() {
+            $("#time1").val($("#date").val())
+            $("#time1").attr("min", $("#date").val());
+        }
+
         $("#time3, #time4").hide();
         $('#check').click(function () {
             $("#time3, #time4").toggle(this.checked);
         });
         $(document).ready(function () {
             $("#submit_modal").click(function () {
+                if ($("#check").prop('checked'))
+                    if ($("#time5").val() < $("#time").val()) {
+                        toastrNotification('warning', "НЕ можна вибрати час видалення меншим за час постингу");
+                        return;
+                    }
+                if ($("#tokenize_focus").val() == null) {
+                    toastrNotification('warning', "Не вибрано груп");
+                    return;
+                }
+                $("#myModal").modal('toggle');
                 $.post(
                         "/post?action=addPost",
                         {
@@ -412,15 +427,14 @@
                         onAjaxSuccess
                 );
                 function onAjaxSuccess(data) {
-                    var responce = JSON.parse(data);
-                    if (responce.status === 'success') {
+                    var response = JSON.parse(data);
+                    if (response.status === 'success') {
                         location.href = "/post?action=queued";
                     }
                 }
             });
         });
     </script>
-
     <!-- javascripts -->
 
     <%--<script src="${pageContext.request.contextPath}/js/jquery.js"></script>--%>
@@ -433,7 +447,7 @@
     <!-- nice scroll -->
     <script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js"
-            type="text/javascript"></script>
+    <%--type="text/javascript"></script>--%>
     <!--script for this page only-->
     <script src="${pageContext.request.contextPath}/js/calendar-custom.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.rateit.min.js"></script>

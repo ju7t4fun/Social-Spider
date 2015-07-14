@@ -1,10 +1,8 @@
 package com.epam.lab.spider.controller.servlet.admin;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.admin.CategoriesCommand;
-import com.epam.lab.spider.controller.command.category.AddCategoryCommand;
-import com.epam.lab.spider.controller.command.category.GetCategoryCommand;
-import com.epam.lab.spider.controller.command.category.RemoveCategoryCommand;
+import com.epam.lab.spider.controller.command.admin.category.CategoriesCommand;
+import com.epam.lab.spider.controller.command.category.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,6 +25,8 @@ public class CategoriesServlet extends HttpServlet {
             commands.put("getcategory", new GetCategoryCommand());
             commands.put("addcategory", new AddCategoryCommand());
             commands.put("removecategory", new RemoveCategoryCommand());
+            commands.put("upCat", new UploadCatImage());
+            commands.put("editCat", new EditCategory());
         }
     }
 

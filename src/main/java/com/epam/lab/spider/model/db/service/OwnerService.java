@@ -18,6 +18,9 @@ public class OwnerService implements BaseService<Owner> {
     private DAOFactory factory = DAOFactory.getInstance();
     private OwnerDAO odao = factory.create(OwnerDAO.class);
 
+    private WallService wallService = new WallService();
+
+
     @Override
     public boolean insert(Owner owner) {
         try (Connection connection = PoolConnection.getConnection()) {
@@ -41,6 +44,7 @@ public class OwnerService implements BaseService<Owner> {
     @Override
     public boolean delete(int id) {
         try (Connection connection = PoolConnection.getConnection()) {
+            wallService.deleteByOwnerId(connection, id);
             return odao.delete(connection, id);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -57,6 +61,7 @@ public class OwnerService implements BaseService<Owner> {
         }
         return null;
     }
+
     public List<Owner> getLimited(Integer begin, Integer end) {
         try (Connection connection = PoolConnection.getConnection()) {
             return odao.getLimited(connection, begin, end);
@@ -132,7 +137,7 @@ public class OwnerService implements BaseService<Owner> {
 
     public List<Owner> searchByUserId(Integer id, String q, int page, int size) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return odao.searchByUserId(connection, id, q,  page, size);
+            return odao.searchByUserId(connection, id, q, page, size);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -168,7 +173,7 @@ public class OwnerService implements BaseService<Owner> {
 
     public boolean updateBan(int vk_id) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return odao.updateBan(connection,vk_id);
+            return odao.updateBan(connection, vk_id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -177,7 +182,7 @@ public class OwnerService implements BaseService<Owner> {
 
     public boolean updateUnBan(int vk_id) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return odao.updateUnBan(connection,vk_id);
+            return odao.updateUnBan(connection, vk_id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -195,10 +200,41 @@ public class OwnerService implements BaseService<Owner> {
 
     public int getCountAllUniqueWithSearch(String nameToSearch) {
         try (Connection connection = PoolConnection.getConnection()) {
-            return odao.getCountAllUniqueWithSearch(connection,nameToSearch);
+            return odao.getCountAllUniqueWithSearch(connection, nameToSearch);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public boolean deleteByVkId(int vk_id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            List<Owner> owners = odao.getAllByVkId(connection, vk_id);
+            for (Owner owner : owners) {
+                delete(owner.getId());
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isBannedByVkId(int id) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.isBannedByVkId(connection, id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean hasUserGroup(int id, Integer userId) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return odao.hasUserGroup(connection, id, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

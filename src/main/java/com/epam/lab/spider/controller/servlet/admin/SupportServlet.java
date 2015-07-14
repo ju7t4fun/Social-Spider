@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.servlet.admin;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
-import com.epam.lab.spider.controller.command.admin.ShowAdminSupportCommand;
+import com.epam.lab.spider.controller.command.admin.support.ShowAdminSupportCommand;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

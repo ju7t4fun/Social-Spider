@@ -1,44 +1,49 @@
 var table;
 
-
 var urlBanned;
 
 var urlCreated;
 var urlActivated;
-
 
 jQuery(document).ready(function () {
     table = $('#personTable').dataTable({
 
         "bPaginate": true,
         "order": [0, 'asc'],
-        "bInfo": true,
-        "bLengthChange": true,
+        "paging": true,
+        "bInfo": false,
         "iDisplayStart": 0,
-        'iDisplayLength': 5,
-        "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
-        "bProcessing": true,
+        'iDisplayLength': 10,
+        "bProcessing": false,
         "bServerSide": true,
-        "sAjaxSource":  "http://localhost:8080/UserFillingTableServlet",
-        "dom": 'C<"clear">lfrtip',
+        "sAjaxSource": "http://localhost:8080/admin/users?action=get",
         colVis: {
             "align": "right",
-            //restore: "Restore",
-            //showAll: "Show all",
-            //showNone: "Show none",
-            //order: 'alpha',
             "buttonText": "columns <img src=\"/img/caaret.png\"/>"
         },
-        "language": {
-            "infoFiltered": ""
-        },
-        "dom": 'Cf<"toolbar"">rtip',
 
-        "columnDefs": [ {
+        "sDom": '<"top"<"toolbar">f>t<"bottom"lp><"clear">',
 
-
+        "columnDefs": [{
+            "bVisible": false, "aTargets": [0]
+        }, {
+            "aTargets": [3], "createdCell": function (td, cellData, rowData, row, col) {
+                $(td).html('<a href="mailto:' + cellData + '">' + cellData + '</a>');
+            }
+        }, {
+            "aTargets": [5], "createdCell": function (td, cellData, rowData, row, col) {
+                var role;
+                switch (cellData) {
+                    case 'ADMIN':
+                        role = '<img src="/img/admin_role.png" width="37" height="37" onclick="changeRole(' + rowData[0] + ')">';
+                        break;
+                    case 'USER':
+                        role = '<img src="/img/user_role.png" width="37" height="37" onclick="changeRole(' + rowData[0] + ')">';
+                }
+                $(td).html(role);
+            }
+        }, {
             "targets": 4,
-
             "createdCell": function (td, cellData, rowData, row, col) {
 
                 urlBanned = "<img src=\"/img/banned.jpg\" " +
@@ -53,50 +58,33 @@ jQuery(document).ready(function () {
                     " style=\"width:37px;height:37px;\" " +
                     " id=\"" + rowData[3] + "\" onclick=\"changeImage(this)\" title=\"activated\" >";
 
-
                 if (cellData == "ACTIVATED") {
                     $(td).html(urlActivated);
-                } else
-                if (cellData == 'BANNED') {
+                } else if (cellData == 'BANNED') {
                     $(td).html(urlBanned);
-                } else
-                if (cellData == 'CREATED') {
-                    alert(rowData[3]);
+                } else if (cellData == 'CREATED') {
                     $(td).html(urlCreated);
                 }
-
-
             }
-        } ]
-
-    })
-        .columnFilter({
-            aoColumns: [
-                //{ type: "number"},
-                //{ type: "text" },
-                //{ type: "text" },
-                //{ type: "text" },
-                //{ type: "text" },
-                //{ type: "text" },
-            ],
-            bUseColVis: true
-        }).fnSetFilteringDelay();
-    $("#personTable_length").hide();
-    //$(".dataTables_filter").css({ "display" :"none" });
-
-    $('th').css('backgroundColor', 'white');
-
-    $(".dataTables_filter").css({"position": "auto"});
-    $(".dataTables_filter").css({"left": "30%"});
-    $(".dataTables_filter").css({"right": "30%"});
-    $(".dataTables_filter").css({"top": "2%"});
-    $(".dataTables_filter").css({"width": "350px"});
-    $("div.toolbar").append($("dataTables_filter")).append('<div class="btn-group" style="padding:5px "><button class="btn btn-default" id="refreshbtn" style="background:none;border:1px solid #ccc;height:30px" type="button"><span class="glyphicon glyphicon-refresh" style="padding:3px"></span></button></div>');
-    $("div.toolbar").css("float", "right").css({"position": "relative"});
-
-
-    $('#refreshbtn').click(function () {
-        table.fnStandingRedraw();
+        }]
     });
 
+    var dataTables_filter_input = $(".dataTables_filter").find("input");
+    dataTables_filter_input.attr("class", "form-control");
+    dataTables_filter_input.attr("style", "width: 500px")
+
 });
+
+function changeRole(id) {
+    $.post("/admin/users",
+        {
+            action: 'role',
+            id: id
+        },
+        onAjaxSuccess
+    );
+    function onAjaxSuccess(data) {
+        toastrNotification(data.status, data.msg);
+        $('#personTable').DataTable().draw(false);
+    }
+}

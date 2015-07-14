@@ -22,6 +22,27 @@
     <!-- Plugin CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.min.css" type="text/css">
 
+    <script type='text/javascript'>
+        var captchaContainer = null;
+        var flag = null;
+        var loadCaptcha = function () {
+            captchaContainer = grecaptcha.render('captcha_container', {
+                'sitekey': '6LdMAgMTAAAAAGYY5PEQeW7b3L3tqACmUcU6alQf',
+                'callback': function (response) {
+                    if (response == 0) {
+                        flag = false;
+                    } else if (response != 0) {
+                        flag = true;
+                    }
+                }
+            });
+        };
+    </script>
+
+    <%--for google capcha--%>
+    <script src="https://www.google.com/recaptcha/api.js?hl=en&onload=loadCaptcha&render=explicit" async
+            defer></script>
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/creative.css" type="text/css">
     <!-- font icon -->
@@ -82,26 +103,38 @@
                 <div class="form-group">
                     <!--<span class="input-group-addon"><i class="icon_profile"></i></span>-->
                     <l:resource key="reg.surname"><input type="text" class="form-control" id="surname" name="surname"
-                                                         maxlength="45" value="${surname}" placeholder=""
-                                                         pattern="^[a-zA-Z\u0400-\u04ff]+$"/></l:resource>
+                                                         maxlength="45" value="${surname}"  placeholder=""
+                                                         /></l:resource>
                 </div>
                 <div class="form-group">
-                   <!-- <span class="input-group-addon"><i class="icon_mail_alt"></i></span>-->
+                    <!-- <span class="input-group-addon"><i class="icon_mail_alt"></i></span>-->
                     <l:resource key="login.email"><input type="email" class="form-control" id="email" name="email"
-                                                         maxlength="255" value="${email}" placeholder=""
+                                                         maxlength="255" value="${email}"  placeholder=""
                                                          style="border-color:#ffffff;"/></l:resource>
                 </div>
                 <div class="form-group">
-                   <!-- <span class="input-group-addon"><i class="icon_key_alt"></i></span>-->
+                    <!-- <span class="input-group-addon"><i class="icon_key_alt"></i></span>-->
                     <l:resource key="login.password"><input type="password" class="form-control" id="password"
                                                             name="password" placeholder=""
-                                                            pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"/></l:resource>
+                                                           /></l:resource>
                 </div>
 
-                <button class="btn btn-primary btn-lg btn-block" type="submit"
-                        style="margin-bottom:20px;margin-right:10px;"><l:resource key="reg.signup"/>
-                </button>
+                <div class="form-group">
+                    <div id="captcha_container"></div>
+                </div>
 
+                <i class="btn btn-primary btn-lg btn-block" onclick="submitRegistration();"
+                   style="margin-bottom:20px;margin-right:10px;font-style: normal;"><l:resource key="reg.signup"/>
+                </i>
+                <script>
+                    function submitRegistration() {
+                        if (flag == null || flag == false) {
+                            toastrNotification("error", "Wrong captcha!");
+                        } else {
+                            $('#register_form').submit();
+                        }
+                    }
+                </script>
             </div>
         </form>
 
@@ -118,21 +151,23 @@
         });1
     });
 </script>
- <jsp:include page="../pagecontent/simple_footer.jsp"/>
+
+
+<jsp:include page="../pagecontent/simple_footer.jsp"/>
 
 <!-- javascripts -->
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <!-- nice scroll -->
-<script src="js/jquery.scrollTo.min.js"></script>
-<script src="js/jquery.nicescroll.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.scrollTo.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script>
 <!-- jquery validate js -->
-<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
 
 <!-- custom form validation script for this page-->
-<script src="js/form-validation-script.js"></script>
+<script src="${pageContext.request.contextPath}/js/form-validation-script.js"></script>
 <!--custome script for all page-->
-<script src="js/scripts.js"></script>
+<script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 <!-- EASING SCROLL SCRIPTS PLUGIN -->
 <script src="${pageContext.request.contextPath}/js/jquery.vegas.min.js"></script>
 <!-- VEGAS SLIDESHOW SCRIPTS -->

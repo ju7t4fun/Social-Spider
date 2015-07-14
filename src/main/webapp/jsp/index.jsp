@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
+<%@ taglib prefix="lg" uri="http://lab.epam.com/spider/logger" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,8 +28,8 @@
           rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic'
           rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/font-awesome/css/font-awesome.min.css"
-          type="text/css">
+    <%--<link rel="stylesheet" href="${pageContext.request.contextPath}/font-awesome/css/font-awesome.min.css"--%>
+          <%--type="text/css">--%>
 
     <!-- Plugin CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.min.css" type="text/css">
@@ -49,6 +50,8 @@
 
 <body id="page-top">
 
+<lg:log level="info">INFO MESSAGE FROM INDEX.JSP</lg:log>
+
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
 
     <c:choose>
@@ -56,7 +59,7 @@
             <jsp:forward page="admin/index.jsp"/>
         </c:when>
         <c:when test="${user.role == 'USER'}">
-            <jsp:forward page="feed/index.jsp"/>
+            <jsp:forward page="user/feed.jsp"/>
         </c:when>
         <c:otherwise>
             <header class="header dark-bg" style="background: rgb(26, 39, 50)">
@@ -92,7 +95,7 @@
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <a class="navbar-brand page-scroll" href="#page-top">Socail spider</a>
+            <a class="navbar-brand page-scroll" href="#page-top">Social spider</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -120,7 +123,6 @@
                 <h2 class="section-heading"><l:resource key="index.whatyouneed" /></h2>
                 <hr class="light">
                 <p class="text-faded"><l:resource key="index.whatyouneedtext" /></p>
-                <a href="#" class="btn btn-default btn-xl"><l:resource key="index.getstarted" /></a>
             </div>
         </div>
     </div>

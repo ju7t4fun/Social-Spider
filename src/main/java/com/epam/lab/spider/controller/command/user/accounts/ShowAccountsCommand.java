@@ -22,35 +22,8 @@ import java.util.List;
  */
 public class ShowAccountsCommand implements ActionCommand {
 
-    private static ServiceFactory factory = ServiceFactory.getInstance();
-    private static ProfileService service = factory.create(ProfileService.class);
-
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        com.epam.lab.spider.model.db.entity.User user = (com.epam.lab.spider.model.db.entity.User) session
-                .getAttribute("user");
-        List<Profile> profiles = service.getByUserId(user.getId());
-        List<String> fullName = new ArrayList<>();
-        if (profiles.size() > 0) {
-            String ids = null;
-            for (Profile profile : profiles) {
-                ids = ids == null ? "" + profile.getVkId() : ids + "," + profile.getVkId();
-            }
-            Vkontakte vk = new Vkontakte();
-            Parameters param = new Parameters();
-            param.add("user_ids", ids);
-            List<User> users = null;
-            try {
-                users = vk.users().get(param);
-            } catch (VKException e) {
-                e.printStackTrace();
-            }
-            for (User u : users) {
-                fullName.add(u.getFirstName() + " " + u.getLastName());
-            }
-        }
-        request.setAttribute("profiles", profiles);
-        request.setAttribute("fullNames", fullName);
-        request.getRequestDispatcher("jsp/user/user_accounts.jsp").forward(request, response);
+        request.getRequestDispatcher("jsp/user/accounts.jsp").forward(request, response);
     }
+
 }

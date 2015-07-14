@@ -4,8 +4,8 @@ import com.epam.lab.spider.model.db.PoolConnection;
 import com.epam.lab.spider.model.db.SQLTransactionException;
 import com.epam.lab.spider.model.db.dao.AttachmentDAO;
 import com.epam.lab.spider.model.db.dao.CategoryHasPostDAO;
+import com.epam.lab.spider.model.db.dao.NewPostDAO;
 import com.epam.lab.spider.model.db.dao.PostDAO;
-import com.epam.lab.spider.model.db.dao.UserHasCategotyDAO;
 import com.epam.lab.spider.model.db.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException;
 import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
@@ -20,6 +20,7 @@ import com.epam.lab.spider.model.db.service.savable.exception.UnsupportedServise
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 import static com.epam.lab.spider.model.db.SQLTransactionException.assertTransaction;
 
@@ -31,6 +32,8 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
     private DAOFactory factory = DAOFactory.getInstance();
     private PostDAO pdao = factory.create(PostDAO.class);
     private AttachmentDAO adao = factory.create(AttachmentDAO.class);
+    private CategoryHasPostDAO chpdao = factory.create(CategoryHasPostDAO.class);
+    private NewPostDAO npdao = factory.create(NewPostDAO.class);
 
     @Override
     public boolean save(Post entity) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException,
@@ -79,14 +82,16 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
         }
     }
 
-    @Deprecated
     @Override
     public boolean update(int id, Post post) {
         try {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                assertTransaction(adao.deleteByPostId(connection, id));
+                Set<Attachment> attachments = pdao.getById(connection, id).getAttachments();
+                if (attachments.size() > 0) {
+                    assertTransaction(adao.deleteByPostId(connection, id));
+                }
                 for (Attachment attachment : post.getAttachments()) {
                     assertTransaction(adao.insert(connection, attachment));
                 }
@@ -113,9 +118,12 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
             Connection connection = PoolConnection.getConnection();
             try {
                 connection.setAutoCommit(false);
-                if (pdao.getById(connection, id).getAttachments().size() > 0)
-                    assertTransaction(adao.deleteByPostId(connection, id));
-                assertTransaction(pdao.delete(connection, id));
+                if (pdao.getById(connection, id).getAttachments().size() > 0) {
+                    adao.deleteByPostId(connection, id);
+                }
+                chpdao.deleteByPostId(connection, id);
+                npdao.deleteByPostId(connection, id);
+                pdao.delete(connection, id);
                 connection.commit();
             } catch (SQLTransactionException e) {
                 connection.rollback();
@@ -226,6 +234,15 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
             return false;
         }
         return true;
+    }
+
+    public List<Integer> getByCategoryFromUser(int userId, int offset, int limit) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return pdao.getByCategoryFromUser(connection, userId, offset, limit);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
