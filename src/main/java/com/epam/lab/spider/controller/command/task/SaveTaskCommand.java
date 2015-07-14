@@ -194,6 +194,9 @@ public class SaveTaskCommand implements ActionCommand {
 
             TaskUtil.setNewTaskRunTime(task);
 
+            task.getSource().clear();
+            task.getDestination().clear();
+
             List<String> wallWarning = new ArrayList<>();
             Set<Integer> sourceWallBlock = new HashSet<>();
             for (int i = 0; i < jsonSources.size(); i++) {

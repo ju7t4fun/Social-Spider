@@ -25,15 +25,15 @@ public class PostProcessingUtil {
         StringBuilder messageBuilder = new StringBuilder();
         String signature = sign.trim();
         if(contentType.hasTextTitle() && signature != null && !signature.isEmpty() ) {
-            messageBuilder.append("[%owner%|").append(signature).append("]").append("\n");
+            messageBuilder.append("[%owner%|").append(signature).append("]").append(" \r\n");
         }else if(contentType.hasSimpleTitle()){
-            messageBuilder.append("[%owner%|%owner_name%]").append("\n");
+            messageBuilder.append("[%owner%|%owner_name%]").append(" \r\n");
             if(signature != null && !signature.isEmpty()){
-                messageBuilder.append(signature).append("\n");
+                messageBuilder.append(signature).append(" \r\n");
             }
         }else {
             if(signature != null && !signature.isEmpty()){
-                messageBuilder.append(signature).append("\n");
+                messageBuilder.append(signature).append(" \r\n");
             }
         }
         String pureText = vkPost.getText().trim();
@@ -48,13 +48,13 @@ public class PostProcessingUtil {
             if(!copyHistoryList.isEmpty()){
                 post = processingPost(copyHistoryList.get(0),  contentType);
                 String innerMessage = post.getMessage();
-                messageBuilder.append("\n").append(innerMessage);
+                messageBuilder.append(" \r\n").append(innerMessage);
                 newPostContentType.setType(Task.ContentType.REPOSTS);
 
             }
         }
         {
-            if(hashTags!=null)messageBuilder.append("\n").append(hashTags);
+            if(hashTags!=null)messageBuilder.append(" \r\n").append(hashTags);
             post.setMessage(messageBuilder.toString().trim());
         }
         for (com.epam.lab.spider.model.vk.Attachment vkAttachment : vkPost.getAttachments()) {
