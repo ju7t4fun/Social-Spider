@@ -2,6 +2,7 @@ package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
+import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.model.db.entity.Attachment;
 import com.epam.lab.spider.model.db.entity.Post;
 import com.epam.lab.spider.model.db.service.PostService;
@@ -11,10 +12,11 @@ import org.json.JSONObject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 /**
@@ -26,6 +28,8 @@ public class EditPostCommand implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         int postID = Integer.parseInt(request.getParameter("post_id"));
         Map<String, String> urlType = (Map<String, String>) request.getSession().getAttribute("files_url");
         Attachment attachment;
@@ -48,10 +52,10 @@ public class EditPostCommand implements ActionCommand {
         System.out.println(post);
         if (service.update(postID, post)) {
             jsonObject.put("status", "success");
-            jsonObject.put("message", "Post has been successfully edited!");
+            jsonObject.put("message", UTF8.encoding(bundle.getString("notification.edit.post.success")));
         } else {
             jsonObject.put("status", "error");
-            jsonObject.put("message", "Error!");
+            jsonObject.put("message", UTF8.encoding(bundle.getString("notification.edit.post.error")));
         }
         request.getSession().removeAttribute("files_url");
         response.setContentType("application/json");
