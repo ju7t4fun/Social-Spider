@@ -97,7 +97,7 @@ public class EditTaskCommand implements ActionCommand {
             request.setAttribute("interval_max", task.getIntervalMax());
             request.setAttribute("post_count", task.getPostCount());
             request.setAttribute("post_delay_min", task.getPostDelayMin());
-            request.setAttribute("post_delay_max", task.getIntervalMax());
+            request.setAttribute("post_delay_max", task.getPostDelayMax());
             request.setAttribute("grabbing_mode", task.getGrabbingMode());
 
             request.setAttribute("likes", task.getFilter().getLikes());

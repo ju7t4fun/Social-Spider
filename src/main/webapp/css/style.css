@@ -4473,7 +4473,8 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
     display: inline;
     margin: 5px 0px;
     width: auto;
-    color: #a10006;
+    color: #FAFAFA;
+    font-size: 15px;
 }
 
 .checkbox, .checkbox:hover, .checkbox:focus {

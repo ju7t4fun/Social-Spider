@@ -23,7 +23,10 @@ public class PostProcessingUtil {
         Post post = new Post();
         Task.ContentType newPostContentType = new Task.ContentType();
         StringBuilder messageBuilder = new StringBuilder();
-        String signature = sign.trim();
+        String signature = null;
+        if(sign!=null) {
+            signature = sign.trim();
+        }
         if(contentType.hasTextTitle() && signature != null && !signature.isEmpty() ) {
             messageBuilder.append("[%owner%|").append(signature).append("]").append(" \r\n");
         }else if(contentType.hasSimpleTitle()){
@@ -55,7 +58,8 @@ public class PostProcessingUtil {
         }
         {
             if(hashTags!=null)messageBuilder.append(" \r\n").append(hashTags);
-            post.setMessage(messageBuilder.toString().trim());
+            String resultReplace = messageBuilder.toString().replaceAll("( \r\n|\r\n)","\n").replaceAll("\n"," \r\n").trim();
+            post.setMessage(resultReplace);
         }
         for (com.epam.lab.spider.model.vk.Attachment vkAttachment : vkPost.getAttachments()) {
             if (contentType.hasPhoto() && vkAttachment instanceof Photo) {
