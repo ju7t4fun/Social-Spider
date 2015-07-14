@@ -16,7 +16,7 @@ public class Profile {
     private String accessToken;
     private Date extTime;
     private Integer appId = 4949213;
-    private String name;
+    private String name = "NO NAME";
     private Boolean deleted = false;
 
     private Set<Wall> walls = null;

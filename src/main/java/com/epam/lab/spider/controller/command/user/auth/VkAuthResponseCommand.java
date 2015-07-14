@@ -77,6 +77,7 @@ public class VkAuthResponseCommand implements ActionCommand {
             session.setAttribute("surname", vkUser.getLastName());
             session.setAttribute("email", token.getEmail());
             session.setAttribute("vkId", token.getUserId());
+            session.setAttribute("photo_200", vkUser.getPhoto200().toString());
             response.sendRedirect("/register");
         }
     }

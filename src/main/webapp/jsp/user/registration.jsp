@@ -89,6 +89,7 @@
 
         <form class="login-form" action="/register?action=register" method="post" id="register_form">
             <input type="hidden" name="vkId" value="${vkId}">
+            <input type="hidden" name="photo_200" value="${photo_200}">
 
             <div class="login-wrap">
                 <p class="login-img"><i class="icon_house_alt"></i></p>

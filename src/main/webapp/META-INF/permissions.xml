@@ -33,7 +33,9 @@
         <url_pattern url="/controller">
             <param>*</param>
         </url_pattern>
-
+        <url_pattern url="/forgot_password">
+            <param>*</param>
+        </url_pattern>
         <url_pattern url="/feeds">
             <param>*</param>
         </url_pattern>
@@ -66,7 +68,6 @@
         </url_pattern>
     </role>
     <role type="ADMIN">
-        <!-- Робота з профілями-->
         <url_pattern url="/">
             <param>*</param>
         </url_pattern>
@@ -82,8 +83,10 @@
         <url_pattern url="/controller">
             <param>*</param>
         </url_pattern>
+        <url_pattern url="/forgot_password">
+            <param>*</param>
+        </url_pattern>
 
-        <!-- Адмінка-->
         <url_pattern url="/admin">
             <param>*</param>
         </url_pattern>
@@ -104,6 +107,17 @@
         </url_pattern>
         <url_pattern url="/admin/addtask">
             <param>*</param>
+        </url_pattern>
+        <url_pattern url="/owner">
+            <param>get</param>
+            <param>remove</param>
+            <param>optionFilling</param>
+            <param>bind</param>
+            <param>stat</param>
+            <param>add</param>
+            <param>editowner</param>
+            <param>getOwnerWall</param>
+            <param>bindadmin</param>
         </url_pattern>
         <url_pattern url="/task">
             <param>showtasksforadmin</param>

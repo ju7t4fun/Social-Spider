@@ -34,8 +34,8 @@ public class RegisterCommand implements ActionCommand {
         String surname = UTF8.encoding(request.getParameter("surname"));
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        String gRecaptchaResponse = request
-                .getParameter("g-recaptcha-response");
+        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+        String photo200 = request.getParameter("photo_200");
 
         name = ReplaceHtmlTags.reaplaceAll(name);
         surname = ReplaceHtmlTags.reaplaceAll(surname);
@@ -68,7 +68,10 @@ public class RegisterCommand implements ActionCommand {
             user.setSurname(surname);
             user.setPassword(new HashMD5().hash(password));
             user.setRole(User.Role.USER);
-            user.setAvatarURL("http://localhost:8080/img/avatarDefault.png");
+            if (photo200 == null)
+                user.setAvatarURL("http://localhost:8080/img/avatarDefault.png");
+            else
+                user.setAvatarURL(photo200);
             userService.insert(user);
 
             // Якщо зареєстувався через вк привязати user_id до vk_id
