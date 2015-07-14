@@ -60,7 +60,7 @@ public class RepostUtil {
         }
         if(groupOwner!=null) {
             if (groupOwner.getVkId() < 0) parameters.add("group_id", -groupOwner.getVkId());
-            else {
+            else if(vk.getAccessToken().getUserId() != groupOwner.getVkId()) {
                 LOG.error("Method destined to repost in group or himself! To repost himself set groupOwner in null!");
                 // TODO: SEND EVENT TO USER
                 return false;
