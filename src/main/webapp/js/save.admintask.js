@@ -72,8 +72,12 @@ $(document).ready(function () {
                     location.href = "/task?action=showtasksforadmin";
                 }
             })
-            .fail(function () {
-                toastrNotification("error", "Saved  error.");
+            .fail(function (jqXHR) {
+                if(jqXHR.status == 401){
+                    toastrNotification("error", "Death session. Please ReLogin.");
+                }else{
+                    toastrNotification("error", "Saved  error.");
+                }
             });
 
     });

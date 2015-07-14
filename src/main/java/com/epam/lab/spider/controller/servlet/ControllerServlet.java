@@ -35,6 +35,7 @@ public class ControllerServlet extends HttpServlet {
         public ApiActionFactory() {
             commands = new HashMap<>();
             commands.put("locale", new LocaleCommand());
+            commands.put("unlock", new UnlockCommand());
             commands.put("upload", new UploadFileCommand());
             commands.put("uploadurl", new UploadFileFromURLCommand());
             commands.put("categories", new CategoriesCommand());

@@ -135,7 +135,7 @@ public class PostExecutorJob implements Job {
                     attachmentsStringBuilder.append(", ").append(attachmentsList.get(i));
                 }
                 String textMessage = newPost.getPost().getMessage().replaceAll("%owner%",owner.getDomain());
-
+                textMessage = textMessage.replaceAll("%owner_name%",owner.getName());
                 LOG.debug("Attachments: " + attachmentsStringBuilder.toString());
                 Parameters parameters = new Parameters();
                 parameters.add("owner_id", owner.getVkId());

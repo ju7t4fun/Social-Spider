@@ -62,8 +62,12 @@ $(document).ready(function () {
                     }, 500);
                 }
             })
-            .fail(function() {
-                toastrNotification("error", "Saved have error.");
+            .fail(function (jqXHR) {
+                if(jqXHR.status == 401){
+                    toastrNotification("error", "Death session. Please ReLogin.");
+                }else{
+                    toastrNotification("error", "Saved  error.");
+                }
             });
 
     });
