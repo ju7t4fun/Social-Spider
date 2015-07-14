@@ -29,7 +29,7 @@
     <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic'
           rel='stylesheet' type='text/css'>
     <%--<link rel="stylesheet" href="${pageContext.request.contextPath}/font-awesome/css/font-awesome.min.css"--%>
-          <%--type="text/css">--%>
+    <%--type="text/css">--%>
 
     <!-- Plugin CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.min.css" type="text/css">
@@ -70,19 +70,19 @@
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav navbar-right">
                                 <li>
-                                    <a class="page-scroll" href="#about"><l:resource key="index.about" /></a>
+                                    <a class="page-scroll" href="#about"><l:resource key="index.about"/></a>
                                 </li>
                                 <li>
-                                    <a class="page-scroll" href="#services"><l:resource key="index.opportunities" /></a>
+                                    <a class="page-scroll" href="#services"><l:resource key="index.opportunities"/></a>
                                 </li>
                                 <li>
-                                    <a class="page-scroll" href="#team"><l:resource key="index.team" /></a>
+                                    <a class="page-scroll" href="#team"><l:resource key="index.team"/></a>
                                 </li>
                                 <li>
-                                    <a class="page-scroll" href="#contact"><l:resource key="index.contact" /></a>
+                                    <a class="page-scroll" href="#contact"><l:resource key="index.contact"/></a>
                                 </li>
                                 <li>
-                                    <a class="page-scroll" href="/login"><l:resource key="index.signin" /></a>
+                                    <a class="page-scroll" href="/login"><l:resource key="index.signin"/></a>
                                 </li>
                             </ul>
                         </div>
@@ -111,7 +111,7 @@
             <h1>SOCIAL SPIDER</h1>
             <hr>
             <p>make it easy</p>
-            <a href="/login" class="btn btn-primary btn-xl page-scroll"><l:resource key="index.signin" /></a>
+            <a href="/login" class="btn btn-primary btn-xl page-scroll"><l:resource key="index.signin"/></a>
         </div>
     </div>
 </header>
@@ -120,9 +120,9 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 text-center">
-                <h2 class="section-heading"><l:resource key="index.whatyouneed" /></h2>
+                <h2 class="section-heading"><l:resource key="index.whatyouneed"/></h2>
                 <hr class="light">
-                <p class="text-faded"><l:resource key="index.whatyouneedtext" /></p>
+                <p class="text-faded"><l:resource key="index.whatyouneedtext"/></p>
             </div>
         </div>
     </div>
@@ -133,7 +133,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading"><l:resource key="index.serviceopports" /></h2>
+                    <h2 class="section-heading"><l:resource key="index.serviceopports"/></h2>
                     <hr class="primary">
                 </div>
             </div>
@@ -144,36 +144,36 @@
                     <div class="service-box">
                         <i class="fa fa-4x fa-diamond wow bounceIn text-primary"></i>
 
-                        <h3><l:resource key="index.op1_title" /></h3>
+                        <h3><l:resource key="index.op1_title"/></h3>
 
-                        <p class="text-muted"><l:resource key="index.op1" /></p>
+                        <p class="text-muted"><l:resource key="index.op1"/></p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 text-center">
                     <div class="service-box">
                         <i class="fa fa-4x fa-paper-plane wow bounceIn text-primary" data-wow-delay=".1s"></i>
 
-                        <h3><l:resource key="index.op2_title" /></h3>
+                        <h3><l:resource key="index.op2_title"/></h3>
 
-                        <p class="text-muted"><l:resource key="index.op2" /></p>
+                        <p class="text-muted"><l:resource key="index.op2"/></p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 text-center">
                     <div class="service-box">
                         <i class="fa fa-4x fa-newspaper-o wow bounceIn text-primary" data-wow-delay=".2s"></i>
 
-                        <h3><l:resource key="index.op3_title" /></h3>
+                        <h3><l:resource key="index.op3_title"/></h3>
 
-                        <p class="text-muted"><l:resource key="index.op3" /></p>
+                        <p class="text-muted"><l:resource key="index.op3"/></p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 text-center">
                     <div class="service-box">
                         <i class="fa fa-4x fa-heart wow bounceIn text-primary" data-wow-delay=".3s"></i>
 
-                        <h3><l:resource key="index.op4_title" /></h3>
+                        <h3><l:resource key="index.op4_title"/></h3>
 
-                        <p class="text-muted"><l:resource key="index.op4" /></p>
+                        <p class="text-muted"><l:resource key="index.op4"/></p>
                     </div>
                 </div>
             </div>
@@ -187,7 +187,7 @@
     <section id="team">
         <div class="team-members">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h3 id="largefont"><l:resource key="index.teammembers" /> </h3>
+                <h3 id="largefont"><l:resource key="index.teammembers"/></h3>
                 <hr/>
             </div>
         </div>
@@ -199,91 +199,73 @@
 
                 <div class="col-lg-4">
                     <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('../img/aschwarzenegger.jpg')">
+                        <div class="team-inner" style="background-image: url('../img/photo/vet.png');
+                         background-size: 60%;
+                        background-repeat: no-repeat;">
                         </div>
                         <div class="description">
-                            <h3> Leomarid Jona</h3>
-                            <h5><strong> Developer & Designer </strong></h5>
-
-                            <p>
-                                Pellentesque elementum dapibus convallis.
-                                Vivamus eget finibus massa.
-                            </p>
+                            <h3>Vitaliy Boyarsky</h3>
+                            <h5><strong>Team Lead & Web Developer </strong></h5>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('../img/aschwarzenegger.jpg')">
+                        <div class="team-inner" style="background-image: url('../img/photo/vor1.png');
+                        background-size: 60%;
+                        background-repeat: no-repeat;">
                         </div>
                         <div class="description">
-                            <h3> Leomarid Jona</h3>
-                            <h5><strong> Developer & Designer </strong></h5>
-
-                            <p>
-                                Pellentesque elementum dapibus convallis.
-                                Vivamus eget finibus massa.
-                            </p>
+                            <h3>Marian Voronovskyi</h3>
+                            <h5><strong>Web Developer</strong></h5>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('../img/aschwarzenegger.jpg')">
+                        <div class="team-inner" style="background-image: url('../img/photo/orest1.png');
+                         background-size: 60%;
+                        background-repeat: no-repeat;">
                         </div>
                         <div class="description">
-                            <h3> Leomarid Jona</h3>
-                            <h5><strong> Developer & Designer </strong></h5>
-
-                            <p>
-                                Pellentesque elementum dapibus convallis.
-                                Vivamus eget finibus massa.
-                            </p>
+                            <h3>Dzyuba Orest</h3>
+                            <h5><strong>Web Developer</strong></h5>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('../img/aschwarzenegger.jpg')">
+                        <div class="team-inner" style="background-image: url('../img/photo/sasha1.png');
+                         background-size: 60%;
+                        background-repeat: no-repeat;">
                         </div>
                         <div class="description">
-                            <h3> Leomarid Jona</h3>
-                            <h5><strong> Developer & Designer </strong></h5>
-
-                            <p>
-                                Pellentesque elementum dapibus convallis.
-                                Vivamus eget finibus massa.
-                            </p>
+                            <h3>Oleksandra Lobanok</h3>
+                            <h5><strong>Web Developer</strong></h5>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('../img/aschwarzenegger.jpg')">
+                        <div class="team-inner" style="background-image: url('../img/photo/oles1.png');
+                         background-size: 60%;
+                        background-repeat: no-repeat;">
                         </div>
                         <div class="description">
-                            <h3> Leomarid Jona</h3>
-                            <h5><strong> Developer & Designer </strong></h5>
-
-                            <p>
-                                Pellentesque elementum dapibus convallis.
-                                Vivamus eget finibus massa.
-                            </p>
+                            <h3>Oles Vushko</h3>
+                            <h5><strong>Web Developer</strong></h5>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('../img/aschwarzenegger.jpg')">
+                        <div class="team-inner" style="background-image: url('../img/photo/yu1.png');
+                         background-size: 60%;
+                        background-repeat: no-repeat;">
                         </div>
                         <div class="description">
-                            <h3> Leomarid Jona</h3>
-                            <h5><strong> Developer & Designer </strong></h5>
-
-                            <p>
-                                Pellentesque elementum dapibus convallis.
-                                Vivamus eget finibus massa.
-                            </p>
+                            <h3>Yura Kovalik</h3>
+                            <h5><strong>Web Developer</strong></h5>
                         </div>
                     </div>
                 </div>
@@ -302,7 +284,7 @@
                 <div class="col-lg-8 col-lg-offset-2 text-center">
                     <h2 class="section-heading">Social-Spider Corporation!</h2>
                     <hr class="primary">
-                    <p><l:resource key="index.contactus" /></p>
+                    <p><l:resource key="index.contactus"/></p>
                 </div>
                 <div class="col-lg-4 col-lg-offset-2 text-center">
                     <i class="fa fa-phone fa-3x wow bounceIn"></i>
