@@ -43,10 +43,10 @@ public class EditCategory implements ActionCommand {
             }
             if (service.update(id, category)) {
                 json.put("status", "success");
-                json.put("msg", "Успішно змінено");
+                json.put("msg", "Successfully updated!");
             } else {
                 json.put("status", "error");
-                json.put("msg", "Відбулася помилка при редагуванні");
+                json.put("msg", "Occured error while updated!");
             }
         } catch (Exception ex) {
             ex.printStackTrace();

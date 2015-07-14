@@ -46,10 +46,10 @@ public class ChangeTimePostedCommand implements ActionCommand {
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         if (service.update(postId, post)) {
             json.put("status", "success");
-            json.put("msg", "Змінено успішно");
+            json.put("msg", "Successfully updated");
         } else {
             json.put("status", "error");
-            json.put("msg", "Виникла помилка");
+            json.put("msg", "Error has occured!");
         }
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

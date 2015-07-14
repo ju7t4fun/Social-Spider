@@ -385,7 +385,7 @@
         $(document).ready(function () {
             $("#submit_modal").click(function () {
                 if ($("#tokenize_focus").val() == null) {
-                    toastrNotification('warning', "Не вибрано груп");
+                    toastrNotification('warning', "There are not groups selected!");
                     return;
                 }
                 $.post(

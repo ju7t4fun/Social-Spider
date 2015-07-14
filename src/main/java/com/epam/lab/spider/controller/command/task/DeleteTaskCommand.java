@@ -22,15 +22,14 @@ public class DeleteTaskCommand implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO АХУЄТЬ А ДАВАЙТЕ Я З ПІД НЕЗАЛОГОВАНОГО ЮЗЕРА ВИДАЛЮ ВСІ ТАСКИ
         int id = Integer.parseInt(request.getParameter("taskId"));
         org.json.JSONObject json = new org.json.JSONObject();
         if (service.delete(id)) {
             json.put("status", "success");
-            json.put("msg", "Успішно видалено");
+            json.put("msg", "Successfully deleted!");
         } else {
             json.put("status", "error");
-            json.put("msg", "Відбулася помилка при видаленні");
+            json.put("msg", "Occured error while deleting!");
         }
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

@@ -28,10 +28,10 @@ public class RemoveCategoryCommand implements ActionCommand {
         JSONObject json = new JSONObject();
         if (service.delete(id)) {
             json.put("status", "success");
-            json.put("msg", "Успішно видалено");
+            json.put("msg", "Successfully deleted!");
         } else {
             json.put("status", "error");
-            json.put("msg", "Відбулася помилка при видаленні");
+            json.put("msg", "Occured error!");
         }
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

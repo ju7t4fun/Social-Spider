@@ -5,7 +5,7 @@ $(document).ready(function () {
             source.push($(this).attr("value"));
         });
         if (source.length == 0) {
-            toastrNotification("warning", "НЕ вибрано груп");
+            toastrNotification("warning", "There are not groups selected!");
             return
         }
 

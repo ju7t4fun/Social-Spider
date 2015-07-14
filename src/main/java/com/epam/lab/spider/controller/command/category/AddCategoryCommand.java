@@ -38,10 +38,10 @@ public class AddCategoryCommand implements ActionCommand {
             category.setImageUrl((String) request.getSession().getAttribute("urlCat"));
         if (service.insert(category)) {
             json.put("status", "success");
-            json.put("msg", "Успішно додано");
+            json.put("msg", "Successfully added");
         } else {
             json.put("status", "error");
-            json.put("msg", "Відбулася помилка при додаванні");
+            json.put("msg", "Occured error while updated!");
         }
         request.getSession().removeAttribute("urlCat");
         response.getWriter().write(json.toString());

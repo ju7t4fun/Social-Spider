@@ -54,7 +54,7 @@ public class AddManuallyAccountCommand implements ActionCommand {
             token.setUserId(Integer.parseInt(params.get("user_id")));
         } catch (Exception e) {
             json.put("status", "warning");
-            json.put("msg", "Введенно невірний запит");
+            json.put("msg", "Incorrect query!");
             response.getWriter().print(json.toString());
             return;
         }
@@ -82,18 +82,18 @@ public class AddManuallyAccountCommand implements ActionCommand {
         if (oldProfile == null) {
             if (service.insert(profile)) {
                 json.put("status", "success");
-                json.put("msg", "Успішно створено");
+                json.put("msg", "Successfully created!");
             } else {
                 json.put("status", "error");
-                json.put("msg", "Виникла помилка при додаванні профілю");
+                json.put("msg", "Error has occured!");
             }
         } else {
             if (service.update(oldProfile.getId(), profile)) {
                 json.put("status", "success");
-                json.put("msg", "Оновлення пройшло успішно");
+                json.put("msg", "Successfulle updated!");
             } else {
                 json.put("status", "error");
-                json.put("msg", "Оновлення профілю завершилося невдачею");
+                json.put("msg", "Error has occured!");
             }
         }
         response.getWriter().print(json.toString());
