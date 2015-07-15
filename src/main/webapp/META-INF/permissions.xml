@@ -120,6 +120,7 @@
             <param>bindadmin</param>
         </url_pattern>
         <url_pattern url="/task">
+            <param>save</param>
             <param>showtasksforadmin</param>
             <param>stateChange</param>
             <param>gettasks</param>
