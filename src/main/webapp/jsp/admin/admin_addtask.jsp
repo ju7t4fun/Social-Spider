@@ -169,7 +169,8 @@
                     </div>
                     <!--collapse end-->
                     <div class="col-lg-offset-2 col-lg-9">
-                        <button id="task-save" type="submit" class="btn btn-primary"><l:resource
+                        <button style="margin-left: -183px;" id="task-save" type="submit" class="btn
+                        btn-primary"><l:resource
                                 key="newpost.save"/></button>
 
                     </div>
