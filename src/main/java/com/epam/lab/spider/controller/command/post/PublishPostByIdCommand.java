@@ -83,7 +83,7 @@ public class PublishPostByIdCommand implements ActionCommand {
             } else {
                 obj = new JSONObject();
                 obj.put("status", "error");
-                obj.put("msg", "Occured error!");
+                obj.put("msg", UTF8.encoding(bundle.getString("notification.post.error")));
             }
             array.put(obj);
         }
