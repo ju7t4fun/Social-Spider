@@ -2,6 +2,7 @@ package com.epam.lab.spider.controller.command.owner;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.StatisticsBuilder;
+import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
@@ -16,10 +17,12 @@ import org.json.JSONObject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created by Boyarsky Vitaliy on 09.07.2015.
@@ -31,6 +34,8 @@ public class GetGroupStatsCommand implements ActionCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         int ownerId = Integer.parseInt(request.getParameter("id"));
         List<Wall> writeByOwnerId = wallService.getWriteByOwnerId(ownerId);
         JSONObject result = new JSONObject();
@@ -38,7 +43,7 @@ public class GetGroupStatsCommand implements ActionCommand {
         response.setCharacterEncoding("UTF-8");
         if (writeByOwnerId.size() == 0) {
             result.put("status", "error");
-            result.put("msg", "До групи не привязано профілів");
+            result.put("msg", UTF8.encoding(bundle.getString("group.stats.nobind")));
             response.getWriter().write(result.toString());
             return;
         }
@@ -83,7 +88,7 @@ public class GetGroupStatsCommand implements ActionCommand {
             return;
         }
         result.put("status", "error");
-        result.put("msg", "У вас немає прав доступу до даної спільноти");
+        result.put("msg", UTF8.encoding(bundle.getString("group.stats.nopermission")));
         response.getWriter().write(result.toString());
     }
 

@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,17 +90,17 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12" style="margin-left: 13px ">
+                    <h3 class="page-header"><i class="fa fa-list-alt"></i> <l:resource key="task"/></h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-                        <li><i class="fa fa-desktop"></i>Task</li>
-                        <li><i class="fa fa-list-alt"></i>All Tasks</li>
+                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-tasks"></i><l:resource key="task"/></li>
                     </ol>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-lg-12">
-
+                    <div class="panel panel-default">
                     <ul class="nav nav-tabs" role="tablist" style="margin-left: 13px ">
                         <li role="presentation" class="active"><a href="#tabs-1" onclick="toActive()"
                                                                   aria-controls="tabs-1"
@@ -160,6 +161,7 @@
                     </div>
                 </div>
             </div>
+                </div>
         </section>
     </section>
 </section>
@@ -486,8 +488,7 @@
     ;
 
     function parseDoc(arg) {
-        var arg = arg.trim();
-        switch (arg) {
+        switch (arg.trim()) {
             case "PHOTO":
                 return '<img src=\"/img/icons/jpg-icon.png" style="width: 30px; height: 30px">';
             case "VIDEO":
@@ -497,19 +498,18 @@
             case "TEXT":
                 return '<img src=\"/img/icons/txt-icon.png" style="width: 30px; height: 30px">';
             case "DOC" :
-                return '<img src=\"/img/restIcos/doc.jpg" style="width: 30px; height: 30px">';
+                return '<img src=\"/img/icons/doc-icon.png" style="width: 30px; height: 30px">';
             case "HASH TAG" :
-                return '<img src=\"/img/restIcos/hashtag.jpg" style="width: 30px; height: 30px">';
+                return '<img src=\"/img/icons/hash-icon.png" style="width: 30px; height: 30px">';
             case "LINKS" :
-                return '<img src=\"/img/restIcos/links.jpg" style="width: 30px; height: 30px">';
+                return '<img src=\"/img/icons/link-icon.png" style="width: 30px; height: 30px">';
             case "PAGES" :
-                return '<img src=\"/img/restIcos/pages.jpg" style="width: 30px; height: 30px">';
+                return '<img src=\"/img/icons/page-icon.png" style="width: 30px; height: 30px">';
             case "REPOST" :
-                return '<img src=\"/img/restIcos/repost.jpg" style="width: 30px; height: 30px">';
+                return '<img src=\"/img/icons/repost-icon.png" style="width: 30px; height: 30px">';
         }
         return "";
     }
-    ;
 
 </script>
 

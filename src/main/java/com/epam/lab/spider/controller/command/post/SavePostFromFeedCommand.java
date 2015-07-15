@@ -31,11 +31,8 @@ public class SavePostFromFeedCommand implements ActionCommand {
         HttpSession session = request.getSession();
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         JSONObject json = new JSONObject();
-        response.setContentType("application/json");
-        response.setContentType("UTF-8");
         User user = (User) session.getAttribute("user");
         int id = Integer.parseInt(request.getParameter("id"));
-
         Post post = postService.getById(id);
         post.getAttachments();
         post.setUserId(user.getId());
@@ -43,6 +40,8 @@ public class SavePostFromFeedCommand implements ActionCommand {
             json.put("status", "success");
             json.put("message", UTF8.encoding(bundle.getString("notification.create.post.success")));
         }
+        response.setContentType("application/json");
+        response.setContentType("UTF-8");
         response.getWriter().write(json.toString());
     }
 }

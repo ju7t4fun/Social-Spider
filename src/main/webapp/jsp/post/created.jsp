@@ -277,7 +277,7 @@
                                         <l:resource key="newpost.postdate">
                                             <input id="date" name="date" type="date"
                                                    min="${date}" value="${date}"
-                                                   class="form-control input-md">
+                                                   class="form-control input-md" onchange="changeData()">
                                         </l:resource>
                                     </div>
                                 </div>
@@ -288,7 +288,7 @@
                                     <div class="col-md-4" style="margin-top: -24px">
                                         <l:resource key="newpost.posttime">
                                             <input id="time" name="time" type="time" value="${time}"
-                                                   class="form-control input-md">
+                                                   class="form-control input-md" onchange="changeData()">
                                         </l:resource>
                                     </div>
                                 </div>
@@ -366,13 +366,20 @@
                     for (var i = 0; i < response.owner.length; i++) {
                         list.append('<option value="' + response.owner[i].id + '">' + response.owner[i].name + '</option>');
                     }
+                    $("#date").attr("min", response.date);
                     $("#date").val(response.date);
                     $("#time").val(response.time);
+                    $("#time1").attr("min", response.del_date);
                     $("#time1").val(response.del_date);
                     $("#time5").val(response.del_time);
                 }
             };
             xmlhttp.send();
+        }
+
+        function changeData() {
+            $("#time1").val($("#date").val())
+            $("#time1").attr("min", $("#date").val());
         }
 
         // Скриваємо видалення
@@ -384,6 +391,12 @@
         // Опрацювання публікування поста
         $(document).ready(function () {
             $("#submit_modal").click(function () {
+                if ($("#check").prop('checked'))
+                    if ($("#date").val() === $("#time1").val())
+                        if ($("#time5").val() < $("#time").val()) {
+                            toastrNotification('warning', "Time error!");
+                            return;
+                        }
                 if ($("#tokenize_focus").val() == null) {
                     toastrNotification('warning', "There are not groups selected!");
                     return;

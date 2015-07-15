@@ -29,6 +29,7 @@ public class GetPostedDateCommand implements ActionCommand {
         SimpleDateFormat time = new SimpleDateFormat("HH:mm");
         JSONObject json = new JSONObject();
         {
+            json.put("now", date.format(new Date()));
             json.put("date", date.format(post.getPostTime()));
             json.put("time", time.format(post.getPostTime()));
             Date deleteTime = post.getDeleteTime();

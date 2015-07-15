@@ -174,7 +174,7 @@
                                         <l:resource key="newpost.postdate">
                                             <input id="date" name="date" type="date"
                                                    min="${date}" value="${date}"
-                                                   class="form-control input-md">
+                                                   class="form-control input-md" onchange="changeData()">
                                         </l:resource>
                                     </div>
                                 </div>
@@ -259,13 +259,20 @@
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
+                    $("#date").attr("min", response.now);
                     $("#date").val(response.date);
                     $("#time").val(response.time);
+
+                    $("#del_date").attr("min", response.del_date);
                     $("#del_date").val(response.del_date);
                     $("#del_time").val(response.del_time);
                 }
             };
             xmlhttp.send();
+        }
+
+        function changeData() {
+            $("#del_date").val($("#date").val())
         }
 
         // Змінюємо дату

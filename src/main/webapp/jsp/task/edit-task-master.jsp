@@ -85,6 +85,7 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-tasks"></i> <l:resource key="addnewtask"/></h3>
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a href="index.html"><l:resource key="home"/></a></li>
                         <li><i class="fa fa-desktop"></i><l:resource key="task"/></li>
@@ -101,6 +102,7 @@
                 </div>
             </div>
             <input type="hidden" name="task_id" value="${task_id}">
+
             <div class="row">
                 <div class="col-lg-6">
                     <!--collapse start-->
@@ -180,18 +182,15 @@
                     </div>
                     <!--collapse end-->
                     <div class="col-lg-offset-2 col-lg-9">
-                        <button id="task-save" type="submit" class="btn btn-primary"><l:resource
+                        <button style="margin-left: -108px;" id="task-save" type="submit" class="btn
+                        btn-primary"><l:resource
                                 key="newpost.save"/></button>
-                        <button type="reset" class="btn btn-default"><l:resource key="newpost.reset"/></button>
                     </div>
                 </div>
 
             </div>
-            </div>
         </section>
-        <!--main content end-->
     </section>
-    <!-- container section end -->
     <script src="${pageContext.request.contextPath}/js/bootstrap-number-input.js"></script>
 
     <script type="text/javascript">
@@ -216,7 +215,7 @@
     <!--custom tagsinput-->
     <script src="${pageContext.request.contextPath}/js/jquery.tagsinput.js"></script>
     <script src="${pageContext.request.contextPath}/js/form-component.js"></script>
-    //switch unjquery mode
+    <%--//switch unjquery mode--%>
 </body>
 </html>
 

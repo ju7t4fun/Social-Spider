@@ -286,10 +286,11 @@
         $(document).ready(function () {
             $("#submit_modal").click(function () {
                 if ($("#check").prop('checked'))
-                    if ($("#time5").val() < $("#time").val()) {
-                        toastrNotification('warning', "Time error!");
-                        return;
-                    }
+                    if ($("#date").val() === $("#time1").val())
+                        if ($("#time5").val() < $("#time").val()) {
+                            toastrNotification('warning', "Time error!");
+                            return;
+                        }
                 if ($("#tokenize_focus").val() == null) {
                     toastrNotification('warning', "There are not groups selected!");
                     return;
