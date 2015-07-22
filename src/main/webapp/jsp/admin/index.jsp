@@ -68,7 +68,7 @@
                 <div class="col-lg-12">
                     <h3 class="page-header"><i class="fa fa-pie-chart"></i><l:resource key="admin"/></h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-home"></i><a href="${pageContext.request.contextPath}/"><l:resource key="home"/></a></li>
                         <li><i class="fa fa-pie-chart"></i><l:resource key="charts"/></li>
                     </ol>
                 </div>

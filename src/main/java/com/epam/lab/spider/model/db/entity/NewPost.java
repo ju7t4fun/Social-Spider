@@ -37,6 +37,7 @@ public class NewPost {
     private Stats stats;
     private Post post;
     private Owner owner = null;
+    private Profile profile = null;
 
     public String getFullId() {
         if (fullId != null)
@@ -263,6 +264,13 @@ public class NewPost {
             owner = service.getById(wallId).getOwner();
         }
         return owner;
+    }
+    public Profile getProfile() {
+        if (profile == null) {
+            WallService service = factory.create(WallService.class);
+            profile = service.getById(wallId).getProfile();
+        }
+        return profile;
     }
 
     public enum State {

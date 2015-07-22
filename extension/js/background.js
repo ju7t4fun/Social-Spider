@@ -1,5 +1,5 @@
 var apps = ["4949213"];
-var host = "http://localhost:8080/";
+var host = "/localhost:8080/";
 
 // Файл конфігурації default
 var config = {
@@ -42,7 +42,7 @@ var webSocket;
 // Створення нового WebSocket-у
 function createSocket() {
     if (config.user_id > 0) {
-        webSocket = new WebSocket("ws://localhost:8080/websocket/event/" + config.user_id);
+        webSocket = new WebSocket("ws://localhost:8080/spider/websocket/event/" + config.user_id);
 
         webSocket.onopen = function (event) {
             //alert("onOpen " + config.user_id);

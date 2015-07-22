@@ -68,7 +68,7 @@
 
             table = $('#categoryTable').dataTable({
                 language: {
-                    url:   "/controller?action=getLangJSON"
+                    url:   "${pageContext.request.contextPath}/controller?action=getLangJSON"
                 },
                 "initComplete": function () {
 //                    $(".dataTables_length").attr("hidden", "");
@@ -86,7 +86,7 @@
                 "bProcessing": true,
                 'iDisplayLength': 10,
                 "bServerSide": true,
-                "sAjaxSource": "http://localhost:8080/admin/categories?action=getcategory",
+                "sAjaxSource": "${pageContext.request.contextPath}/admin/categories?action=getcategory",
                 colVis: {
                     "align": "right",
                     "buttonText": "columns <img src=\"/img/caaret.png\"/>",
@@ -145,7 +145,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="admin"/></a></li>
+                        <li><i class="fa fa-home"></i><a href="${pageContext.request.contextPath}/"><l:resource key="admin"/></a></li>
                         <li><i class="fa fa-edit"></i><l:resource key="edit"/></li>
                         <li><i class="fa fa-list-alt"></i><l:resource key="categories"/></li>
                     </ol>
@@ -308,7 +308,7 @@
     $("#add_category_btn").click(function () {
         var name = $("#catName").val();
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", "http://localhost:8080/admin/categories?action=addcategory&category=" + encodeURIComponent(name), true);
+        xmlhttp.open("GET", "${pageContext.request.contextPath}/admin/categories?action=addcategory&category=" + encodeURIComponent(name), true);
         xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
         xmlhttp.send();
         xmlhttp.onreadystatechange = function () {
@@ -328,7 +328,7 @@
         var name = $("#catNameEdit").val();
         var id = $("#catIdEdit").val();
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", "http://localhost:8080/admin/categories?action=editCat&category=" + encodeURIComponent(name) + "&catIdEdit=" + id, true);
+        xmlhttp.open("GET", "${pageContext.request.contextPath}/admin/categories?action=editCat&category=" + encodeURIComponent(name) + "&catIdEdit=" + id, true);
         xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
         xmlhttp.send();
         xmlhttp.onreadystatechange = function () {

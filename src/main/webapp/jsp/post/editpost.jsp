@@ -1,7 +1,7 @@
 <%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
 <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
-<script src="${pageContext.request.contextPath}/js/language.js"></script>
+<script src="${pageContext.request.contextPath}/js/language.jsp"></script>
 <link href="${pageContext.request.contextPath}/css/fileinput.css" media="all" rel="stylesheet"
       type="text/css"/>
 
@@ -121,7 +121,7 @@
                                 var dataString = "url=" + text;
                                 $.ajax({
                                     type: "POST",
-                                    url: 'http://localhost:8080/controller?action=uploadurl',
+                                    url: '${pageContext.request.contextPath}/controller?action=uploadurl',
                                     data: dataString,
                                     dataType: "json",
                                     success: function (data) {
@@ -170,7 +170,7 @@
         $('#compForm').hide();
         $('#uriForm').hide();
         $.post(
-                "http://localhost:8080/post?action=getPostByIdWithoutHtml",
+                "${pageContext.request.contextPath}/post?action=getPostByIdWithoutHtml",
                 {
                     post_id: id
                 },
@@ -242,7 +242,7 @@
                     $('#toggle_button').removeAttr('disabled');
                 }
                 $.post(
-                        "http://localhost:8080/post?action=deleteattach",
+                        "${pageContext.request.contextPath}/post?action=deleteattach",
                         {
                             attachId: elemID
                         },
@@ -265,7 +265,7 @@
         var id = $("#id").val();
         var textPost = $("#post_tarea").val();
         $.post(
-                "http://localhost:8080/post?action=editpost",
+                "${pageContext.request.contextPath}/post?action=editpost",
                 {
                     post_id: id,
                     text: textPost
@@ -283,14 +283,14 @@
 <script>
     function fileInput(fileCount) {
         $("#input-dim-2").fileinput({
-            uploadUrl: "http://localhost:8080/controller?action=upload",
+            uploadUrl: "${pageContext.request.contextPath}/controller?action=upload",
             maxFileCount: fileCount
         });
     }
 </script>
 <style>
     .delete-img {
-        background-image: url('../../img/closeIcon.png');
+        background-image: url('${pageContext.request.contextPath}/img/closeIcon.png');
         background-repeat: no-repeat;
     }
 </style>

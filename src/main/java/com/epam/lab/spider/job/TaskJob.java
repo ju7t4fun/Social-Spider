@@ -97,6 +97,9 @@ public class TaskJob implements Job {
         LOG.info(" TaskJob start processing at " + new Date(startTime).toString());
         Date nextRunDate = new Date(System.currentTimeMillis() + (60 * 1000));
         List<Task> tasks = taskService.getRunnableByNextRunDate(nextRunDate);
+        // відображаємо новий стан - в обробці
+        TaskInfoUtil.setRunningTaskInfo(tasks);
+
         taskProcessing:
         for (Task task : tasks) {
             try {
@@ -125,6 +128,7 @@ public class TaskJob implements Job {
                     // то принипини працювання завдання
                     if (activeDestinationInTask == 0) {
                         LOG.info("TASK#" + task.getId() + " has hot active destination wall!");
+                        TaskUtil.setNewTaskRunTimeAndUpdate(task);
                         continue taskProcessing;
                     }
                 }else{
@@ -141,6 +145,7 @@ public class TaskJob implements Job {
                 // то принипини працювання завдання
                 if (activeSourceInTask == 0) {
                     LOG.info("TASK#" + task.getId() + " has hot active source wall!");
+                    TaskUtil.setNewTaskRunTimeAndUpdate(task);
                     continue taskProcessing;
                 }
                 LinkedHashMap<Wall, List<com.epam.lab.spider.model.vk.Post>> postByWallMap = new LinkedHashMap<>();
@@ -390,6 +395,8 @@ public class TaskJob implements Job {
                 x.printStackTrace();
             }
         }
+        // відображаємо новий стан - в черзі
+        TaskInfoUtil.setRunnableTaskInfo(tasks);
 
         long finishTime = System.currentTimeMillis();
         float workTimeInSecond = (finishTime - startTime) / 1000.f;

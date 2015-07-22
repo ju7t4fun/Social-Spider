@@ -1,5 +1,6 @@
 package com.epam.lab.spider.controller.command.user.signup;
 
+import com.epam.lab.spider.ServerResolver;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
 import com.epam.lab.spider.controller.utils.UTF8;
@@ -69,7 +70,7 @@ public class RegisterCommand implements ActionCommand {
             user.setPassword(new HashMD5().hash(password));
             user.setRole(User.Role.USER);
             if (photo200 == null)
-                user.setAvatarURL("http://localhost:8080/img/avatarDefault.png");
+                user.setAvatarURL(ServerResolver.getServerPath(request)+"/img/avatarDefault.png");
             else
                 user.setAvatarURL(photo200);
             userService.insert(user);
@@ -86,7 +87,7 @@ public class RegisterCommand implements ActionCommand {
             sendActivationEmail(userService.getById(user.getId()), request);
             session.setAttribute("toastr_notification", "success|" + UTF8.encoding(bundle.getString("reg.notification" +
                     ".success")));
-            response.sendRedirect("/login");
+            response.sendRedirect(ServerResolver.getServerPath(request)+"/login");
         }
     }
 
@@ -97,7 +98,7 @@ public class RegisterCommand implements ActionCommand {
         HashSHA sha = new HashSHA();
         String emailPartUri = "&email=" + user.getEmail();
         String hashPartUri = "&hash=" + sha.hash(user.getCreateTime().toString() + user.getState());
-        String activateUrl = "http://localhost:8080/register?action=activate" + emailPartUri + hashPartUri;
+        String activateUrl = ServerResolver.getServerPath(request)+"/register?action=activate" + emailPartUri + hashPartUri;
 
         // Створення вмісту повідомлення
         StringBuilder html = new StringBuilder();

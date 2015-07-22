@@ -98,14 +98,14 @@
             for (var i = 0; i < response.attachments.length; i++) {
                 var image = $('<img>');
                 if (response.attachments[i].payload.includes("image")) {
-                    image.attr("src", "http://localhost:8080" + response.attachments[i].payload);
-                    image.attr("data-image", "http://localhost:8080" + response.attachments[i].payload);
+                    image.attr("src", "${pageContext.request.contextPath}" + response.attachments[i].payload);
+                    image.attr("data-image", "${pageContext.request.contextPath}" + response.attachments[i].payload);
                     image.attr("data-description", response.attachments[i].payload);
                 } else {
                     image.attr("src", "../img/poster.jpg");
                     image.attr("data-type", "html5video");
                     image.attr("data-image", "../img/poster.jpg");
-                    image.attr("data-videomp4", "http://localhost:8080" + response.attachments[i].payload);
+                    image.attr("data-videomp4", "${pageContext.request.contextPath}" + response.attachments[i].payload);
                     image.attr("data-description", response.attachments[i].payload);
                 }
                 div_gallery.append(image);

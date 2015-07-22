@@ -2,7 +2,6 @@ package com.epam.lab.spider.controller.servlet.task;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
 import com.epam.lab.spider.controller.command.task.*;
-import com.epam.lab.spider.controller.command.wall.GetWallsCommand;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -32,6 +31,7 @@ public class TaskServlet extends HttpServlet {
         public TaskActionFactory() {
             commands = new HashMap<>();
             commands.put("default", new ShowAllTasksCommand());
+            commands.put("info", new InfoTasksCommand());
             commands.put("create", new CreateTaskCommand());
             commands.put("save", new SaveTaskCommand());
             commands.put("edit", new EditTaskCommand());

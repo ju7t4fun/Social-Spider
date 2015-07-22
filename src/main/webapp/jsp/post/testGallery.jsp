@@ -30,8 +30,8 @@
 <div id="gallery" style="display:none;">
 
   <img alt="Preview Image 1"
-       src="http://localhost:8080/upload/images/go1dfd7movk5jpv5qu0k3tvbkf.jpeg"
-       data-image="http://localhost:8080/upload/images/go1dfd7movk5jpv5qu0k3tvbkf.jpeg"
+       src="${pageContext.request.contextPath}/upload/images/go1dfd7movk5jpv5qu0k3tvbkf.jpeg"
+       data-image="${pageContext.request.contextPath}/upload/images/go1dfd7movk5jpv5qu0k3tvbkf.jpeg"
        data-description="Preview Image 1 Description">
 
   <img alt="Preview Image 2"
@@ -48,14 +48,14 @@
        src="thumbs/html5_video_thumb.png"
        data-type="html5video"
        data-image="thumbs/html5_video_image.png"
-       data-videomp4="http://localhost:8080/upload/videos/4bntjaf20mrek53dkcv63ser8i.mp4"
+       data-videomp4="${pageContext.request.contextPath}/upload/videos/4bntjaf20mrek53dkcv63ser8i.mp4"
        data-description="Html5 Video Description">
 
   <img alt="Html5 Video"
        src="thumbs/html5_video_thumb.png"
        data-type="html5video"
        data-image="thumbs/html5_video_image.png"
-       data-videomp4="http://localhost:8080/upload/musics/d5dddii6bdni25k0779bi5omir.mp3"
+       data-videomp4="${pageContext.request.contextPath}/upload/musics/d5dddii6bdni25k0779bi5omir.mp3"
        data-description="Html5 Video Description">
 
     <img alt="VK"

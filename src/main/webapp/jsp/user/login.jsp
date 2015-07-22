@@ -33,7 +33,7 @@
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/language.js"></script>
+    <script src="${pageContext.request.contextPath}/js/language.jsp"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
@@ -63,20 +63,20 @@
 
     <header class="header dark-bg" style="background: rgb(26, 39, 50)">
         <div class="main">
-            <a href="/" class="logo">Social <span class="lite">Spider</span></a>
+            <a href="${pageContext.request.contextPath}/" class="logo">Social <span class="lite">Spider</span></a>
         </div>
 
     </header>
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand page-scroll" href="/">Socail spider</a>
+            <a class="navbar-brand page-scroll" href="${pageContext.request.contextPath}/">Socail spider</a>
         </div>
     </div>
 </nav>
 <header class="back-header">
     <div class="container">
 
-        <form class="login-form" action="/login?action=signIn" method="post" id="login_form">
+        <form class="login-form" action="${pageContext.request.contextPath}/login?action=signIn" method="post" id="login_form">
             <div class="login-wrap">
                 <p class="login-img"><i class="icon_lock_alt"></i></p>
 
@@ -93,15 +93,15 @@
                                                             class="form-control" placeholder="" required/></l:resource>
                 </div>
                 <label class="checkbox">
-                    <span class="pull-right"> <a href="/forgot_password"> <l:resource key="login.forgotpw"/> </a></span>
+                    <span class="pull-right"> <a href="${pageContext.request.contextPath}/forgot_password"> <l:resource key="login.forgotpw"/> </a></span>
                 </label>
                 <button class="btn btn-primary btn-lg btn-block" type="submit"
                         style="margin-bottom:20px;margin-right:10px;"><l:resource key="login.signin"/>
                 </button>
-                <span class="pull-right"> <a href="/register"> <l:resource key="login.signup"/> </a> </span>
-                <span><l:resource key="login.signinwith"/> <a href="/login?action=vkAuth"><img
+                <span class="pull-right"> <a href="${pageContext.request.contextPath}/register"> <l:resource key="login.signup"/> </a> </span>
+                <span><l:resource key="login.signinwith"/> <a href="${pageContext.request.contextPath}/login?action=vkAuth"><img
                         src="${pageContext.request.contextPath}/img/vk.png"></a></span>
-                <span> <l:resource key="login.or"/> <a href="/login?action=fbAuth"><img
+                <span> <l:resource key="login.or"/> <a href="${pageContext.request.contextPath}/login?action=fbAuth"><img
                         src="${pageContext.request.contextPath}/img/fb.png"></a> </span>
             </div>
         </form>
@@ -111,9 +111,9 @@
     $(document).ready(function () {
         $.vegas('slideshow', {
             backgrounds: [
-                {src: '../img/header.jpg', fade: 2000, delay: 9000},
-                {src: '../img/2.jpg', fade: 2000, delay: 9000},
-                {src: '../img/4.jpg', fade: 2000, delay: 9000},
+                {src: '${pageContext.request.contextPath}/img/header.jpg', fade: 2000, delay: 9000},
+                {src: '${pageContext.request.contextPath}/img/2.jpg', fade: 2000, delay: 9000},
+                {src: '${pageContext.request.contextPath}/img/4.jpg', fade: 2000, delay: 9000},
             ]
         });
     });

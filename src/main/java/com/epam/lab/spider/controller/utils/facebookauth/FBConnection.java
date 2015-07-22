@@ -16,7 +16,7 @@ import java.net.URLEncoder;
 public class FBConnection {
     public static final String FB_APP_ID = "578085655667025";
     public static final String FB_APP_SECRET = "41200291f9acb42225ce2c0c49d92f15";
-    public static final String REDIRECT_URI = "http://localhost:8080/login";
+    public static final String REDIRECT_URI = "/login";
 
     static String accessToken = "";
 

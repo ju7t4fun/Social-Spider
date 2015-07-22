@@ -87,7 +87,7 @@
                 <div class="col-lg-12">
                     <h3 class="page-header"><i class="fa fa-list"></i><l:resource key="vkaccounts"/></h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-home"></i><a href="${pageContext.request.contextPath}/"><l:resource key="home"/></a></li>
                         <li><i class="fa fa-th-list"></i><l:resource key="vkaccounts"/></li>
                     </ol>
                 </div>
@@ -119,11 +119,11 @@
                                         <div class="btn-group">
                                                 <%--<a class="btn btn-primary" href="#"><i class="icon_plus_alt2"></i></a>--%>
                                             <c:if test="${profile.isExpired()}">
-                                                <a class="btn btn-success" href="/accounts?action=refresh"><i
+                                                <a class="btn btn-success" href="${pageContext.request.contextPath}/accounts?action=refresh"><i
                                                         class="icon_refresh"></i></a>
                                             </c:if>
                                             <c:if test="${!profile.isExpired()}">
-                                                <a class="btn btn-warning" href="/accounts?action=refresh"><i
+                                                <a class="btn btn-warning" href="${pageContext.request.contextPath}/accounts?action=refresh"><i
                                                         class="icon_refresh"></i></a>
                                             </c:if>
                                             <span class="btn btn-danger" onclick="removeAccount(${profile.id})">
@@ -136,7 +136,7 @@
                             </tbody>
                         </table>
                     </section>
-                    <a href="/accounts?action=add" class="btn btn-primary"><l:resource key="vkaccounts.add"/></a>
+                    <a href="${pageContext.request.contextPath}/accounts?action=add" class="btn btn-primary"><l:resource key="vkaccounts.add"/></a>
                 </div>
             </div>
             <!-- page end-->

@@ -107,7 +107,7 @@
                 "bProcessing": true,
                 'iDisplayLength': 10,
                 "bServerSide": true,
-                "sAjaxSource": "http://localhost:8080/notification?action=get",
+                "sAjaxSource": "${pageContext.request.contextPath}/notification?action=get",
                 colVis: {
                     "align": "right",
                     "buttonText": "columns <img src=\"/img/caaret.png\"/>",
@@ -198,7 +198,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home" /></a></li>
+                        <li><i class="fa fa-home"></i><a href="${pageContext.request.contextPath}"><l:resource key="home" /></a></li>
                         <li><i class="fa fa-th-list"></i><l:resource key="notification" /></li>
                     </ol>
                 </div>

@@ -1,5 +1,6 @@
 package com.epam.lab.spider.controller.command.admin;
 
+import com.epam.lab.spider.ServerResolver;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.command.task.SaveTaskCommand;
 import com.epam.lab.spider.model.db.entity.Task;
@@ -126,7 +127,7 @@ public class AdminEditTaskCommand implements ActionCommand {
 
         }catch (RuntimeException x){
             LOG.error(x);
-            response.sendRedirect("/task?action=create");
+            response.sendRedirect(ServerResolver.getServerPath(request)+"/task?action=create");
         }
     }
 }

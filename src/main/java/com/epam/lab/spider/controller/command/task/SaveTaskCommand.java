@@ -31,6 +31,8 @@ public class SaveTaskCommand implements ActionCommand {
     private WallService wallService = factory.create(WallService.class);
     private static TaskService taskService = factory.create(TaskService.class);
 
+    private static boolean demoLimites = true;
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Object userObject = request.getSession().getAttribute("user");
@@ -107,7 +109,7 @@ public class SaveTaskCommand implements ActionCommand {
                 task.setId(taskIndex);
             }else{
                 task = new Task();
-                task.setState(Task.State.RUNNING);
+                task.setState(Task.State.STOPPED);
             }
 
             Filter filter = task.getFilter();
@@ -166,6 +168,9 @@ public class SaveTaskCommand implements ActionCommand {
             if(task.getPostCount()<1 && task.getPostCount() > 10 ){
                 throw new RuntimeException("Invalid post count!");
             }
+            if(demoLimites && task.getPostCount() > 2){
+                throw new RuntimeException("Invalid [DEMO-MODE] post count!");
+            }
             if(task.getRepeatCount() < 0){
                 throw new RuntimeException("Invalid repeat count!");
             }
@@ -173,8 +178,20 @@ public class SaveTaskCommand implements ActionCommand {
             if(task.getIntervalMin() < 1 && task.getIntervalMax() < 1  ){
                 throw new RuntimeException("Invalid interval count!");
             }
+            if(demoLimites){
+                if(task.getIntervalMin()<3 && task.getIntervalMin()>10 &&
+                        task.getIntervalMax()<10 && task.getIntervalMax()>30 ) {
+                    throw new RuntimeException("Invalid [DEMO-MODE] interval count!");
+                }
+            }
             if(task.getPostDelayMin() < 0 && task.getPostDelayMax() < 1 ){
                 throw new RuntimeException("Invalid delay count!");
+            }
+            if(demoLimites){
+                if(task.getPostDelayMin()<30 && task.getPostDelayMin()>50 &&
+                        task.getPostDelayMax()<60 && task.getPostDelayMax()>100 ) {
+                    throw new RuntimeException("Invalid [DEMO-MODE] delay count!");
+                }
             }
 
             if(task.getIntervalMin() > task.getIntervalMax()  ){
@@ -208,6 +225,9 @@ public class SaveTaskCommand implements ActionCommand {
                     wallWarning.add("Impossible wall#" + index + " for this user");
                 }
             }
+            if(demoLimites && task.getSource().size()>3){
+                throw new RuntimeException("Invalid [DEMO-MODE] source wall count!");
+            }
             for (int i = 0; i < jsonDestinations.size(); i++) {
                 Integer index = Integer.parseInt(jsonDestinations.get(i).toString());
                 if (sourceWallBlock.contains(index)) {
@@ -218,6 +238,9 @@ public class SaveTaskCommand implements ActionCommand {
                 else {
                     wallWarning.add("Impossible wall#" + index + " for this user");
                 }
+            }
+            if(demoLimites && task.getDestination().size()>3){
+                throw new RuntimeException("Invalid [DEMO-MODE] destination wall count!");
             }
             warningToDisplay.addAll(wallWarning);
             SavableServiceUtil.safeSave(task);

@@ -9,12 +9,14 @@ import com.epam.lab.spider.model.db.dao.savable.exception.InvalidEntityException
 import com.epam.lab.spider.model.db.dao.savable.exception.ResolvableDAOException;
 import com.epam.lab.spider.model.db.dao.savable.exception.UnsupportedDAOException;
 import com.epam.lab.spider.model.db.entity.NewPost;
+import com.epam.lab.spider.model.db.entity.Task;
 import com.epam.lab.spider.model.db.service.savable.SavableService;
 import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
 import com.epam.lab.spider.model.db.service.savable.exception.UnsupportedServiseException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -235,6 +237,14 @@ public class NewPostService implements BaseService<NewPost>, SavableService<NewP
             e.printStackTrace();
         }
         return null;
+    }
+    public List<NewPost> getByUserId(int id, int offset, int count) {
+        try (Connection connection = PoolConnection.getConnection()) {
+            return npdao.getByUserIdWithLimits(connection,id,offset,count);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 
     public String getMessageByID(int newpost_id) {

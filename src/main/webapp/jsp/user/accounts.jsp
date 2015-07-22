@@ -107,10 +107,10 @@
                 "bProcessing": true,
                 'iDisplayLength': 10,
                 "bServerSide": true,
-                "sAjaxSource": "http://localhost:8080/accounts?action=get",
+                "sAjaxSource": "${pageContext.request.contextPath}/accounts?action=get",
                 colVis: {
                     "align": "right",
-                    "buttonText": "columns <img src=\"/img/caaret.png\"/>",
+                    "buttonText": "columns <img src=\"${pageContext.request.contextPath}/img/caaret.png\"/>",
                 },
 
                 "columnDefs": [{
@@ -152,7 +152,7 @@
                 <div class="col-lg-12">
                     <h3 class="page-header"><i class="fa fa-list"></i><l:resource key="vkaccounts"/></h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-home"></i><a href="${pageContext.request.contextPath}/"><l:resource key="home"/></a></li>
                         <li><i class="fa fa-th-list"></i><l:resource key="vkaccounts"/></li>
                     </ol>
                 </div>
@@ -181,7 +181,7 @@
                                         </thead>
                                     </table>
                                     <div class="btn-group">
-                                        <a href="/accounts?action=add" class="btn btn-primary"><i
+                                        <a href="${pageContext.request.contextPath}/accounts?action=add" class="btn btn-primary"><i
                                                 class="fa fa-vk"></i> <l:resource key="vkaccounts.add"/></a>
                                         <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href=""><span
                                                 class="caret"></span></a>
@@ -234,7 +234,7 @@
     function addManually() {
         var href = $("#token_form_id").val();
         $.post(
-                "http://localhost:8080/accounts?action=addManually",
+                "${pageContext.request.contextPath}/accounts?action=addManually",
                 {
                     href: href
                 },

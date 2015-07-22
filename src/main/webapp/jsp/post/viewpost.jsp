@@ -43,11 +43,8 @@
 </div>
 <script>
     function viewPost(id) {
-        $.post(
-                "http://localhost:8080/post?action=getPostById",
-                {
-                    post_id: id
-                },
+        $.get(
+                "${pageContext.request.contextPath}/post?action=getPostById&post_id="+id,
                 onAjaxSuccess
         );
         function onAjaxSuccess(data) {
@@ -68,21 +65,21 @@
                             image.attr("data-videoid", response.attachments[i].url);
                             break;
                         case "vk_video":
-                            image.attr("src", "../img/poster.jpg");
+                            image.attr("src", "${pageContext.request.contextPath}/img/poster.jpg");
                             image.attr("data-type", "VKONTAKTE");
-                            image.attr("data-image", "../img/poster.jpg");
+                            image.attr("data-image", "${pageContext.request.contextPath}/img/poster.jpg");
                             image.attr("data-videoid", response.attachments[i].url);
                             break;
                         case "audio":
-                            image.attr("src", "../img/poster.jpg");
+                            image.attr("src", "${pageContext.request.contextPath}/img/poster.jpg");
                             image.attr("data-type", "html5video");
-                            image.attr("data-image", "../img/poster.jpg");
+                            image.attr("data-image", "${pageContext.request.contextPath}/img/poster.jpg");
                             image.attr("data-videomp4", response.attachments[i].url);
                             break;
                         case "video":
-                            image.attr("src", "../img/poster.jpg");
+                            image.attr("src", "${pageContext.request.contextPath}/img/poster.jpg");
                             image.attr("data-type", "html5video");
-                            image.attr("data-image", "../img/poster.jpg");
+                            image.attr("data-image", "${pageContext.request.contextPath}/img/poster.jpg");
                             image.attr("data-videomp4", response.attachments[i].url);
                             break;
                     }

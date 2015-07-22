@@ -1,5 +1,6 @@
 package com.epam.lab.spider.controller.command.user.restore;
 
+import com.epam.lab.spider.ServerResolver;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.utils.mail.MailSender;
@@ -48,7 +49,7 @@ public class SendRestoreCommand implements ActionCommand {
                     session.setAttribute("toastr_notification", "success|" + UTF8.encoding(bundle.getString("restore" +
                             ".notification.send")));
                     sendMail(request, user);
-                    response.sendRedirect("/login");
+                    response.sendRedirect(ServerResolver.getServerPath(request)+"/login");
                     return;
             }
         }
@@ -70,7 +71,7 @@ public class SendRestoreCommand implements ActionCommand {
         String timePart = "&hash=" + expDateEncoded;
         String passwordPart = "&code=" + passwordEncoded;
 
-        String restoreUrl = "http://localhost:8080/forgot_password?action=restore" + emailPart + timePart +
+        String restoreUrl = ServerResolver.getServerPath(request)+"/forgot_password?action=restore" + emailPart + timePart +
                 passwordPart;
 
         ResourceBundle bundle = (ResourceBundle) request.getSession().getAttribute("bundle");

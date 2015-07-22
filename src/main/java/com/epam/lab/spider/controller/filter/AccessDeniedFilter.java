@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.filter;
 
 import com.epam.lab.spider.model.db.entity.User;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -20,9 +21,10 @@ import java.util.*;
  * Created by Boyarsky Vitaliy on 14.07.2015.
  */
 public class AccessDeniedFilter implements Filter {
-
+    public static final Logger LOG = Logger.getLogger(AccessDeniedFilter.class);
     private static Map<Permissions, List<Pattern>> accessDeniedMapPattern = new HashMap<>();
 
+    public static boolean disableSecurity = false;
     public void destroy() {
     }
 
@@ -32,22 +34,39 @@ public class AccessDeniedFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) resp;
         HttpSession session = request.getSession();
 
+
+        if(disableSecurity){
+            chain.doFilter(req, resp);
+            return;
+        }
+
+        String path = request.getContextPath();
+
         // Перехід на JSP блокуємо
-        if (request.getRequestURI().contains(".jsp")) {
+        if (request.getRequestURI().contains("jsp/")) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
         // Дозволяємо перехід на CSS та JS
-        String[] urls = request.getRequestURI().split("/");
-        if (urls.length > 1 && resourceAccess(urls[1])) {
-            chain.doFilter(req, resp);
-            return;
+        String requestURI;
+        if(!request.getContextPath().isEmpty()){
+            requestURI = request.getRequestURI().replaceFirst(request.getContextPath(),"");
+        }else {
+            requestURI = request.getRequestURI();
+        }
+        String[] urls = requestURI.split("/");
+        if (urls.length > 1){
+            if (resourceAccess(urls[1])) {
+                chain.doFilter(req, resp);
+                return;
+            }
         }
 
         // Блокування доступу
         Permissions permissions = getPermissionsUser((User) session.getAttribute("user"));
-        if (!hasUserPermission(permissions, request)) {
+        String action = request.getParameter("action");
+        if (!hasUserPermission(permissions, requestURI, action)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -63,13 +82,13 @@ public class AccessDeniedFilter implements Filter {
         return false;
     }
 
-    private boolean hasUserPermission(Permissions permissions, HttpServletRequest request) {
+    private boolean hasUserPermission(Permissions permissions, String requestURI, String action) {
         List<Pattern> patterns = accessDeniedMapPattern.get(permissions);
         for (Pattern pattern : patterns) {
-            if (pattern.url.equals(request.getRequestURI())) {
+            if (pattern.url.equals(requestURI)) {
                 if (pattern.param.contains("*"))
                     return true;
-                String param = request.getParameter("action");
+                String param = action;
                 if (param == null)
                     param = "default";
                 return pattern.param.contains(param);
@@ -81,8 +100,21 @@ public class AccessDeniedFilter implements Filter {
     // Отримуємо документ
     private Document getDocument(FilterConfig config) {
         try {
-            String path = "/META-INF/permissions.xml";
-            InputStream inputStream = config.getServletContext().getResourceAsStream(path);
+            InputStream inputStream = null;
+            try {
+                String path = "/permissions.xml";
+
+                inputStream = config.getServletContext().getResourceAsStream(path);
+                if(inputStream == null){
+                    ClassLoader classLoader = getClass().getClassLoader();
+                    File file = new File(classLoader.getResource(path).getFile());
+                    inputStream = new FileInputStream(file);
+                }
+
+            }catch (NullPointerException|FileNotFoundException x){
+                x.printStackTrace();
+                LOG.error(x);
+            }
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             return dBuilder.parse(inputStream);

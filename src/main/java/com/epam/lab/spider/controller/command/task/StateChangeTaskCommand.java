@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.task;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import com.epam.lab.spider.job.util.TaskInfoUtil;
 import com.epam.lab.spider.job.util.TaskUtil;
 import com.epam.lab.spider.model.db.entity.Task;
 import com.epam.lab.spider.model.db.entity.User;
@@ -51,8 +52,10 @@ public class StateChangeTaskCommand implements ActionCommand {
             boolean result;
             if(state == Task.State.RUNNING) {
                 result = TaskUtil.changeStageToRunning(task);
+                TaskInfoUtil.setRunnableTaskInfo(task);
             }else{
                 result = TaskUtil.changeStageToStopped(task);
+                TaskInfoUtil.setStoppedTaskInfo(task);
             }
             if(result==false)throw new RuntimeException("DB FAIL");
         } catch (RuntimeException x) {

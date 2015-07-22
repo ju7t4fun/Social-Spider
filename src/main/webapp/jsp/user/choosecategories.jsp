@@ -66,7 +66,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-home"></i><a href="${pageContext.request.contextPath}/"><l:resource key="home"/></a></li>
                         <li><i class="fa fa-bookmark"></i><l:resource key="category"/></li>
                     </ol>
                 </div>

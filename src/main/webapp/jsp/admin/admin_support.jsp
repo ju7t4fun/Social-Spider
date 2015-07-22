@@ -124,7 +124,7 @@
                         <ul class="nav nav-tabs-justified">
                             <c:forEach var="user" items="${users}">
                                 <li class="active" onclick="selectItem(${user.key.id})">
-                                    <a data-toggle="tab" href="/admin/support?id=${user.key.id}">
+                                    <a data-toggle="tab" href="${pageContext.request.contextPath}/admin/support?id=${user.key.id}">
                                             ${user.key.name} ${user.key.surname}
                                                 <span id="list-${user.key.id}">
                                                     <c:if test="${user.value>0}">

@@ -53,7 +53,7 @@
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}js/language.js"></script>
+    <script src="${pageContext.request.contextPath}/js/language.jsp"></script>
 
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
@@ -75,7 +75,7 @@
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
     <header class="header dark-bg" style="background: rgb(26, 39, 50)">
         <div class="main">
-            <a href="/" class="logo">Social <span class="lite">Spider</span></a>
+            <a href="${pageContext.request.contextPath}/" class="logo">Social <span class="lite">Spider</span></a>
         </div>
     </header>
     <div class="container-fluid">
@@ -87,7 +87,7 @@
 <header class="back-header">
     <div class="container">
 
-        <form class="login-form" action="/register?action=register" method="post" id="register_form">
+        <form class="login-form" action="${pageContext.request.contextPath}/register?action=register" method="post" id="register_form">
             <input type="hidden" name="vkId" value="${vkId}">
             <input type="hidden" name="photo_200" value="${photo_200}">
 
@@ -145,9 +145,9 @@
     $(document).ready(function () {
         $.vegas('slideshow', {
             backgrounds: [
-                {src: '../img/header.jpg', fade: 2000, delay: 9000},
-                {src: '../img/2.jpg', fade: 2000, delay: 9000},
-                {src: '../img/4.jpg', fade: 2000, delay: 9000},
+                {src: '${pageContext.request.contextPath}/img/header.jpg', fade: 2000, delay: 9000},
+                {src: '${pageContext.request.contextPath}/img/2.jpg', fade: 2000, delay: 9000},
+                {src: '${pageContext.request.contextPath}/img/4.jpg', fade: 2000, delay: 9000},
             ]
         });
     });

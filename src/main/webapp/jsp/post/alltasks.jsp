@@ -92,7 +92,7 @@
                 <div class="col-lg-12" style="margin-left: 13px ">
                     <h3 class="page-header"><i class="fa fa-list-alt"></i> <l:resource key="task"/></h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-home"></i><a href="${pageContext.request.contextPath}/"><l:resource key="home"/></a></li>
                         <li><i class="fa fa-tasks"></i><l:resource key="task"/></li>
                     </ol>
                 </div>
@@ -271,10 +271,10 @@
             "bProcessing": true,
             'iDisplayLength': 10,
             "bServerSide": true,
-            "sAjaxSource": "http://localhost:8080/task?action=gettasks",
+            "sAjaxSource": "${pageContext.request.contextPath}/task?action=gettasks",
             colVis: {
                 "align": "right",
-                "buttonText": "columns <img src=\"/img/caaret.png\"/>"
+                "buttonText": "columns <img src=\"${pageContext.request.contextPath}/img/caaret.png\"/>"
             },
 
             "columnDefs": [
@@ -291,10 +291,9 @@
 
 
                     if (cellData.valueOf() == 'running'.valueOf()) {
-
-                        $(td).html(codeChecked);
+                        $(td).html('<div>'+codeChecked+'</div>');
                     } else {
-                        $(td).html(codeNonChecked);
+                        $(td).html('<div>'+codeNonChecked+'</div>');
                     }
 
                 }
@@ -303,7 +302,7 @@
 
                 {
                     "aTargets": [5], "createdCell": function (td, cellData, rowData, row, col) {
-                    $(td).html('<div class="btn-group"><a class="btn btn-success" href="/task?action=edit&taskId=' + cellData + '" ><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="deleteTask(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
+                    $(td).html('<div class="btn-group"><a class="btn btn-success" href="${pageContext.request.contextPath}/task?action=edit&taskId=' + cellData + '" ><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="deleteTask(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
                 }
                 },
 
@@ -341,10 +340,10 @@
             "bProcessing": true,
             'iDisplayLength': 10,
             "bServerSide": true,
-            "sAjaxSource": "http://localhost:8080/task?action=gettasks&type=active",
+            "sAjaxSource": "${pageContext.request.contextPath}/task?action=gettasks&type=active",
             colVis: {
                 "align": "right",
-                "buttonText": "columns <img src=\"/img/caaret.png\"/>"
+                "buttonText": "columns <img src=\"${pageContext.request.contextPath}/img/caaret.png\"/>"
             },
 
             "columnDefs": [
@@ -361,10 +360,9 @@
 
 
                     if (cellData.valueOf() == 'running'.valueOf()) {
-
-                        $(td).html(codeChecked);
+                        $(td).html('<div>'+codeChecked+'</div>');
                     } else {
-                        $(td).html(codeNonChecked);
+                        $(td).html('<div>'+codeNonChecked+'</div>');
                     }
 
                 }
@@ -373,7 +371,7 @@
 
                 {
                     "aTargets": [5], "createdCell": function (td, cellData, rowData, row, col) {
-                    $(td).html('<div class="btn-group"><a class="btn btn-success" href="/task?action=edit&taskId=' + cellData + '" ><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="deleteActiveTask(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
+                    $(td).html('<div class="btn-group"><a class="btn btn-success" href="${pageContext.request.contextPath}/task?action=edit&taskId=' + cellData + '" ><i class="icon_pencil-edit"></i></a><a class="btn btn-danger" onclick="deleteActiveTask(' + cellData + ')"><i class="icon_close_alt2"></i></a></div>');
                 }
                 },
 
@@ -412,7 +410,7 @@
         }
 
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('GET', '/task?action=stateChange&taskId=' + id + '&toState=' + toState, true);
+        xmlhttp.open('GET', '${pageContext.request.contextPath}/task?action=stateChange&taskId=' + id + '&toState=' + toState, true);
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4) {
                 if (response.msg === 'error') {
@@ -433,7 +431,7 @@
         }
 
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('GET', '/task?action=stateChange&taskId=' + id + '&toState=' + toState, true);
+        xmlhttp.open('GET', '${pageContext.request.contextPath}/task?action=stateChange&taskId=' + id + '&toState=' + toState, true);
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4) {
                 activeTable.fnStandingRedraw();
@@ -459,7 +457,7 @@
 
     function deleteActiveTask(id) {
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('GET', '/task?action=deletetask&taskId=' + id, true);
+        xmlhttp.open('GET', '${pageContext.request.contextPath}/task?action=deletetask&taskId=' + id, true);
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4) {
                 activeTable.fnStandingRedraw();
@@ -490,23 +488,23 @@
     function parseDoc(arg) {
         switch (arg.trim()) {
             case "PHOTO":
-                return '<img src=\"/img/icons/jpg-icon.png" style="width: 30px; height: 30px">';
+                return '<img src=\"${pageContext.request.contextPath}/img/icons/jpg-icon.png" style="width: 30px; height: 30px">';
             case "VIDEO":
-                return '<img src=\"/img/icons/mpg-icon.png" style="width: 30px; height: 30px">';
+                return '<img src=\"${pageContext.request.contextPath}/img/icons/mpg-icon.png" style="width: 30px; height: 30px">';
             case "AUDIO":
-                return '<img src=\"/img/icons/mp3-icon.png" style="width: 30px; height: 30px">';
+                return '<img src=\"${pageContext.request.contextPath}/img/icons/mp3-icon.png" style="width: 30px; height: 30px">';
             case "TEXT":
-                return '<img src=\"/img/icons/txt-icon.png" style="width: 30px; height: 30px">';
+                return '<img src=\"${pageContext.request.contextPath}/img/icons/txt-icon.png" style="width: 30px; height: 30px">';
             case "DOC" :
-                return '<img src=\"/img/icons/doc-icon.png" style="width: 30px; height: 30px">';
+                return '<img src=\"${pageContext.request.contextPath}/img/icons/doc-icon.png" style="width: 30px; height: 30px">';
             case "HASH TAG" :
-                return '<img src=\"/img/icons/hash-icon.png" style="width: 30px; height: 30px">';
+                return '<img src=\"${pageContext.request.contextPath}/img/icons/hash-icon.png" style="width: 30px; height: 30px">';
             case "LINKS" :
-                return '<img src=\"/img/icons/link-icon.png" style="width: 30px; height: 30px">';
+                return '<img src=\"${pageContext.request.contextPath}/img/icons/link-icon.png" style="width: 30px; height: 30px">';
             case "PAGES" :
-                return '<img src=\"/img/icons/page-icon.png" style="width: 30px; height: 30px">';
+                return '<img src=\"${pageContext.request.contextPath}/img/icons/page-icon.png" style="width: 30px; height: 30px">';
             case "REPOST" :
-                return '<img src=\"/img/icons/repost-icon.png" style="width: 30px; height: 30px">';
+                return '<img src=\"${pageContext.request.contextPath}/img/icons/repost-icon.png" style="width: 30px; height: 30px">';
         }
         return "";
     }
@@ -569,7 +567,32 @@
         display: none;
     }
 </style>
+<script src="${pageContext.request.contextPath}/assets/bower/bower_components/moment/min/moment-with-locales.js"></script>
+<script>
 
+    function moment_locale(){
+        var locale = 'en';
+        var x =  document.cookie.split(";");
+        {
+            for(var k = 0; k< x.length; k++){
+                var pair = x[k].split("=");
+                if(pair.length == 2){
+                    if(pair[0].trim() == 'language'){
+                        if(pair[1] == 'ua') locale = 'uk';
+                        else if(pair[1] == 'en') locale = 'en';
+                        break;
+                    }
+                }
+            }
+            moment.locale(locale)
+            //console.log({language:locale})
+        }
+    }
+    $(document).ready(function () {
+        j4fBundleCallBack(moment_locale);
+    });
+</script>
+<script src="${pageContext.request.contextPath}/js/task.time.data.table.show.jsp"></script>
 </body>
 </html>
 

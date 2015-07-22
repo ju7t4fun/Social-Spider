@@ -1,5 +1,6 @@
 package com.epam.lab.spider.controller.command.user.accounts;
 
+import com.epam.lab.spider.ServerResolver;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.vk.*;
@@ -42,7 +43,7 @@ public class AddAccountCommand implements ActionCommand {
         } else {
             // Користувач не підтвердив прав доступу
             if (request.getParameter("user_id").equals("undefined")) {
-                response.sendRedirect("/accounts");
+                response.sendRedirect(ServerResolver.getServerPath(request)+"/accounts");
                 return;
             }
 
@@ -70,7 +71,7 @@ public class AddAccountCommand implements ActionCommand {
             } else {
                 service.update(oldProfile.getId(), profile);
             }
-            response.sendRedirect("/accounts");
+            response.sendRedirect(ServerResolver.getServerPath(request)+"/accounts");
         }
     }
 

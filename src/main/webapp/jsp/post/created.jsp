@@ -103,10 +103,10 @@
                 "bProcessing": true,
                 'iDisplayLength': 10,
                 "bServerSide": true,
-                "sAjaxSource": "http://localhost:8080/post?action=getCreatedPost",
+                "sAjaxSource": "${pageContext.request.contextPath}/post?action=getCreatedPost",
                 colVis: {
                     "align": "right",
-                    "buttonText": "columns <img src=\"/img/caaret.png\"/>",
+                    "buttonText": "columns <img src=\"${pageContext.request.contextPath}/img/caaret.png\"/>",
                 },
 
                 "sDom": '<"top"f>t<"bottom"lp><"clear">',
@@ -177,7 +177,7 @@
         function PopUpShow(id) {
             postId = id;
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/owner?action=getOwnerWall&id=' + id, true);
+            xmlhttp.open('GET', '${pageContext.request.contextPath}/owner?action=getOwnerWall&id=' + id, true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
@@ -217,7 +217,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-home"></i><a href="${pageContext.request.contextPath}/"><l:resource key="home"/></a></li>
                         <li><i class="fa fa-desktop"></i><l:resource key="post"/></li>
                         <li><i class="fa fa-list-alt"></i><l:resource key="created"/></li>
                     </ol>
@@ -356,7 +356,7 @@
         function openPublishWindows(id) {
             publishPostId = id;
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/owner?action=getOwnerWall&id=' + id, true);
+            xmlhttp.open('GET', '${pageContext.request.contextPath}/owner?action=getOwnerWall&id=' + id, true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
@@ -402,7 +402,7 @@
                     return;
                 }
                 $.post(
-                        "/post?action=publishPostId",
+                        "${pageContext.request.contextPath}/post?action=publishPostId",
                         {
                             postId: publishPostId,
                             date: $("#date").val(),

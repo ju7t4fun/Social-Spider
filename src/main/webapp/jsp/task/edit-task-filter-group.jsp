@@ -145,6 +145,7 @@
                         filterValue.reposts = value;
                     }
                 };
+
                 var backTrackComments = function (value) {
                     if (filterValue.comments != value) {
                         filterSliderCommentsData.update({
@@ -153,6 +154,7 @@
                         filterValue.comments = value;
                     }
                 };
+
 
                 $(".filter-number-spinner").removeClass("j4f-fix-spinner-un-script");
                 $('.filter-number-spinner[name="likes"]').bootstrapNumber({
@@ -175,17 +177,24 @@
                     upIcon: 'fa fa-comment',
                     onUpdate: backTrackComments
                 });
+
+
+
                 var $likes_count_input = $("[name='likes']"),
                         $reposts_count_input = $("[name='reposts']"),
                         $comments_count_input = $("[name='comments']");
+
+                $likes_count_input.on("change paste keyup", function(){
+                    backTrackLikes($likes_count_input.val());
+                });
+                $reposts_count_input.on("change paste keyup", function(){
+                    backTrackRepost($reposts_count_input.val());
+                });
+
+                $comments_count_input.on("change paste keyup", function(){
+                    backTrackComments($comments_count_input.val());
+                });
                 var trackLikes = function (data) {
-//                                                            var name = getPostfix(data.from);
-//                                                            if(name != newFilterPostfix.likes){
-//                                                                newFilterPostfix.likes = name;
-//                                                                filterSliderLikesData.update({
-//                                                                    postfix: name
-//                                                                })
-//                                                            }
                     if (filterValue.likes != data.from) {
                         //alert(data.from);
                         $likes_count_input.val(data.from);

@@ -102,7 +102,7 @@
                 "bProcessing": true,
                 'iDisplayLength': 10,
                 "bServerSide": true,
-                "sAjaxSource": "http://localhost:8080/owner?action=get",
+                "sAjaxSource": "${pageContext.request.contextPath}/owner?action=get",
                 colVis: {
                     "align": "right",
                     "buttonText": "columns <img src=\"/img/caaret.png\"/>",
@@ -168,7 +168,7 @@
 
         function PopUpShow(id) {
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/owner?action=optionFilling&id=' + id, true);
+            xmlhttp.open('GET', '${pageContext.request.contextPath}/owner?action=optionFilling&id=' + id, true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
@@ -232,7 +232,7 @@
                 write: write
             };
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("POST", "/owner?action=bind&id=" + id);
+            xmlhttp.open("POST", "${pageContext.request.contextPath}/owner?action=bind&id=" + id);
 
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
@@ -255,7 +255,7 @@
         function showGroupStat(id) {
             ownerId = id;
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/owner?action=stat&id=' + id, true);
+            xmlhttp.open('GET', '${pageContext.request.contextPath}/owner?action=stat&id=' + id, true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
@@ -274,7 +274,7 @@
             var dateFrom = document.getElementById("fromDate").value;
             var dateTo = document.getElementById("toDate").value;
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/owner?action=stat&id=' + ownerId + '&date_from=' + dateFrom + "&date_to=" + dateTo, true);
+            xmlhttp.open('GET', '${pageContext.request.contextPath}/owner?action=stat&id=' + ownerId + '&date_from=' + dateFrom + "&date_to=" + dateTo, true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
@@ -329,7 +329,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-home"></i><a href="${pageContext.request.contextPath}/"><l:resource key="home"/></a></li>
                         <li><i class="fa fa-list-alt"></i><l:resource key="owner"/></li>
                     </ol>
                 </div>
@@ -430,7 +430,7 @@
                                 function addNewOwner() {
                                     var ownerUrl = $("#ownerUrlEdit").val();
                                     var xmlhttp = new XMLHttpRequest();
-                                    xmlhttp.open('GET', '/owner?action=add&ownerUrl=' + ownerUrl, true);
+                                    xmlhttp.open('GET', '${pageContext.request.contextPath}/owner?action=add&ownerUrl=' + ownerUrl, true);
                                     xmlhttp.onreadystatechange = function () {
                                         if (xmlhttp.readyState == 4) {
                                             var response = JSON.parse(xmlhttp.responseText);
@@ -501,7 +501,7 @@
         function submitEdit() {
             var ownerText = $("#group_name").val();
             $.post(
-                    "/owner?action=editowner",
+                    "${pageContext.request.contextPath}/owner?action=editowner",
                     {
                         id: id,
                         name: ownerText,

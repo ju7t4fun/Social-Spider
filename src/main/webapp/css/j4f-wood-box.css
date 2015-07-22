@@ -1,0 +1,58 @@
+#wood-mark-container li{
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    width: 250px;
+    padding: 0;
+}
+#wood-mark-container li .wood-message{
+    font-size: 11px !important;
+    /*display: inline-block;*/
+    text-align: left;
+}
+#wood-mark-container li .wood-box{
+    padding: 10px 8px;
+    border-bottom: 1px solid #E7E7E7;;
+}
+#wood-mark-container li .wood-box:last-child{
+    border-bottom: 0;
+}
+.wood-stat:hover  {
+    background: #0DA0D4;
+}
+.wood-stat:hover a{
+    color: #FFF;
+}
+
+
+#wood-mark-container li .wood-box.wood-info-box a{
+    font-width: bold;
+    font-size: 13px;
+}
+#wood-mark-container li .wood-box.wood-info-box a:hover{
+    color: #0DA0D4;
+}
+#wood-mark-container li .wood-box.wood-message:hover{
+    color: #0DA0D4;
+}
+#wood-mark-container li .wood-box.wood-attachment:hover{
+    color: #0DA0D4;
+}
+
+#wood-mark-container li .wood-box.wood-info-box .wood-2-col:first-child{
+    /*width: 48%; display: inline-block;*/
+    text-align: left; font-size: 13px;
+}
+#wood-mark-container li .wood-box.wood-info-box .wood-2-col:last-child{
+    /*width: 50%; display: inline-block;*/
+    text-align: left; font-size: 13px;
+}
+#wood-mark-container li .wood-box .wood-post-state.run{
+    font-weight: bold;
+    color: #003399;
+}
+#wood-mark-container li .wood-box.wood-stat a{
+    font-size: 13px !important;
+    display: block;
+    height: 100%;
+    width: 100%;
+}

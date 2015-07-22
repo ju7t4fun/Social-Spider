@@ -1,9 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/admin-inbox.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/admin-inbox.jsp"></script>
 <div hidden>
     <li id="message">
-        <a href="/admin/support?id={user_id}">
+        <a href="${pageContext.request.contextPath}/admin/support?id={user_id}">
             <span class="label label-primary"><i class="icon_profile"></i></span>  {user_name}
             <span class="small italic pull-right">{user_date}</span>
         </a>
@@ -24,7 +24,7 @@
 
         </div>
         <li>
-            <a href="/admin/support"><l:resource key="header.seeallmessages" /></a>
+            <a href="${pageContext.request.contextPath}/admin/support"><l:resource key="header.seeallmessages" /></a>
         </li>
     </ul>
 </li>

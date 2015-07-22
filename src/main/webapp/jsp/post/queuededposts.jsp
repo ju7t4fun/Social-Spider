@@ -47,9 +47,6 @@
 
     <%--for table--%>
 
-    <script>
-        var path = '${pageContext.request.contextPath}';
-    </script>
     <link href="http://cdn.datatables.net/1.10.3/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
     <link href="http://datatables.net/release-datatables/extensions/ColVis/css/dataTables.colVis.css" rel="stylesheet"
           type="text/css">
@@ -107,7 +104,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-home"></i><a href="${pageContext.request.contextPath}/"><l:resource key="home"/></a></li>
                         <li><i class="fa fa-desktop"></i><l:resource key="post"/></li>
                         <li><i class="fa fa-list-alt"></i><l:resource key="queued"/></li>
                     </ol>
@@ -255,7 +252,7 @@
         function openPublishWindows(id) {
             publishPostId = id;
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', '/post?action=getPostedDate&post_id=' + id, true);
+            xmlhttp.open('GET', '${pageContext.request.contextPath}/post?action=getPostedDate&post_id=' + id, true);
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     var response = JSON.parse(xmlhttp.responseText);
@@ -282,7 +279,7 @@
             });
             $("#submit_modal").click(function () {
                 $.post(
-                        "/post?action=changeTime",
+                        "${pageContext.request.contextPath}/post?action=changeTime",
                         {
                             post_id: publishPostId,
                             date: $("#date").val(),
@@ -308,7 +305,7 @@
 </div>
 <script>
     function myFunc() {
-        var newUrl = path + "/post?action=getQueueded";
+        var newUrl = "${pageContext.request.contextPath}/post?action=getQueueded";
         table.api().ajax.url(newUrl).load();
         document.getElementById("showAllBtnId").style.visibility = "hidden";
     }

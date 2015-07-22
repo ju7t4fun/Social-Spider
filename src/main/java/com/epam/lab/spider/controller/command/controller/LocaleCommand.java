@@ -65,7 +65,7 @@ public class LocaleCommand implements ActionCommand {
         String result = resultJson.toString();
         response.setContentType("application/json;charset=UTF-8");
         if(cookie!=null)response.addCookie(cookie);
-        //response.sendRedirect("/");
+        //response.sendRedirect(ServerResolver.getServerPath(request)+"/");
         PrintWriter out = response.getWriter();
         out.print(result);
         out.flush();

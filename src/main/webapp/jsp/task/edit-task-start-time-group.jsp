@@ -59,10 +59,14 @@
                 $range.ionRangeSlider({
                     hide_min_max: true,
                     keyboard: true,
-                    min: 1,
+                    min: 0,
                     max: parseInt("${interval_limit}"),
                     from: parseInt("${interval_min}"),
                     to: parseInt("${interval_max}"),
+                    from_min:3,
+                    from_max:10,
+                    to_min:10,
+                    to_max:30,
                     type: 'double',
                     step: 1,
                     postfix: function(num){

@@ -75,6 +75,7 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
     private static final String SQL_STATISTICS_POSTED_QUERY = "SELECT  COUNT(*) AS count, DATE_FORMAT(post_time, " +
             "'%Y-%m-%d %H') AS date FROM new_post WHERE post_time > ? AND post_time <= ? AND state = 'POSTED' GROUP " +
             "BY UNIX_TIMESTAMP(post_time) DIV 3600;";
+    private static final String SQL_BY_USER_ID_WITH_LIMITS_QUERY = "SELECT * FROM new_post WHERE user_id = ? AND deleted = 0 ORDER BY id DESC LIMIT ?, ?";
 
     @Override
     public boolean insert(Connection connection, NewPost post) throws SQLException {
@@ -136,6 +137,11 @@ public class NewPostDAOImp extends BaseDAO implements NewPostDAO {
         if (rs.next())
             return rs.getInt("COUNT(*)");
         return -1;
+    }
+
+    @Override
+    public List<NewPost> getByUserIdWithLimits(Connection connection, Integer userId, int offset, int limit) throws SQLException {
+        return select(connection, SQL_BY_USER_ID_WITH_LIMITS_QUERY, userId,  offset, limit);
     }
 
     @Override

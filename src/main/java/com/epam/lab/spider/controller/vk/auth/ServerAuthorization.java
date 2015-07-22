@@ -19,14 +19,14 @@ import java.io.IOException;
 public class ServerAuthorization implements Authorization {
 
     private static final String API_VERSION = "5.27";
-    private static final String REDIRECT_URI = "http://localhost:8080/login";
+    private static final String REDIRECT_URI = "/login";
 
     private Configuration conf;
 
     public ServerAuthorization(Configuration conf) {
         this.conf = conf;
     }
-
+    // TODO REFACTOR TO NEW WINDOW
     @Override
     public void open(HttpServletResponse response, boolean revoke) {
         StringBuilder sb = new StringBuilder();

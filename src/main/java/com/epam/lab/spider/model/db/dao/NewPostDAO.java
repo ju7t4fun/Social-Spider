@@ -57,4 +57,6 @@ public interface NewPostDAO extends CRUD<NewPost>, SavableDAO<NewPost> {
     boolean deleteByWallId(Connection connection, int wallId) throws SQLException;
 
     boolean deleteByPostId(Connection connection, int postDd) throws SQLException;
+
+    public List<NewPost> getByUserIdWithLimits(Connection connection, Integer userId, int offset, int limit) throws SQLException;
 }

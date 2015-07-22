@@ -171,7 +171,7 @@
             "bProcessing": true,
             'iDisplayLength': 10,
             "bServerSide": true,
-            "sAjaxSource": "http://localhost:8080/task?action=gettasks&taskType=forAdmin",
+            "sAjaxSource": "${pageContext.request.contextPath}/task?action=gettasks&taskType=forAdmin",
             colVis: {
                 "align": "right",
                 "buttonText": "columns <img src=\"/img/caaret.png\"/>",

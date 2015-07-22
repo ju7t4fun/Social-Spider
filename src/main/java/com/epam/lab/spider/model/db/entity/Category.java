@@ -16,7 +16,7 @@ public class Category {
 
     private Integer id;
     private String name;
-    private String imageUrl = "http://localhost:8080/img/categories/nophoto.png";
+    private String imageUrl = "/img/categories/nophoto.png";
     private Set<Task> tasks = null;
 
     @Override

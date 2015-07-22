@@ -46,7 +46,7 @@
     <!-- javascripts -->
     <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.task.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/save.task.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/save.task.jsp"></script>
     <script src="${pageContext.request.contextPath}/assets/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.js"></script>
     <script src="${pageContext.request.contextPath}/js/j4f-number-cases.js"></script>
 

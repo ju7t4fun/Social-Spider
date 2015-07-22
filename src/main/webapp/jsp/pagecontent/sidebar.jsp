@@ -1,30 +1,43 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
-<script src="${pageContext.request.contextPath}/js/language.js"></script>
+<script src="${pageContext.request.contextPath}/js/language.jsp"></script>
 
 <aside>
     <div id="sidebar" class="nav-collapse ">
         <c:choose>
             <c:when test="${user.role == 'USER'}">
                 <ul class="sidebar-menu">
-                    <li class="sub-menu">
-                        <a href="javascript:;" class="">
-                            <i class="fa fa-credit-card"></i>
-                            <span><l:resource key="post"/></span>
-                            <span class="menu-arrow arrow_carrot-right"></span>
-                        </a>
-                        <ul class="sub">
-                            <li><a class="" href="/post?action=created"><i class="fa fa-list"></i>
-                                <l:resource key="created"/></a></li>
-                            <li><a class="" href="/post?action=queued"><i class="fa fa-spinner"></i>
-                                <l:resource key="queued"/></a></li>
-                            <li><a class="" href="/post?action=posted"><i class="fa fa-check-square-o"></i>
-                                <l:resource key="posted"/></a></li>
-                            <li><a class="" href="/post?action=add"><i class="fa fa-plus-circle"></i>
-                                <l:resource key="addnewpost"/></a></li>
-                        </ul>
-                    </li>
+                    <c:choose>
+                        <c:when test="true">
+                            <li>
+                                <a class="" href="${pageContext.request.contextPath}/post"> <i class="fa fa-credit-card"></i>
+                                    <span><l:resource key="post"/></span>
+                                </a>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="sub-menu">
+                                <a href="javascript:;" class="">
+                                    <i class="fa fa-credit-card"></i>
+                                    <span><l:resource key="post"/></span>
+                                    <span class="menu-arrow arrow_carrot-right"></span>
+                                </a>
+                                <ul class="sub">
+                                    <li><a class="" href="${pageContext.request.contextPath}/post?action=created"><i class="fa fa-list"></i>
+                                        <l:resource key="created"/></a></li>
+                                    <li><a class="" href="${pageContext.request.contextPath}/post?action=queued"><i class="fa fa-spinner"></i>
+                                        <l:resource key="queued"/></a></li>
+                                    <li><a class="" href="${pageContext.request.contextPath}/post?action=posted"><i class="fa fa-check-square-o"></i>
+                                        <l:resource key="posted"/></a></li>
+                                    <li><a class="" href="${pageContext.request.contextPath}/post?action=add"><i class="fa fa-plus-circle"></i>
+                                        <l:resource key="addnewpost"/></a></li>
+                                </ul>
+                            </li>
+                        </c:otherwise>
+                    </c:choose>
+
+
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
                             <i class="fa fa-tasks"></i>
@@ -39,12 +52,12 @@
                         </ul>
                     </li>
                     <li>
-                        <a class="" href="/owner"> <i class="fa fa-users"></i>
+                        <a class="" href="${pageContext.request.contextPath}/owner"> <i class="fa fa-users"></i>
                             <span><l:resource key="owner"/></span>
                         </a>
                     </li>
                     <li>
-                        <a class="" href="/categories"> <i class="fa fa-bookmark"></i>
+                        <a class="" href="${pageContext.request.contextPath}/categories"> <i class="fa fa-bookmark"></i>
                             <span><l:resource key="category"/></span>
                         </a>
                     </li>

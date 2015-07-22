@@ -40,7 +40,7 @@
     <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.tokenize.css"/>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/save.admintask.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/save.admintask.jsp"></script>
     <script src="${pageContext.request.contextPath}/assets/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.js"></script>
     <script src="${pageContext.request.contextPath}/js/j4f-number-cases.js"></script>
 
@@ -85,7 +85,7 @@
                 <div class="col-lg-12">
                     <h3 class="page-header"><i class="fa fa-tasks"></i> <l:resource key="addnewtask"/></h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-home"></i><a href="${pageContext.request.contextPath}/"><l:resource key="home"/></a></li>
                         <li><i class="fa fa-rss"></i><l:resource key="feed"/></li>
                         <li><i class="fa fa-plus-circle"></i><span id="task-id-loc">
                         <c:choose>

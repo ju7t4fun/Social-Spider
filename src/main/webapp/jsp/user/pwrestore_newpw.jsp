@@ -38,7 +38,7 @@
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}js/language.js"></script>
+    <script src="${pageContext.request.contextPath}/js/language.jsp"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
@@ -66,7 +66,7 @@
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
     <header class="header dark-bg" style="background: rgb(26, 39, 50)">
         <div class="main">
-            <a href="/" class="logo">Social <span class="lite">Spider</span></a>
+            <a href="${pageContext.request.contextPath}/" class="logo">Social <span class="lite">Spider</span></a>
         </div>
 
     </header>
@@ -80,7 +80,7 @@
 
     <div class="container">
 
-        <form class="login-form" action="/forgot_password" method="post" id="restore_form">
+        <form class="login-form" action="${pageContext.request.contextPath}/forgot_password" method="post" id="restore_form">
             <input type="hidden" name="action" value="change">
             <input type="hidden" name="email" value="${email}">
 
@@ -113,9 +113,9 @@
     $(document).ready(function () {
         $.vegas('slideshow', {
             backgrounds: [
-                {src: '../img/header.jpg', fade: 2000, delay: 9000},
-                {src: '../img/2.jpg', fade: 2000, delay: 9000},
-                {src: '../img/4.jpg', fade: 2000, delay: 9000},
+                {src: '${pageContext.request.contextPath}/img/header.jpg', fade: 2000, delay: 9000},
+                {src: '${pageContext.request.contextPath}/img/2.jpg', fade: 2000, delay: 9000},
+                {src: '${pageContext.request.contextPath}/img/4.jpg', fade: 2000, delay: 9000},
             ]
         });
     });

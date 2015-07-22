@@ -2,7 +2,7 @@
 <%@ taglib prefix="l" uri="http://lab.epam.com/spider/locale" %>
 <script type="text/javascript">
 
-    var webSocketN = new WebSocket("ws://localhost:8080/websocket/notification");
+    var webSocketN = new WebSocket("ws://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/websocket/notification");
 
     webSocketN.onopen = function (event) {
     };
@@ -95,7 +95,7 @@
         </div>
 
         <li>
-            <a href="/notification"><l:resource key="header.seeallnotif" /></a>
+            <a href="${pageContext.request.contextPath}/notification"><l:resource key="header.seeallnotif" /></a>
         </li>
     </ul>
 </li>

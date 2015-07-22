@@ -47,16 +47,13 @@
 
     <%--for table--%>
 
-    <script>
-        var path = '${pageContext.request.contextPath}';
-    </script>
     <link href="http://cdn.datatables.net/1.10.3/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
     <link href="http://datatables.net/release-datatables/extensions/ColVis/css/dataTables.colVis.css" rel="stylesheet"
           type="text/css">
     <script src="http://cdn.datatables.net/1.10.3/js/jquery.dataTables.min.js"></script>
     <script src="http://datatables.net/release-datatables/extensions/ColVis/js/dataTables.colVis.js"></script>
     <script src="http://jquery-datatables-column-filter.googlecode.com/svn/trunk/media/js/jquery.dataTables.columnFilter.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/posts-datatable.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/posts-datatable.jsp"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnStandingRedraw.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnSetFilteringDelay.js"></script>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -99,7 +96,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-home"></i><a href="${pageContext.request.contextPath}/"><l:resource key="home"/></a></li>
                         <li><i class="fa fa-desktop"></i><l:resource key="post"/></li>
                         <li><i class="fa fa-list-alt"></i><l:resource key="posted"/></li>
                     </ol>
@@ -201,7 +198,7 @@
     <script>
         function openPostStats(postId) {
             $.post(
-                    "http://localhost:8080/post?action=postStats",
+                    "${pageContext.request.contextPath}/post?action=postStats",
                     {
                         post_id: postId
                     },
@@ -233,8 +230,7 @@
 </div>
 <script>
     function myFunc() {
-        var newUrl = path + "/post?action=getPosted";
-        table.api().ajax.url(newUrl).load();
+        table.api().ajax.url("${pageContext.request.contextPath}/post?action=getPosted").load();
         document.getElementById("showAllBtnId").style.visibility = "hidden";
     }
 </script>

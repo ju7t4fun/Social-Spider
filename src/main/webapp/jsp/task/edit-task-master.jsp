@@ -46,7 +46,7 @@
     <!-- javascripts -->
     <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.tokenize.task.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/save.task.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/save.task.jsp"></script>
     <script src="${pageContext.request.contextPath}/assets/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.js"></script>
     <script src="${pageContext.request.contextPath}/js/j4f-number-cases.js"></script>
 
@@ -87,7 +87,7 @@
                 <div class="col-lg-12">
                     <h3 class="page-header"><i class="fa fa-tasks"></i> <l:resource key="addnewtask"/></h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="index.html"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-home"></i><a href="${pageContext.request.contextPath}/"><l:resource key="home"/></a></li>
                         <li><i class="fa fa-desktop"></i><l:resource key="task"/></li>
                         <li><i class="fa fa-list-alt"></i><span id="task-id-loc">
                         <c:choose>

@@ -115,7 +115,7 @@
             min: 0,
             max: 10,
             from_min: 1,
-            from_max: 8,
+            from_max: 2,
             from: parseInt("${post_count}"),
             step: 1,
             decorate_both: false,

@@ -58,7 +58,7 @@
     <script src="${pageContext.request.contextPath}/js/toastr.js"></script>
 
     <%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>--%>
-    <script src="${pageContext.request.contextPath}/js/language.js"></script>
+    <script src="${pageContext.request.contextPath}/js/language.jsp"></script>
 
     <script type="text/javascript">
 
@@ -88,7 +88,7 @@
                 <div class="col-lg-12">
                     <h3 class="page-header"><i class="fa fa-user-md"></i> <l:resource key="profile"/></h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-home"></i><a href="${pageContext.request.contextPath}/"><l:resource key="home"/></a></li>
                         <li><i class="fa fa-user-md"></i><l:resource key="profile"/></li>
                     </ol>
                 </div>
@@ -132,7 +132,7 @@
                             $('#name').editable({
                                 type: 'text',
                                 pk: 1,
-                                url: 'http://localhost:8080/profile?action=edit',
+                                url: '${pageContext.request.contextPath}/profile?action=edit',
                                 title: 'Enter your First name',
                                 success: function (response) {
                                     if (response.status == 'error') return response.msg;
@@ -147,7 +147,7 @@
                             $('#surname').editable({
                                 type: 'text',
                                 pk: 1,
-                                url: 'http://localhost:8080/profile?action=edit',
+                                url: '${pageContext.request.contextPath}/profile?action=edit',
                                 title: 'Enter your Last name',
                                 success: function (response) {
                                     if (response.status == 'error') return response.msg;
@@ -159,7 +159,7 @@
                         </div>
                         <div class="bio-row">
                             <span><l:resource key="profile.changepw"/>: <span id="change_password"> </span>
-                                <a href="/profile?action=change&email=${user.email}"><l:resource
+                                <a href="${pageContext.request.contextPath}/profile?action=change&email=${user.email}"><l:resource
                                         key="profile.changepw"/></a> </span>
                         </div>
                         <div class="bio-row">
@@ -188,7 +188,7 @@
                             </script>
                             <script>
                                 $(document).ajaxComplete(function (event, xhr, settings) {
-                                    if (settings.url === "http://localhost:8080/profile?action=changeAvatar") {
+                                    if (settings.url === "${pageContext.request.contextPath}/profile?action=changeAvatar") {
                                         var response = JSON.parse(xhr.responseText);
                                         $(".avatar").attr("src", response.success);
                                         toastrNotification(response.status, response.msg);
@@ -197,7 +197,7 @@
                             </script>
                             <script>
                                 $(document).ajaxComplete(function (event, xhr, settings) {
-                                    if (settings.url === "http://localhost:8080/profile?action=edit") {
+                                    if (settings.url === "${pageContext.request.contextPath}/profile?action=edit") {
                                         var response = JSON.parse(xhr.responseText);
                                         $(".userfname").text(response.fname);
                                         $(".userlname").text(response.lname);
@@ -212,7 +212,7 @@
                                        accept="image/*">
                                 <script>
                                     $("#input-dim-2").fileinput({
-                                        uploadUrl: "http://localhost:8080/profile?action=changeAvatar",
+                                        uploadUrl: "${pageContext.request.contextPath}/profile?action=changeAvatar",
                                         allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg'],
                                         maxFileCount: 1
                                     });

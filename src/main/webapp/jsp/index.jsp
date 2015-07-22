@@ -45,7 +45,7 @@
 
     <![endif]-->
 
-    <script src="${pageContext.request.contextPath}js/language.js"></script>
+    <script src="${pageContext.request.contextPath}/js/language.jsp"></script>
 </head>
 
 <body id="page-top">
@@ -56,10 +56,10 @@
 
     <c:choose>
         <c:when test="${user.role == 'ADMIN'}">
-            <jsp:forward page="admin/index.jsp"/>
+            <jsp:forward page="/jsp/admin/index.jsp"/>
         </c:when>
         <c:when test="${user.role == 'USER'}">
-            <jsp:forward page="user/feed.jsp"/>
+            <jsp:forward page="/jsp/user/feed.jsp"/>
         </c:when>
         <c:otherwise>
             <header class="header dark-bg" style="background: rgb(26, 39, 50)">
@@ -82,7 +82,7 @@
                                     <a class="page-scroll" href="#contact"><l:resource key="index.contact"/></a>
                                 </li>
                                 <li>
-                                    <a class="page-scroll" href="/login"><l:resource key="index.signin"/></a>
+                                    <a class="page-scroll" href="${pageContext.request.contextPath}/login"><l:resource key="index.signin"/></a>
                                 </li>
                             </ul>
                         </div>
@@ -111,7 +111,7 @@
             <h1>SOCIAL SPIDER</h1>
             <hr>
             <p>make it easy</p>
-            <a href="/login" class="btn btn-primary btn-xl page-scroll"><l:resource key="index.signin"/></a>
+            <a href="${pageContext.request.contextPath}/login" class="btn btn-primary btn-xl page-scroll"><l:resource key="index.signin"/></a>
         </div>
     </div>
 </header>
@@ -199,7 +199,7 @@
 
                 <div class="col-lg-4">
                     <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('../img/photo/vet.png');
+                        <div class="team-inner" style="background-image: url('${pageContext.request.contextPath}/img/photo/vet.png');
                          background-size: 60%;
                         background-repeat: no-repeat;">
                         </div>
@@ -211,7 +211,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('../img/photo/vor1.png');
+                        <div class="team-inner" style="background-image: url('${pageContext.request.contextPath}/img/photo/vor1.png');
                         background-size: 60%;
                         background-repeat: no-repeat;">
                         </div>
@@ -223,7 +223,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('../img/photo/orest1.png');
+                        <div class="team-inner" style="background-image: url('${pageContext.request.contextPath}/img/photo/orest1.png');
                          background-size: 60%;
                         background-repeat: no-repeat;">
                         </div>
@@ -235,7 +235,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('../img/photo/sasha1.png');
+                        <div class="team-inner" style="background-image: url('${pageContext.request.contextPath}/img/photo/sasha1.png');
                          background-size: 60%;
                         background-repeat: no-repeat;">
                         </div>
@@ -247,7 +247,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('../img/photo/oles1.png');
+                        <div class="team-inner" style="background-image: url('${pageContext.request.contextPath}/img/photo/oles1.png');
                          background-size: 60%;
                         background-repeat: no-repeat;">
                         </div>
@@ -259,7 +259,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('../img/photo/yu1.png');
+                        <div class="team-inner" style="background-image: url('${pageContext.request.contextPath}/img/photo/yu1.png');
                          background-size: 60%;
                         background-repeat: no-repeat;">
                         </div>
@@ -308,9 +308,9 @@
     $(document).ready(function () {
         $.vegas('slideshow', {
             backgrounds: [
-                {src: '../img/header.jpg', fade: 2000, delay: 9000},
-                {src: '../img/2.jpg', fade: 2000, delay: 9000},
-                {src: '../img/4.jpg', fade: 2000, delay: 9000},
+                {src: '${pageContext.request.contextPath}/img/header.jpg', fade: 2000, delay: 9000},
+                {src: '${pageContext.request.contextPath}/img/2.jpg', fade: 2000, delay: 9000},
+                {src: '${pageContext.request.contextPath}/img/4.jpg', fade: 2000, delay: 9000},
             ]
         });
     });
@@ -333,7 +333,7 @@
 <script src="${pageContext.request.contextPath}/js/jquery.vegas.min.js"></script>
 <!-- VEGAS SLIDESHOW SCRIPTS -->
 <script src="${pageContext.request.contextPath}/js/jquery.easing.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/language.js"></script>
+<script src="${pageContext.request.contextPath}/js/language.jsp"></script>
 
 
 </body>

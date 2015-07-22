@@ -353,7 +353,7 @@
         });
     });
 
-    var feedWebSocket = new WebSocket("ws://localhost:8080/websocket/feed");
+    var feedWebSocket = new WebSocket("ws://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/websocket/feed");
 
     feedWebSocket.onopen = function (event) {
         console.log("FeedWebSocket OnOpen " + event.data);

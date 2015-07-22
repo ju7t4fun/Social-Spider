@@ -22,7 +22,7 @@ public class ClientAuthorization implements Authorization {
     public ClientAuthorization(Configuration conf) {
         this.conf = conf;
     }
-
+    // TODO REFACTOR TO NEW WINDOW
     @Override
     public void open(HttpServletResponse response, boolean revoke) {
         StringBuilder sb = new StringBuilder();

@@ -9,11 +9,14 @@ import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
 import com.epam.lab.spider.job.util.PostAttachmentUtil;
+import com.epam.lab.spider.model.db.PoolConnection;
+import com.epam.lab.spider.model.db.dao.mysql.UserActionsDAOImpl;
 import com.epam.lab.spider.model.db.entity.*;
 import com.epam.lab.spider.model.db.service.*;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.ParameterizedType;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,15 +34,9 @@ public class Run {
         return fib(number - 1) + fib(number - 2);
     }
 
-    public static void main(String[] args) throws VKException {
-        int minNumber = 10, maxNumber = 100;
-        int countCouples = 0;
-        for (int i = minNumber; i < maxNumber; i++) {
-            int numberFib = fib(i);
-            System.out.print(numberFib + " ");
-            if (numberFib % 2 == 0) countCouples++;
-        }
-        System.out.print("\nCount couples = " + countCouples);
+    public static void main(String[] args) throws VKException, SQLException {
+        UserActionsDAOImpl userActionsDAO = new UserActionsDAOImpl();
+        userActionsDAO.createTable(PoolConnection.getConnection());
     }
 }
 

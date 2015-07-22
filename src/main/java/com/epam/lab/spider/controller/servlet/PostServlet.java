@@ -30,7 +30,9 @@ public class PostServlet extends HttpServlet {
     private static class PostActionFactory extends ActionFactory {
         public PostActionFactory() {
             commands = new HashMap<>();
-            commands.put("default", new ShowAllPostsCommand());
+            commands.put("default", new ShowPostsBoardCommand());
+            commands.put("get_board", new GetPostsBoardCommand());
+//            commands.put("showAll", new ShowAllPostsCommand());
             commands.put("add", new ShowAddNewPostCommand());
             commands.put("addPost", new AddPostCommand());
             commands.put("getCreatedPost", new GetCreatedPostCommand());

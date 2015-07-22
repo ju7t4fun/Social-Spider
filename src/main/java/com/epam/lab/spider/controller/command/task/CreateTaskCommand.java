@@ -71,11 +71,11 @@ public class CreateTaskCommand implements ActionCommand {
         request.setAttribute("start_time",Task.StartTimeType.INTERVAL);
         request.setAttribute("work_time", Task.WorkTimeLimit.ROUND_DAILY);
 
-        request.setAttribute("interval_min", "3");
-        request.setAttribute("interval_max", "10");
-        request.setAttribute("post_count", "2");
-        request.setAttribute("post_delay_min", "25");
-        request.setAttribute("post_delay_max", "45");
+        request.setAttribute("interval_min", "5");
+        request.setAttribute("interval_max", "12");
+        request.setAttribute("post_count", "1");
+        request.setAttribute("post_delay_min", "40");
+        request.setAttribute("post_delay_max", "80");
         request.setAttribute("grabbing_mode", Task.GrabbingMode.TOTAL);
 
         request.setAttribute("likes", "60");

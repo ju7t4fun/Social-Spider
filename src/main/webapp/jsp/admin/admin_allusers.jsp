@@ -57,7 +57,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnStandingRedraw.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/plugin/fnSetFilteringDelay.js"></script>
 
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom-datatable.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom-datatable.jsp"></script>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
     <link href="${pageContext.request.contextPath}/css/toastr.css" rel="stylesheet" type="text/css"/>
@@ -135,7 +135,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="admin"/></a></li>
+                        <li><i class="fa fa-home"></i><a href="${pageContext.request.contextPath}/"><l:resource key="admin"/></a></li>
                         <li><i class="fa fa-desktop"></i><l:resource key="edit"/></li>
                         <li><i class="fa fa-list-alt"></i><l:resource key="userlist"/></li>
                     </ol>

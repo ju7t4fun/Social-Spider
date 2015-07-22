@@ -93,7 +93,7 @@
                 "bProcessing": true,
                 'iDisplayLength': 10,
                 "bServerSide": true,
-                "sAjaxSource": "http://localhost:8080/owner?action=get",
+                "sAjaxSource": "${pageContext.request.contextPath}/owner?action=get",
                 colVis: {
                     "align": "right",
                     "buttonText": "columns <img src=\"/img/caaret.png\"/>",

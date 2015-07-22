@@ -6,7 +6,7 @@
         <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"></div>
     </div>
     <!--logo start-->
-    <a href="/" class="logo">Social <span class="lite">Spider</span></a>
+    <a href="${pageContext.request.contextPath}/" class="logo">Social <span class="lite">Spider</span></a>
     <!--logo end-->
 
     <div class="top-nav notification-row">
@@ -37,16 +37,16 @@
                 <ul class="dropdown-menu extended logout">
                     <div class="log-arrow-up"></div>
                     <li id="aaaa" class="eborder-top">
-                        <a href="/profile"><i class="icon_profile"></i><l:resource key="profile"/></a>
+                        <a href="${pageContext.request.contextPath}/profile"><i class="icon_profile"></i><l:resource key="profile"/></a>
                     </li>
                     <li>
-                        <a href="/accounts"><i class="fa fa-vk"></i> <l:resource key="myaccounts"/></a>
+                        <a href="${pageContext.request.contextPath}/accounts"><i class="fa fa-vk"></i> <l:resource key="myaccounts"/></a>
                     </li>
                     <li>
                         <a  href="#unlock" class="force-unlock-unlock"><i class="fa fa-gears"></i> <l:resource key="userForceUnlock"/></a>
                     </li>
                     <li>
-                        <a href="/login?action=signOut"><i class="fa fa-sign-out"></i> <l:resource key="logout"/></a>
+                        <a href="${pageContext.request.contextPath}/login?action=signOut"><i class="fa fa-sign-out"></i> <l:resource key="logout"/></a>
                     </li>
                 </ul>
             </li>
@@ -55,7 +55,7 @@
     <script>
         $(document).ready(function () {
             $(".force-unlock-unlock").click(function(){
-                $.ajax("/controller?action=unlock", {
+                $.ajax("${pageContext.request.contextPath}/controller?action=unlock", {
                     type:  "GET" ,
 
                     statusCode: {

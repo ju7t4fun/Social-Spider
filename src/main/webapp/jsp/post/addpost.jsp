@@ -85,7 +85,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="/"><l:resource key="home"/></a></li>
+                        <li><i class="fa fa-home"></i><a href="${pageContext.request.contextPath}/"><l:resource key="home"/></a></li>
                         <li><i class="fa fa-laptop"></i><l:resource key="addnewpost"/></li>
                     </ol>
                 </div>
@@ -106,7 +106,7 @@
                                 <div class="form quick-post" style="width: 90%;">
                                     <!-- Edit profile form (not working)-->
                                     <form id="post_form" class="form-horizontal"
-                                          action="/post" method="GET">
+                                          action="${pageContext.request.contextPath}/post" method="GET">
                                         <input type="hidden" name="action" value="addPost">
                                         <!-- Title -->
                                         <div class="form-group">
@@ -193,7 +193,7 @@
                                                            accept="audio/*,video/*,image/*" value="">
                                                     <script>
                                                         $("#input-dim-2").fileinput({
-                                                            uploadUrl: "http://localhost:8080/controller?action=upload",
+                                                            uploadUrl: "${pageContext.request.contextPath}/controller?action=upload",
                                                             maxFileCount: 10
                                                         });
                                                     </script>
@@ -234,7 +234,7 @@
                                                 var dataString = "url=" + text;
                                                 $.ajax({
                                                     type: "POST",
-                                                    url: 'http://localhost:8080/controller?action=uploadurl',
+                                                    url: '${pageContext.request.contextPath}/controller?action=uploadurl',
                                                     data: dataString,
                                                     dataType: "json",
                                                     success: function (data) {
@@ -307,7 +307,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form id="modal_form" method="POST" action="/post?action=addPost" class="form-horizontal">
+                        <form id="modal_form" method="POST" action="${pageContext.request.contextPath}/post?action=addPost" class="form-horizontal">
                             <input type="hidden" name="typePost" value="new">
 
                             <div style="position: relative; left: -130px; top:30px;">
@@ -411,7 +411,7 @@
                 }
                 $("#myModal").modal('toggle');
                 $.post(
-                        "/post?action=addPost",
+                        "${pageContext.request.contextPath}/post?action=addPost",
                         {
                             typePost: "new",
                             title: $("#title").val(),
@@ -429,7 +429,7 @@
                 function onAjaxSuccess(data) {
                     var response = JSON.parse(data);
                     if (response.status === 'success') {
-                        location.href = "/post?action=queued";
+                        location.href = "${pageContext.request.contextPath}/post?action=queued";
                     }
                 }
             });
