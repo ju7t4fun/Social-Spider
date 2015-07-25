@@ -11,19 +11,19 @@ public class HardCodedUserLimitUtilImpl implements UserLimitUtil {
     private static final int ATTACHMENT_EXECUTE_LIMIT = 50;
     private static final int ATTACHMENT_TRAFFIC_LIMIT = 10*1024;
 
-    public int getTaskExecuteLimit(User user) {
+    public int getTaskExecuteLimit(Integer userId) {
         return TASK_EXECUTE_LIMIT;
     }
 
-    public int getPostExecuteLimit(User user) {
+    public int getPostExecuteLimit(Integer userId) {
         return POST_EXECUTE_LIMIT;
     }
 
-    public int getAttachmentExecuteLimit(User user) {
+    public int getAttachmentExecuteLimit(Integer userId) {
         return ATTACHMENT_EXECUTE_LIMIT;
     }
 
-    public int getAttachmentTrafficLimit(User user) {
+    public int getAttachmentTrafficLimit(Integer userId) {
         return ATTACHMENT_TRAFFIC_LIMIT;
     }
 }

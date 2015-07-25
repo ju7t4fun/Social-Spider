@@ -7,11 +7,11 @@ import com.epam.lab.spider.model.db.entity.User;
  */
 public interface UserLimitUtil {
 
-    abstract int getTaskExecuteLimit(User user);
+    int getTaskExecuteLimit(Integer userId);
 
-    abstract int getPostExecuteLimit(User user);
+    int getPostExecuteLimit(Integer userId);
 
-    abstract int getAttachmentExecuteLimit(User user);
+    int getAttachmentExecuteLimit(Integer userId);
 
-    abstract int getAttachmentTrafficLimit(User user);
+    int getAttachmentTrafficLimit(Integer userId);
 }

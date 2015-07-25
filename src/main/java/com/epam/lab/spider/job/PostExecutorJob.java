@@ -6,6 +6,8 @@ import com.epam.lab.spider.controller.vk.Request;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
+import com.epam.lab.spider.job.limit.UserLimit;
+import com.epam.lab.spider.job.limit.UserLimitsFactory;
 import com.epam.lab.spider.job.util.Locker;
 import com.epam.lab.spider.job.util.PostAttachmentUtil;
 import com.epam.lab.spider.model.db.entity.*;
@@ -33,9 +35,11 @@ public class PostExecutorJob implements Job {
     ProfileService profileService = new ProfileService();
     AttachmentService attachmentService = new AttachmentService();
 
+    public static UserLimit limit = UserLimitsFactory.getUserLimit();
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+
         JobDataMap dataMap = jobExecutionContext.getJobDetail().getJobDataMap();
         NewPost newPost = null;
         {
@@ -60,7 +64,14 @@ public class PostExecutorJob implements Job {
                 LOG.fatal("На заблоковану стіну зафіксована спроба виконати пост. Пост буде заблоковано! Проблема в " +
                         "архітектурі сервісу!");
                 newPost.setState(NewPost.State.ERROR);
-                SavableServiceUtil.safeSave(newPost);
+                newPostService.updateStage(newPost);
+                //SavableServiceUtil.safeSave(newPost);
+                return;
+            }
+
+            if(!limit.checkPostExecute(newPost.getUserId())){
+                newPost.setState(NewPost.State.ERROR);
+                newPostService.updateStage(newPost);
                 return;
             }
             Owner owner = ownerService.getById(wall.getOwnerId());
@@ -152,6 +163,7 @@ public class PostExecutorJob implements Job {
                     newPost.setState(NewPost.State.POSTED);
                     newPost.setVkPostId(Integer.parseInt(response.toString()));
                     SavableServiceUtil.safeSave(newPost);
+                    limit.markPostExecute(newPost.getUserId());
                     String info = "Success to posting wall" + wall.getOwner().getVkId() + "_" + newPost.getVkPostId();
                     LOG.info(info);
                     if(false)eventLogger.info(info, info);

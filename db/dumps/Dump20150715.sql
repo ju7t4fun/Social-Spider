@@ -322,8 +322,7 @@ CREATE TABLE `owner` (
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
   `user_id` int(11) NOT NULL,
   `banned` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  FULLTEXT KEY `FULLTEXT` (`name`,`domain`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

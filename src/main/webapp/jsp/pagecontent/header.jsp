@@ -13,6 +13,92 @@
         <!-- notificatoin dropdown start-->
         <ul class="nav pull-right top-menu">
 
+            <!-- task notificatoin start -->
+            <li id="task_notificatoin_bar" class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="icon-task-l"></span>
+                </a>
+                <ul class="dropdown-menu extended tasks-bar">
+                    <div class="notify-arrow notify-arrow-blue"></div>
+                    <li>
+                        <p class="blue">User limits</p>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="task-info">
+                                <div class="desc">Task </div>
+                                <div class="percent j4f-task-value"><c:out value="${user.remainderTaskExecute}"/></div>
+                            </div>
+                            <div class="progress progress-striped">
+                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="${user.remainderTaskExecuteInPercent}" aria-valuemin="0" aria-valuemax="100" style="width: ${user.remainderTaskExecuteInPercent}%">
+                                    <span class="sr-only j4f-task-value"><c:out value="${user.remainderTaskExecute}"/></span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="task-info">
+                                <div class="desc">Posts</div>
+                                <div class="percent j4f-post-value"><c:out value="${user.remainderPostExecute}"/></div>
+                            </div>
+                            <div class="progress progress-striped">
+                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="${user.remainderPostExecuteInPercent}" aria-valuemin="0" aria-valuemax="100" style="width: ${user.remainderPostExecuteInPercent}%">
+                                    <span class="sr-only j4f-post-value"><c:out value="${user.remainderPostExecute}"/></span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <%--<li>
+                        <a href="#">
+                            <div class="task-info">
+                                <div class="desc">
+                                    Project 1
+                                </div>
+                                <div class="percent">30%</div>
+                            </div>
+                            <div class="progress progress-striped">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%">
+                                    <span class="sr-only">30% Complete (warning)</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <div class="task-info">
+                                <div class="desc">Logo Designing</div>
+                                <div class="percent">78%</div>
+                            </div>
+                            <div class="progress progress-striped">
+                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%">
+                                    <span class="sr-only">78% Complete (danger)</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="task-info">
+                                <div class="desc">Mobile App</div>
+                                <div class="percent">50%</div>
+                            </div>
+                            <div class="progress progress-striped active">
+                                <div class="progress-bar"  role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+                                    <span class="sr-only">50% Complete</span>
+                                </div>
+                            </div>
+
+                        </a>
+                    </li>--%>
+                    <li class="external">
+                        <a href="#">See More About Limits</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- task notificatoin end -->
+
             <c:choose>
                 <c:when test="${user.role=='ADMIN'}">
                     <jsp:include page="support_admin.jsp"/>
@@ -59,19 +145,19 @@
                     type:  "GET" ,
 
                     statusCode: {
-                        200: function (response) {
+                        200: function () {
                             toastrNotification("success", "Unblocked!" );
                         },
-                        204: function (response) {
+                        204: function () {
                             toastrNotification("info", "No data to unblock..." );
                         },
-                        400: function (response) {
+                        400: function () {
                             toastrNotification("error", "Error.");
                         },
-                        401: function (response) {
+                        401: function () {
                             toastrNotification("error", "Login NEED!");
                         },
-                        404: function (response) {
+                        404: function () {
                             toastrNotification("error", "Впр...404..");
                         }
                     }
@@ -81,4 +167,5 @@
         });
 
     </script>
+    <script src='${pageContext.request.contextPath}/js/user.limits.jsp'></script>
 </header>

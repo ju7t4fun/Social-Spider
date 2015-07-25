@@ -135,7 +135,7 @@ public class TaskInfoWebSocket {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        LOG.debug("onMessage (message=" + message + ")");
+//        LOG.debug("onMessage (message=" + message + ")");
     }
 
     @OnClose

@@ -3,6 +3,8 @@ package com.epam.lab.spider.model.db.entity;
 import com.epam.lab.spider.controller.utils.validation.annotation.NotNull;
 import com.epam.lab.spider.controller.utils.validation.annotation.Pattern;
 import com.epam.lab.spider.controller.utils.validation.annotation.Size;
+import com.epam.lab.spider.job.limit.UserLimit;
+import com.epam.lab.spider.job.limit.UserLimitsFactory;
 import com.epam.lab.spider.model.db.service.ProfileService;
 import com.epam.lab.spider.model.db.service.ServiceFactory;
 import com.epam.lab.spider.model.db.service.TaskService;
@@ -196,4 +198,17 @@ public class User implements Comparable<User> {
         CREATED, ACTIVATED, BANNED
     }
 
+    public int getRemainderTaskExecute(){
+        return limit.getRemainderTaskExecute(this.getId());
+    }
+    public int getRemainderPostExecute(){
+        return limit.getRemainderPostExecute(this.getId());
+    }
+    public int getRemainderTaskExecuteInPercent(){
+        return limit.getRemainderTaskExecuteInPercent(this.getId());
+    }
+    public int getRemainderPostExecuteInPercent(){
+        return limit.getRemainderPostExecuteInPercent(this.getId());
+    }
+    public static UserLimit limit = UserLimitsFactory.getUserLimit();
 }

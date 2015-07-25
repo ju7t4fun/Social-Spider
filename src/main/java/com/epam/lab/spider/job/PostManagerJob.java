@@ -1,6 +1,8 @@
 package com.epam.lab.spider.job;
 
 
+import com.epam.lab.spider.job.limit.UserLimit;
+import com.epam.lab.spider.job.limit.UserLimitsFactory;
 import com.epam.lab.spider.model.db.entity.NewPost;
 import com.epam.lab.spider.model.db.service.NewPostService;
 import org.apache.log4j.Logger;
@@ -20,6 +22,7 @@ public class PostManagerJob implements Job {
     public static final Logger LOG = Logger.getLogger(PostManagerJob.class);
     NewPostService newPostService = new NewPostService();
 
+    public static UserLimit limit = UserLimitsFactory.getUserLimit();
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
