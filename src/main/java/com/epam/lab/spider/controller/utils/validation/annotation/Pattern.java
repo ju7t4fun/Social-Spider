@@ -19,7 +19,7 @@ public @interface Pattern {
 
 
 
-    public static enum Flag {
+    enum Flag {
         UNIX_LINES(1),
         CASE_INSENSITIVE(2),
         COMMENTS(4),
@@ -30,7 +30,7 @@ public @interface Pattern {
 
         private final int value;
 
-        private Flag(int value) {
+        Flag(int value) {
             this.value = value;
         }
 

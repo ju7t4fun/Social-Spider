@@ -36,7 +36,7 @@
 
             var updateDataPostDelay = function(num){
                 return unitsAuto(num,{nom:"nmbSecondNom",gen:"nmbSecondGen", plu:"nmbSecondPlu"});
-            }
+            };
 
             $range.ionRangeSlider({
                 force_edges: false,

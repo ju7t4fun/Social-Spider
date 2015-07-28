@@ -55,7 +55,7 @@
         <input type="text" id="post_count_slider" value="" name="interval"/>
     </div>
     <script type="text/javascript">
-        var nmbPost = new Object(), postCountSliderData, newPrefix, nmbOne = new Object();
+        var nmbPost = {}, postCountSliderData, newPrefix, nmbOne = {};
         nmbPost.nom = "${bundle.nmbPostNom}";
         nmbPost.dat = "${bundle.nmbPostDat}";
         nmbPost.gen = "${bundle.nmbPostGen}";
@@ -75,7 +75,7 @@
         $("#post_count_number_group").hide();
         var trackPostCount = function (data) {
             $("[name='post_count']").val(data.from);
-            var count = new Object();
+            var count = {};
             if (data.from == 1) {
                 count.nom = nmbOne.nom;
                 count.dat = nmbOne.dat;
@@ -108,7 +108,6 @@
             $("#post-count-to-grabbing-mode-2").text(postCount * onePost);
             $("#post-count-to-posting-mode-2").text(postCount * onePost * destCount);
         }
-        ;
         $("#post_count_slider").ionRangeSlider({
             hide_min_max: true,
             keyboard: true,

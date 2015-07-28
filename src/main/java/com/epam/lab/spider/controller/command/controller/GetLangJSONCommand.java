@@ -1,9 +1,7 @@
 package com.epam.lab.spider.controller.command.controller;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.controller.utils.UTF8;
 import org.json.JSONObject;
-import sun.java2d.pipe.hw.AccelTypedVolatileImage;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

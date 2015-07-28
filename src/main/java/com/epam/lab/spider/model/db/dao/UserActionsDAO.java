@@ -11,15 +11,15 @@ import java.sql.SQLException;
  */
 public interface UserActionsDAO<T extends UserActions> {
 
-    public boolean createTable(Connection conn) throws SQLException;
+    boolean createTable(Connection conn) throws SQLException;
 
-    public boolean insert(Connection connection, T t, Date sqlDate) throws SQLException ;
+    boolean insert(Connection connection, T t, Date sqlDate) throws SQLException ;
 
-    public boolean update(Connection connection, T t) throws SQLException ;
+    boolean update(Connection connection, T t) throws SQLException ;
 
-    public boolean delete(Connection connection, Integer id) throws SQLException;
+    boolean delete(Connection connection, Integer id) throws SQLException;
 
-    public T getById(Connection connection, Integer id) throws SQLException;
+    T getById(Connection connection, Integer id) throws SQLException;
 
-    public T getByUserId(Connection connection, Integer userId, Date sqlDate) throws SQLException;
+    T getByUserId(Connection connection, Integer userId, Date sqlDate) throws SQLException;
 }

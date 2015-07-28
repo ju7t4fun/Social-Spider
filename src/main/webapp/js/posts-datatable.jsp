@@ -8,9 +8,9 @@ function reloadData(postId) {
     table.api().ajax.url("${pageContext.request.contextPath}/post?action=getPosted&postId=" + postId).load();
 
     document.getElementById("showAllBtnId").style.visibility = "visible";
-};
+}
 
-jQuery(document).ready(function () {
+        jQuery(document).ready(function () {
 
     table = $('#postsTable').dataTable({
 
@@ -81,7 +81,7 @@ jQuery(document).ready(function () {
     //$(".dataTables_length").attr("hidden", "");
     var dataTables_filter_input = $(".dataTables_filter").find("input");
     dataTables_filter_input.attr("class", "form-control");
-    dataTables_filter_input.attr("style", "width: 500px")
+    dataTables_filter_input.attr("style", "width: 500px");
 
     $("div.toolbar").html('<input style="position: absolute; top: 35px; left: 35px; visibility: hidden" class="btn btn-default" type="button" id="showAllBtnId" onclick="myFunc()" value="Show All"/>');
 
@@ -94,18 +94,18 @@ jQuery(document).ready(function () {
 
 function removePost(i) {
     deleteConfirmPosted(i);
-};
+}
 
-function parseAttachment(arg) {
+        function parseAttachment(arg) {
     var args = arg.split("!");
     var cell = "";
     for (var i = 0; i < args.length; i++) {
         cell = cell + " " + parseDoc(args[i]);
     }
     return cell;
-};
+}
 
-function parseDoc(arg) {
+        function parseDoc(arg) {
     var args = arg.split("|");
     switch (args[0]) {
         case "PHOTO":
@@ -118,4 +118,4 @@ function parseDoc(arg) {
             return '<img src=\"${pageContext.request.contextPath}/img/icons/txt-icon.png" style="width: 30px; height: 30px"><span class="badge bg-important">{count}</span>'.replace("{count}", args[1]);
     }
     return "";
-};
+}

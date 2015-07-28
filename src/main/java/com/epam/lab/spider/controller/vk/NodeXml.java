@@ -104,18 +104,12 @@ public class NodeXml implements Node {
 
     @Override
     public boolean hasChild() {
-        if (child().size() > 0)
-            return true;
-        else
-            return false;
+        return child().size() > 0;
     }
 
     @Override
     public boolean hasChild(String name) {
-        if (child(name).size() > 0)
-            return true;
-        else
-            return false;
+        return child(name).size() > 0;
     }
 
     @Override

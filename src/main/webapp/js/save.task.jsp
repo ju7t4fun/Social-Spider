@@ -33,7 +33,7 @@ $(document).ready(function () {
             return
         }
 
-        var options = new Object();
+        var options = {};
         options.grabbing_type = $("input[name=grabbing_type][type='radio']:checked").val();
         options.posting_type = $("input[name=posting_type][type='radio']:checked").val();
         options.repeat = $("input[name=repeat][type='radio']:checked").val();
@@ -57,7 +57,7 @@ $(document).ready(function () {
         options.grabbing_mode = $("input[name=grabbing_mode][type='radio']:checked").val();
 
 
-        var filter = new Object();
+        var filter = {};
         filter.likes = $("input[name=likes]").val();
         filter.reposts = $("input[name=reposts]").val();
         filter.comments = $("input[name=comments]").val();

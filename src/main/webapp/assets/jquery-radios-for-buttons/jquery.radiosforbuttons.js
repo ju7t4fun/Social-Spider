@@ -14,7 +14,7 @@
     black: 'btn-inverse',
     inverse: 'btn-inverse',
     link: 'btn-link'
-  }
+  };
 
   $.fn.radiosforbuttons = function (options) {
     var defaults = {
@@ -58,7 +58,7 @@
 
       radio.hide().appendTo(trash);
       label.remove();
-    })
+    });
 
 		div.addClass('radiosforbuttons-maindiv-'+name);
 		if (options.group) {
@@ -82,7 +82,7 @@
       $( '.radiosforbuttons-'+name ).removeClass('active');
       $( this ).addClass('active');
       return false;
-    })
+    });
 
     return div;
   };

@@ -15,7 +15,7 @@ $(document).ready(function () {
         var destination = [];
         //destination.push(-1);
 
-        var options = new Object();
+        var options = {};
         options.grabbing_type = 'new';
 
         options.posting_type = 'FAVORITE';//
@@ -45,7 +45,7 @@ $(document).ready(function () {
         options.grabbing_mode = 'PER_GROUP';
 
 
-        var filter = new Object();
+        var filter = {};
         filter.likes = $("input[name=likes]").val();
         filter.reposts = $("input[name=reposts]").val();
         filter.comments = $("input[name=comments]").val();

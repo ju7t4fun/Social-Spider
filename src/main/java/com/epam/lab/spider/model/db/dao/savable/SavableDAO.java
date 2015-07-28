@@ -16,5 +16,5 @@ import java.sql.Connection;
  */
 
 public interface SavableDAO<E> {
-    public boolean save(java.sql.Connection conn,E entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException;
+    boolean save(java.sql.Connection conn, E entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException;
 }

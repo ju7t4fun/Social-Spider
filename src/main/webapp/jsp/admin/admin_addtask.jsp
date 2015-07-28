@@ -222,7 +222,7 @@
 <script src="${pageContext.request.contextPath}/js/bootstrap-number-input.js"></script>
 
 <script type="text/javascript">
-    j4fBundlePut('x', "${bundle.x}")
+    j4fBundlePut('x', "${bundle.x}");
     $(document).ready(function () {
         $(".j4f-disable-at-admin").hide();
         $(".show-when-jquery-unsupported").hide();

@@ -61,11 +61,11 @@
             <input type="text" id="filter_comment_slider"/>
         </div>
         <script type="text/javascript">
-            var filterValue = new Object(), newFilterPrefix = new Object(), newFilterPostfix = new Object();
+            var filterValue = {}, newFilterPrefix = {}, newFilterPostfix = {};
             j4fBundleMark("srcFilterLikes");
             j4fBundleMark("srcFilterReposts");
             j4fBundleMark("srcFilterComments");
-            j4fBundleMark("nmbFilterMultiGen")
+            j4fBundleMark("nmbFilterMultiGen");
             j4fBundleMark("nmbFilterMultiNom");
             j4fBundleMark("nmbFilterMultiPlu");
             j4fBundleMark("srcFilterLikesDisable");

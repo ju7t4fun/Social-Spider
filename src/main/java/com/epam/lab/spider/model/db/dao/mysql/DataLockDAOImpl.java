@@ -43,7 +43,7 @@ public class DataLockDAOImpl extends BaseDAO implements DataLockDAO {
 
     public Map<String, Map<Integer, Set<DataLock.Mode>>> restore(Connection conn) throws SQLException {
         Map<String, Map<Integer, Set<DataLock.Mode>>> globalMap = new HashMap<>();
-        ResultSet rs = selectQuery(conn, SQL_RESTORE_LOCK_QUERY, new Object[0]);
+        ResultSet rs = selectQuery(conn, SQL_RESTORE_LOCK_QUERY);
         int colTable, colIndex, colMode;
         String table;
         Integer index;

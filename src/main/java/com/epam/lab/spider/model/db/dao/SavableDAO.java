@@ -7,6 +7,6 @@ import com.mysql.jdbc.Connection;
  * Like if you understand true value of name this interface.
  */
 public interface SavableDAO<E> {
-    public static final boolean VALIDATION_SUPPORT = true;
+    boolean VALIDATION_SUPPORT = true;
     boolean save(Connection conn,E e);
 }

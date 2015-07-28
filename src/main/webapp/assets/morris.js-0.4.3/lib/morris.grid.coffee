@@ -307,7 +307,7 @@ class Morris.Grid extends Morris.EventEmitter
   # draw y axis labels, horizontal lines
   #
   drawGrid: ->
-    return if @options.grid is false and @options.axes is false
+     if @options.grid is false and @options.axes is false
     for lineY in @grid
       y = @transY(lineY)
       if @options.axes

@@ -45,7 +45,7 @@ public class LoggerTag extends BodyTagSupport {
         Method method = null;
 
         try {
-            method = log.getClass().getMethod(level, new Class[]{Object.class});
+            method = log.getClass().getMethod(level, Object.class);
             method.invoke(log, new String[] {message});
         } catch (Exception e) {}
         return EVAL_PAGE;

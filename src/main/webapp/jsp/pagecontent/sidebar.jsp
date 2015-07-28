@@ -18,7 +18,7 @@
                         </c:when>
                         <c:otherwise>
                             <li class="sub-menu">
-                                <a href="javascript:;" class="">
+                                <a href="javascript:" class="">
                                     <i class="fa fa-credit-card"></i>
                                     <span><l:resource key="post"/></span>
                                     <span class="menu-arrow arrow_carrot-right"></span>
@@ -39,7 +39,7 @@
 
 
                     <li class="sub-menu">
-                        <a href="javascript:;" class="">
+                        <a href="javascript:" class="">
                             <i class="fa fa-tasks"></i>
                             <span><l:resource key="task"/></span>
                             <span class="menu-arrow arrow_carrot-right"></span>
@@ -67,7 +67,7 @@
             <c:when test="${user.role =='ADMIN'}">
                 <ul class="sidebar-menu">
                     <li class="sub-menu">
-                        <a href="javascript:;" class="">
+                        <a href="javascript:" class="">
                             <i class="fa fa-rss"></i>
                             <span><l:resource key="feed"/></span>
                             <span class="menu-arrow arrow_carrot-right"></span>
@@ -94,7 +94,7 @@
                         </ul>
                     </li>
                     <li class="sub-menu">
-                        <a href="javascript:;" class="">
+                        <a href="javascript:" class="">
                             <i class="fa fa-pencil-square-o"></i>
                             <span><l:resource key="edit"/></span>
                             <span class="menu-arrow arrow_carrot-right"></span>

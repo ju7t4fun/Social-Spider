@@ -51,7 +51,7 @@ $(document).ready(function () {
         });
         scriptLocaleStorage.forEach(function(value, key) {
             names.push(key);
-        })
+        });
         var myJsonString = JSON.stringify(names);
         $.post("${pageContext.request.contextPath}/controller?action=locale&lang=".concat(lang), {names: myJsonString})
             .done(function (data) {

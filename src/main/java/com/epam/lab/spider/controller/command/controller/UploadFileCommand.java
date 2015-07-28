@@ -73,7 +73,6 @@ public class UploadFileCommand implements ActionCommand {
                 }
             } else {
                 jsonError = UTF8.encoding(bundle.getString("notification.request.error"));
-                ;
             }
         } catch (Exception e) {
             e.printStackTrace();

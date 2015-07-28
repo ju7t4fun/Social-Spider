@@ -35,7 +35,7 @@ public interface NewPostDAO extends CRUD<NewPost>, SavableDAO<NewPost> {
 
     int getCountWithQuery(Connection connection, String SQL_SOME_QUERY) throws SQLException;
 
-    public boolean updateState(Connection connection, int id, NewPost.State state) throws SQLException;
+    boolean updateState(Connection connection, int id, NewPost.State state) throws SQLException;
 
     int getPostedCountByUserIdWithSearch(Connection connection, Integer id, String sSearch) throws SQLException;
 
@@ -58,5 +58,5 @@ public interface NewPostDAO extends CRUD<NewPost>, SavableDAO<NewPost> {
 
     boolean deleteByPostId(Connection connection, int postDd) throws SQLException;
 
-    public List<NewPost> getByUserIdWithLimits(Connection connection, Integer userId, int offset, int limit) throws SQLException;
+    List<NewPost> getByUserIdWithLimits(Connection connection, Integer userId, int offset, int limit) throws SQLException;
 }

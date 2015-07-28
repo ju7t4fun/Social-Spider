@@ -42,15 +42,15 @@ function SmartWizard(target, options) {
         // CHeck if ul with steps has been added by user, if not add them
         if($this.target.children('ul').length == 0 ){
             var ul = $("<ul/>");
-            target.prepend(ul)
+            target.prepend(ul);
 
             // for each div create a li
             allDivs.each(function(i,e){
                 var title = $(e).first().children(".StepTitle").text();
-                var s = $(e).attr("id")
+                var s = $(e).attr("id");
                 // if referenced div has no id, add one.
                 if (s==undefined){
-                    s = "step-"+(i+1)
+                    s = "step-"+(i+1);
                     $(e).attr("id",s);
                 }
                 var span = $("<span/>").addClass("stepDesc").text(title);
@@ -381,16 +381,16 @@ function SmartWizard(target, options) {
     SmartWizard.prototype.showMessage = function (msg) {
         $('.content', this.msgBox).html(msg);
         this.msgBox.show();
-    }
+    };
     SmartWizard.prototype.hideMessage = function () {
         this.msgBox.fadeOut("normal");
-    }
+    };
     SmartWizard.prototype.showError = function(stepnum) {
         this.setError(stepnum, true);
-    }
+    };
     SmartWizard.prototype.hideError = function(stepnum) {
         this.setError(stepnum, false);
-    }
+    };
     SmartWizard.prototype.setError = function(stepnum,iserror) {
         if (typeof stepnum == "object") {
             iserror = stepnum.iserror;
@@ -402,7 +402,7 @@ function SmartWizard(target, options) {
         }else{
             $(this.steps.eq(stepnum-1), this.target).removeClass("error");
         }
-    }
+    };
 
     SmartWizard.prototype.fixHeight = function(){
         var height = 0;
@@ -418,13 +418,10 @@ function SmartWizard(target, options) {
         // These values (5 and 20) are experimentally chosen.
         stepContainer.height(height + 5);
         this.elmStepContainer.height(height + 20);
-    }
+    };
 
     _init(this);
-};
-
-
-
+}
 (function($){
 
     $.fn.smartWizard = function(method) {

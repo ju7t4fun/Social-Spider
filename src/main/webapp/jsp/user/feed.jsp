@@ -272,7 +272,7 @@
         }
 
         function changeData() {
-            $("#time1").val($("#date").val())
+            $("#time1").val($("#date").val());
             $("#time1").attr("min", $("#date").val());
         }
 

@@ -8,7 +8,7 @@ public interface Request {
 
     Response execute() throws VKException;
 
-    public enum Method {
+    enum Method {
         GET, POST;
 
         @Override

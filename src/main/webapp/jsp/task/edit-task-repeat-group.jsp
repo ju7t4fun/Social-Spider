@@ -54,7 +54,7 @@
 
                 scriptCallBack.push(function(){
                     $repeat_count_text.text(updateRepeatValue+" "+decoreFunction(updateRepeatValue));
-                })
+                });
 
                 $repeat_count_slider.ionRangeSlider({
                     hide_min_max: true,

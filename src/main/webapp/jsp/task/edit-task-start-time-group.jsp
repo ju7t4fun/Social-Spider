@@ -54,7 +54,7 @@
 
                 var updateDataStartTime = function(num){
                     return unitsAuto(num,{gen:"nmbMinuteGen",nom:"nmbMinuteNom", plu:"nmbMinutePlu"});
-                }
+                };
 
                 $range.ionRangeSlider({
                     hide_min_max: true,

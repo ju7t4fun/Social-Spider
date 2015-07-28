@@ -6,7 +6,7 @@ public interface Response {
 
     Node root();
 
-    public enum Type {
+    enum Type {
         XML, JSON;
 
         @Override

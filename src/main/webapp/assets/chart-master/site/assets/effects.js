@@ -129,17 +129,16 @@ $(window).load(function() {
 			var ctx = document.getElementById("introChart").getContext("2d");
 			
 			new Chart(ctx).Line(lineChartData,{animation: Modernizr.canvas, scaleShowLabels : false, scaleFontColor : "#767C8D"});
-		};
-		
-		function showLineChart(){
+		}
+	function showLineChart(){
 			var ctx = document.getElementById("lineChartCanvas").getContext("2d");
 			new Chart(ctx).Line(lineChartData,globalGraphSettings);
-		};
-		function showBarChart(){
+		}
+	function showBarChart(){
 			var ctx = document.getElementById("barChartCanvas").getContext("2d");
 			new Chart(ctx).Bar(barChartData,globalGraphSettings);
-		};
-		function showRadarChart(){
+		}
+	function showRadarChart(){
 			var ctx = document.getElementById("radarChartCanvas").getContext("2d");
 			new Chart(ctx).Radar(radarChartData,globalGraphSettings);
 		}
@@ -150,13 +149,12 @@ $(window).load(function() {
 		function showPieChart(){
 			var ctx = document.getElementById("pieChartCanvas").getContext("2d");
 			new Chart(ctx).Pie(pieChartData,globalGraphSettings);
-		};
-		function showDoughnutChart(){
+		}
+	function showDoughnutChart(){
 			var ctx = document.getElementById("doughnutChartCanvas").getContext("2d");
 			new Chart(ctx).Doughnut(doughnutChartData,globalGraphSettings);
-		};
-		
-		var graphInitDelay = 300;
+		}
+	var graphInitDelay = 300;
 		
 		//Set up each of the inview events here.
 		$("#lineChart").on("inview",function(){

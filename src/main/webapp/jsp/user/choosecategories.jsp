@@ -240,7 +240,7 @@
                     });
                     $(".loc-p").each(function () {
                         $(this).attr("placeholder", map[$(this).attr("locres")]);
-                    })
+                    });
                     location.reload();
                 });
     })

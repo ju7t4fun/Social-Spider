@@ -207,7 +207,7 @@
                                                 <input type="text" id="post_count_slider" value="" name="interval"/>
                                             </div>
                                             <script type="text/javascript">
-                                                var nmbPost = new Object(), postCountSliderData, newPrefix, nmbOne = new Object();
+                                                var nmbPost = {}, postCountSliderData, newPrefix, nmbOne = {};
                                                 nmbPost.nom = "${bundle.nmbPostNom}";
                                                 nmbPost.dat = "${bundle.nmbPostDat}";
                                                 nmbPost.gen = "${bundle.nmbPostGen}";
@@ -227,7 +227,7 @@
                                                 $("#post_count_number_group").hide();
                                                 var trackPostCount = function (data) {
                                                     $("[name='post_count']").val(data.from);
-                                                    var count = new Object();
+                                                    var count = {};
                                                     if (data.from == 1) {
                                                         count.nom = nmbOne.nom;
                                                         count.dat = nmbOne.dat;
@@ -260,7 +260,6 @@
                                                     $("#post-count-to-grabbing-mode-2").text(postCount * onePost);
                                                     $("#post-count-to-posting-mode-2").text(postCount * onePost * destCount);
                                                 }
-                                                ;
                                                 $("#post_count_slider").ionRangeSlider({
                                                     hide_min_max: true,
                                                     keyboard: true,
@@ -379,11 +378,11 @@
                                                     <input type="text" id="filter_comment_slider"/>
                                                 </div>
                                                 <script type="text/javascript">
-                                                    var filterValue = new Object(), newFilterPrefix = new Object(), newFilterPostfix = new Object();
+                                                    var filterValue = {}, newFilterPrefix = {}, newFilterPostfix = {};
                                                     j4fBundleMark("srcFilterLikes");
                                                     j4fBundleMark("srcFilterReposts");
                                                     j4fBundleMark("srcFilterComments");
-                                                    j4fBundleMark("nmbFilterMultiGen")
+                                                    j4fBundleMark("nmbFilterMultiGen");
                                                     j4fBundleMark("nmbFilterMultiNom");
                                                     j4fBundleMark("nmbFilterMultiPlu");
                                                     j4fBundleMark("srcFilterLikesDisable");
@@ -925,7 +924,7 @@
     <script src="${pageContext.request.contextPath}/js/bootstrap-number-input.js"></script>
 
     <script type="text/javascript">
-        j4fBundlePut('x', "${bundle.x}")
+        j4fBundlePut('x', "${bundle.x}");
         $(document).ready(function () {
             $(".show-when-jquery-unsupported").hide();
             $(".show-when-jquery-supported").show();

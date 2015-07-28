@@ -7,5 +7,5 @@ import java.sql.SQLException;
  */
 public interface CustomizeSavableAction {
 
-    public void action(Object entity) throws SQLException;
+    void action(Object entity) throws SQLException;
 }

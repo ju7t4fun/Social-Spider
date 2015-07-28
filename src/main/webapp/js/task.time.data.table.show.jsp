@@ -54,12 +54,12 @@ $(document).ready(function () {
             var id = $(this).attr('id').replace('myonoffswitch','');
             if(!$(this).parent().parent().parent().has('.run-time-info').length){
                 //console.log("success");
-                $(this).parent().parent().attr("style","display:inline-block;vertical-align: middle;")
+                $(this).parent().parent().attr("style","display:inline-block;vertical-align: middle;");
                 var $param_run_time_info = $('<div class="run-time-info" style="display:inline-block;vertical-align: middle; margin: 0 8px;"></div>');
                 $param_run_time_info.attr('tifid',id);
                 $(this).parent().parent().parent().append($param_run_time_info);
                 $(this).parent().parent().parent().attr('style','text-align: left;');
-                $(this).parent().parent().parent().append('<div style="clear: both;"></div>')
+                $(this).parent().parent().parent().append('<div style="clear: both;"></div>');
                 array_d.push(id);
                 <%--console.log({id:id, index:index, element:element});--%>
             }

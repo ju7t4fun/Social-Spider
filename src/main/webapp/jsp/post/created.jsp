@@ -139,7 +139,7 @@
 //            $(".dataTables_length").attr("hidden", "");
             var dataTables_filter_input = $(".dataTables_filter").find("input");
             dataTables_filter_input.attr("class", "form-control");
-            dataTables_filter_input.attr("style", "width: 500px")
+            dataTables_filter_input.attr("style", "width: 500px");
 
 
             $('#refreshbtn').click(function () {
@@ -378,7 +378,7 @@
         }
 
         function changeData() {
-            $("#time1").val($("#date").val())
+            $("#time1").val($("#date").val());
             $("#time1").attr("min", $("#date").val());
         }
 

@@ -5,21 +5,21 @@ package com.epam.lab.spider.model.db.entity;
  */
 public interface SynchronizedData {
 
-    public abstract void syncWith(SynchronizedData otherSync);
+    void syncWith(SynchronizedData otherSync);
 
-    public abstract Integer getPostOffset();
+    Integer getPostOffset();
 
-    public abstract void setPostOffset(Integer postOffset);
+    void setPostOffset(Integer postOffset);
 
-    public abstract Integer getPostVkId();
+    Integer getPostVkId();
 
-    public abstract void setPostVkId(Integer postVkId);
+    void setPostVkId(Integer postVkId);
 
-    public abstract Integer getWallId();
+    Integer getWallId();
 
-    public abstract void setWallId(Integer wallId);
+    void setWallId(Integer wallId);
 
-    public abstract Integer getTaskId();
+    Integer getTaskId();
 
-    public abstract void setTaskId(Integer taskId);
+    void setTaskId(Integer taskId);
 }

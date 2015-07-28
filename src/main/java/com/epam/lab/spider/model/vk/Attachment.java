@@ -8,7 +8,7 @@ public interface Attachment {
     int getOwnerId();
     int getId();
 
-    public static enum Type {
+    enum Type {
 
         PHOTO, POSTED_PHOTO, VIDEO, AUDIO,
         DOC, GRAFFITI, LINK, NOTE, APP, POLL,

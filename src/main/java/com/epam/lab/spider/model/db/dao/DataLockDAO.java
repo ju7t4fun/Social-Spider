@@ -12,8 +12,8 @@ import java.util.Set;
  * Created by shell on 6/20/2015.
  */
 public interface DataLockDAO {
-    public List<DataLock> dataLockByUserId(Connection conn, Integer eventID) throws SQLException;
-    public Map<String, Map<Integer, Set<DataLock.Mode>>> restore(Connection conn) throws SQLException ;
-    public boolean createLock(Connection conn, String table, Integer index, DataLock.Mode mode, Integer userId) throws SQLException ;
-    public boolean deleteLock(Connection conn, String table, Integer index, DataLock.Mode mode) throws SQLException;
+    List<DataLock> dataLockByUserId(Connection conn, Integer eventID) throws SQLException;
+    Map<String, Map<Integer, Set<DataLock.Mode>>> restore(Connection conn) throws SQLException ;
+    boolean createLock(Connection conn, String table, Integer index, DataLock.Mode mode, Integer userId) throws SQLException ;
+    boolean deleteLock(Connection conn, String table, Integer index, DataLock.Mode mode) throws SQLException;
 }

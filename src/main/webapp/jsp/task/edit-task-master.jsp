@@ -194,7 +194,7 @@
     <script src="${pageContext.request.contextPath}/js/bootstrap-number-input.js"></script>
 
     <script type="text/javascript">
-        j4fBundlePut('x', "${bundle.x}")
+        j4fBundlePut('x', "${bundle.x}");
         $(document).ready(function () {
             $(".show-when-jquery-unsupported").hide();
             $(".show-when-jquery-supported").show();

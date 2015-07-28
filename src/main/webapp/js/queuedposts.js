@@ -10,8 +10,7 @@ function reloadData(postId) {
     table.api().ajax.url(newUrl).load();
 
     document.getElementById("showAllBtnId").style.visibility = "visible";
-};
-
+}
 jQuery(document).ready(function () {
     table = $('#queuedTable').dataTable({
 
@@ -69,7 +68,7 @@ jQuery(document).ready(function () {
     //$(".dataTables_length").attr("hidden", "");
     var dataTables_filter_input = $(".dataTables_filter").find("input");
     dataTables_filter_input.attr("class", "form-control");
-    dataTables_filter_input.attr("style", "width: 500px")
+    dataTables_filter_input.attr("style", "width: 500px");
 
     $("div.toolbar").html('<input style="position: absolute; top: 35px; left: 35px; visibility: hidden" class="btn btn-default" type="button" id="showAllBtnId" onclick="myFunc()" value="Show All"/>');
 

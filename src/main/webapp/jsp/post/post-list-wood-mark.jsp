@@ -269,7 +269,7 @@
                                         if (post.state == 'posting')$span_state.addClass('run');
                                         $span_state.append(state_text);
 
-                                        $span_timer.attr("time_id", post.pid)
+                                        $span_timer.attr("time_id", post.pid);
                                         addMoment(post.pid, moment(parseInt(post.unix_time_ms)));
 
                                         $div_info.append('<div class="wood-2-col">' + div_to + div_by + '</div>');
@@ -315,9 +315,8 @@
 
 
                 }
-            };
-
-            // Capture scroll event.
+            }
+              // Capture scroll event.
             $window.bind('scroll.wookmark', onScroll);
           })(jQuery);
         </script>

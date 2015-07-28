@@ -113,9 +113,8 @@ public class Wall {
 
         Wall wall = (Wall) o;
 
-        if (id != null ? !id.equals(wall.id) : wall.id != null) return false;
+        return !(id != null ? !id.equals(wall.id) : wall.id != null);
 
-        return true;
     }
 
     @Override

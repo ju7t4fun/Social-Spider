@@ -207,10 +207,10 @@
             function onAjaxSuccess(data) {
 
                 $('#reach_total').html(' ' + data.reach_total);
-                $('#reach_subscribers').html(' ' + data.reach_subscribers)
+                $('#reach_subscribers').html(' ' + data.reach_subscribers);
 
                 $('#likes').html(' ' + data.likes);
-                $('#reposts').html(' ' + data.reposts)
+                $('#reposts').html(' ' + data.reposts);
                 $('#comments').html(' ' + data.comments);
 
                 $('#to_group').html(' ' + data.to_group);

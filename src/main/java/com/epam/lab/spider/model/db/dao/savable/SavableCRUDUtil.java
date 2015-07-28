@@ -30,10 +30,10 @@ public class SavableCRUDUtil {
         Method method = idFieldFromClassMap.get(clazz);
         try {
             if(method ==null){
-                method = clazz.getDeclaredMethod("getId", new Class[0]);
+                method = clazz.getDeclaredMethod("getId");
                 idFieldFromClassMap.put(clazz,method);
             }
-            Object result =  method.invoke(entity, new Object[0]);
+            Object result =  method.invoke(entity);
             return (Integer) result;
 
         } catch (NoSuchMethodException|ClassCastException e) {

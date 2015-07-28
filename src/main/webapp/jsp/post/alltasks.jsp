@@ -445,7 +445,7 @@
     $(".dataTables_length").attr("hidden", "");
     var dataTables_filter_input = $(".dataTables_filter").find("input");
     dataTables_filter_input.attr("class", "form-control");
-    dataTables_filter_input.attr("style", "width: 500px")
+    dataTables_filter_input.attr("style", "width: 500px");
     $(".dataTables_filter").attr("hidden", "");
     $(".dataTables_length").attr("hidden", "");
 
@@ -483,8 +483,6 @@
         }
         return cell;
     }
-    ;
-
     function parseDoc(arg) {
         switch (arg.trim()) {
             case "PHOTO":
@@ -584,7 +582,7 @@
                     }
                 }
             }
-            moment.locale(locale)
+            moment.locale(locale);
             //console.log({language:locale})
         }
     }

@@ -344,7 +344,7 @@ public class Post extends Model {
 
         Place getPlace();
 
-        public interface Place {
+        interface Place {
             int getId();
 
             String getTitle();
