@@ -1,5 +1,6 @@
 package com.epam.lab.spider.controller.command.owner;
 
+import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.StatisticsBuilder;
 import com.epam.lab.spider.controller.utils.UTF8;
@@ -47,7 +48,7 @@ public class GetGroupStatsCommand implements ActionCommand {
             response.getWriter().write(result.toString());
             return;
         }
-        Vkontakte vk = new Vkontakte(4949213);
+        Vkontakte vk = new Vkontakte(SocialNetworkUtils.getDefaultVkAppsIdAsApps());
         String dateFrom, dateTo;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         if (request.getParameter("date_from") != null) {

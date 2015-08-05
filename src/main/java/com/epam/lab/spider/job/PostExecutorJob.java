@@ -1,5 +1,6 @@
 package com.epam.lab.spider.job;
 
+import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.utils.EventLogger;
 import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.Request;
@@ -81,7 +82,7 @@ public class PostExecutorJob implements Job {
             try {
                 Integer appId = profile.getAppId();
                 if (appId == null) {
-                    appId = 4949213;
+                    appId = SocialNetworkUtils.getDefaultVkAppsIdAsApps();
                 }
                 Vkontakte vk = new Vkontakte(appId);
 

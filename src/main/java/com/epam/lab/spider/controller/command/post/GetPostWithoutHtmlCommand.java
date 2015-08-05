@@ -1,5 +1,6 @@
 package com.epam.lab.spider.controller.command.post;
 
+import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.vk.VKException;
 import com.epam.lab.spider.controller.vk.Vkontakte;
@@ -79,7 +80,7 @@ public class GetPostWithoutHtmlCommand implements ActionCommand {
                 }
             }
         }
-        Vkontakte vk = new Vkontakte(4949213);
+        Vkontakte vk = new Vkontakte(SocialNetworkUtils.getDefaultVkAppsIdAsApps());
         List<Profile> profiles = profileService.getByUserId(1);
         for (Profile profile : profiles) {
             AccessToken accessToken = new AccessToken();

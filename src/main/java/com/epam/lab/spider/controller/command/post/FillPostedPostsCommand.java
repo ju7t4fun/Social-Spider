@@ -1,5 +1,6 @@
 package com.epam.lab.spider.controller.command.post;
 
+import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.VKException;
@@ -238,7 +239,7 @@ public class FillPostedPostsCommand implements ActionCommand {
     public static List<NewPost> getStatistics(List<NewPost> newPosts, int userId) {
         List<Profile> profiles = factory.create(ProfileService.class).getByUserId(userId);
 
-        Vkontakte vk = new Vkontakte(4949213);
+        Vkontakte vk = new Vkontakte(SocialNetworkUtils.getDefaultVkAppsIdAsApps());
         for (Profile profile : profiles) {
             AccessToken accessToken = new AccessToken();
             accessToken.setAccessToken(profile.getAccessToken());

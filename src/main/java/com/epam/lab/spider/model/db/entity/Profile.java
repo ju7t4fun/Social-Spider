@@ -1,5 +1,6 @@
 package com.epam.lab.spider.model.db.entity;
 
+import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.vk.auth.AccessToken;
 
 import java.util.Date;
@@ -15,7 +16,7 @@ public class Profile {
     private Integer vkId;
     private String accessToken;
     private Date extTime;
-    private Integer appId = 4949213;
+    private Integer appId = SocialNetworkUtils.getDefaultVkAppsIdAsApps();
     private String name = "NO NAME";
     private Boolean deleted = false;
 

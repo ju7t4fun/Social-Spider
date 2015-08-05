@@ -1,8 +1,8 @@
 package com.epam.lab.spider.controller.command.user.auth;
 
+import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.vk.Authorization;
-import com.epam.lab.spider.controller.vk.Parameters;
 import com.epam.lab.spider.controller.vk.Scope;
 import com.epam.lab.spider.controller.vk.Vkontakte;
 
@@ -20,9 +20,9 @@ public class VkAuthCommand implements ActionCommand {
     private Vkontakte vk = null;
 
     public VkAuthCommand() {
-        vk = new Vkontakte(4949208);
+        vk = new Vkontakte(SocialNetworkUtils.getDefaultVkAppsIdAsSite());
         vk.conf().setPermissions(Scope.FRIENDS, Scope.EMAIL);
-        vk.conf().setSecretKey("780FmVhvpLu8HobgGD8J");
+        vk.conf().setSecretKey(SocialNetworkUtils.getDefaultVkSecretCodeAsSite());
         vk.createOAuth(Authorization.Type.SERVER);
     }
 
@@ -30,8 +30,6 @@ public class VkAuthCommand implements ActionCommand {
         HttpSession session = request.getSession();
         session.setAttribute("siteVk", vk);
         vk.OAuth().open(response, true);
-        Parameters param = new Parameters();
-
     }
 
 }

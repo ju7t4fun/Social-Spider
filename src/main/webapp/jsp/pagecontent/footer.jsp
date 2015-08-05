@@ -10,12 +10,9 @@
             </button>
         </div>
         <div style="margin-top:-20px;">
-            <h4>Social-Spider Corp. </h4>
-            <h4><p>7 X Evo Ave Rev3 - Victoria 70913 EU</p>
-
-                <p>(432)555-9876</p>
-            </h4>
-            <p><a href="mailto:example@gmail.com"><h4>socialspider@gmail.com</h4></a></p>
+            <h4>Social-Spider Demo</h4>
+            <p><a href="skype:sm_1423?chat"><i class="fa fa-skype"></i> <h4>Chat</h4></a></p>
+            <p><a href="mailto:kovalik.yura@aol.com" target="_blank"><h4>kovalik.yura@aol.com</h4></a></p>
         </div>
     </div>
 </div>

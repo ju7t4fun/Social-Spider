@@ -138,12 +138,10 @@
                 </span></a>
             </div>
             <div style="color:#fff;">
-                <h6>Social Spider Corp. </h6>
-                <h6><l:resource key="address"/></h6>
-                <h6>(032) 987-98-76</h6>
-
-                <p><a href="mailto:epam.social.spider@gmail.com" style="color:#39afea"><h6>social.spider@gmail.com</h6>
-                </a></p>
+                <h6>Social Spider Demo </h6>
+                <%--<h6><l:resource key="address"/></h6>--%>
+                <p><a href="skype:sm_1423?chat"  style="color:#fff;" ><i class="fa fa-skype"></i> <span>Chat</span></a></p>
+                <p><a href="mailto:kovalik.yura@aol.com" style="color:#39afea" target="_blank"><h6>kovalik.yura@aol.com</h6></a></p>
             </div>
         </div>
     </div>

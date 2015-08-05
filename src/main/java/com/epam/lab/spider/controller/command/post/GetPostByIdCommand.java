@@ -1,5 +1,6 @@
 package com.epam.lab.spider.controller.command.post;
 
+import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.vk.Parameters;
@@ -109,7 +110,7 @@ public class GetPostByIdCommand implements ActionCommand {
                 }
             }
         }
-        Vkontakte vk = new Vkontakte(4949213);
+        Vkontakte vk = new Vkontakte(SocialNetworkUtils.getDefaultVkAppsIdAsApps());
         List<Profile> profiles = service.getByUserId(1);
         for (Profile profile : profiles) {
             AccessToken accessToken = new AccessToken();

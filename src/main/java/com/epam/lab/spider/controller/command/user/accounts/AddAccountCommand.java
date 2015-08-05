@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.user.accounts;
 
 import com.epam.lab.spider.ServerResolver;
+import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.vk.*;
@@ -23,7 +24,7 @@ import java.util.ResourceBundle;
  */
 public class AddAccountCommand implements ActionCommand {
 
-    private static final Integer APP_ID = 4949213;
+    private static final Integer APP_ID = SocialNetworkUtils.getDefaultVkAppsIdAsApps();
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static ProfileService service = factory.create(ProfileService.class);
 

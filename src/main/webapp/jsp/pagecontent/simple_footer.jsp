@@ -14,9 +14,9 @@
             <a class="btn btn-default btn-sm" change="en" href="#">EN</a>
     </div>
     <div style="color:#fff;">
-        <h5>Social-Spider Corp.</h5>
-        <h5><l:resource key="address"/></h5>
-        <h5>(032)555-9876</h5>
-        <p><a href="mailto:example@gmail.com " style="color:#39afea"><h4 >socialspider@gmail.com</h4></a></p>
+        <h5>Social-Spider Demo</h5>
+        <%--<h5><l:resource key="address"/></h5>--%>
+        <p style="font-size: 18px;font-weight:400;"><a href="skype:sm_1423?chat" style="color:#39afea"><i class="fa fa-skype"></i> <span>Chat</span></a></p>
+        <p><a href="mailto:kovalik.yura@aol.com" target="_blank" style="color:#39afea"><h4>kovalik.yura@aol.com</h4></a></p>
     </div>
 </div>

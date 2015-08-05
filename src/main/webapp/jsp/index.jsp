@@ -36,7 +36,10 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/creative.css" type="text/css">
-
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/team.style.css" type="text/css">
+    <!-- FONT ICON -->
+    <link href="${pageContext.request.contextPath}/css/elegant-icons-style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -123,6 +126,7 @@
                 <h2 class="section-heading"><l:resource key="index.whatyouneed"/></h2>
                 <hr class="light">
                 <p class="text-faded"><l:resource key="index.whatyouneedtext"/></p>
+                <l:resource key="index.demo.info"><p class="text-faded text-primary"></p></l:resource>
             </div>
         </div>
     </div>
@@ -195,84 +199,75 @@
             <div class="row text-center header animate-in" data-anim-type="fade-in-up">
 
             </div>
-            <div class="row animate-in" data-anim-type="fade-in-up">
 
-                <div class="col-lg-4">
-                    <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('${pageContext.request.contextPath}/img/photo/vet.png');
-                         background-size: 60%;
-                        background-repeat: no-repeat;">
-                        </div>
-                        <div class="description">
-                            <h3>Vitaliy Boyarsky</h3>
-                            <h5><strong>Team Lead & Web Developer </strong></h5>
-                        </div>
+
+            <div class="row animate-in" data-anim-type="fade-in-up">
+                <div id="team-yura" class="col-sm-4">
+                    <div class="team-member team-wrapper">
+                        <img src="${pageContext.request.contextPath}/img/team/yura.png" class="img-responsive " alt="">
+                        <h4>Yura Kovalik</h4>
+                        <p class="text-muted">Developer & Admin</p>
+                        <ul class="list-inline social-buttons">
+                            <li><a href="https://ua.linkedin.com/pub/yura-kovalik/61/581/818" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="skype:sm_1423?chat"><i class="fa fa-skype"></i></a></li>
+                            <li><a  href="mailto:kovalik.yura@aol.com" target="_blank"><i class="fa fa-envelope-o "></i></a></li>
+                        </ul>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('${pageContext.request.contextPath}/img/photo/vor1.png');
-                        background-size: 60%;
-                        background-repeat: no-repeat;">
-                        </div>
-                        <div class="description">
-                            <h3>Marian Voronovskyi</h3>
-                            <h5><strong>Web Developer</strong></h5>
-                        </div>
+                <div id="team-marian" class="col-sm-4">
+                    <div class="team-member team-wrapper">
+                        <img src="${pageContext.request.contextPath}/img/team/maryan.png" class="img-responsive" alt="">
+                        <h4>Marian Voronovskyi</h4>
+                        <p class="text-muted">Developer</p>
+                        <ul class="list-inline social-buttons">
+                            <li><a href="https://ua.linkedin.com/in/marianvoronovskyi" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="skype:marik431?chat"><i class="fa fa-skype"></i></a></li>
+                            <li><a  href="mailto:marian.voronovskyi@gmail.com" target="_blank"><i class="fa fa-envelope-o "></i></a></li>
+                        </ul>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('${pageContext.request.contextPath}/img/photo/orest1.png');
-                         background-size: 60%;
-                        background-repeat: no-repeat;">
-                        </div>
-                        <div class="description">
-                            <h3>Dzyuba Orest</h3>
-                            <h5><strong>Web Developer</strong></h5>
-                        </div>
+
+                <div id="team-orest" class="col-sm-4">
+                    <div class="team-member team-wrapper">
+                        <img src="${pageContext.request.contextPath}/img/team/orest.png" class="img-responsive" alt="">
+                        <h4>Dzyuba Orest</h4>
+                        <p class="text-muted">Developer</p>
+                        <ul class="list-inline social-buttons">
+                            <li><a href="https://ua.linkedin.com/pub/orest-dzyuba/101/b61/267" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="skype:nevermorepls?chat"><i class="fa fa-skype"></i></a></li>
+                            <li><a  href="mailto:dzyubaorest@gmail.com" target="_blank"><i class="fa fa-envelope-o "></i></a></li>
+                        </ul>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('${pageContext.request.contextPath}/img/photo/sasha1.png');
-                         background-size: 60%;
-                        background-repeat: no-repeat;">
-                        </div>
-                        <div class="description">
-                            <h3>Oleksandra Lobanok</h3>
-                            <h5><strong>Web Developer</strong></h5>
-                        </div>
+            </div>
+            <div class="row animate-in" data-anim-type="fade-in-up">
+                <div class="col-sm-4">
+                    <div id="team-oleksandra" class="team-member team-wrapper">
+                        <img class="img-responsive " src="${pageContext.request.contextPath}/img/team/sasha.png" alt="">
+                        <h4>Oleksandra Lobanok</h4>
+                        <p class="text-muted">Developer</p>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('${pageContext.request.contextPath}/img/photo/oles1.png');
-                         background-size: 60%;
-                        background-repeat: no-repeat;">
-                        </div>
-                        <div class="description">
-                            <h3>Oles Vushko</h3>
-                            <h5><strong>Web Developer</strong></h5>
-                        </div>
+                <div id="team-oles" class="col-sm-4">
+                    <div class="team-member team-wrapper">
+                        <img src="${pageContext.request.contextPath}/img/team/oles.png" class="img-responsive " alt="">
+                        <h4>Oles Vushko</h4>
+                        <p class="text-muted">Developer</p>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <div class="team-wrapper">
-                        <div class="team-inner" style="background-image: url('${pageContext.request.contextPath}/img/photo/yu1.png');
-                         background-size: 60%;
-                        background-repeat: no-repeat;">
-                        </div>
-                        <div class="description">
-                            <h3>Yura Kovalik</h3>
-                            <h5><strong>Web Developer</strong></h5>
-                        </div>
+                <div class="col-sm-4">
+                    <div class="team-member team-wrapper">
+                        <img class="img-responsive team-photo-unborder" src="${pageContext.request.contextPath}/img/team/personne.png" alt="">
+                        <%--<h4>Vitaliy Boyarsky</h4>--%>
+                        <h4>Anonymous Person</h4>
+                        <p class="text-muted">Ex Team Lead & Developer</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     <!--TEAM SECTION END-->
+
 </div>
 
 
@@ -282,19 +277,21 @@
             <div class="row">
 
                 <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <h2 class="section-heading">Social-Spider Corporation!</h2>
+                    <h2 class="section-heading">Social Spider Demo</h2>
                     <hr class="primary">
-                    <p><l:resource key="index.contactus"/></p>
+                    <l:resource key="index.contactus"><p></p></l:resource>
+                    <l:resource key="index.contactus.unphone"><p class="text-primary"></p></l:resource>
+
                 </div>
                 <div class="col-lg-4 col-lg-offset-2 text-center">
                     <i class="fa fa-phone fa-3x wow bounceIn"></i>
 
-                    <p>(032)555-9876</p>
+                    <p>+38(055)555-55-55</p>
                 </div>
                 <div class="col-lg-4 text-center">
                     <i class="fa fa-envelope-o fa-3x wow bounceIn" data-wow-delay=".1s"></i>
 
-                    <p><a href="mailto:your-email@your-domain.com">socialspider@gmail.com</a></p>
+                    <p><a href="mailto:kovalik.yura@aol.com" target="_blank">kovalik.yura@aol.com</a></p>
                 </div>
                 <div class="btn-group" style="margin-left: 211px">
                     <a class="btn btn-default btn-sm" change="ua">UA</a>

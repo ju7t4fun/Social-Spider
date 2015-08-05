@@ -84,7 +84,11 @@ public class RegisterCommand implements ActionCommand {
             }
 
             // Надсилання повідомлення активації
-            sendActivationEmail(userService.getById(user.getId()), request);
+            try {
+                sendActivationEmail(userService.getById(user.getId()), request);
+            }catch (RuntimeException x){
+                x.printStackTrace();
+            }
             session.setAttribute("toastr_notification", "success|" + UTF8.encoding(bundle.getString("reg.notification" +
                     ".success")));
             response.sendRedirect(ServerResolver.getServerPath(request)+"/login");

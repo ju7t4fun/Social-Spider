@@ -27,7 +27,7 @@
         var flag = null;
         var loadCaptcha = function () {
             captchaContainer = grecaptcha.render('captcha_container', {
-                'sitekey': '6LdMAgMTAAAAAGYY5PEQeW7b3L3tqACmUcU6alQf',
+                'sitekey': '6LexdAoTAAAAABI5O83KDE_GuQTrSwvlhn1nqwN2',
                 'callback': function (response) {
                     if (response == 0) {
                         flag = false;

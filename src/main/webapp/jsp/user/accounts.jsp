@@ -205,7 +205,8 @@
 
         <div class="col-lg-12">
             <p><l:resource key="access.text1"/></p>
-            <a href="https://oauth.vk.com/authorize?client_id=4949213&scope=wall,groups,photos,audio,video,docs,stats&redirect_uri=https://oauth.vk.com/blank.html&display=page&v=5.27&response_type=token&revoke=1"
+            <a
+                    <%--href="https://oauth.vk.com/authorize?client_id=4949213&scope=wall,groups,photos,audio,video,docs,stats&redirect_uri=https://oauth.vk.com/blank.html&display=page&v=5.27&response_type=token&revoke=1"--%>
                target="_blank" class="btn btn-info" type="button"
                style="margin-left: 38%"><i class="fa fa-vk"></i> <l:resource key="get.access"/></a>
 

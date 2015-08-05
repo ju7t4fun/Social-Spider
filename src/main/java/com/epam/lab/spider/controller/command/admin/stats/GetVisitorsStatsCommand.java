@@ -1,5 +1,6 @@
 package com.epam.lab.spider.controller.command.admin.stats;
 
+import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.StatisticsBuilder;
 import com.epam.lab.spider.controller.vk.Parameters;
@@ -48,8 +49,8 @@ public class GetVisitorsStatsCommand implements ActionCommand {
         User user = (User) session.getAttribute("user");
         Set<Profile> profiles = user.getProfiles();
         Parameters param = new Parameters();
-        Vkontakte vk = new Vkontakte(4949213);
-        param.add("app_id", 4949213);
+        Vkontakte vk = new Vkontakte(SocialNetworkUtils.getDefaultVkAppsIdAsApps());
+        param.add("app_id", SocialNetworkUtils.getDefaultVkAppsIdAsApps());
         param.add("date_from", dateFrom);
         param.add("date_to", dateTo);
         for (Profile profile : profiles) {
