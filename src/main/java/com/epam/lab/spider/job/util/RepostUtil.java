@@ -66,24 +66,7 @@ public class RepostUtil {
                 return false;
             }
         }
-        boolean manyRequest = false;
-        do {
-            try {
-                if (manyRequest) {
-                    Thread.sleep(400);
-                    manyRequest = false;
-                }
-                vk.wall().repost(parameters);
-            } catch (VKException x) {
-                if(x.getExceptionCode()==VKException.VK_MANY_REQUESTS)manyRequest=true;
-                else throw x;
-            }
-            // фікс кривої архітектури
-            // перехоплення NullPointerException by UnknownHostException
-            catch (NullPointerException x){
-                Thread.sleep(500);
-            }
-        }while (manyRequest);
+        vk.wall().repost(parameters);
         return true;
 
     }

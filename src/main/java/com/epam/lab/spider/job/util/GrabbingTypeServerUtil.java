@@ -26,6 +26,7 @@ public class GrabbingTypeServerUtil {
         return  qualityCondition;
     }
 
+    @Deprecated
     public static List<Post> grabbingBegin(Owner owner, Vkontakte vk, Filter filter, Set<Integer> alreadyAddSet, int countOfPosts, int grabbingSize) throws InterruptedException, VKException {
         long unixTime = vk.utils().getServerTime().getTime();
         List<Post> postsPrepareToPosting = new ArrayList<>();
@@ -38,25 +39,8 @@ public class GrabbingTypeServerUtil {
             parameters.add("count", grabbingSize);
             parameters.add("offset", loopsCount*grabbingSize);
             List<Post> postsOnTargetWall = null;
-            boolean manyRequest = false;
-            do {
-                try {
-                    if (manyRequest) {
-                        Thread.sleep(400);
-                        manyRequest = false;
-                    }
-                    postsOnTargetWall = vk.wall().get(parameters);
-                } catch (VKException x) {
-                    if(x.getExceptionCode()==VKException.VK_MANY_REQUESTS)manyRequest=true;
-                    else throw x;
-                }
-                // фікс кривої архітектури
-                // перехоплення NullPointerException by UnknownHostException
-                catch (NullPointerException x){
-                    Thread.sleep(500);
-                }
-            }while (manyRequest);
-            Thread.sleep(300);
+
+            postsOnTargetWall = vk.wall().get(parameters);
 
             for (com.epam.lab.spider.model.vk.Post vkPost : postsOnTargetWall) {
                 boolean alreadyProceededPost = alreadyAddSet.contains(new Integer(vkPost.getId()));
@@ -80,6 +64,7 @@ public class GrabbingTypeServerUtil {
         }
         return postsPrepareToPosting;
     }
+    @Deprecated
     public static List<Post> grabbingEnd(Owner owner, Vkontakte vk, Filter filter, Set<Integer> alreadyAddSet, int countOfPosts, int grabbingSize) throws InterruptedException, VKException {
         long unixTime = vk.utils().getServerTime().getTime();
        // TODO: BIND LOCAL GRABBING SIZE AND GRABBING SIZE
@@ -92,36 +77,35 @@ public class GrabbingTypeServerUtil {
         postGrabbingAndFiltering:
         for(int currentPostCount = 0;true;offsetOnWall=-localGrabbingSize) {
             List<Post> postsOnTargetWall = null;
-            boolean manyRequest = false, badExecution = false;
+            boolean badExecution = false;
             do {
                 try {
-                    if (manyRequest|| badExecution) {
+                    if (badExecution) {
                         Thread.sleep(400);
-                        manyRequest = false;
                         badExecution = false;
                     }
-                    if(sourceWallPostCount == null){
+                    if (sourceWallPostCount == null) {
                         sourceWallPostCount = vk.wall().getCount(owner.getVkId());
-                        if(sourceWallPostCount == 0){
-                            LOG.debug("Empty owner#"+owner.getVkId());
+                        if (sourceWallPostCount == 0) {
+                            LOG.debug("Empty owner#" + owner.getVkId());
                             break postGrabbingAndFiltering;
                         }
                     }
-                    if(sourceWallPostCount != null && offsetOnWall == null){
-                        if(sourceWallPostCount > localGrabbingSize){
+                    if (sourceWallPostCount != null && offsetOnWall == null) {
+                        if (sourceWallPostCount > localGrabbingSize) {
                             offsetOnWall = sourceWallPostCount - localGrabbingSize;
-                        }else{
+                        } else {
                             offsetOnWall = 0;
                             localGrabbingSize = sourceWallPostCount;
                         }
                     }
-                    if(sourceWallPostCount != null && offsetOnWall != null && offsetOnWall <0){
+                    if (sourceWallPostCount != null && offsetOnWall != null && offsetOnWall < 0) {
                         int diff = offsetOnWall + localGrabbingSize;
                         offsetOnWall = 0;
                         localGrabbingSize = diff;
                         endOfContent = true;
                     }
-                    if(sourceWallPostCount != null && offsetOnWall != null && offsetOnWall >=0){
+                    if (sourceWallPostCount != null && offsetOnWall != null && offsetOnWall >= 0) {
                         parameters = new Parameters();
                         parameters.add("owner_id", owner.getVkId());
                         parameters.add("filter", "owner");
@@ -129,16 +113,11 @@ public class GrabbingTypeServerUtil {
                         parameters.add("offset", offsetOnWall);
                     }
                     postsOnTargetWall = vk.wall().get(parameters);
-                } catch (VKException x) {
-                    if(x.getExceptionCode()==VKException.VK_MANY_REQUESTS)manyRequest=true;
-                    else throw x;
                 }
-                // фікс архітектури
-                // перехоплення NullPointerException by UnknownHostException
                 catch (NullPointerException x){
                     badExecution = true;
                 }
-            }while (manyRequest || badExecution);
+            }while ( badExecution);
 
 
             for (int i = postsOnTargetWall.size(); i > 0; i--) {
@@ -169,6 +148,7 @@ public class GrabbingTypeServerUtil {
      * Увага дана реалізація може стягнути максимум 80% постів
      * Дане обмеження встановлене з метою швидкодії по методу паретто
      */
+    @Deprecated
     public static List<Post> grabbingRandom(Owner owner, Vkontakte vk, Filter filter, Set<Integer> alreadyAddSet, int countOfPosts, int grabbingSize, Set<Integer> randomSaved) throws InterruptedException, VKException {
         long unixTime = vk.utils().getServerTime().getTime();
         int parrettoPostCount = 0;
@@ -178,7 +158,6 @@ public class GrabbingTypeServerUtil {
         }else {
             alreadyRandom = new HashSet<>();
         }
-//        boolean endOfContent = false;
         List<Post> postsPrepareToPosting = new ArrayList<>();
         Parameters parameters = null;
         Integer sourceWallPostCount = null;
@@ -186,12 +165,11 @@ public class GrabbingTypeServerUtil {
         postGrabbingAndFiltering:
         for(int currentPostCount = 0;true;) {
             List<Post> postsOnTargetWall = null;
-            boolean manyRequest = false, badExecution = false, prevSuccessGrabbing = true;
+            boolean  badExecution = false, prevSuccessGrabbing = true;
             do {
                 try {
-                    if (manyRequest|| badExecution) {
+                    if ( badExecution) {
                         Thread.sleep(400);
-                        manyRequest = false;
                         badExecution = false;
                     }
                     if(sourceWallPostCount == null){
@@ -228,16 +206,11 @@ public class GrabbingTypeServerUtil {
                     }
                     postsOnTargetWall = vk.wall().get(parameters);
                     prevSuccessGrabbing = true;
-                } catch (VKException x) {
-                    if(x.getExceptionCode()==VKException.VK_MANY_REQUESTS)manyRequest=true;
-                    else throw x;
                 }
-                // фікс архітектури
-                // перехоплення NullPointerException by UnknownHostException
                 catch (NullPointerException x){
                     badExecution = true;
                 }
-            }while (manyRequest || badExecution);
+            }while ( badExecution);
 
             for (int i = postsOnTargetWall.size(); i > 0; i--) {
                 com.epam.lab.spider.model.vk.Post vkPost = postsOnTargetWall.get(i-1);
@@ -256,10 +229,6 @@ public class GrabbingTypeServerUtil {
                 }
             }
 
-//            if(endOfContent){
-//                LOG.debug("End of post at owner#"+owner.getVkId());
-//                break postGrabbingAndFiltering;
-//            }
         }
         return postsPrepareToPosting;
     }

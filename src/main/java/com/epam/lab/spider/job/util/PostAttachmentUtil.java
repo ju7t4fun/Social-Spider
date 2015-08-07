@@ -21,7 +21,6 @@ import java.util.List;
 
 /**
  * @author Yura Kovalik
- * Refactor by shell on 7/6/2015.
  */
 public class PostAttachmentUtil {
     public static final Logger LOG = Logger.getLogger(PostAttachmentUtil.class);
