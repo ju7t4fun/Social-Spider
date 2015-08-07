@@ -1,6 +1,9 @@
 package com.epam.lab.spider.model.db.service;
 
-import com.epam.lab.spider.model.db.entity.Attachment;
+import com.epam.lab.spider.model.entity.AbstractEntityFactory;
+import com.epam.lab.spider.model.entity.Attachment;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.persistence.service.AttachmentService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,16 +13,17 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by Sasha on 12.07.2015.
+ * @author Oleksandra Lobanok
  */
 public class AttachmentServiceTest {
+    public static final AbstractEntityFactory ENTITY_FACTORY = BasicEntityFactory.getInstance();
 
     Attachment attachment;
     AttachmentService as = new AttachmentService();
 
     @Before
     public void setUp() throws Exception {
-        attachment = new Attachment();
+        attachment = ENTITY_FACTORY.createAttachment();
         attachment.setPayload("testurl");
         attachment.setPostId(10);
         attachment.setType(Attachment.Type.DOC);

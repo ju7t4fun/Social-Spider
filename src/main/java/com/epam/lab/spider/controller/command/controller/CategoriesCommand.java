@@ -1,8 +1,9 @@
 package com.epam.lab.spider.controller.command.controller;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.Category;
-import com.epam.lab.spider.model.db.service.CategoryService;
+import com.epam.lab.spider.model.entity.Category;
+import com.epam.lab.spider.persistence.service.CategoryService;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 
 import javax.servlet.ServletException;
@@ -13,9 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Marian Voronovskyi on 27.06.2015.
+ * @author Marian Voronovskyi
  */
 public class CategoriesCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(CategoriesCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         CategoryService categoryService = new CategoryService();
@@ -23,7 +25,7 @@ public class CategoriesCommand implements ActionCommand {
         try {
             listCategory = categoryService.getAll();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         JSONArray jsonArray = new JSONArray(listCategory);
         response.getWriter().print(jsonArray);

@@ -1,6 +1,9 @@
 package com.epam.lab.spider.model.db.service;
 
-import com.epam.lab.spider.model.db.entity.Message;
+import com.epam.lab.spider.model.entity.AbstractEntityFactory;
+import com.epam.lab.spider.model.entity.Message;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.persistence.service.MessageService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,16 +13,17 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by Sasha on 12.07.2015.
+ * @author Oleksandra Lobanok
  */
 public class MessageServiceTest {
+    public static final AbstractEntityFactory ENTITY_FACTORY = BasicEntityFactory.getSynchronized();
 
     Message message;
     MessageService ms = new MessageService();
 
     @Before
     public void setUp() throws Exception {
-        message = new Message();
+        message = ENTITY_FACTORY.createMessage();
         message.setUserId(1);
         message.setText("TestText");
         message.setType(Message.Type.TO_USER);
@@ -34,7 +38,7 @@ public class MessageServiceTest {
     @Test
     public void testUpdate() throws Exception {
         ms.insert(message);
-        Message newMessage = new Message();
+        Message newMessage = ENTITY_FACTORY.createMessage();
         newMessage.setUserId(1);
         newMessage.setText("newText");
         newMessage.setType(Message.Type.TO_USER);

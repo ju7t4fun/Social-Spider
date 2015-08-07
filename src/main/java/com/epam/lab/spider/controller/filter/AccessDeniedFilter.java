@@ -1,6 +1,6 @@
 package com.epam.lab.spider.controller.filter;
 
-import com.epam.lab.spider.model.db.entity.User;
+import com.epam.lab.spider.model.entity.User;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -15,16 +15,19 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Created by Boyarsky Vitaliy on 14.07.2015.
+ * @author Boyarsky Vitaliy
  */
 public class AccessDeniedFilter implements Filter {
-    public static final Logger LOG = Logger.getLogger(AccessDeniedFilter.class);
+    private static final Logger LOG = Logger.getLogger(AccessDeniedFilter.class);
     private static Map<Permissions, List<Pattern>> accessDeniedMapPattern = new HashMap<>();
 
-    public static boolean disableSecurity = false;
+    private static boolean disableSecurity = false;
     public void destroy() {
     }
 
@@ -119,7 +122,7 @@ public class AccessDeniedFilter implements Filter {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             return dBuilder.parse(inputStream);
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         return null;
     }

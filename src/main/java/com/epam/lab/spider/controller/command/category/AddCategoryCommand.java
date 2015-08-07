@@ -2,9 +2,10 @@ package com.epam.lab.spider.controller.command.category;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
-import com.epam.lab.spider.model.db.entity.Category;
-import com.epam.lab.spider.model.db.service.CategoryService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Category;
+import com.epam.lab.spider.model.entity.impl.CategoryImpl;
+import com.epam.lab.spider.persistence.service.CategoryService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Marian Voronovskyi on 30.06.2015.
+ * @author Marian Voronovskyi
  */
 public class AddCategoryCommand implements ActionCommand {
     private static ServiceFactory factory = ServiceFactory.getInstance();
@@ -32,7 +33,7 @@ public class AddCategoryCommand implements ActionCommand {
             response.getWriter().write(json.toString());
             return;
         }
-        Category category = new Category();
+        Category category = new CategoryImpl();
         category.setName(name);
         if (request.getSession().getAttribute("urlCat") != null)
             category.setImageUrl((String) request.getSession().getAttribute("urlCat"));
@@ -41,7 +42,7 @@ public class AddCategoryCommand implements ActionCommand {
             json.put("msg", "Successfully added");
         } else {
             json.put("status", "error");
-            json.put("msg", "Occured error while updated!");
+            json.put("msg", "Occurred error while updated!");
         }
         request.getSession().removeAttribute("urlCat");
         response.getWriter().write(json.toString());

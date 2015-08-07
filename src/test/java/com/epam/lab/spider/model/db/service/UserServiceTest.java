@@ -1,6 +1,9 @@
 package com.epam.lab.spider.model.db.service;
 
-import com.epam.lab.spider.model.db.entity.User;
+import com.epam.lab.spider.model.entity.AbstractEntityFactory;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.persistence.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,17 +12,17 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * Created by Sasha on 12.07.2015.
+ * @author Oleksandra Lobanok
  */
 public class UserServiceTest {
+    public static final AbstractEntityFactory ENTITY_FACTORY = BasicEntityFactory.getSynchronized();
 
     User user;
     UserService us = new UserService();
 
     @Before
     public void setUp() throws Exception {
-        user = new User();
-        user.setId(5);
+        user = ENTITY_FACTORY.createUser();
         user.setName("TestName");
         user.setSurname("TestSurname");
         user.setEmail("test@test.ua");
@@ -35,7 +38,7 @@ public class UserServiceTest {
     @Test
     public void testUpdate() throws Exception {
         us.insert(user);
-        User newUser = new User();
+        User newUser = ENTITY_FACTORY.createUser();
         newUser.setEmail("test@test.ua");
         newUser.setPassword("testpw");
         Boolean check = us.update(user.getId(),newUser);

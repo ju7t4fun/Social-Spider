@@ -1,17 +1,17 @@
 package com.epam.lab.spider.job.util;
 
-import com.epam.lab.spider.controller.vk.Parameters;
-import com.epam.lab.spider.controller.vk.VKException;
-import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.model.db.entity.Filter;
-import com.epam.lab.spider.model.db.entity.Owner;
+import com.epam.lab.spider.integration.vk.Parameters;
+import com.epam.lab.spider.integration.vk.VKException;
+import com.epam.lab.spider.integration.vk.Vkontakte;
+import com.epam.lab.spider.model.entity.Filter;
+import com.epam.lab.spider.model.entity.Owner;
 import com.epam.lab.spider.model.vk.Post;
 import org.apache.log4j.Logger;
 
 import java.util.*;
 
 /**
- * Created by shell on 6/28/2015.
+ * @author Yura Kovalik
  */
 public class GrabbingTypeServerUtil {
     public static final Logger LOG = Logger.getLogger(GrabbingTypeServerUtil.class);
@@ -20,7 +20,8 @@ public class GrabbingTypeServerUtil {
         if(filter==null) return true;
         boolean qualityCondition = true;
         if(filter.getLikes()!=null)     qualityCondition &= vkPost.getLikes().getCount() >= filter.getLikes().intValue();
-        if(filter.getReposts()!=null)   qualityCondition &= vkPost.getReposts().getCount() >= filter.getLikes().intValue();
+        if (filter.getRePosts() != null)
+            qualityCondition &= vkPost.getReposts().getCount() >= filter.getLikes().intValue();
         if(filter.getComments()!=null)  qualityCondition &= vkPost.getComments().getCount() >= filter.getComments().intValue();
         return  qualityCondition;
     }

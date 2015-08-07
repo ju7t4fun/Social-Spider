@@ -1,16 +1,16 @@
 package com.epam.lab.spider.job.util;
 
-import com.epam.lab.spider.controller.vk.Parameters;
-import com.epam.lab.spider.controller.vk.VKException;
-import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.model.db.entity.DataLock;
-import com.epam.lab.spider.model.db.entity.Owner;
-import com.epam.lab.spider.model.db.entity.Profile;
+import com.epam.lab.spider.integration.vk.Parameters;
+import com.epam.lab.spider.integration.vk.VKException;
+import com.epam.lab.spider.integration.vk.Vkontakte;
+import com.epam.lab.spider.integration.vk.auth.AccessToken;
+import com.epam.lab.spider.model.entity.DataLock;
+import com.epam.lab.spider.model.entity.Owner;
+import com.epam.lab.spider.model.entity.Profile;
 import org.apache.log4j.Logger;
 
 /**
- * Created by shell on 6/30/2015.
+ * @author Yura Kovalik
  */
 // Незаблоковує стіну при помилці доступу при ріпості.
 public class RepostUtil {

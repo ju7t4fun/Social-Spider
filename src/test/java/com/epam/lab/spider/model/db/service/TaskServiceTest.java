@@ -1,6 +1,9 @@
 package com.epam.lab.spider.model.db.service;
 
-import com.epam.lab.spider.model.db.entity.Task;
+import com.epam.lab.spider.model.entity.AbstractEntityFactory;
+import com.epam.lab.spider.model.entity.Task;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.persistence.service.TaskService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,16 +14,17 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by Sasha on 13.07.2015.
+ * @author Oleksandra Lobanok
  */
 public class TaskServiceTest {
+    public static final AbstractEntityFactory ENTITY_FACTORY = BasicEntityFactory.getSynchronized();
 
     Task task;
     TaskService ts = new TaskService();
 
     @Before
     public void setUp() throws Exception {
-        task = new Task();
+        task = ENTITY_FACTORY.createTask();
         task.setUserId(1);
         task.setFilterId(3);
         task.setType(Task.Type.FAVORITE);
@@ -36,7 +40,6 @@ public class TaskServiceTest {
         Boolean check = ts.save(task);
         assertTrue(check);
     }
-/*
     @Test
     public void testInsert() throws Exception {
         Boolean check = ts.insert(task);
@@ -45,7 +48,7 @@ public class TaskServiceTest {
 
     @Test
     public void testUpdate() throws Exception {
-        Task newTask = new Task();
+        Task newTask = ENTITY_FACTORY.createTask();
         newTask.setUserId(1);
         newTask.setFilterId(4);
         newTask.setType(Task.Type.FAVORITE);
@@ -57,7 +60,6 @@ public class TaskServiceTest {
         Boolean check = ts.update(3, newTask);
         assertTrue(check);
     }
-*/
     @Test
     public void testDelete() throws Exception {
         ts.delete(5);

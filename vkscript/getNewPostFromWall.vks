@@ -1,4 +1,4 @@
-var owner_id = parseInt(Args.owner_id);
+var ownerId = parseInt(Args.ownerId);
 var count = parseInt(Args.count);
 if(count <= 0) count = -1;
 if(count > 50) count = 50;
@@ -10,7 +10,7 @@ if(total_loops<1) total_loops = 30;
 var api_call_count = 1;
 var responses = [];
 var response = API.wall.get({
-    "owner_id" : owner_id,
+    "ownerId" : ownerId,
     "filter": "owner",
     "count": 100
 });
@@ -56,7 +56,7 @@ while(loop < total_loops && searching){
             var query_offset = 100*basket;
             api_call_count = api_call_count + 1;
             var response_item = API.wall.get({
-                "owner_id" : owner_id,
+                "ownerId" : ownerId,
                 "filter": "owner",
                 "count": 100,
                 "offset": query_offset

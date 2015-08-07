@@ -1,19 +1,20 @@
 package com.epam.lab.spider.job.util;
 
-import com.epam.lab.spider.controller.vk.Parameters;
-import com.epam.lab.spider.controller.vk.VKException;
-import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.model.db.entity.Owner;
-import com.epam.lab.spider.model.db.service.*;
+import com.epam.lab.spider.integration.vk.Parameters;
+import com.epam.lab.spider.integration.vk.VKException;
+import com.epam.lab.spider.integration.vk.Vkontakte;
+import com.epam.lab.spider.model.entity.Owner;
 import com.epam.lab.spider.model.vk.Group;
 import com.epam.lab.spider.model.vk.User;
+import com.epam.lab.spider.persistence.service.OwnerService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by shell on 6/27/2015.
+ * @author Yura Kovalik
  */
 public class OpenedOwnerUpdater {
     public static final Logger LOG = Logger.getLogger(OpenedOwnerUpdater.class);
@@ -77,7 +78,7 @@ public class OpenedOwnerUpdater {
                 }
             }
         } catch (VKException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         // for groups
         parameters = new Parameters();
@@ -117,7 +118,7 @@ public class OpenedOwnerUpdater {
                     }
                 }
         } catch (VKException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
 
         LOG.info("Updated data of "+changeCount+" owners.");

@@ -14,7 +14,8 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 /**
- * Created by Boyarsky Vitaliy on 08.06.2015.
+ * @author Boyarsky Vitaliy
+ * @author Yura Kovalik
  */
 public class LocaleTag extends BodyTagSupport {
     public static final Logger LOG = Logger.getLogger(LocaleTag.class);
@@ -91,7 +92,7 @@ public class LocaleTag extends BodyTagSupport {
                 safeWrite(output);
 
             } catch (NullPointerException e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
                 safeWrite(simpleFormat(key, value));
             }
         } else {

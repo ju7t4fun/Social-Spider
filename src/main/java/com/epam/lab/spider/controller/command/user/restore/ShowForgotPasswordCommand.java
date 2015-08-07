@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Орест on 15.06.2015.
+ * @author Dzyuba Orest
  */
 public class ShowForgotPasswordCommand implements ActionCommand {
     @Override

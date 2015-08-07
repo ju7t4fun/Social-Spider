@@ -1,11 +1,11 @@
 package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.Attachment;
-import com.epam.lab.spider.model.db.entity.Post;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.PostService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Attachment;
+import com.epam.lab.spider.model.entity.Post;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.PostService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,10 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * Created by Boyarsky Vitaliy on 28.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class GetCreatedPostCommand implements ActionCommand {
 
@@ -34,7 +37,7 @@ public class GetCreatedPostCommand implements ActionCommand {
         List<Post> posts;
         int postCount;
         String nameToSearch = request.getParameter("sSearch");
-        if (nameToSearch != null && nameToSearch != "" ) {
+        if (nameToSearch != null && !nameToSearch.isEmpty()) {
             nameToSearch = "%" + nameToSearch + "%";
             postCount = service.getCountByUserIdWithSearch(user.getId(), nameToSearch);
             posts = service.getByUserIdWithSearch(user.getId(), page, size, nameToSearch);

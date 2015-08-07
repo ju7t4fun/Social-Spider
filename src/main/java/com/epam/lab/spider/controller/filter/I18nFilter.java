@@ -9,9 +9,21 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * Created by Boyarsky Vitaliy on 08.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class I18nFilter implements Filter {
+
+    private static String defaultLanguage(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies.length == 0)
+            return "en";
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("language")) {
+                return cookie.getValue();
+            }
+        }
+        return "en";
+    }
 
     public void destroy() {
 
@@ -26,18 +38,6 @@ public class I18nFilter implements Filter {
             session.setAttribute("bundle", bundle);
         }
         chain.doFilter(req, resp);
-    }
-
-    private static String defaultLanguage(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies.length == 0)
-            return "en";
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("language")) {
-                return cookie.getValue();
-            }
-        }
-        return "en";
     }
 
     public void init(FilterConfig config) throws ServletException {

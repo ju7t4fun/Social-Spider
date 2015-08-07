@@ -2,8 +2,8 @@ package com.epam.lab.spider.controller.command.owner;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
-import com.epam.lab.spider.model.db.service.OwnerService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.OwnerService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 /**
- * Created by Boyarsky Vitaliy on 29.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class RemoveOwnerCommand implements ActionCommand {
 

@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.utils;
 
 /**
- * Created by Marian Voronovskyi on 11.07.2015.
+ * @author Marian Voronovskyi
  */
 public class ReplaceHtmlTags {
     public static String reaplaceAll(String text) {

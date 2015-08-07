@@ -1,10 +1,10 @@
 package com.epam.lab.spider.controller.command.admin.group;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.Category;
-import com.epam.lab.spider.model.db.entity.Owner;
-import com.epam.lab.spider.model.db.service.OwnerService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Owner;
+import com.epam.lab.spider.persistence.service.OwnerService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -15,9 +15,10 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by Орест on 7/2/2015.
+ * @author Dzyuba Orest
  */
 public class GroupUniqueCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(GroupUniqueCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String toSearch = request.getParameter("sSearch");
@@ -46,12 +47,12 @@ public class GroupUniqueCommand implements ActionCommand {
 
         int totalCount;
         List<Owner> owners;
-        if (toSearch == null || toSearch == "") {
+        if (toSearch == null || toSearch.isEmpty()) {
             owners = service.getAllGroups(start, ammount);
             totalCount = service.getCountAllUnique();
         } else {
             toSearch = "%" + toSearch + "%";
-            System.out.println("toSearch: " + toSearch);
+            LOG.info("toSearch: " + toSearch);
             owners = service.getAllGroupsWithSearch(toSearch, start, ammount);
             totalCount = service.getCountAllUniqueWithSearch(toSearch);
         }
@@ -70,8 +71,8 @@ public class GroupUniqueCommand implements ActionCommand {
                 }
             }
         }
-        System.out.println(owners.size());
-        System.out.println(totalCount);
+        LOG.info(owners.size());
+        LOG.info(totalCount);
 
         result.put("iTotalDisplayRecords", totalCount);
         result.put("aaData", table);

@@ -1,25 +1,27 @@
 package com.epam.lab.spider.model.db.service;
 
-import com.epam.lab.spider.model.db.entity.Post;
+import com.epam.lab.spider.model.entity.AbstractEntityFactory;
+import com.epam.lab.spider.model.entity.Post;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.persistence.service.PostService;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 /**
- * Created by Sasha on 12.07.2015.
+ * @author Oleksandra Lobanok
  */
 public class PostServiceTest {
+    public static final AbstractEntityFactory ENTITY_FACTORY = BasicEntityFactory.getSynchronized();
 
     Post post;
     PostService ps = new PostService();
 
     @Before
     public void setUp() throws Exception {
-        post = new Post();
+        post = ENTITY_FACTORY.createPost();
         post.setMessage("TestMessage");
         post.setDeleted(false);
         post.setUserId(1);
@@ -39,7 +41,7 @@ public class PostServiceTest {
 
     @Test
     public void testUpdate() throws Exception {
-        Post newPost = new Post();
+        Post newPost = ENTITY_FACTORY.createPost();
         newPost.setMessage("NewTestMessage");
         newPost.setDeleted(false);
         newPost.setUserId(1);

@@ -3,7 +3,7 @@ package com.epam.lab.spider;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by hell-engine on 7/16/2015.
+ * @author Yura Kovalik
  */
 public class ServerResolver {
 

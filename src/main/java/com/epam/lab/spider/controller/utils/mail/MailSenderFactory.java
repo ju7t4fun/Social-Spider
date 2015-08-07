@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.utils.mail;
 
 /**
- * Created by Dmytro on 12.06.2015.
+ * @author Dzyuba Orest
  */
 public class MailSenderFactory {
 

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Boyarsky Vitaliy on 08.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class ApiServlet extends HttpServlet {
 
@@ -39,7 +39,7 @@ public class ApiServlet extends HttpServlet {
         @Override
         public void action(HttpServletRequest request, HttpServletResponse response) throws IOException,
                 ServletException {
-            String action = null;
+            String action;
             String[] args = request.getRequestURI().split("/");
             if (args[2].equals("method")) {
                 action = args[3];

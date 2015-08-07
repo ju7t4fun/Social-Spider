@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Орест on 23/06/2015.
+ * @author Dzyuba Orest
  */
 public class ShowAllPostsCommand implements ActionCommand {
     @Override

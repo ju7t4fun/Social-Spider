@@ -8,11 +8,12 @@ import com.epam.lab.spider.controller.utils.hash.HashMD5;
 import com.epam.lab.spider.controller.utils.hash.HashSHA;
 import com.epam.lab.spider.controller.utils.mail.MailSender;
 import com.epam.lab.spider.controller.utils.mail.MailSenderFactory;
-import com.epam.lab.spider.model.db.entity.Profile;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.ProfileService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.UserService;
+import com.epam.lab.spider.model.entity.Profile;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.persistence.service.ProfileService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +23,7 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 /**
- * Created by Dmytro on 11.06.2015.
+ * @author Dzyuba Orest
  */
 public class RegisterCommand implements ActionCommand {
 
@@ -48,7 +49,7 @@ public class RegisterCommand implements ActionCommand {
         session.removeAttribute("email");
 
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
-        if (gRecaptchaResponse == "" || gRecaptchaResponse == null) {
+        if (gRecaptchaResponse.isEmpty() || gRecaptchaResponse == null) {
             request.setAttribute("toastr_notification", "error|Captcha error");
             request.getRequestDispatcher("jsp/user/registration.jsp").forward(request, response);
             return;
@@ -63,7 +64,7 @@ public class RegisterCommand implements ActionCommand {
             request.getRequestDispatcher("jsp/user/registration.jsp").forward(request, response);
         } else {
             // Ствоерення новго користувача
-            user = new User();
+            user = BasicEntityFactory.getSynchronized().createUser();
             user.setEmail(email);
             user.setName(name);
             user.setSurname(surname);
@@ -77,7 +78,7 @@ public class RegisterCommand implements ActionCommand {
 
             // Якщо зареєстувався через вк привязати user_id до vk_id
             if (!request.getParameter("vkId").equals("")) {
-                Profile profile = new Profile();
+                Profile profile = BasicEntityFactory.getSynchronized().createProfile();
                 profile.setUserId(user.getId());
                 profile.setVkId(Integer.parseInt(request.getParameter("vkId")));
                 profileService.insert(profile);

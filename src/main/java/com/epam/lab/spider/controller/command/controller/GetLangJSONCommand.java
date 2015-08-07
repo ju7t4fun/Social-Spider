@@ -1,6 +1,7 @@
 package com.epam.lab.spider.controller.command.controller;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -11,10 +12,10 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 /**
- * Created by Орест on 7/11/2015.
+ * @author Dzyuba Orest
  */
 public class GetLangJSONCommand implements ActionCommand {
-
+    private static final Logger LOG = Logger.getLogger(GetLangJSONCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JSONObject json = new JSONObject();
@@ -50,7 +51,7 @@ public class GetLangJSONCommand implements ActionCommand {
                 json.put("oAria", subJsonAria);
 
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
             }
         } else {
 
@@ -82,7 +83,7 @@ public class GetLangJSONCommand implements ActionCommand {
                 json.put("oAria", subJsonAria);
 
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
             }
 
         }

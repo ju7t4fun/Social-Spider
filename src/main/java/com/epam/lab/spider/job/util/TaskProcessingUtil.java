@@ -5,24 +5,25 @@ import com.epam.lab.spider.job.exception.FindingEmptyResultException;
 import com.epam.lab.spider.job.exception.PostContentException;
 import com.epam.lab.spider.job.exception.WallAlreadyStopped;
 import com.epam.lab.spider.job.exception.WallStopException;
-import com.epam.lab.spider.job.limit.UserLimit;
+import com.epam.lab.spider.job.limit.UserLimitProcessor;
 import com.epam.lab.spider.job.limit.UserLimitsFactory;
-import com.epam.lab.spider.model.db.entity.*;
-import com.epam.lab.spider.model.db.entity.Post;
-import com.epam.lab.spider.model.db.service.TaskSynchronizedDataService;
-import com.epam.lab.spider.model.db.service.TaskSynchronizedNewDataService;
-import com.epam.lab.spider.model.db.service.WallService;
-import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
-import com.epam.lab.spider.model.vk.*;
+import com.epam.lab.spider.model.entity.*;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.model.entity.impl.PostingTaskImpl;
+import com.epam.lab.spider.model.vk.PostOffsetDecorator;
+import com.epam.lab.spider.persistence.service.TaskSynchronizedDataService;
+import com.epam.lab.spider.persistence.service.TaskSynchronizedNewDataService;
+import com.epam.lab.spider.persistence.service.WallService;
+import com.epam.lab.spider.persistence.service.savable.SavableServiceUtil;
 import org.apache.log4j.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.epam.lab.spider.model.db.service.TaskSynchronizedNewDataService.getSynchronizedDataFactory;
+import static com.epam.lab.spider.persistence.service.TaskSynchronizedNewDataService.getSynchronizedDataFactory;
 
 /**
- * Created by hell-engine on 7/24/2015.
+ * @author Yura Kovalik
  */
 public class TaskProcessingUtil {
     private static final Logger LOG = Logger.getLogger(TaskProcessingUtil.class);
@@ -31,7 +32,7 @@ public class TaskProcessingUtil {
 
     private static TaskSynchronizedNewDataService syncNewService = new TaskSynchronizedNewDataService();
 
-    private static UserLimit limit = UserLimitsFactory.getUserLimit();
+    private static UserLimitProcessor limit = UserLimitsFactory.getUserLimitProcessor();
     public static boolean processingTask(Task task){
         try {
             // якщо таск не активний то не запускаємо
@@ -132,7 +133,7 @@ public class TaskProcessingUtil {
                                     }
                                     case FAVORITE: {
                                         Post post = PostProcessingUtil.processingPost(vkPost, task);
-                                        System.out.println("-------------" + post);
+                                        LOG.info(post);
                                         Feed feed = new Feed();
                                         feed.processing(post, task);
                                         break;
@@ -210,7 +211,7 @@ public class TaskProcessingUtil {
                                     }
                                     case FAVORITE: {
                                         Post post = PostProcessingUtil.processingPost(vkPost, task);
-                                        System.out.println("-------------" + post);
+                                        LOG.info(post);
                                         Feed feed = new Feed();
                                         feed.processing(post, task);
                                         break;
@@ -260,7 +261,7 @@ public class TaskProcessingUtil {
             }
 
 
-            LinkedList<NewPost> newPosts = new LinkedList<>();
+            LinkedList<PostingTask> postingTasks = new LinkedList<>();
 
             long timeToPost = task.getNextTaskRunDate().getTime();
             for (Wall wall : destinationWalls) {
@@ -269,17 +270,17 @@ public class TaskProcessingUtil {
                 if (writeBlocked) break;
                 // відкладений постинг
                 for (Post post : addedToProcessingPosts) {
-                    NewPost newPost = new NewPost();
-                    newPost.setPost(post);
-                    newPost.setWallId(wall.getId());
+                    PostingTask postingTask = BasicEntityFactory.getSynchronized().createPostingTask();
+                    postingTask.setPost(post);
+                    postingTask.setWallId(wall.getId());
                     // set user id
-                    newPost.setUserId(task.getUserId());
-                    newPost.getPost().setUserId(task.getUserId());
-                    timeToPost += TaskUtil.getRandomPostDeleay(task) * 1000;
-                    newPost.setPostTime(new Date(timeToPost));
+                    postingTask.setUserId(task.getUserId());
+                    postingTask.getPost().setUserId(task.getUserId());
+                    timeToPost += TaskUtil.getRandomPostDelay(task) * 1000;
+                    postingTask.setPostTime(new Date(timeToPost));
 
-                    newPost.setState(NewPost.State.CREATED);
-                    newPosts.addFirst(newPost);
+                    postingTask.setState(PostingTaskImpl.State.CREATED);
+                    postingTasks.addFirst(postingTask);
                 }
                 // моментальний ріпостинг
                 for (com.epam.lab.spider.model.vk.Post vkPost : postToRepost) {
@@ -291,8 +292,8 @@ public class TaskProcessingUtil {
                 }
 
             }
-            for (NewPost newPost : newPosts) {
-                boolean result = SavableServiceUtil.safeSave(newPost);
+            for (PostingTask postingTask : postingTasks) {
+                boolean result = SavableServiceUtil.safeSave(postingTask);
                 if (!result) LOG.fatal("ТЕРМІНОВО ФІКСИТЬ БАЗУ!");
             }
             for (Map.Entry<Wall, LinkedList<Integer>> entry : blockMap.entrySet()) {
@@ -316,7 +317,7 @@ public class TaskProcessingUtil {
                 int countGrabSuccess = addedToProcessingPosts.size();
                 String newString = new SimpleDateFormat("H:mm:ss").format(task.getNextTaskRunDate());
                 String title = "Task #" + task.getId() + " have grabbed post " + countGrabSuccess + "/" + countGrabMax + ". ";
-                String info = title + " Planned Post Action Count: " + newPosts.size()+". Next run at "+newString;
+                String info = title + " Planned Post Action Count: " + postingTasks.size() + ". Next run at " + newString;
                 if(task.getType() != Task.Type.FAVORITE) {
                     EventLogger eventLogger = EventLogger.getLogger(task.getUserId());
                     eventLogger.info(title, info);

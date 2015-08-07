@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.command.admin;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.Task;
+import com.epam.lab.spider.model.entity.Task;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Marian Voronovskyi on 09.07.2015.
+ * @author Marian Voronovskyi
  */
 public class AdminAddTaskCommand implements ActionCommand {
     @Override
@@ -44,7 +44,7 @@ public class AdminAddTaskCommand implements ActionCommand {
         request.setAttribute("AUDIO","true");
         request.setAttribute("VIDEO","true");
         request.setAttribute("DOCUMENTS","true");
-        request.setAttribute("REPOSTS","true");
+        request.setAttribute("RE_POSTS", "true");
 
         request.setAttribute("likes_max","1200");
         request.setAttribute("reposts_max","600");

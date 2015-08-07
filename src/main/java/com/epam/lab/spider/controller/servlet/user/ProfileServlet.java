@@ -2,8 +2,8 @@ package com.epam.lab.spider.controller.servlet.user;
 
 import com.epam.lab.spider.controller.command.ActionFactory;
 import com.epam.lab.spider.controller.command.user.profile.ChangeAvatarCommand;
-import com.epam.lab.spider.controller.command.user.profile.ProfileChangePasswordCommand;
 import com.epam.lab.spider.controller.command.user.profile.EditProfileCommand;
+import com.epam.lab.spider.controller.command.user.profile.ProfileChangePasswordCommand;
 import com.epam.lab.spider.controller.command.user.profile.ShowProfileCommand;
 
 import javax.servlet.ServletException;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Boyarsky Vitaliy on 26.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class ProfileServlet extends HttpServlet {
 

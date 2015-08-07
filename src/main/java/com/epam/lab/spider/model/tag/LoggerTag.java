@@ -1,20 +1,20 @@
 package com.epam.lab.spider.model.tag;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
-import java.lang.reflect.Method;
 
 /**
- * Created by Sasha on 05.07.2015.
+ * @author Oleksandra Lobanok
  */
 public class LoggerTag extends BodyTagSupport {
+    private static final String[] LEVELS = {"debug", "info", "warn", "error", "fatal"};
     private Logger log = null;
     private String configFile = null;
     private String level = null;
-    private static final String[] LEVELS = {"debug", "info", "warn", "error", "fatal"};
 
     public void setConfigFile(String fileName) {
         this.configFile = fileName;
@@ -42,12 +42,11 @@ public class LoggerTag extends BodyTagSupport {
 
         log = Logger.getLogger(LoggerTag.class);
         String message = getBodyContent().getString().trim();
-        Method method = null;
-
         try {
-            method = log.getClass().getMethod(level, Object.class);
-            method.invoke(log, new String[] {message});
-        } catch (Exception e) {}
+            log.log(Level.toLevel(level.toUpperCase()), message);
+        } catch (Exception e) {
+
+        }
         return EVAL_PAGE;
     }
 

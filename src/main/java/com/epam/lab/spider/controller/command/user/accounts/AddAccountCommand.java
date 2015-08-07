@@ -3,26 +3,25 @@ package com.epam.lab.spider.controller.command.user.accounts;
 import com.epam.lab.spider.ServerResolver;
 import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.controller.utils.UTF8;
-import com.epam.lab.spider.controller.vk.*;
-import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.model.db.entity.Profile;
-import com.epam.lab.spider.model.db.service.ProfileService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.integration.vk.*;
+import com.epam.lab.spider.integration.vk.auth.AccessToken;
+import com.epam.lab.spider.model.entity.Profile;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
 import com.epam.lab.spider.model.vk.User;
-import org.json.JSONObject;
+import com.epam.lab.spider.persistence.service.ProfileService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ResourceBundle;
 
 /**
- * Created by Boyarsky Vitaliy on 09.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class AddAccountCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(AddAccountCommand.class);
 
     private static final Integer APP_ID = SocialNetworkUtils.getDefaultVkAppsIdAsApps();
     private static ServiceFactory factory = ServiceFactory.getInstance();
@@ -49,11 +48,11 @@ public class AddAccountCommand implements ActionCommand {
             }
 
             AccessToken token = vk.OAuth().signIn(request);
-            Profile profile = new Profile();
+            Profile profile = BasicEntityFactory.getSynchronized().createProfile();
             profile.setVkId(token.getUserId());
             profile.setAccessToken(token.getAccessToken());
             profile.setExtTime(token.getExpirationMoment());
-            profile.setUserId(((com.epam.lab.spider.model.db.entity.User) request.getSession().getAttribute("user"))
+            profile.setUserId(((com.epam.lab.spider.model.entity.User) request.getSession().getAttribute("user"))
                     .getId());
             try {
                 Parameters param = new Parameters();
@@ -61,7 +60,7 @@ public class AddAccountCommand implements ActionCommand {
                 User user = vk.users().get(param).get(0);
                 profile.setName(user.getFirstName() + " " + user.getLastName());
             } catch (VKException e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
             }
             profile.setAppId(APP_ID);
 

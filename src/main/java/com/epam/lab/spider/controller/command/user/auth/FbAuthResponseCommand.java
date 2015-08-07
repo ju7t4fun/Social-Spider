@@ -5,8 +5,8 @@ import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.utils.facebookauth.FBConnection;
 import com.epam.lab.spider.controller.utils.facebookauth.FBGraph;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.UserService;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
- * Created by Орест on 16.06.2015.
+ * @author Dzyuba Orest
  */
 public class FbAuthResponseCommand implements ActionCommand {
     @Override

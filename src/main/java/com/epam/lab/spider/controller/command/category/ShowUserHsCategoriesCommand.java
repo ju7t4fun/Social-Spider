@@ -1,23 +1,21 @@
 package com.epam.lab.spider.controller.command.category;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.Category;
-import com.epam.lab.spider.model.db.entity.User;
-
-import com.epam.lab.spider.model.db.service.CategoryService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Category;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.CategoryService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-
 import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * Created by Орест on 7/5/2015.
+ * @author Dzyuba Orest
  */
 public class ShowUserHsCategoriesCommand implements ActionCommand {
     @Override

@@ -5,9 +5,9 @@ import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.utils.mail.MailSender;
 import com.epam.lab.spider.controller.utils.mail.MailSenderFactory;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.UserService;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.UserService;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.servlet.ServletException;
@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 
 
 /**
- * Created by Orest Dzyuba on 15.06.2015.
+ * @author Dzyuba Orest
  */
 public class SendRestoreCommand implements ActionCommand {
 

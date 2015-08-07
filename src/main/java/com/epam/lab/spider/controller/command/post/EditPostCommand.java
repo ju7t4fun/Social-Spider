@@ -4,10 +4,12 @@ import com.epam.lab.spider.ServerResolver;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
 import com.epam.lab.spider.controller.utils.UTF8;
-import com.epam.lab.spider.model.db.entity.Attachment;
-import com.epam.lab.spider.model.db.entity.Post;
-import com.epam.lab.spider.model.db.service.PostService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Attachment;
+import com.epam.lab.spider.model.entity.Post;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.persistence.service.PostService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -21,9 +23,10 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 /**
- * Created by Marian Voronovskyi on 06.07.2015.
+ * @author Marian Voronovskyi
  */
 public class EditPostCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(EditPostCommand.class);
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static PostService service = factory.create(PostService.class);
 
@@ -36,7 +39,7 @@ public class EditPostCommand implements ActionCommand {
         Attachment attachment;
         Set<Attachment> attachments = new HashSet<>();
         for (Map.Entry<String, String> entry : urlType.entrySet()) {
-            attachment = new Attachment();
+            attachment = BasicEntityFactory.getSynchronized().createAttachment();
             attachment.setPayload(ServerResolver.getServerPath(request) + entry.getKey());
             attachment.setType(Attachment.Type.valueOf(entry.getValue()));
             attachment.setDeleted(false);
@@ -50,7 +53,7 @@ public class EditPostCommand implements ActionCommand {
         Post post = service.getById(postID);
         post.setMessage(postText);
         post.getAttachments().addAll(attachments);
-        System.out.println(post);
+        LOG.info(post);
         if (service.update(postID, post)) {
             jsonObject.put("status", "success");
             jsonObject.put("message", UTF8.encoding(bundle.getString("notification.edit.post.success")));

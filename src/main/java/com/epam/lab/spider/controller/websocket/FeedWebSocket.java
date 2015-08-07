@@ -3,11 +3,11 @@ package com.epam.lab.spider.controller.websocket;
 import com.epam.lab.spider.controller.utils.Receiver;
 import com.epam.lab.spider.controller.utils.Sender;
 import com.epam.lab.spider.job.util.Feed;
-import com.epam.lab.spider.model.db.entity.Category;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.CategoryService;
-import com.epam.lab.spider.model.db.service.PostService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Category;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.CategoryService;
+import com.epam.lab.spider.persistence.service.PostService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Created by Boyarsky Vitaliy on 01.07.2015.
+ * @author Boyarsky Vitaliy
  */
 @ServerEndpoint(value = "/websocket/feed", configurator = GetHttpSessionConfigurator.class)
 public class FeedWebSocket implements Receiver {
@@ -29,6 +29,8 @@ public class FeedWebSocket implements Receiver {
     private static CategoryService service = factory.create(CategoryService.class);
     private static Map<Integer, Session> sessions = new HashMap<>();
     private static Map<Integer, List<Category>> categoriesUser = new HashMap<>();
+    private static CategoryService categoryService = factory.create(CategoryService.class);
+    PostService postService = factory.create(PostService.class);
     private HttpSession httpSession;
     private User user;
 
@@ -89,8 +91,6 @@ public class FeedWebSocket implements Receiver {
         sender.accept(this);
     }
 
-    private static CategoryService categoryService = factory.create(CategoryService.class);
-
     @Override
     public boolean send(int postId, String message) {
         List<Category> postCategories = categoryService.getByPostId(postId);
@@ -103,7 +103,7 @@ public class FeedWebSocket implements Receiver {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         return false;
     }
@@ -115,8 +115,6 @@ public class FeedWebSocket implements Receiver {
         return false;
     }
 
-    PostService postService = factory.create(PostService.class);
-
     private void onScroll(Session session, String[] args) {
         int userId = Integer.parseInt(args[1]);
         int offset = Integer.parseInt(args[2]);
@@ -127,7 +125,7 @@ public class FeedWebSocket implements Receiver {
                 session.getBasicRemote().sendText("on_scroll|" + id + "|" + category(id));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
     }
 
@@ -138,7 +136,7 @@ public class FeedWebSocket implements Receiver {
                 session.getBasicRemote().sendText("history|" + id + "|" + category(id));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
     }
 

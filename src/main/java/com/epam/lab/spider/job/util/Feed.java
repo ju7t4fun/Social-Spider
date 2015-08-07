@@ -2,17 +2,17 @@ package com.epam.lab.spider.job.util;
 
 import com.epam.lab.spider.controller.utils.Receiver;
 import com.epam.lab.spider.controller.utils.Sender;
-import com.epam.lab.spider.model.db.entity.Category;
-import com.epam.lab.spider.model.db.entity.Post;
-import com.epam.lab.spider.model.db.entity.Task;
-import com.epam.lab.spider.model.db.service.CategoryService;
-import com.epam.lab.spider.model.db.service.PostService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Category;
+import com.epam.lab.spider.model.entity.Post;
+import com.epam.lab.spider.model.entity.Task;
+import com.epam.lab.spider.persistence.service.CategoryService;
+import com.epam.lab.spider.persistence.service.PostService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 
 import java.util.List;
 
 /**
- * Created by Boyarsky Vitaliy on 02.07.2015.
+ * @author Boyarsky Vitaliy
  */
 public class Feed {
 

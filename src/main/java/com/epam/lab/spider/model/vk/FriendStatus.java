@@ -1,6 +1,6 @@
 package com.epam.lab.spider.model.vk;
 
-import com.epam.lab.spider.controller.vk.Node;
+import com.epam.lab.spider.integration.vk.Node;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class FriendStatus extends Model {
     }
 
     public static List<FriendStatus> parseFriendStatus(Node root) {
-        List<FriendStatus> list = new ArrayList<FriendStatus>();
+        List<FriendStatus> list = new ArrayList<>();
         List<Node> nodes = root.child("status");
         for (Node node : nodes)
             list.add(new FriendStatus(node));

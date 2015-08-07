@@ -1,17 +1,21 @@
 package com.epam.lab.spider.job.util;
 
 import com.epam.lab.spider.job.exception.PostContentException;
-import com.epam.lab.spider.model.db.entity.Attachment;
-import com.epam.lab.spider.model.db.entity.Post;
-import com.epam.lab.spider.model.db.entity.Task;
+import com.epam.lab.spider.model.entity.AbstractEntityFactory;
+import com.epam.lab.spider.model.entity.Attachment;
+import com.epam.lab.spider.model.entity.Post;
+import com.epam.lab.spider.model.entity.Task;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
 import com.epam.lab.spider.model.vk.*;
 
 import java.util.List;
 
 /**
- * Created by hell-engine on 7/11/2015.
+ * @author Yura Kovalik
  */
 public class PostProcessingUtil {
+    public static AbstractEntityFactory entityFactory = BasicEntityFactory.getSynchronized();
+
     public static Post processingPost(com.epam.lab.spider.model.vk.Post vkPost,  Task task)throws PostContentException {
         return processingPost(vkPost, task.getContentType(), task.getHashTags(), task.getSignature());
     }
@@ -20,7 +24,7 @@ public class PostProcessingUtil {
         return processingPost(vkPost, contentType, null,null);
     }
     public static Post processingPost(com.epam.lab.spider.model.vk.Post vkPost,  Task.ContentType contentType, String hashTags, String sign) throws PostContentException {
-        Post post = new Post();
+        Post post = BasicEntityFactory.getSynchronized().createPost();
         Task.ContentType newPostContentType = new Task.ContentType();
         StringBuilder messageBuilder = new StringBuilder();
         String signature = null;
@@ -46,13 +50,13 @@ public class PostProcessingUtil {
                 newPostContentType.setType(Task.ContentType.TEXT);
             }
         }
-        if(contentType.hasReposts()){
+        if (contentType.hasRePosts()) {
             List<com.epam.lab.spider.model.vk.Post> copyHistoryList = vkPost.getCopyHistory();
             if(!copyHistoryList.isEmpty()){
                 post = processingPost(copyHistoryList.get(0),  contentType);
                 String innerMessage = post.getMessage();
                 messageBuilder.append(" \r\n").append(innerMessage);
-                newPostContentType.setType(Task.ContentType.REPOSTS);
+                newPostContentType.setType(Task.ContentType.RE_POSTS);
 
             }
         }
@@ -63,14 +67,14 @@ public class PostProcessingUtil {
         }
         for (com.epam.lab.spider.model.vk.Attachment vkAttachment : vkPost.getAttachments()) {
             if (contentType.hasPhoto() && vkAttachment instanceof Photo) {
-                Attachment attachment = new Attachment();
+                Attachment attachment = entityFactory.createAttachment();
                 attachment.setType(Attachment.Type.PHOTO);
                 attachment.setPayload(((Photo) vkAttachment).getPhoto604().toString());
                 post.addAttachment(attachment);
                 newPostContentType.setType(Task.ContentType.PHOTO);
             }
             if (contentType.hasAudio() && vkAttachment instanceof Audio) {
-                Attachment attachment = new Attachment();
+                Attachment attachment = entityFactory.createAttachment();
                 Audio audio = (Audio) vkAttachment;
                 String attachString = "audio" + audio.getOwnerId() + "_" + audio.getId();
                 attachment.setPayload(attachString);
@@ -80,7 +84,7 @@ public class PostProcessingUtil {
                 newPostContentType.setType(Task.ContentType.AUDIO);
             }
             if (contentType.hasDoc() && vkAttachment instanceof Doc) {
-                Attachment attachment = new Attachment();
+                Attachment attachment = entityFactory.createAttachment();
                 Doc doc = (Doc) vkAttachment;
                 String attachString = "doc" + doc.getOwnerId() + "_" + doc.getId();
                 attachment.setPayload(attachString);
@@ -90,7 +94,7 @@ public class PostProcessingUtil {
                 newPostContentType.setType(Task.ContentType.DOCUMENTS);
             }
             if (contentType.hasVideo() && vkAttachment instanceof Video) {
-                Attachment attachment = new Attachment();
+                Attachment attachment = entityFactory.createAttachment();
                 Video video = (Video) vkAttachment;
                 String attachString = "video" + video.getOwnerId() + "_" + video.getId();
                 attachment.setPayload(attachString);
@@ -100,7 +104,7 @@ public class PostProcessingUtil {
                 newPostContentType.setType(Task.ContentType.VIDEO);
             }
             if (contentType.hasDoc() && vkAttachment instanceof Page) {
-                Attachment attachment = new Attachment();
+                Attachment attachment = entityFactory.createAttachment();
                 Page page = (Page) vkAttachment;
                 String attachString = "page" + page.getOwnerId() + "_" + page.getId();
                 attachment.setPayload(attachString);
@@ -110,7 +114,7 @@ public class PostProcessingUtil {
                 newPostContentType.setType(Task.ContentType.PAGES);
             }
             if (contentType.hasDoc() && vkAttachment instanceof Link) {
-                Attachment attachment = new Attachment();
+                Attachment attachment = entityFactory.createAttachment();
                 Link link = (Link) vkAttachment;
                 String attachString = "link" + link.getOwnerId() + "_" + link.getId();
                 attachment.setPayload(attachString);
@@ -132,7 +136,7 @@ public class PostProcessingUtil {
                 return true;
             }
         }
-        if(contentType.hasReposts()){
+        if (contentType.hasRePosts()) {
             List<com.epam.lab.spider.model.vk.Post> copyHistoryList = vkPost.getCopyHistory();
             if(!copyHistoryList.isEmpty()){
                 return checkContent(copyHistoryList.get(0),contentType);

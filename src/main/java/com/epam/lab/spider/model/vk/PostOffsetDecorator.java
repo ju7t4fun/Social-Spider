@@ -1,16 +1,27 @@
 package com.epam.lab.spider.model.vk;
 
-import com.epam.lab.spider.controller.vk.Node;
-import com.epam.lab.spider.controller.vk.Value;
+import com.epam.lab.spider.integration.vk.Node;
+import com.epam.lab.spider.integration.vk.Value;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 /**
- * Created by hell-engine on 7/10/2015.
+ * @author Yura Kovalik
  */
 public class PostOffsetDecorator extends Post {
+    private Post post;
+    private Integer offset;
+
+    public static List<Post> parsePost(Node root) {
+        return Post.parsePost(root);
+    }
+
+    public static List<Post> parseItem(Node root) {
+        return Post.parseItem(root);
+    }
+
     public Post getPost() {
         return post;
     }
@@ -19,19 +30,12 @@ public class PostOffsetDecorator extends Post {
         this.post = post;
     }
 
-    private Post post;
-    private Integer offset;
-
     public Integer getOffset() {
         return offset;
     }
 
     public void setOffset(Integer offset) {
         this.offset = offset;
-    }
-
-    public static List<Post> parsePost(Node root) {
-        return Post.parsePost(root);
     }
 
     public int getReplyOwnerId() {
@@ -120,10 +124,6 @@ public class PostOffsetDecorator extends Post {
 
     public List<Post> getCopyHistory() {
         return post.getCopyHistory();
-    }
-
-    public static List<Post> parseItem(Node root) {
-        return Post.parseItem(root);
     }
 
     public Value get(String key) {

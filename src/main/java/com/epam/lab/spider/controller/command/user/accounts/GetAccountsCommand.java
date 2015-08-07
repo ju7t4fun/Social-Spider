@@ -1,11 +1,10 @@
 package com.epam.lab.spider.controller.command.user.accounts;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.Owner;
-import com.epam.lab.spider.model.db.entity.Profile;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.ProfileService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Profile;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.ProfileService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -17,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by Boyarsky Vitaliy on 06.07.2015.
+ * @author Boyarsky Vitaliy
  */
 public class GetAccountsCommand implements ActionCommand {
 

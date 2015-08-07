@@ -1,4 +1,4 @@
-var owner_id = parseInt(Args.owner_id);
+var ownerId = parseInt(Args.ownerId);
 var count = parseInt(Args.count);
 if(count == 0)count = 150;
 var offset = parseInt(Args.offset);
@@ -6,7 +6,7 @@ if(offset>0)offset = offset ;
 var last_post_id = parseInt(Args.last_post_id);
 
 var likes = parseInt(Args.likes);
-var reposts = parseInt(Args.reposts);
+var rePosts = parseInt(Args.rePosts);
 var comments = parseInt(Args.comments);
 
 var total_loops = parseInt(Args.max_loops);
@@ -19,7 +19,7 @@ var block_offset_find = (parseInt(Args.block_offset_find) == 0);
 
 if(offset == 0 && last_post_id == 0 && block_offset_find){
     offset = API.wall.get({
-        "owner_id" : owner_id,
+        "ownerId" : ownerId,
         "filter": "owner",
         "count": 1,
         "offset": 0
@@ -57,7 +57,7 @@ if(last_post_id>0){
     }
     //return [ranging_offset, x];
     var range_response = API.wall.get({
-        "owner_id" : owner_id,
+        "ownerId" : ownerId,
         "filter": "owner",
         "count": 100,
         "offset": ranging_offset
@@ -84,7 +84,7 @@ if(last_post_id>0){
                     last_post_id = range_response.items[y].id;
                 }else{
                     range_response = API.wall.get({
-                        "owner_id" : owner_id,
+                        "ownerId" : ownerId,
                         "filter": "owner",
                         "count": 100,
                         "offset": ranging_offset
@@ -128,7 +128,7 @@ if(last_post_id>0){
                             ranging_offset = 0;
                         }
                         range_response = API.wall.get({
-                            "owner_id" : owner_id,
+                            "ownerId" : ownerId,
                             "filter": "owner",
                             "count": 100,
                             "offset": ranging_offset
@@ -198,7 +198,7 @@ do{
         query_offset = 0;
     }
     response = API.wall.get({
-        "owner_id" : owner_id,
+        "ownerId" : ownerId,
         "filter": "owner",
         "count": calculeted_query_size,
         "offset": query_offset
@@ -207,7 +207,7 @@ do{
     if(response.items.length>0 && result.length<count){
         do{
             if(response.items[i].likes.count>=likes 
-            && response.items[i].reposts.count>=reposts
+            && response.items[i].rePosts.count>=rePosts
             && response.items[i].comments.count>=comments 
             ){
                 offset_map.push(query_offset+i);

@@ -2,9 +2,9 @@ package com.epam.lab.spider.controller.command.user.auth;
 
 import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.controller.vk.Authorization;
-import com.epam.lab.spider.controller.vk.Scope;
-import com.epam.lab.spider.controller.vk.Vkontakte;
+import com.epam.lab.spider.integration.vk.Authorization;
+import com.epam.lab.spider.integration.vk.Scope;
+import com.epam.lab.spider.integration.vk.Vkontakte;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Created by Boyarsky Vitaliy on 09.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class VkAuthCommand implements ActionCommand {
 

@@ -2,10 +2,11 @@ package com.epam.lab.spider.controller.command.category;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.entity.UserHasCategory;
-import com.epam.lab.spider.model.db.service.CategoryService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.entity.UserHasCategory;
+import com.epam.lab.spider.persistence.service.CategoryService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -16,21 +17,22 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 /**
- * Created by Орест on 7/5/2015.
+ * @author Dzyuba Orest
  */
 public class AddRemoveUserCategories implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(AddRemoveUserCategories.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         int categoryId = Integer.parseInt(request.getParameter("id"));
-        String tochosen = request.getParameter("tochosen");
+        String toChosen = request.getParameter("tochosen");
         int userId = ((User)request.getSession().getAttribute("user")).getId();
-        CategoryService serv = ServiceFactory.getInstance().create(CategoryService.class);
-        System.out.println("url : " + serv.getById(categoryId).getImageUrl());
+        CategoryService categoryService = ServiceFactory.getInstance().create(CategoryService.class);
+        LOG.debug("url : " + categoryService.getById(categoryId).getImageUrl());
         JSONObject json = new JSONObject();
-        if (tochosen.equals("yes")) {
-            if (serv.insertIntoUserHasCategories(new UserHasCategory(userId, categoryId))) {
+        if (toChosen.equals("yes")) {
+            if (categoryService.insertIntoUserHasCategories(new UserHasCategory(userId, categoryId))) {
                     json.put("status", "success");
                     json.put("msg", UTF8.encoding(bundle.getString("notification.category")) + categoryId + UTF8.encoding(bundle.getString("notification.added")));
 
@@ -40,7 +42,7 @@ public class AddRemoveUserCategories implements ActionCommand {
                 json.put("msg", UTF8.encoding(bundle.getString("notification.add.category.error")));
             }
         }  else {
-            if (serv.deleteUserCategory(new UserHasCategory(userId, categoryId))) {
+            if (categoryService.deleteUserCategory(new UserHasCategory(userId, categoryId))) {
                 json.put("status", "success");
                 json.put("msg", UTF8.encoding(bundle.getString("notification.category")) + categoryId + UTF8.encoding(bundle.getString("notification.removed")));
             } else {

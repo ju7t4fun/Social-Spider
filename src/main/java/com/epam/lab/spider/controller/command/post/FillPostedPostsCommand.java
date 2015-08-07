@@ -2,34 +2,58 @@ package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.controller.vk.Parameters;
-import com.epam.lab.spider.controller.vk.VKException;
-import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.model.db.entity.*;
-import com.epam.lab.spider.model.db.service.NewPostService;
-import com.epam.lab.spider.model.db.service.ProfileService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.WallService;
+import com.epam.lab.spider.integration.vk.VKException;
+import com.epam.lab.spider.integration.vk.Vkontakte;
+import com.epam.lab.spider.integration.vk.auth.AccessToken;
+import com.epam.lab.spider.model.entity.PostingTask;
+import com.epam.lab.spider.model.entity.Profile;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.entity.impl.PostingTaskImpl;
+import com.epam.lab.spider.persistence.service.PostingTaskService;
+import com.epam.lab.spider.persistence.service.ProfileService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.WallService;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by Орест on 6/28/2015.
+ * @author Dzyuba Orest
  */
 public class FillPostedPostsCommand implements ActionCommand {
-
+    private static final Logger LOG = Logger.getLogger(EditPostCommand.class);
+    private static ServiceFactory factory = ServiceFactory.getInstance();
+    private static WallService wallService = factory.create(WallService.class);
     String GLOBAL_SEARCH_TERM = "";
+
+    public static List<PostingTask> getStatistics(List<PostingTask> postingTasks, int userId) {
+        List<Profile> profiles = factory.create(ProfileService.class).getByUserId(userId);
+
+        Vkontakte vk = new Vkontakte(SocialNetworkUtils.getDefaultVkAppsIdAsApps());
+        for (Profile profile : profiles) {
+            AccessToken accessToken = new AccessToken();
+            accessToken.setAccessToken(profile.getAccessToken());
+            accessToken.setUserId(profile.getVkId());
+            accessToken.setExpirationMoment(profile.getExtTime());
+            vk.setAccessToken(accessToken);
+            try {
+                return vk.execute().getPostStats(postingTasks);
+            } catch (VKException e) {
+                continue;
+            }
+        }
+        return postingTasks;
+    }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -73,9 +97,9 @@ public class FillPostedPostsCommand implements ActionCommand {
         try {
             jsonResult = getPersonDetails(start, listDisplayAmount, sortDirection, totalRecords, request);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
 
         response.setContentType("application/json");
@@ -104,13 +128,13 @@ public class FillPostedPostsCommand implements ActionCommand {
                 "AND new_post.state='POSTED' ";
         String globeSearch = " AND  post.message LIKE '%" + GLOBAL_SEARCH_TERM + "%' ";
 
-        if (GLOBAL_SEARCH_TERM != "") {
+        if (!GLOBAL_SEARCH_TERM.isEmpty()) {
             searchSQL = globeSearch;
         }
 
         sql += searchSQL;
         sql += " limit " + start + ", " + listDisplayAmount;
-        List<NewPost> resList = ServiceFactory.getInstance().create(NewPostService.class).getAllWithQuery(sql);
+        List<PostingTask> resList = ServiceFactory.getInstance().create(PostingTaskService.class).getAllWithQuery(sql);
 
         if (resList != null) {
             try {
@@ -119,7 +143,7 @@ public class FillPostedPostsCommand implements ActionCommand {
                     for (int i = 0; i < resList.size(); ++i) {
                         for (int j = i + 1; j < resList.size(); ++j) {
                             if (resList.get(j).getPostTime().getTime() > resList.get(i).getPostTime().getTime()) {
-                                NewPost temp = resList.get(i);
+                                PostingTask temp = resList.get(i);
                                 resList.set(i, resList.get(j));
                                 resList.set(j, temp);
                             }
@@ -129,7 +153,7 @@ public class FillPostedPostsCommand implements ActionCommand {
                     for (int i = 0; i < resList.size(); ++i) {
                         for (int j = i + 1; j < resList.size(); ++j) {
                             if (resList.get(j).getPostTime().getTime() < resList.get(i).getPostTime().getTime()) {
-                                NewPost temp = resList.get(i);
+                                PostingTask temp = resList.get(i);
                                 resList.set(i, resList.get(j));
                                 resList.set(j, temp);
                             }
@@ -141,16 +165,16 @@ public class FillPostedPostsCommand implements ActionCommand {
             }
 
             String groupNameToGroup = request.getParameter("groupNameToGroup");
-            System.out.println("groupNameToGroup:  " + groupNameToGroup);
+            LOG.debug("groupNameToGroup:  " + groupNameToGroup);
             if (groupNameToGroup != null) {
 
-                List<NewPost> newResList = new ArrayList<>();
-                for (int i = 0; i < resList.size(); ++i) {
+                List<PostingTask> newResList = new ArrayList<>();
+                for (PostingTask aResList : resList) {
                     try {
                         WallService wallService = ServiceFactory.getInstance().create(WallService.class);
-                        String groupName = wallService.getById(resList.get(i).getWallId()).getOwner().getName();
+                        String groupName = wallService.getById(aResList.getWallId()).getOwner().getName();
                         if (groupName.equals(groupNameToGroup)) {
-                            newResList.add(resList.get(i));
+                            newResList.add(aResList);
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -161,9 +185,9 @@ public class FillPostedPostsCommand implements ActionCommand {
 
             resList = getStatistics(resList, ((User) request.getSession().getAttribute("user")).getId());
 
-            for (int i = 0; i < resList.size(); ++i) {
+            for (PostingTask aResList : resList) {
                 JSONArray ja = new JSONArray();
-                NewPost currPost = resList.get(i);
+                PostingTask currPost = aResList;
                 if (currPost != null) {
 
                     //message
@@ -187,7 +211,7 @@ public class FillPostedPostsCommand implements ActionCommand {
                         ja.put(groupName);
                     } catch (Exception ex) {
                         ex.printStackTrace();
-                        System.out.println(ex.getMessage());
+                        LOG.debug(ex.getMessage());
                         ja.put("Empty Wall!");
                     }
                     ja.put(currPost.getFullId());
@@ -199,8 +223,8 @@ public class FillPostedPostsCommand implements ActionCommand {
                         ja.put("Unknown Time!");
                     }
 
-                    NewPost.Stats stats = currPost.getStats();
-                    String data = stats.getLikes() + "|" + stats.getReposts() + "|" + stats.getComments();
+                    PostingTaskImpl.Stats stats = currPost.getStats();
+                    String data = stats.getLikes() + "|" + stats.getRePosts() + "|" + stats.getComments();
 
                     ja.put(data);
                     ja.put(currPost.getPostId());
@@ -211,9 +235,9 @@ public class FillPostedPostsCommand implements ActionCommand {
         }
         String query = "SELECT COUNT(*) FROM new_post WHERE deleted=false AND state='POSTED' ";
         //for pagination
-        if (GLOBAL_SEARCH_TERM != "") {
+        if (!GLOBAL_SEARCH_TERM.isEmpty()) {
             query += searchSQL;
-            NewPostService npostServ = ServiceFactory.getInstance().create(NewPostService.class);
+            PostingTaskService npostServ = ServiceFactory.getInstance().create(PostingTaskService.class);
             totalAfterSearch = npostServ.getCountWithQuery(query);
         }
         try {
@@ -228,31 +252,8 @@ public class FillPostedPostsCommand implements ActionCommand {
 
     public int getTotalRecordCount() {
         String sql = "SELECT COUNT(*) FROM new_post WHERE deleted=false AND state='POSTED' ";
-        NewPostService serv = ServiceFactory.getInstance().create(NewPostService.class);
-        int totalRecords = serv.getCountWithQuery(sql);
-        return totalRecords;
-    }
-
-    private static ServiceFactory factory = ServiceFactory.getInstance();
-    private static WallService wallService = factory.create(WallService.class);
-
-    public static List<NewPost> getStatistics(List<NewPost> newPosts, int userId) {
-        List<Profile> profiles = factory.create(ProfileService.class).getByUserId(userId);
-
-        Vkontakte vk = new Vkontakte(SocialNetworkUtils.getDefaultVkAppsIdAsApps());
-        for (Profile profile : profiles) {
-            AccessToken accessToken = new AccessToken();
-            accessToken.setAccessToken(profile.getAccessToken());
-            accessToken.setUserId(profile.getVkId());
-            accessToken.setExpirationMoment(profile.getExtTime());
-            vk.setAccessToken(accessToken);
-            try {
-                return vk.execute().getPostStats(newPosts);
-            } catch (VKException e) {
-                continue;
-            }
-        }
-        return newPosts;
+        PostingTaskService serv = ServiceFactory.getInstance().create(PostingTaskService.class);
+        return serv.getCountWithQuery(sql);
     }
 
 }

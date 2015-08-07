@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Dmytro on 12.06.2015.
+ * @author Dzyuba Orest
  */
 public class ShowActivationCommand implements ActionCommand {
 

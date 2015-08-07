@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Орест on 23/06/2015.
+ * @author Dzyuba Orest
  */
 public class PostServlet extends HttpServlet {
 
@@ -38,7 +38,7 @@ public class PostServlet extends HttpServlet {
             commands.put("getCreatedPost", new GetCreatedPostCommand());
             commands.put("remove", new RemovePostCommand());
             commands.put("fillpostedposts", new FillPostedPostsCommand());
-            commands.put("fillqueuededposts", new FillQueuededPostsCommand());
+            commands.put("fillqueuededposts", new FillQueuedPostsCommand());
             commands.put("created", new ShowCreatedPostCommand());
             commands.put("posted", new ShowPostedPostCommand());
             commands.put("queued", new ShowQueuedPostCommand());

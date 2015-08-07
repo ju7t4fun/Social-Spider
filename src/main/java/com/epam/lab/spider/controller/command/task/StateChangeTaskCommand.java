@@ -3,10 +3,10 @@ package com.epam.lab.spider.controller.command.task;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.job.util.TaskInfoUtil;
 import com.epam.lab.spider.job.util.TaskUtil;
-import com.epam.lab.spider.model.db.entity.Task;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.TaskService;
+import com.epam.lab.spider.model.entity.Task;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.TaskService;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 
@@ -18,7 +18,7 @@ import java.io.PrintWriter;
 
 
 /**
- * Created by shell on 6/28/2015.
+ * @author Yura Kovalik
  */
 public class StateChangeTaskCommand implements ActionCommand {
     public  final static Logger LOG = Logger.getLogger(SaveTaskCommand.class);
@@ -57,7 +57,7 @@ public class StateChangeTaskCommand implements ActionCommand {
                 result = TaskUtil.changeStageToStopped(task);
                 TaskInfoUtil.setStoppedTaskInfo(task);
             }
-            if(result==false)throw new RuntimeException("DB FAIL");
+            if (!result) throw new RuntimeException("DB FAIL");
         } catch (RuntimeException x) {
             x.printStackTrace();
             response.setStatus(400);
@@ -80,6 +80,5 @@ public class StateChangeTaskCommand implements ActionCommand {
         PrintWriter out = response.getWriter();
         out.print(result);
         out.flush();
-        return;
     }
 }
