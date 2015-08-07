@@ -13,10 +13,18 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Marian Voronovskyi on 29.06.2015.
+ * @author Marian Voronovskyi
  */
 public class GroupsServlet extends HttpServlet {
     private static ActionFactory factory = new GroupsFactory();
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        factory.action(request, response);
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        factory.action(request, response);
+    }
 
     private static class GroupsFactory extends ActionFactory {
 
@@ -26,13 +34,5 @@ public class GroupsServlet extends HttpServlet {
             commands.put("banunban", new GroupBanUnbanCommand());
             commands.put("loadunique", new GroupUniqueCommand());
         }
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        factory.action(request, response);
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        factory.action(request, response);
     }
 }

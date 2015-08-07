@@ -1,11 +1,14 @@
 package com.epam.lab.spider.job.limit;
 
+import com.epam.lab.spider.job.limit.impl.SimpleUserLimitProcessor;
+
 /**
- * Created by hell-engine on 7/24/2015.
+ * @author Yura Kovalik
  */
 public class UserLimitsFactory {
-    private static UserLimit userLimit = new SimpleUserLimit();
-    public static UserLimit getUserLimit() {
-        return userLimit;
+    private static UserLimitProcessor userLimitProcessor = new SimpleUserLimitProcessor();
+
+    public static UserLimitProcessor getUserLimitProcessor() {
+        return userLimitProcessor;
     }
 }

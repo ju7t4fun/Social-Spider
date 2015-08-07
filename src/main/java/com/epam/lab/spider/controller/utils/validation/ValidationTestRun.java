@@ -1,34 +1,37 @@
 package com.epam.lab.spider.controller.utils.validation;
 
-import com.epam.lab.spider.controller.utils.FrontEndValidatorBrige;
-import com.epam.lab.spider.model.db.entity.User;
+import com.epam.lab.spider.controller.utils.FrontEndValidatorBridge;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import org.apache.log4j.Logger;
 
 import java.util.Map;
 
 
 /**
- * Created by shell on 6/13/2015.
+ * @author Yura Kovalik
  */
 public class ValidationTestRun {
+    private static final Logger LOG = Logger.getLogger(ValidationTestRun.class);
     public static void main(String[] args){
 
         Validator validator = new Validator();
 
-        User user = new User();
+        User user = BasicEntityFactory.getSynchronized().createUser();
         user.setEmail("str number 4");
         ValidateResult rs = validator.valideteWithResult(user);
         for(Map.Entry e:rs.getInvalidMessage().entrySet()){
-            System.out.println(""+e);
+            LOG.info("" + e);
         }
-        System.out.println(validator.isValid(user));
-        /**                                                 */
+        LOG.info(validator.isValid(user));
+
         user.setEmail("str@number.four");
         user.setName("str4");
-        System.out.println(validator.isValid(user));
+        LOG.info(validator.isValid(user));
 
-        FrontEndValidatorBrige brige = new FrontEndValidatorBrige();
-        String code = brige.getFrontEndValidationCodeByFieldPath("user.email");
-        System.out.println(code);
+        FrontEndValidatorBridge bridge = new FrontEndValidatorBridge();
+        String code = bridge.getFrontEndValidationCodeByFieldPath("user.email");
+        LOG.info(code);
 
 
     }

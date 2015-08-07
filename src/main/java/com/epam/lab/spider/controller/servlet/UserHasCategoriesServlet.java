@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Орест on 7/5/2015.
+ * @author Dzyuba Orest
  */
 public class UserHasCategoriesServlet extends HttpServlet {
     private static UserHasCategoriesFactory factory = new UserHasCategoriesFactory();

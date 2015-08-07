@@ -1,27 +1,29 @@
 package com.epam.lab.spider.model.db.service;
 
-import com.epam.lab.spider.model.db.entity.Wall;
+import com.epam.lab.spider.model.entity.AbstractEntityFactory;
+import com.epam.lab.spider.model.entity.Wall;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.persistence.service.WallService;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 /**
- * Created by Sasha on 12.07.2015.
+ * @author Oleksandra Lobanok
  */
 public class WallServiceTest {
+    public static final AbstractEntityFactory ENTITY_FACTORY = BasicEntityFactory.getSynchronized();
 
     Wall wall;
     WallService ws = new WallService();
 
     @Before
     public void setUp() throws Exception {
-        wall = new Wall();
-        wall.setOwner_id(1);
-        wall.setProfile_id(1);
+        wall = ENTITY_FACTORY.createWall();
+        wall.setOwnerId(1);
+        wall.setProfileId(1);
         wall.setPermission(Wall.Permission.READ);
         wall.setDeleted(false);
     }
@@ -34,9 +36,9 @@ public class WallServiceTest {
 
     @Test
     public void testUpdate() throws Exception {
-        Wall newWall = new Wall();
-        newWall.setOwner_id(1);
-        newWall.setProfile_id(1);
+        Wall newWall = ENTITY_FACTORY.createWall();
+        newWall.setOwnerId(1);
+        newWall.setProfileId(1);
         newWall.setPermission(Wall.Permission.WRITE);
         newWall.setDeleted(true);
         Boolean check = ws.update(1, newWall);

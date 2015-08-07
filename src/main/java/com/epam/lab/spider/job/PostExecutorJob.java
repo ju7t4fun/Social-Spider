@@ -2,18 +2,19 @@ package com.epam.lab.spider.job;
 
 import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.utils.EventLogger;
-import com.epam.lab.spider.controller.vk.Parameters;
-import com.epam.lab.spider.controller.vk.Request;
-import com.epam.lab.spider.controller.vk.VKException;
-import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.job.limit.UserLimit;
+import com.epam.lab.spider.integration.vk.Parameters;
+import com.epam.lab.spider.integration.vk.Request;
+import com.epam.lab.spider.integration.vk.VKException;
+import com.epam.lab.spider.integration.vk.Vkontakte;
+import com.epam.lab.spider.integration.vk.auth.AccessToken;
+import com.epam.lab.spider.job.limit.UserLimitProcessor;
 import com.epam.lab.spider.job.limit.UserLimitsFactory;
 import com.epam.lab.spider.job.util.Locker;
 import com.epam.lab.spider.job.util.PostAttachmentUtil;
-import com.epam.lab.spider.model.db.entity.*;
-import com.epam.lab.spider.model.db.service.*;
-import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
+import com.epam.lab.spider.model.entity.*;
+import com.epam.lab.spider.model.entity.impl.PostingTaskImpl;
+import com.epam.lab.spider.persistence.service.*;
+import com.epam.lab.spider.persistence.service.savable.SavableServiceUtil;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -24,61 +25,60 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by shell on 6/16/2015.
+ * @author Yura Kovalik
  */
 public class PostExecutorJob implements Job {
 
     public static final Logger LOG = Logger.getLogger(PostExecutorJob.class);
-    NewPostService newPostService = new NewPostService();
+    public static UserLimitProcessor limit = UserLimitsFactory.getUserLimitProcessor();
+    PostingTaskService postingTaskService = new PostingTaskService();
     PostService postService = new PostService();
     WallService wallService = new WallService();
     OwnerService ownerService = new OwnerService();
     ProfileService profileService = new ProfileService();
     AttachmentService attachmentService = new AttachmentService();
 
-    public static UserLimit limit = UserLimitsFactory.getUserLimit();
-
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 
         JobDataMap dataMap = jobExecutionContext.getJobDetail().getJobDataMap();
-        NewPost newPost = null;
+        PostingTask postingTask = null;
         {
             Integer id = dataMap.getInt("new_post_id");
-            newPost = newPostService.getById(id);
+            postingTask = postingTaskService.getById(id);
         }
-        if (newPost == null) {
+        if (postingTask == null) {
             LOG.error("Quartz failed. Have not new_post_id in DataMap!");
             return;
         }
-        if (newPost.getState().equals(NewPost.State.ERROR)) {
+        if (postingTask.getState().equals(PostingTaskImpl.State.ERROR)) {
             LOG.error("Before posting has been found error. Posting Blocked!");
             return;
         }
 
         try {
-            Wall wall = wallService.getById(newPost.getWallId());
+            Wall wall = wallService.getById(postingTask.getWallId());
             // Додаткова перевірка чи немає локу для цільвого обєкту
             // Якщо виконуєть вивід фатал повідомлення - існують проблеми
             // З архітектурою сервісу
             if (Locker.getInstance().isLock(wall)) {
                 LOG.fatal("На заблоковану стіну зафіксована спроба виконати пост. Пост буде заблоковано! Проблема в " +
                         "архітектурі сервісу!");
-                newPost.setState(NewPost.State.ERROR);
-                newPostService.updateStage(newPost);
-                //SavableServiceUtil.safeSave(newPost);
+                postingTask.setState(PostingTaskImpl.State.ERROR);
+                postingTaskService.updateStage(postingTask);
+                //SavableServiceUtil.safeSave(postingTask);
                 return;
             }
 
-            if(!limit.checkPostExecute(newPost.getUserId())){
-                newPost.setState(NewPost.State.ERROR);
-                newPostService.updateStage(newPost);
+            if (!limit.checkPostExecute(postingTask.getUserId())) {
+                postingTask.setState(PostingTaskImpl.State.ERROR);
+                postingTaskService.updateStage(postingTask);
                 return;
             }
             Owner owner = ownerService.getById(wall.getOwnerId());
-            Profile profile = profileService.getById(wall.getProfile_id());
+            Profile profile = profileService.getById(wall.getProfileId());
 
-            newPost.setPost(postService.getById(newPost.getPost().getId()));
+            postingTask.setPost(postService.getById(postingTask.getPost().getId()));
             try {
                 Integer appId = profile.getAppId();
                 if (appId == null) {
@@ -95,7 +95,7 @@ public class PostExecutorJob implements Job {
                 vk.setAccessToken(accessToken);
                 // !Initialization auth_token
                 List<String> attachmentsList = new ArrayList<>();
-                for (Attachment attachment : newPost.getPost().getAttachments()) {
+                for (Attachment attachment : postingTask.getPost().getAttachments()) {
                     if (attachment.getType() == Attachment.Type.PHOTO && attachment.getMode() == Attachment.Mode.URL) {
                         String att = PostAttachmentUtil.uploadPhoto(vk, attachment.getPayload().toString(), owner.getVkId());
                         if (att != null) attachmentsList.add(att);
@@ -146,7 +146,7 @@ public class PostExecutorJob implements Job {
                 for (int i = 1; i < attachmentsList.size(); i++) {
                     attachmentsStringBuilder.append(", ").append(attachmentsList.get(i));
                 }
-                String textMessage = newPost.getPost().getMessage().replaceAll("%owner%",owner.getDomain());
+                String textMessage = postingTask.getPost().getMessage().replaceAll("%owner%", owner.getDomain());
                 textMessage = textMessage.replaceAll("%owner_name%", owner.getName());
                 LOG.debug("Attachments: " + attachmentsStringBuilder.toString());
                 Parameters parameters = new Parameters();
@@ -159,17 +159,17 @@ public class PostExecutorJob implements Job {
                 }
                 Long response = vk.wall().post(parameters);
 
-                EventLogger eventLogger = EventLogger.getLogger(newPost.getUserId());
+                EventLogger eventLogger = EventLogger.getLogger(postingTask.getUserId());
                 if(response!=null){
-                    newPost.setState(NewPost.State.POSTED);
-                    newPost.setVkPostId(Integer.parseInt(response.toString()));
-                    SavableServiceUtil.safeSave(newPost);
-                    limit.markPostExecute(newPost.getUserId());
-                    String info = "Success to posting wall" + wall.getOwner().getVkId() + "_" + newPost.getVkPostId();
+                    postingTask.setState(PostingTaskImpl.State.POSTED);
+                    postingTask.setVkPostId(Integer.parseInt(response.toString()));
+                    SavableServiceUtil.safeSave(postingTask);
+                    limit.markPostExecute(postingTask.getUserId());
+                    String info = "Success to posting wall" + wall.getOwner().getVkId() + "_" + postingTask.getVkPostId();
                     LOG.info(info);
                     if(false)eventLogger.info(info, info);
                 }else{
-                    String error = "Failed to posting wall" + wall.getOwner().getVkId() + "_" + newPost.getVkPostId();
+                    String error = "Failed to posting wall" + wall.getOwner().getVkId() + "_" + postingTask.getVkPostId();
                     LOG.error(error);
                     eventLogger.error(error, error);
                 }
@@ -199,18 +199,18 @@ public class PostExecutorJob implements Job {
                         LOG.error("Posting has failed. Wall is locked. Post Limit is expired!");
                     }
                     default: {
-                        LOG.error("Posting has failed. Corrupted new_post #" + newPost.getId(), x);
+                        LOG.error("Posting has failed. Corrupted new_post #" + postingTask.getId(), x);
                         x.printStackTrace();
                     }
                 }
             }
         } catch (NullPointerException x) {
-            LOG.error("Posting has failed. Nullable object has founded. Corrupted new_post #" + newPost.getId());
+            LOG.error("Posting has failed. Nullable object has founded. Corrupted new_post #" + postingTask.getId());
             x.printStackTrace();
         } catch (Throwable t){
             LOG.error(t);
         }
-        newPost.setState(NewPost.State.ERROR);
-        newPostService.updateStage(newPost);
+        postingTask.setState(PostingTaskImpl.State.ERROR);
+        postingTaskService.updateStage(postingTask);
     }
 }

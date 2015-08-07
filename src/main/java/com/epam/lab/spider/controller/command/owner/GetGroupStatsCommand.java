@@ -4,15 +4,15 @@ import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.StatisticsBuilder;
 import com.epam.lab.spider.controller.utils.UTF8;
-import com.epam.lab.spider.controller.vk.Parameters;
-import com.epam.lab.spider.controller.vk.VKException;
-import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.model.db.entity.Profile;
-import com.epam.lab.spider.model.db.entity.Wall;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.WallService;
+import com.epam.lab.spider.integration.vk.Parameters;
+import com.epam.lab.spider.integration.vk.VKException;
+import com.epam.lab.spider.integration.vk.Vkontakte;
+import com.epam.lab.spider.integration.vk.auth.AccessToken;
+import com.epam.lab.spider.model.entity.Profile;
+import com.epam.lab.spider.model.entity.Wall;
 import com.epam.lab.spider.model.vk.Period;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.WallService;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * Created by Boyarsky Vitaliy on 09.07.2015.
+ * @author Boyarsky Vitaliy
  */
 public class GetGroupStatsCommand implements ActionCommand {
 

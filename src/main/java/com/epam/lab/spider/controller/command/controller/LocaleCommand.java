@@ -19,7 +19,9 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * Created by Boyarsky Vitaliy on 09.06.2015.
+ * @author Boyarsky Vitaliy
+ * @author Yura Kovalik
+ * @since 1.0.2
  */
 public class LocaleCommand implements ActionCommand {
     private static final Logger LOG = Logger.getLogger(LocaleCommand.class);
@@ -59,7 +61,7 @@ public class LocaleCommand implements ActionCommand {
                 }
             }
         } catch (ParseException | ClassCastException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
 
         String result = resultJson.toString();

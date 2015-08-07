@@ -48,7 +48,7 @@
     </filter-mapping>
     <servlet>
         <servlet-name>TaskServlet</servlet-name>
-        <servlet-class>com.epam.lab.spider.controller.servlet.task.TaskServlet</servlet-class>
+        <servlet-class>com.epam.lab.spider.controller.servlet.TaskServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TaskServlet</servlet-name>

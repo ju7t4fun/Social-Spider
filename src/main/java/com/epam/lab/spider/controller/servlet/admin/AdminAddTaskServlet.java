@@ -11,17 +11,10 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Marian Voronovskyi on 09.07.2015.
+ * @author Marian Voronovskyi
  */
 public class AdminAddTaskServlet extends HttpServlet {
     private static ActionFactory factory = new AdminAddTaskFactory();
-
-    private static class AdminAddTaskFactory extends ActionFactory {
-        public AdminAddTaskFactory() {
-            commands = new HashMap<>();
-            commands.put("default", new AdminAddTaskCommand());
-        }
-    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         factory.action(request, response);
@@ -29,5 +22,12 @@ public class AdminAddTaskServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         factory.action(request, response);
+    }
+
+    private static class AdminAddTaskFactory extends ActionFactory {
+        public AdminAddTaskFactory() {
+            commands = new HashMap<>();
+            commands.put("default", new AdminAddTaskCommand());
+        }
     }
 }

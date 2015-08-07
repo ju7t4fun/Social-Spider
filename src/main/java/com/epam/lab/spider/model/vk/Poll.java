@@ -1,6 +1,6 @@
 package com.epam.lab.spider.model.vk;
 
-import com.epam.lab.spider.controller.vk.Node;
+import com.epam.lab.spider.integration.vk.Node;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,7 +24,7 @@ public class Poll extends Model implements Attachment {
     }
 
     public static List<Poll> parsePoll(Node root) {
-        List<Poll> polls = new ArrayList<Poll>();
+        List<Poll> polls = new ArrayList<>();
         List<Node> nodes = root.child("poll");
         for (Node node : nodes)
             polls.add(new Poll(node));

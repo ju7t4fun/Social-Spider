@@ -9,14 +9,13 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by Boyarsky Vitaliy on 09.07.2015.
+ * @author Boyarsky Vitaliy
  */
 public class StatisticsBuilder {
 
-    private static long OFFSET = 10800000;
-
     private static final String[] categories = new String[]{"12-18", "18-21", "21-24", "24-27", "27-30", "30-35",
             "35-45", "45-100"};
+    private static long OFFSET = 10800000;
     private List<Period> periods;
 
     public StatisticsBuilder(List<Period> periods) {

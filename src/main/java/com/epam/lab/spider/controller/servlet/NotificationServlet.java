@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Boyarsky Vitaliy on 26.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class NotificationServlet extends HttpServlet {
 

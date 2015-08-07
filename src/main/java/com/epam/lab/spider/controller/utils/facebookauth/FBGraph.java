@@ -1,4 +1,9 @@
 package com.epam.lab.spider.controller.utils.facebookauth;
+
+import org.apache.log4j.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -6,13 +11,11 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
- * Created by Орест on 16.06.2015.
+ * @author Dzyuba Orest
  */
 public class FBGraph {
+    private static final Logger LOG = Logger.getLogger(FBGraph.class);
 
     private String accessToken;
 
@@ -21,7 +24,7 @@ public class FBGraph {
     }
 
     public String getFBGraph() {
-        String graph = null;
+        String graph;
         try {
 
             String g = "https://graph.facebook.com/me?" + accessToken;
@@ -36,7 +39,7 @@ public class FBGraph {
             in.close();
             graph = b.toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
             throw new RuntimeException("ERROR in getting FB graph data. " + e);
         }
         return graph;
@@ -54,7 +57,7 @@ public class FBGraph {
             if (json.has("gender"))
                 fbProfile.put("gender", json.getString("gender"));
         } catch (JSONException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
             throw new RuntimeException("ERROR in parsing FB graph data. " + e);
         }
         return fbProfile;

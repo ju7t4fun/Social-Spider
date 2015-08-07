@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.utils;
 
 /**
- * Created by Marian Voronovskyi on 12.06.2015.
+ * @author Marian Voronovskyi
  */
 public class Encryptor {
 

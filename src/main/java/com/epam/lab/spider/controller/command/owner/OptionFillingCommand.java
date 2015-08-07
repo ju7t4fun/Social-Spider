@@ -1,15 +1,16 @@
 package com.epam.lab.spider.controller.command.owner;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.controller.vk.Parameters;
-import com.epam.lab.spider.controller.vk.VKException;
-import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.model.db.entity.Profile;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.entity.Wall;
-import com.epam.lab.spider.model.db.service.ProfileService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.WallService;
+import com.epam.lab.spider.integration.vk.Parameters;
+import com.epam.lab.spider.integration.vk.VKException;
+import com.epam.lab.spider.integration.vk.Vkontakte;
+import com.epam.lab.spider.model.entity.Profile;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.entity.Wall;
+import com.epam.lab.spider.persistence.service.ProfileService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.WallService;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,9 +24,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Boyarsky Vitaliy on 29.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class OptionFillingCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(OptionFillingCommand.class);
 
     private static Vkontakte vk = new Vkontakte();
     private static ServiceFactory factory = ServiceFactory.getInstance();
@@ -66,7 +68,7 @@ public class OptionFillingCommand implements ActionCommand {
 
     private boolean hasWallProfile(List<Wall> walls, int profileId, Wall.Permission permission) {
         for (Wall wall : walls) {
-            if (wall.getProfile_id() == profileId && wall.getPermission() == permission) {
+            if (wall.getProfileId() == profileId && wall.getPermission() == permission) {
                 return true;
             }
         }
@@ -84,7 +86,7 @@ public class OptionFillingCommand implements ActionCommand {
             userNamesPool.put(id, name);
             return name;
         } catch (VKException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         return "DELETED";
     }

@@ -1,6 +1,9 @@
 package com.epam.lab.spider.model.db.service;
 
-import com.epam.lab.spider.model.db.entity.Filter;
+import com.epam.lab.spider.model.entity.AbstractEntityFactory;
+import com.epam.lab.spider.model.entity.Filter;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.persistence.service.FilterService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,18 +11,19 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 /**
- * Created by Sasha on 12.07.2015.
+ * @author Oleksandra Lobanok
  */
 public class FilterServiceTest {
+    public static final AbstractEntityFactory ENTITY_FACTORY = BasicEntityFactory.getSynchronized();
 
     Filter filter;
     FilterService fs = new FilterService();
 
     @Before
     public void setUp() throws Exception {
-        filter = new Filter();
+        filter = ENTITY_FACTORY.createFilter();
         filter.setLikes(100);
-        filter.setReposts(10);
+        filter.setRePosts(10);
         filter.setComments(1);
     }
 
@@ -36,9 +40,9 @@ public class FilterServiceTest {
 
     @Test
     public void testUpdate() throws Exception {
-        Filter newFilter = new Filter();
+        Filter newFilter = ENTITY_FACTORY.createFilter();
         newFilter.setLikes(80);
-        newFilter.setReposts(50);
+        newFilter.setRePosts(50);
         newFilter.setComments(30);
         fs.update(3, newFilter);
         Filter updatedFilter = fs.getById(3);

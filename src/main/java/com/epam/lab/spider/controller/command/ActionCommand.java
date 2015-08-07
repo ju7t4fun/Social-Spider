@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Boyarsky Vitaliy on 08.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public interface ActionCommand {
 

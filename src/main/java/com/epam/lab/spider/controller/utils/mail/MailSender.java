@@ -6,7 +6,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 /**
- * Created by Dmytro on 12.06.2015.
+ * @author Dzyuba Orest
  */
 
 public class MailSender {

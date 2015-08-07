@@ -3,12 +3,15 @@ package com.epam.lab.spider.controller.command.task;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
 import com.epam.lab.spider.job.util.TaskUtil;
-import com.epam.lab.spider.model.db.entity.Filter;
-import com.epam.lab.spider.model.db.entity.Task;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.entity.Wall;
-import com.epam.lab.spider.model.db.service.*;
-import com.epam.lab.spider.model.db.service.savable.SavableServiceUtil;
+import com.epam.lab.spider.model.entity.Filter;
+import com.epam.lab.spider.model.entity.Task;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.entity.Wall;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.TaskService;
+import com.epam.lab.spider.persistence.service.WallService;
+import com.epam.lab.spider.persistence.service.savable.SavableServiceUtil;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -20,18 +23,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
- * Created by shell on 6/26/2015.
+ * @author Yura Kovalik
  */
 public class SaveTaskCommand implements ActionCommand {
     public final static Logger LOG = Logger.getLogger(SaveTaskCommand.class);
     private static ServiceFactory factory = ServiceFactory.getInstance();
-    private WallService wallService = factory.create(WallService.class);
     private static TaskService taskService = factory.create(TaskService.class);
-
-    private static boolean demoLimites = true;
+    private static boolean demoRestriction = true;
+    private WallService wallService = factory.create(WallService.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -106,22 +111,21 @@ public class SaveTaskCommand implements ActionCommand {
                     task = taskService.getByIdAndLimitByUserId(taskIndex, user.getId());
                 }
                 if(task == null)throw new RuntimeException("User can not get access to foreign this task!");
-                task.setId(taskIndex);
             }else{
-                task = new Task();
+                task = BasicEntityFactory.getSynchronized().createTask();
                 task.setState(Task.State.STOPPED);
             }
 
             Filter filter = task.getFilter();
             if(filter == null) {
-                filter = new Filter();
+                filter = BasicEntityFactory.getSynchronized().createFilter();
             }
             filter.setLikes(Integer.parseInt(likes));
-            filter.setReposts(Integer.parseInt(reposts));
+            filter.setRePosts(Integer.parseInt(reposts));
             filter.setComments(Integer.parseInt(comments));
             filter.setMinTime(Long.parseLong(min_time));
             filter.setMaxTime(Long.parseLong(max_time));
-            if(filter.getLikes() < 0 && filter.getReposts()< 0 && filter.getComments() < 0){
+            if (filter.getLikes() < 0 && filter.getRePosts() < 0 && filter.getComments() < 0) {
                 throw new RuntimeException("Minus Filter value not available!");
             }
 
@@ -141,9 +145,9 @@ public class SaveTaskCommand implements ActionCommand {
             if (jsonContentType.contains("photo")) task.getContentType().addType(Task.ContentType.PHOTO);
             if (jsonContentType.contains("audio")) task.getContentType().addType(Task.ContentType.AUDIO);
             if (jsonContentType.contains("video")) task.getContentType().addType(Task.ContentType.VIDEO);
-            if (jsonContentType.contains("repost")) task.getContentType().addType(Task.ContentType.REPOSTS);
+            if (jsonContentType.contains("repost")) task.getContentType().addType(Task.ContentType.RE_POSTS);
             if (jsonContentType.contains("link")) task.getContentType().addType(Task.ContentType.LINKS);
-            if (jsonContentType.contains("hashtag")) task.getContentType().addType(Task.ContentType.HASHTAGS);
+            if (jsonContentType.contains("hashtag")) task.getContentType().addType(Task.ContentType.HASH_TAGS);
             if (jsonContentType.contains("docs")) task.getContentType().addType(Task.ContentType.DOCUMENTS);
             if (jsonContentType.contains("page")) task.getContentType().addType(Task.ContentType.PAGES);
             if (jsonContentType.contains("title")) task.getContentType().addType(Task.ContentType.SIMPLE_TITLE);
@@ -168,7 +172,7 @@ public class SaveTaskCommand implements ActionCommand {
             if(task.getPostCount()<1 && task.getPostCount() > 10 ){
                 throw new RuntimeException("Invalid post count!");
             }
-            if(demoLimites && task.getPostCount() > 2){
+            if (demoRestriction && task.getPostCount() > 2) {
                 throw new RuntimeException("Invalid [DEMO-MODE] post count!");
             }
             if(task.getRepeatCount() < 0){
@@ -178,7 +182,7 @@ public class SaveTaskCommand implements ActionCommand {
             if(task.getIntervalMin() < 1 && task.getIntervalMax() < 1  ){
                 throw new RuntimeException("Invalid interval count!");
             }
-            if(demoLimites){
+            if (demoRestriction) {
                 if(task.getIntervalMin()<3 && task.getIntervalMin()>10 &&
                         task.getIntervalMax()<10 && task.getIntervalMax()>30 ) {
                     throw new RuntimeException("Invalid [DEMO-MODE] interval count!");
@@ -187,7 +191,7 @@ public class SaveTaskCommand implements ActionCommand {
             if(task.getPostDelayMin() < 0 && task.getPostDelayMax() < 1 ){
                 throw new RuntimeException("Invalid delay count!");
             }
-            if(demoLimites){
+            if (demoRestriction) {
                 if(task.getPostDelayMin()<30 && task.getPostDelayMin()>50 &&
                         task.getPostDelayMax()<60 && task.getPostDelayMax()>100 ) {
                     throw new RuntimeException("Invalid [DEMO-MODE] delay count!");
@@ -225,7 +229,7 @@ public class SaveTaskCommand implements ActionCommand {
                     wallWarning.add("Impossible wall#" + index + " for this user");
                 }
             }
-            if(demoLimites && task.getSource().size()>3){
+            if (demoRestriction && task.getSource().size() > 3) {
                 throw new RuntimeException("Invalid [DEMO-MODE] source wall count!");
             }
             for (int i = 0; i < jsonDestinations.size(); i++) {
@@ -239,7 +243,7 @@ public class SaveTaskCommand implements ActionCommand {
                     wallWarning.add("Impossible wall#" + index + " for this user");
                 }
             }
-            if(demoLimites && task.getDestination().size()>3){
+            if (demoRestriction && task.getDestination().size() > 3) {
                 throw new RuntimeException("Invalid [DEMO-MODE] destination wall count!");
             }
             warningToDisplay.addAll(wallWarning);
@@ -253,7 +257,7 @@ public class SaveTaskCommand implements ActionCommand {
 
 
         } catch (ParseException | RuntimeException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
             response.sendError(400);
             return;
         }
@@ -266,7 +270,6 @@ public class SaveTaskCommand implements ActionCommand {
             PrintWriter out = response.getWriter();
             out.print(result);
             out.flush();
-            return;
         } else {
             JSONObject resultJson = new JSONObject();
             JSONArray jsonWarning = new JSONArray();
@@ -280,7 +283,6 @@ public class SaveTaskCommand implements ActionCommand {
             PrintWriter out = response.getWriter();
             out.print(result);
             out.flush();
-            return;
         }
     }
 }

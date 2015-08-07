@@ -1,7 +1,7 @@
 package com.epam.lab.spider.job.exception;
 
 /**
- * Created by hell-engine on 7/11/2015.
+ * @author Yura Kovalik
  */
 public class FindingEmptyResultException extends Exception {
     private Integer vkId;

@@ -2,7 +2,7 @@ package com.epam.lab.spider.controller.command.controller;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.job.util.UserUnlock;
-import com.epam.lab.spider.model.db.entity.User;
+import com.epam.lab.spider.model.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by hell-engine on 7/14/2015.
+ * @author Yura Kovalik
  */
 public class UnlockCommand implements ActionCommand {
     @Override
@@ -27,10 +27,8 @@ public class UnlockCommand implements ActionCommand {
         boolean result = UserUnlock.forceFullUserUnlock(user.getId());
         if(result){
             response.setStatus(200);
-            return;
         }else{
             response.setStatus(204);
-            return;
         }
     }
 }

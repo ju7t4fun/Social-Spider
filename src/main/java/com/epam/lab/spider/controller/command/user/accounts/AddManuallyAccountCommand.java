@@ -2,15 +2,15 @@ package com.epam.lab.spider.controller.command.user.accounts;
 
 import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.controller.utils.UTF8;
-import com.epam.lab.spider.controller.vk.Parameters;
-import com.epam.lab.spider.controller.vk.VKException;
-import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.model.db.entity.Profile;
-import com.epam.lab.spider.model.db.service.ProfileService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.integration.vk.Parameters;
+import com.epam.lab.spider.integration.vk.VKException;
+import com.epam.lab.spider.integration.vk.Vkontakte;
+import com.epam.lab.spider.integration.vk.auth.AccessToken;
+import com.epam.lab.spider.model.entity.Profile;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
 import com.epam.lab.spider.model.vk.User;
+import com.epam.lab.spider.persistence.service.ProfileService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
- * Created by Boyarsky Vitaliy on 07.07.2015.
+ * @author Boyarsky Vitaliy
  */
 public class AddManuallyAccountCommand implements ActionCommand {
 
@@ -34,7 +34,7 @@ public class AddManuallyAccountCommand implements ActionCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        com.epam.lab.spider.model.db.entity.User user = (com.epam.lab.spider.model.db.entity.User) session
+        com.epam.lab.spider.model.entity.User user = (com.epam.lab.spider.model.entity.User) session
                 .getAttribute("user");
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         JSONObject json = new JSONObject();
@@ -61,7 +61,7 @@ public class AddManuallyAccountCommand implements ActionCommand {
         }
 
         // Створюємо профіль
-        Profile profile = new Profile();
+        Profile profile = BasicEntityFactory.getSynchronized().createProfile();
         profile.setVkId(token.getUserId());
         profile.setAccessToken(token.getAccessToken());
         profile.setExtTime(token.getExpirationMoment());
@@ -86,15 +86,15 @@ public class AddManuallyAccountCommand implements ActionCommand {
                 json.put("msg", "Successfully created!");
             } else {
                 json.put("status", "error");
-                json.put("msg", "Error has occured!");
+                json.put("msg", "Error has occurred!");
             }
         } else {
             if (service.update(oldProfile.getId(), profile)) {
                 json.put("status", "success");
-                json.put("msg", "Successfulle updated!");
+                json.put("msg", "Successfully updated!");
             } else {
                 json.put("status", "error");
-                json.put("msg", "Error has occured!");
+                json.put("msg", "Error has occurred!");
             }
         }
         response.getWriter().print(json.toString());

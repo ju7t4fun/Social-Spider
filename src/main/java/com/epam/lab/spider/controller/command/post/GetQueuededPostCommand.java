@@ -1,11 +1,11 @@
 package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.Attachment;
-import com.epam.lab.spider.model.db.entity.NewPost;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.NewPostService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Attachment;
+import com.epam.lab.spider.model.entity.PostingTask;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.PostingTaskService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,14 +22,14 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by Boyarsky Vitaliy on 08.07.2015.
+ * @author Boyarsky Vitaliy
  */
 public class GetQueuededPostCommand implements ActionCommand {
 
     private static final Logger LOG = Logger.getLogger(GetPostedPostCommand.class);
 
     private static ServiceFactory factory = ServiceFactory.getInstance();
-    private static NewPostService service = factory.create(NewPostService.class);
+    private static PostingTaskService service = factory.create(PostingTaskService.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -44,7 +44,7 @@ public class GetQueuededPostCommand implements ActionCommand {
         } catch (NumberFormatException ignored) {
         }
 
-        List<NewPost> posts = service.getByUserIdWithParameters(user.getId(), offset, limit, "CREATED",
+        List<PostingTask> posts = service.getByUserIdWithParameters(user.getId(), offset, limit, "CREATED",
                 request.getParameter("sSearch"), request.getParameter("sSortDir_0"), wallId);
         int postCount = service.getCountAllByUserIdWithParameters(user.getId(), "CREATED", request.getParameter
                 ("sSearch"), wallId);
@@ -52,7 +52,7 @@ public class GetQueuededPostCommand implements ActionCommand {
         JSONObject result = new JSONObject();
         JSONArray array = new JSONArray();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-        for (NewPost post : posts) {
+        for (PostingTask post : posts) {
             try {
                 JSONArray row = new JSONArray();
                 row.put(post.getPost().getMessage().length() > 45 ? post.getPost().getMessage().substring(0, 42) +

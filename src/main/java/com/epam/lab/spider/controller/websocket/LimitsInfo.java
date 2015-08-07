@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.websocket;
 
 
-import com.epam.lab.spider.model.db.entity.User;
+import com.epam.lab.spider.model.entity.User;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 
@@ -19,6 +19,43 @@ public class LimitsInfo {
     private static final Map<Session, Integer> sessions = new HashMap<>();
     private static final Map<Integer,List<Session>> sessionsBack = new HashMap<>();
 
+    public static String formatJSON(String changeType,int value, int percent){
+
+        JSONObject response = new JSONObject();
+
+
+        JSONObject taskStateCell = new JSONObject();
+        taskStateCell.put("value", value);
+        taskStateCell.put("percent", percent);
+
+        response.put("change", changeType);
+        response.put("data", taskStateCell);
+        return response.toString();
+    }
+
+    public static boolean sendLimitInfo(Integer userId, String changeType,int value, int percent ) {
+        try {
+            if (sessionsBack.containsKey(userId)) {
+                String message = formatJSON(changeType,value,percent);
+                for(Session session:sessionsBack.get(userId)){
+                    session.getBasicRemote().sendText(message);
+                }
+                return true;
+            }
+        } catch (IOException|RuntimeException e) {
+            LOG.error(e.getLocalizedMessage(), e);
+        }
+        return false;
+    }
+
+    public static boolean sendTaskLimitInfo(Integer userId, int value, int percent ) {
+        return sendLimitInfo(userId, "task", value, percent);
+    }
+
+    public static boolean sendPostLimitInfo(Integer userId, int value, int percent ) {
+        return sendLimitInfo(userId,"post",value,percent);
+    }
+
     private HttpSession getHttpSession(EndpointConfig config) {
         return (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
     }
@@ -33,49 +70,16 @@ public class LimitsInfo {
         {
             sessions.put(session, user.getId());
             List<Session> userSessions;
-            if(sessionsBack.containsKey(user.getId())){
+            if (sessionsBack.containsKey(user.getId())) {
                 userSessions = sessionsBack.get(user.getId());
-            }else{
+            } else {
                 userSessions = new ArrayList<>();
-                sessionsBack.put(user.getId(),userSessions);
+                sessionsBack.put(user.getId(), userSessions);
             }
             userSessions.add(session);
         }
     }
 
-    public static String formatJSON(String changeType,int value, int percent){
-
-        JSONObject response = new JSONObject();
-
-
-        JSONObject taskStateCell = new JSONObject();
-        taskStateCell.put("value", value);
-        taskStateCell.put("percent", percent);
-
-        response.put("change", changeType);
-        response.put("data", taskStateCell);
-        return response.toString();
-    }
-    public static boolean sendLimitInfo(Integer userId, String changeType,int value, int percent ) {
-        try {
-            if (sessionsBack.containsKey(userId)) {
-                String message = formatJSON(changeType,value,percent);
-                for(Session session:sessionsBack.get(userId)){
-                    session.getBasicRemote().sendText(message);
-                }
-                return true;
-            }
-        } catch (IOException|RuntimeException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-    public static boolean sendTaskLimitInfo(Integer userId, int value, int percent ) {
-        return sendLimitInfo(userId,"task",value,percent);
-    }
-    public static boolean sendPostLimitInfo(Integer userId, int value, int percent ) {
-        return sendLimitInfo(userId,"post",value,percent);
-    }
     @OnMessage
     public void onMessage(String message, Session session) {
 //        LOG.debug("onMessage (message=" + message + ")");
@@ -107,8 +111,8 @@ public class LimitsInfo {
     }
     static class AutoWebSocket implements Runnable {
 
-        private User user;
         boolean stop = false;
+        private User user;
 
         public AutoWebSocket(User user) {
             this.user = user;
@@ -128,7 +132,7 @@ public class LimitsInfo {
                     }
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
             }
             LOG.info("END OF RUN FOR USER " + user.getId());
         }

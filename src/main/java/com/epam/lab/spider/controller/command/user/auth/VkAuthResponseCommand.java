@@ -3,15 +3,16 @@ package com.epam.lab.spider.controller.command.user.auth;
 import com.epam.lab.spider.ServerResolver;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
-import com.epam.lab.spider.controller.vk.Parameters;
-import com.epam.lab.spider.controller.vk.VKException;
-import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.model.db.entity.Profile;
-import com.epam.lab.spider.model.db.service.ProfileService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.UserService;
+import com.epam.lab.spider.integration.vk.Parameters;
+import com.epam.lab.spider.integration.vk.VKException;
+import com.epam.lab.spider.integration.vk.Vkontakte;
+import com.epam.lab.spider.integration.vk.auth.AccessToken;
+import com.epam.lab.spider.model.entity.Profile;
 import com.epam.lab.spider.model.vk.User;
+import com.epam.lab.spider.persistence.service.ProfileService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.UserService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,9 +23,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * Created by Boyarsky Vitaliy on 10.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class VkAuthResponseCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(VkAuthResponseCommand.class);
 
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static ProfileService profileService = factory.create(ProfileService.class);
@@ -39,7 +41,7 @@ public class VkAuthResponseCommand implements ActionCommand {
             List<User> users = vk.users().get(param);
             user = users.get(0);
         } catch (VKException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         return user;
     }
@@ -53,7 +55,7 @@ public class VkAuthResponseCommand implements ActionCommand {
         Profile vkProfile = profileService.getByVkId(vkUser.getId());
         if (vkProfile != null) {
             // Авторизація
-            com.epam.lab.spider.model.db.entity.User user = userService.getById(vkProfile.getUserId());
+            com.epam.lab.spider.model.entity.User user = userService.getById(vkProfile.getUserId());
             ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
             switch (user.getState()) {
                 case CREATED:

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Dmytro on 11.06.2015.
+ * @author Dzyuba Orest
  */
 public class ShowRegisterCommand implements ActionCommand {
 

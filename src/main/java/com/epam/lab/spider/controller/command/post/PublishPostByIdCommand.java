@@ -2,12 +2,15 @@ package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
-import com.epam.lab.spider.model.db.entity.NewPost;
-import com.epam.lab.spider.model.db.entity.Post;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.NewPostService;
-import com.epam.lab.spider.model.db.service.PostService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Post;
+import com.epam.lab.spider.model.entity.PostingTask;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.model.entity.impl.PostingTaskImpl;
+import com.epam.lab.spider.persistence.service.PostService;
+import com.epam.lab.spider.persistence.service.PostingTaskService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -21,19 +24,19 @@ import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
 /**
- * Created by Boyarsky Vitaliy on 05.07.2015.
+ * @author Boyarsky Vitaliy
  */
 public class PublishPostByIdCommand implements ActionCommand {
-
+    private static final Logger LOG = Logger.getLogger(PublishPostByIdCommand.class);
 
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static PostService postService = factory.create(PostService.class);
-    private static NewPostService newPostService = factory.create(NewPostService.class);
+    private static PostingTaskService postingTaskService = factory.create(PostingTaskService.class);
 
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("---------------------START------------------------------------------");
+        LOG.debug("---------------------START------------------------------------------");
         // Вхідні параметри
         Integer postId = Integer.parseInt(request.getParameter("postId"));
         String date = request.getParameter("date");
@@ -46,37 +49,37 @@ public class PublishPostByIdCommand implements ActionCommand {
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         User user = (User) session.getAttribute("user");
         Post post = postService.getById(postId);
-        System.out.println("---- " + post.getId() + " --- " + post.getUserId());
+        LOG.debug("---- " + post.getId() + " --- " + post.getUserId());
         if (post.getUserId() < 0) {
             post.getAttachments();
             post.setUserId(user.getId());
             postService.insert(post);
         }
         // Створюємо new post
-        System.out.println("---- " + post.getId() + " --- " + post.getUserId());
-        NewPost newPost = new NewPost();
-        newPost.setUserId(user.getId());
-        newPost.setPostId(post.getId());
-        newPost.setState(NewPost.State.CREATED);
+        LOG.debug("---- " + post.getId() + " --- " + post.getUserId());
+        PostingTask postingTask = BasicEntityFactory.getSynchronized().createPostingTask();
+        postingTask.setUserId(user.getId());
+        postingTask.setPostId(post.getId());
+        postingTask.setState(PostingTaskImpl.State.CREATED);
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-            newPost.setPostTime(formatter.parse(date + " " + time));
+            postingTask.setPostTime(formatter.parse(date + " " + time));
             if (request.getParameter("checked").equals("true")) {
-                newPost.setDeleteTime(formatter.parse(dateDelete + " " + timeDelete));
+                postingTask.setDeleteTime(formatter.parse(dateDelete + " " + timeDelete));
             }
         } catch (ParseException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
 
         JSONArray array = new JSONArray();
         JSONObject obj;
-        newPost.setDeleted(false);
+        postingTask.setDeleted(false);
         String[] groupsId = groups.split(",");
 
         // Створюємо пост для кожної стіни
         for (String id : groupsId) {
-            newPost.setWallId(Integer.parseInt(id));
-            if (newPostService.insert(newPost)) {
+            postingTask.setWallId(Integer.parseInt(id));
+            if (postingTaskService.insert(postingTask)) {
                 obj = new JSONObject();
                 obj.put("status", "success");
                 obj.put("msg", UTF8.encoding(bundle.getString("notification.post.success")));
@@ -90,7 +93,7 @@ public class PublishPostByIdCommand implements ActionCommand {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(array.toString());
-        System.out.println("---------------------END------------------------------------------");
+        LOG.debug("---------------------END------------------------------------------");
     }
 
 }

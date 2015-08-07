@@ -1,17 +1,20 @@
 package com.epam.lab.spider.controller.utils.hash;
 
+import org.apache.log4j.Logger;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by Dmytro on 13.06.2015.
+ * @author Dzyuba Orest
  */
 public class HashMD5 {
+    private static final Logger LOG = Logger.getLogger(HashMD5.class);
 
     public String hash(String passwordToHash) {
         String generatedPassword = null;
         try {
-            MessageDigest md = null;
+            MessageDigest md;
             md = MessageDigest.getInstance("MD5");
             md.update(passwordToHash.getBytes());
             byte[] bytes = md.digest();
@@ -21,7 +24,7 @@ public class HashMD5 {
             }
             generatedPassword = sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         return generatedPassword;
     }

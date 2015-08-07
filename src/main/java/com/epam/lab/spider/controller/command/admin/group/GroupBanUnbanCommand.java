@@ -2,14 +2,11 @@ package com.epam.lab.spider.controller.command.admin.group;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
-import com.epam.lab.spider.model.db.entity.Category;
-import com.epam.lab.spider.model.db.entity.Owner;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.OwnerService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.UserService;
+import com.epam.lab.spider.model.entity.Owner;
+import com.epam.lab.spider.persistence.service.OwnerService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,23 +16,24 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 /**
- * Created by Орест on 7/2/2015.
+ * @author Dzyuba Orest
  */
 public class GroupBanUnbanCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(GroupBanUnbanCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
-        String vkid = request.getParameter("vk_id");
+        String vkIdString = request.getParameter("vk_id");
 
-        int vk_id = Integer.parseInt(vkid);
+        int vkId = Integer.parseInt(vkIdString);
 
         OwnerService service = ServiceFactory.getInstance().create(OwnerService.class);
         JSONObject json = new JSONObject();
         try {
-            Owner owner = service.getByVkId(vk_id);
+            Owner owner = service.getByVkId(vkId);
             if (owner == null || owner.getBanned()) {
-                if (service.updateUnBan(vk_id)) {
+                if (service.updateUnBan(vkId)) {
                     json.put("status", "success");
                     json.put("msg", UTF8.encoding(bundle.getString("notification.updated.unbanned.success")));
                 } else {
@@ -43,19 +41,19 @@ public class GroupBanUnbanCommand implements ActionCommand {
                     json.put("msg", UTF8.encoding(bundle.getString("notification.updated.unbanned.error")));
                 }
             } else {
-                if (service.updateBan(vk_id)) {
+                if (service.updateBan(vkId)) {
                     json.put("status", "success");
                     json.put("msg", UTF8.encoding(bundle.getString("notification.updated.banned.success")));
                 } else {
                     json.put("status", "error");
                     json.put("msg", UTF8.encoding(bundle.getString("notification.updated.banned.error")));
                 }
-                service.deleteByVkId(vk_id);
+                service.deleteByVkId(vkId);
             }
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
 
         response.setContentType("application/json");

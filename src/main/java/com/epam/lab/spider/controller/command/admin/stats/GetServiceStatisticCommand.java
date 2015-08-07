@@ -1,10 +1,10 @@
 package com.epam.lab.spider.controller.command.admin.stats;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.service.EventService;
-import com.epam.lab.spider.model.db.service.NewPostService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.TaskSynchronizedDataService;
+import com.epam.lab.spider.persistence.service.EventService;
+import com.epam.lab.spider.persistence.service.PostingTaskService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.TaskSynchronizedDataService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by Boyarsky Vitaliy on 10.07.2015.
+ * @author Boyarsky Vitaliy
  */
 public class GetServiceStatisticCommand implements ActionCommand {
 
@@ -52,7 +52,7 @@ public class GetServiceStatisticCommand implements ActionCommand {
     }
 
     private JSONArray buildPostDiagram(String date) {
-        NewPostService service = factory.create(NewPostService.class);
+        PostingTaskService service = factory.create(PostingTaskService.class);
         Map<Long, Integer> statistics = service.statisticsPosting(date);
         return buildDiagram(statistics, date);
     }

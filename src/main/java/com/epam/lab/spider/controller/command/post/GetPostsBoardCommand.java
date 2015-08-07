@@ -1,11 +1,12 @@
 package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.Attachment;
-import com.epam.lab.spider.model.db.entity.NewPost;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.NewPostService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Attachment;
+import com.epam.lab.spider.model.entity.PostingTask;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.entity.impl.PostingTaskImpl;
+import com.epam.lab.spider.persistence.service.PostingTaskService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,19 +16,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by hell-engine on 7/18/2015.
+ * @author Yura Kovalik
  */
 public class GetPostsBoardCommand implements ActionCommand {
     private static final Logger LOG = Logger.getLogger(GetPostedPostCommand.class);
 
     private static ServiceFactory factory = ServiceFactory.getInstance();
-    private static NewPostService newPostService = factory.create(NewPostService.class);
+    private static PostingTaskService postingTaskService = factory.create(PostingTaskService.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user;
@@ -48,7 +48,7 @@ public class GetPostsBoardCommand implements ActionCommand {
             offset = 0;
         }
 
-        List<NewPost> posts = newPostService.getByUserId(user.getId(), offset, 30);
+        List<PostingTask> posts = postingTaskService.getByUserId(user.getId(), offset, 30);
 
 
 //        List<Map<String,String>> pageArray = new ArrayList<>(30);
@@ -56,20 +56,20 @@ public class GetPostsBoardCommand implements ActionCommand {
 
         if (posts != null && !posts.isEmpty()) {
             for (int i = 0; i < posts.size(); i++) {
-                NewPost newPost = posts.get(i);
+                PostingTask postingTask = posts.get(i);
 //                Map<String, String> objectMap = new HashMap<>();
                 JSONObject objectMap = new JSONObject();
-                String message = newPost.getPost().getMessage();
-                message = message.replaceAll("%owner%",newPost.getOwner().getDomain()).replaceAll("%owner_name%",newPost.getOwner().getName());
-                objectMap.put("pid", newPost.getId().toString());
-                objectMap.put("mid", newPost.getPost().getId().toString());
+                String message = postingTask.getPost().getMessage();
+                message = message.replaceAll("%owner%", postingTask.getOwner().getDomain()).replaceAll("%owner_name%", postingTask.getOwner().getName());
+                objectMap.put("pid", postingTask.getId().toString());
+                objectMap.put("mid", postingTask.getPost().getId().toString());
                 objectMap.put("message", message);
 
                 Map<Attachment.Type, Integer> attachmentCount = new HashMap<>();
-                if(newPost.getPost().getAttachments().isEmpty()){
+                if (postingTask.getPost().getAttachments().isEmpty()) {
                     objectMap.put("no_att", "true");
                 }else {
-                    for (Attachment attachment : newPost.getPost().getAttachments()) {
+                    for (Attachment attachment : postingTask.getPost().getAttachments()) {
                         int count = 0;
                         if (attachmentCount.containsKey(attachment.getType())) {
                             count = attachmentCount.get(attachment.getType());
@@ -94,7 +94,7 @@ public class GetPostsBoardCommand implements ActionCommand {
                     objectMap.put("docs", docs.toString());
                     objectMap.put("other", other.toString());
                 }
-                switch (newPost.getState()) {
+                switch (postingTask.getState()) {
                     case CREATED:
                     case RESTORED:
                         objectMap.put("state", "queered");
@@ -107,25 +107,25 @@ public class GetPostsBoardCommand implements ActionCommand {
                         objectMap.put("likes", "0");
                         objectMap.put("shares", "0");
                         objectMap.put("comments", "0");
-//                        objectMap.put("likes", "" + newPost.getStats().getLikes());
-//                        objectMap.put("shares", "" + newPost.getStats().getReposts());
-//                        objectMap.put("comments", "" + newPost.getStats().getComments());
+//                        objectMap.put("likes", "" + postingTask.getStats().getLikes());
+//                        objectMap.put("shares", "" + postingTask.getStats().getRePosts());
+//                        objectMap.put("comments", "" + postingTask.getStats().getComments());
                         break;
                     case DELETED:
                     case ERROR:
                         objectMap.put("state", "hide");
                         break;
                 }
-                objectMap.put("to_name", newPost.getOwner().getName());
-                if (newPost.getState() == NewPost.State.POSTED && newPost.getPostId() != null && newPost.getPostId() != 0) {
-                    objectMap.put("to_link", "http://vk.com/wall" + newPost.getFullId());
+                objectMap.put("to_name", postingTask.getOwner().getName());
+                if (postingTask.getState() == PostingTaskImpl.State.POSTED && postingTask.getPostId() != null && postingTask.getPostId() != 0) {
+                    objectMap.put("to_link", "http://vk.com/wall" + postingTask.getFullId());
                 } else {
-                    objectMap.put("to_link", "http://vk.com/" + newPost.getOwner().getDomain());
+                    objectMap.put("to_link", "http://vk.com/" + postingTask.getOwner().getDomain());
                 }
-                objectMap.put("by_name", newPost.getProfile().getName());
-                objectMap.put("by_link", "http://vk.com/id" + newPost.getProfile().getVkId());
+                objectMap.put("by_name", postingTask.getProfile().getName());
+                objectMap.put("by_link", "http://vk.com/id" + postingTask.getProfile().getVkId());
 
-                String unitTime = "" + newPost.getPostTime().getTime();
+                String unitTime = "" + postingTask.getPostTime().getTime();
                 objectMap.put("unix_time_ms", unitTime);
 
                 pageArray.add(objectMap);
@@ -141,6 +141,5 @@ public class GetPostsBoardCommand implements ActionCommand {
         PrintWriter out = response.getWriter();
         out.print(resultFormat);
         out.flush();
-        return;
     }
 }

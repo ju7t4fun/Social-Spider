@@ -1,11 +1,11 @@
-var owner_id = parseInt(Args.owner_id);
+var ownerId = parseInt(Args.ownerId);
 var count = parseInt(Args.count);
 if(count == 0)count = 150;
 var offset = parseInt(Args.offset);
 var last_post_id = parseInt(Args.last_post_id);
 
 var likes = parseInt(Args.likes);
-var reposts = parseInt(Args.reposts);
+var rePosts = parseInt(Args.rePosts);
 var comments = parseInt(Args.comments);
 
 var total_loops = parseInt(Args.max_loops);
@@ -32,7 +32,7 @@ if(last_post_id>0){
     }
     //return [ranging_offset, x];
     var range_response = API.wall.get({
-        "owner_id" : owner_id,
+        "ownerId" : ownerId,
         "filter": "owner",
         "count": 100,
         "offset": ranging_offset
@@ -59,7 +59,7 @@ if(last_post_id>0){
                     last_post_id = range_response.items[y].id;
                 }else{
                     range_response = API.wall.get({
-                        "owner_id" : owner_id,
+                        "ownerId" : ownerId,
                         "filter": "owner",
                         "count": 100,
                         "offset": ranging_offset
@@ -103,7 +103,7 @@ if(last_post_id>0){
                             ranging_offset = 0;
                         }
                         range_response = API.wall.get({
-                            "owner_id" : owner_id,
+                            "ownerId" : ownerId,
                             "filter": "owner",
                             "count": 100,
                             "offset": ranging_offset
@@ -158,7 +158,7 @@ var i = 0, j = 0, basket = 0;
 
 do{
     response = API.wall.get({
-        "owner_id" : owner_id,
+        "ownerId" : ownerId,
         "filter": "owner",
         "count": query_size,
         "offset": query_offset
@@ -167,7 +167,7 @@ do{
     if(response.items.length>0 && result.length<count){
         do{
             if(response.items[i].likes.count>=likes 
-            && response.items[i].reposts.count>=reposts
+            && response.items[i].rePosts.count>=rePosts
             && response.items[i].comments.count>=comments 
             ){
                 offset_map.push(query_offset+i);

@@ -4,9 +4,9 @@ import com.epam.lab.spider.ServerResolver;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.utils.hash.HashSHA;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.UserService;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 /**
- * Created by Dmytro on 12.06.2015.
+ * @author Dzyuba Orest
  */
 public class ActivateCommand implements ActionCommand {
 

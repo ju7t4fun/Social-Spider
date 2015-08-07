@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Created by Boyarsky Vitaliy on 11.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class SignOutCommand implements ActionCommand {
 

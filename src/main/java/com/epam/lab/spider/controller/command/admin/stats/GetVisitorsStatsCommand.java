@@ -3,12 +3,12 @@ package com.epam.lab.spider.controller.command.admin.stats;
 import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.StatisticsBuilder;
-import com.epam.lab.spider.controller.vk.Parameters;
-import com.epam.lab.spider.controller.vk.VKException;
-import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.model.db.entity.Profile;
-import com.epam.lab.spider.model.db.entity.User;
+import com.epam.lab.spider.integration.vk.Parameters;
+import com.epam.lab.spider.integration.vk.VKException;
+import com.epam.lab.spider.integration.vk.Vkontakte;
+import com.epam.lab.spider.integration.vk.auth.AccessToken;
+import com.epam.lab.spider.model.entity.Profile;
+import com.epam.lab.spider.model.entity.User;
 import com.epam.lab.spider.model.vk.Period;
 import org.json.JSONObject;
 
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by Boyarsky Vitaliy on 09.07.2015.
+ * @author Boyarsky Vitaliy
  */
 public class GetVisitorsStatsCommand implements ActionCommand {
 

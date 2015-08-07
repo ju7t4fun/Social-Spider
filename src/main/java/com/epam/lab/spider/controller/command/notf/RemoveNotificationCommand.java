@@ -1,8 +1,8 @@
 package com.epam.lab.spider.controller.command.notf;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.service.EventService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.EventService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Boyarsky Vitaliy on 26.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class RemoveNotificationCommand implements ActionCommand {
 

@@ -5,6 +5,7 @@ import com.epam.lab.spider.controller.utils.FileType;
 import com.epam.lab.spider.controller.utils.UTF8;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import javax.servlet.ServletContext;
@@ -17,14 +18,14 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URL;
 import java.security.SecureRandom;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
- * Created by Marian Voronovskyi on 20.06.2015.
+ * @author Marian Voronovskyi
  */
 public class UploadFileFromURLCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(UploadFileFromURLCommand.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -58,12 +59,12 @@ public class UploadFileFromURLCommand implements ActionCommand {
             status = "success";
             message = UTF8.encoding(bundle.getString("notification.upload.file.success"));
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
             status = "fail";
             message = UTF8.encoding(bundle.getString("notification.upload.url.error"));
         }
         if (!urlType.isEmpty()) {
-            System.out.println(urlType);
+            LOG.debug(urlType);
             request.getSession().setAttribute("files_url", urlType);
         }
         response.getWriter().print(new JSONObject().put(status, message));

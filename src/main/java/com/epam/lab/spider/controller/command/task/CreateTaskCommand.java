@@ -1,12 +1,11 @@
 package com.epam.lab.spider.controller.command.task;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.Task;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.entity.Wall;
-import com.epam.lab.spider.model.db.service.*;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import com.epam.lab.spider.model.entity.Task;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.entity.Wall;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.WallService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by shell on 6/26/2015.
+ * @author Yura Kovalik
  */
 public class CreateTaskCommand implements ActionCommand {
 
@@ -87,7 +86,7 @@ public class CreateTaskCommand implements ActionCommand {
         request.setAttribute("AUDIO","true");
         request.setAttribute("VIDEO","true");
         request.setAttribute("DOCUMENTS","true");
-        request.setAttribute("REPOSTS","true");
+        request.setAttribute("RE_POSTS", "true");
 
 
 

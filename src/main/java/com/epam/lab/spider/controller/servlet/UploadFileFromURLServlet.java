@@ -11,19 +11,11 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Marian Voronovskyi on 20.06.2015.
+ * @author Marian Voronovskyi
  */
 public class UploadFileFromURLServlet extends HttpServlet {
 
     private static ActionFactory factory = new UploadFileFromURLFactory();
-
-    private static class UploadFileFromURLFactory extends ActionFactory {
-
-        public UploadFileFromURLFactory() {
-            commands = new HashMap<>();
-            commands.put("uploadurl", new UploadFileFromURLCommand());
-        }
-    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         factory.action(request, response);
@@ -31,5 +23,13 @@ public class UploadFileFromURLServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         factory.action(request, response);
+    }
+
+    private static class UploadFileFromURLFactory extends ActionFactory {
+
+        public UploadFileFromURLFactory() {
+            commands = new HashMap<>();
+            commands.put("uploadurl", new UploadFileFromURLCommand());
+        }
     }
 }

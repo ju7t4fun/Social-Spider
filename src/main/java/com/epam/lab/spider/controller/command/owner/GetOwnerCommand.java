@@ -1,10 +1,10 @@
 package com.epam.lab.spider.controller.command.owner;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.Owner;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.OwnerService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Owner;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.OwnerService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by Boyarsky Vitaliy on 29.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class GetOwnerCommand implements ActionCommand {
 
@@ -29,8 +29,8 @@ public class GetOwnerCommand implements ActionCommand {
         User user = (User) session.getAttribute("user");
         int page = Integer.parseInt(request.getParameter("iDisplayStart"));
         int size = Integer.parseInt(request.getParameter("iDisplayLength"));
-        List<Owner> owners = null;
-        int count = 0;
+        List<Owner> owners;
+        int count;
         if (request.getParameter("sSearch").length() > 0) {
             String q = request.getParameter("sSearch");
             owners = service.searchByUserId(user.getId(), q, page, size);

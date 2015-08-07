@@ -1,27 +1,31 @@
 package com.epam.lab.spider.controller.utils.validation;
 
-import com.epam.lab.spider.controller.utils.validation.annotation.*;
+import com.epam.lab.spider.controller.utils.validation.annotation.AssertCustom;
+import com.epam.lab.spider.controller.utils.validation.annotation.NotNull;
 import com.epam.lab.spider.controller.utils.validation.annotation.Pattern;
+import com.epam.lab.spider.controller.utils.validation.annotation.Size;
 import com.epam.lab.spider.controller.utils.validation.custom.CustomValidation;
-
+import org.apache.log4j.Logger;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.*;
+import java.util.regex.Matcher;
 
 /**
- * Created by shell on 6/13/2015.
+ * @author Yura Kovalik
  */
 public class Validator {
-    public boolean isValid(Object valideObject){
-        Class clazz = valideObject.getClass();
+    private static final Logger LOG = Logger.getLogger(Validator.class);
+
+    public boolean isValid(Object objectToValidation) {
+        Class clazz = objectToValidation.getClass();
         Field[] fields =  clazz.getDeclaredFields();
         for(Field field:fields){
             boolean realAccessible = field.isAccessible();
             field.setAccessible(true);
             try {
-                Object local = field.get(valideObject);
+                Object local = field.get(objectToValidation);
                 NotNull notNull = field.getAnnotation(NotNull.class);
                 if(notNull != null){
 
@@ -70,10 +74,10 @@ public class Validator {
                     }
                 }
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
                 return false;
             } catch (InstantiationException e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
                 return false;
             }
             field.setAccessible(realAccessible);
@@ -146,7 +150,7 @@ public class Validator {
                     }
                 }
             } catch (IllegalAccessException | InstantiationException e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
                 validateResult.add(field.getName(),"Inner Error");
             }
             field.setAccessible(realAccessible);

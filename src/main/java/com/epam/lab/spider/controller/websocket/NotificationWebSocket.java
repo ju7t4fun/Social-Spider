@@ -3,10 +3,10 @@ package com.epam.lab.spider.controller.websocket;
 import com.epam.lab.spider.controller.utils.EventLogger;
 import com.epam.lab.spider.controller.utils.Receiver;
 import com.epam.lab.spider.controller.utils.Sender;
-import com.epam.lab.spider.model.db.entity.Event;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.EventService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Event;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.EventService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Boyarsky Vitaliy on 25.06.2015.
+ * @author Boyarsky Vitaliy
  */
 @ServerEndpoint(value = "/websocket/notification", configurator = GetHttpSessionConfigurator.class)
 public class NotificationWebSocket implements Receiver {
@@ -52,7 +52,7 @@ public class NotificationWebSocket implements Receiver {
                 send(id, event);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         if (LOG.isDebugEnabled())
             LOG.debug("onOpen (clientId=" + id + ")");
@@ -111,7 +111,7 @@ public class NotificationWebSocket implements Receiver {
             } catch (IllegalStateException e) {
                 LOG.warn(e.getMessage());
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
             }
         }
         return false;

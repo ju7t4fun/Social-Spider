@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by shell on 6/27/2015.
+ * @author Yura Kovalik
  */
 public class WallServlet extends HttpServlet {
     private static ActionFactory factory = new WallActionFactory();

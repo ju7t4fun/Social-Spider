@@ -1,18 +1,15 @@
 package com.epam.lab.spider.job.util;
 
-import com.epam.lab.spider.controller.vk.*;
+import com.epam.lab.spider.integration.vk.*;
 import com.epam.lab.spider.model.vk.Audio;
 import com.epam.lab.spider.model.vk.Photo;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
-
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
-
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +20,7 @@ import java.security.SecureRandom;
 import java.util.List;
 
 /**
- * Created by shell on 6/30/2015.
+ * @author Yura Kovalik
  * Refactor by shell on 7/6/2015.
  */
 public class PostAttachmentUtil {
@@ -86,7 +83,7 @@ public class PostAttachmentUtil {
                 badExecution = true;
                 x.printStackTrace();
             } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
             }
         }while (badExecution);
         return null;
@@ -148,11 +145,11 @@ public class PostAttachmentUtil {
                 x.printStackTrace();
             }
             catch (MalformedURLException e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
             }
         } while ( badExecution);
         return null;
@@ -217,7 +214,7 @@ public class PostAttachmentUtil {
                 x.printStackTrace();
             }
             catch (InterruptedException | IOException  e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
             }
         } while ( badExecution );
         return null;

@@ -1,11 +1,12 @@
 package com.epam.lab.spider.model.db;
 
+import com.epam.lab.spider.persistence.PoolConnection;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
 
 /**
- * Created by Sasha on 12.07.2015.
+ * @author Oleksandra Lobanok
  */
 public class PoolConnectionTest {
 

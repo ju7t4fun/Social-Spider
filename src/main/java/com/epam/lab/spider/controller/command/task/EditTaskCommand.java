@@ -2,12 +2,12 @@ package com.epam.lab.spider.controller.command.task;
 
 import com.epam.lab.spider.ServerResolver;
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.Task;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.entity.Wall;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.TaskService;
-import com.epam.lab.spider.model.db.service.WallService;
+import com.epam.lab.spider.model.entity.Task;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.entity.Wall;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.TaskService;
+import com.epam.lab.spider.persistence.service.WallService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -20,13 +20,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by hell-engine on 7/13/2015.
+ * @author Yura Kovalik
  */
 public class EditTaskCommand implements ActionCommand {
     public  final static Logger LOG = Logger.getLogger(SaveTaskCommand.class);
     private static ServiceFactory factory = ServiceFactory.getInstance();
-    private TaskService taskService = factory.create(TaskService.class);
     WallService wallService =  factory.create(WallService.class);
+    private TaskService taskService = factory.create(TaskService.class);
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = null;
@@ -102,7 +103,7 @@ public class EditTaskCommand implements ActionCommand {
             request.setAttribute("grabbing_mode", task.getGrabbingMode());
 
             request.setAttribute("likes", task.getFilter().getLikes());
-            request.setAttribute("reposts", task.getFilter().getReposts());
+            request.setAttribute("reposts", task.getFilter().getRePosts());
             request.setAttribute("comments", task.getFilter().getComments());
 
             StringBuilder hashTagsStringBuilder = new StringBuilder();
@@ -121,10 +122,14 @@ public class EditTaskCommand implements ActionCommand {
             if(task.getContentType().hasAudio()){request.setAttribute("AUDIO","true");}
             if(task.getContentType().hasVideo()){request.setAttribute("VIDEO","true");}
             if(task.getContentType().hasDoc()){request.setAttribute("DOCUMENTS","true");}
-            if(task.getContentType().hasHashtags()){request.setAttribute("HASHTAGS","true");}
+            if (task.getContentType().hasHashTags()) {
+                request.setAttribute("HASH_TAGS", "true");
+            }
             if(task.getContentType().hasLinks()){request.setAttribute("LINKS","true");}
             if(task.getContentType().hasPages()){request.setAttribute("PAGES","true");}
-            if(task.getContentType().hasReposts()){request.setAttribute("REPOSTS","true");}
+            if (task.getContentType().hasRePosts()) {
+                request.setAttribute("RE_POSTS", "true");
+            }
             if(task.getContentType().hasSimpleTitle()){request.setAttribute("SIMPLE_TITLE","true");}
             if(task.getContentType().hasTextTitle()){request.setAttribute("TEXT_TITLE","true");}
 

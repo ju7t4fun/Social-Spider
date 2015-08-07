@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Boyarsky Vitaliy on 19.06.2015.
+ * @author Boyarsky Vitaliy
  */
 @ServerEndpoint("/websocket/event/{clientId}")
 public class EventWebSocket implements Receiver {
@@ -66,12 +66,12 @@ public class EventWebSocket implements Receiver {
     public boolean send(int id, String message) {
         try {
             if (sessions.containsKey(id)) {
-                System.out.println("Session " + sessions.get(id) + " id " + id + " - " + message);
+                LOG.info("Session " + sessions.get(id) + " id " + id + " - " + message);
                 sessions.get(id).getBasicRemote().sendText(message);
                 return true;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         return false;
     }

@@ -1,10 +1,12 @@
 package com.epam.lab.spider.controller.command.task;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.*;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.TaskService;
-import com.epam.lab.spider.model.db.service.WallService;
+import com.epam.lab.spider.model.entity.Task;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.entity.Wall;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.TaskService;
+import com.epam.lab.spider.persistence.service.WallService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,13 +14,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
- * Created by Орест on 7/6/2015.
+ * @author Dzyuba Orest
  */
 public class GetAllTasks implements ActionCommand {
     @Override
@@ -33,7 +32,7 @@ public class GetAllTasks implements ActionCommand {
         List<Task> tasks;
         int tasksCount;
 
-        User user = null;
+        User user;
 
         try {
             user = (User) request.getSession().getAttribute("user");

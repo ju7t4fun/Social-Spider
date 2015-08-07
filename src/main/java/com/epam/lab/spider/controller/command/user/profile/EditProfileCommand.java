@@ -2,8 +2,9 @@ package com.epam.lab.spider.controller.command.user.profile;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.UserService;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.UserService;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -16,9 +17,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by Marian Voronovskyi on 21.06.2015.
+ * @author Marian Voronovskyi
  */
 public class EditProfileCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(EditProfileCommand.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -33,7 +35,7 @@ public class EditProfileCommand implements ActionCommand {
         User user = (User) session.getAttribute("user");
         Pattern p = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ]");
         Matcher m = p.matcher(value);
-        if (name == null || name == "" || value == null || value == "") {
+        if (name == null || name.equals("") || value == null || value.equals("")) {
             response.getWriter().print(new JSONObject().put("status", "error").put("msg", UTF8.encoding(bundle.getString("notification.field.not.empty"))));
         } else if (value.length() >= 30) {
             response.getWriter().print(new JSONObject().put("status", "error").put("msg", UTF8.encoding(bundle.getString("notification.value.less.than"))));
@@ -53,7 +55,7 @@ public class EditProfileCommand implements ActionCommand {
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().print(json.toString());
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("status", "error");
                 jsonObject.put("msg", UTF8.encoding(bundle.getString("notification.enter.correct.data")));

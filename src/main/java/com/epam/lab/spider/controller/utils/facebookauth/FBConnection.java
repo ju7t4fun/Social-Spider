@@ -1,8 +1,10 @@
 package com.epam.lab.spider.controller.utils.facebookauth;
 
 /**
- * Created by Орест on 16.06.2015.
+ * @author Dzyuba Orest
  */
+
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,10 +16,11 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 
 public class FBConnection {
+    // TODO: CHANGE FB CREDENTIALS
     public static final String FB_APP_ID = "578085655667025";
     public static final String FB_APP_SECRET = "41200291f9acb42225ce2c0c49d92f15";
     public static final String REDIRECT_URI = "/login";
-
+    private static final Logger LOG = Logger.getLogger(Object.class);
     static String accessToken = "";
 
     public String getFBAuthUrl() {
@@ -28,7 +31,7 @@ public class FBConnection {
                     + URLEncoder.encode(FBConnection.REDIRECT_URI, "UTF-8")
                     + "&scope=email";
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         return fbLoginUrl;
     }
@@ -41,7 +44,7 @@ public class FBConnection {
                     + URLEncoder.encode(FBConnection.REDIRECT_URI, "UTF-8")
                     + "&client_secret=" + FB_APP_SECRET + "&code=" + code;
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         return fbGraphUrl;
     }
@@ -52,11 +55,11 @@ public class FBConnection {
             try {
                 fbGraphURL = new URL(getFBGraphUrl(code));
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
                 throw new RuntimeException("Invalid code received " + e);
             }
             URLConnection fbConnection;
-            StringBuffer b = null;
+            StringBuffer b;
             try {
                 fbConnection = fbGraphURL.openConnection();
                 BufferedReader in;
@@ -67,7 +70,7 @@ public class FBConnection {
                     b.append(inputLine + "\n");
                 in.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
                 throw new RuntimeException("Unable to connect with Facebook " + e);
             }
 

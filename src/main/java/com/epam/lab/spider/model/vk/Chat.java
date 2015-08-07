@@ -1,6 +1,6 @@
 package com.epam.lab.spider.model.vk;
 
-import com.epam.lab.spider.controller.vk.Node;
+import com.epam.lab.spider.integration.vk.Node;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class Chat extends Model {
     }
 
     public static List<Chat> parseChat(Node root) {
-        List<Chat> chats = new ArrayList<Chat>();
+        List<Chat> chats = new ArrayList<>();
         List<Node> nodes = root.child("chat");
         for (Node node : nodes)
             chats.add(new Chat(node));

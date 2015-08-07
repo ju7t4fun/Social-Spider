@@ -1,6 +1,6 @@
 package com.epam.lab.spider.model.vk;
 
-import com.epam.lab.spider.controller.vk.Node;
+import com.epam.lab.spider.integration.vk.Node;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,7 +24,7 @@ public class Tag extends Model {
     }
 
     public static List<Tag> parseTag(Node root) {
-        List<Tag> tags = new ArrayList<Tag>();
+        List<Tag> tags = new ArrayList<>();
         List<Node> nodes = root.child("tag");
         for (Node node : nodes)
             tags.add(new Tag(node));

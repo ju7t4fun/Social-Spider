@@ -1,14 +1,16 @@
 package com.epam.lab.spider.controller.utils;
 
-import com.epam.lab.spider.model.db.entity.Event;
-import com.epam.lab.spider.model.db.service.EventService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Event;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.model.entity.impl.EventImpl;
+import com.epam.lab.spider.persistence.service.EventService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by Boyarsky Vitaliy on 16.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class EventLogger {
 
@@ -31,23 +33,23 @@ public class EventLogger {
     }
 
     public boolean info(String title, String messages) {
-        return createEvent(Event.Type.INFO, title, messages);
+        return createEvent(EventImpl.Type.INFO, title, messages);
     }
 
     public boolean success(String title, String messages) {
-        return createEvent(Event.Type.SUCCESS, title, messages);
+        return createEvent(EventImpl.Type.SUCCESS, title, messages);
     }
 
     public boolean warn(String title, String messages) {
-        return createEvent(Event.Type.WARN, title, messages);
+        return createEvent(EventImpl.Type.WARN, title, messages);
     }
 
     public boolean error(String title, String messages) {
-        return createEvent(Event.Type.ERROR, title, messages);
+        return createEvent(EventImpl.Type.ERROR, title, messages);
     }
 
-    private boolean createEvent(Event.Type type, String title, String message) {
-        Event event = new Event();
+    private boolean createEvent(EventImpl.Type type, String title, String message) {
+        Event event = BasicEntityFactory.getSynchronized().createEvent();
         event.setType(type);
         event.setUserId(userId);
         event.setTitle(title);
@@ -79,7 +81,7 @@ public class EventLogger {
         @Override
         public void history(int clientId) {
             List<Event> events = service.getByShownUserId(clientId);
-            Map<Event.Type, List<Event>> eventGroupByType = new HashMap<>();
+            Map<EventImpl.Type, List<Event>> eventGroupByType = new HashMap<>();
             for (Event event : events) {
                 List list;
                 if (eventGroupByType.containsKey(event.getType()))
@@ -89,7 +91,7 @@ public class EventLogger {
                 list.add(event);
                 eventGroupByType.put(event.getType(), list);
             }
-            for (Event.Type eventType : eventGroupByType.keySet()) {
+            for (EventImpl.Type eventType : eventGroupByType.keySet()) {
                 List<Event> allEvent = eventGroupByType.get(eventType);
                 List<Event> list = new ArrayList<>();
                 for (Event event : allEvent) {

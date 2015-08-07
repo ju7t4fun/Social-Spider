@@ -1,14 +1,18 @@
 package com.epam.lab.spider.controller.utils;
 
 
-import java.util.*;
+import org.apache.log4j.Logger;
+
 import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.util.Properties;
 
 /**
- * Created by Marian Voronovskyi on 11.06.2015.
+ * @author Marian Voronovskyi
  */
 public class SendEmail {
+    private static final Logger LOG = Logger.getLogger(SendEmail.class);
     public static void send(String to, String title, String html) {
         final String username = "epam.social.spider@gmail.com";
         final String password = "epamspider";
@@ -36,7 +40,7 @@ public class SendEmail {
             message.setContent(html, "text/html; charset=utf-8");
             Transport.send(message);
         } catch (MessagingException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
     }
 

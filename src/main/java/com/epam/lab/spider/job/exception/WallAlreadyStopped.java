@@ -1,7 +1,7 @@
 package com.epam.lab.spider.job.exception;
 
 /**
- * Created by hell-engine on 7/10/2015.
+ * @author Yura Kovalik
  */
 public class WallAlreadyStopped extends Exception {
     public WallAlreadyStopped() {

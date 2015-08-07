@@ -1,26 +1,27 @@
 package com.epam.lab.spider.model.db.service;
 
-import com.epam.lab.spider.model.db.entity.Owner;
+import com.epam.lab.spider.model.entity.AbstractEntityFactory;
+import com.epam.lab.spider.model.entity.Owner;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.persistence.service.OwnerService;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 /**
- * Created by Sasha on 12.07.2015.
+ * @author Oleksandra Lobanok
  */
 public class OwnerServiceTest {
-
+    public static final AbstractEntityFactory ENTITY_FACTORY = BasicEntityFactory.getSynchronized();
     Owner owner;
     OwnerService os = new OwnerService();
 
     @Before
     public void setUp() throws Exception {
-        owner = new Owner();
-        owner.setVk_id(1);
+        owner = ENTITY_FACTORY.createOwner();
+        owner.setVkId(1);
         owner.setName("TestName");
         owner.setDomain("TestDomain");
         owner.setUserId(1);
@@ -34,8 +35,8 @@ public class OwnerServiceTest {
 
     @Test
     public void testUpdate() throws Exception {
-        Owner newOwner = new Owner();
-        newOwner.setVk_id(2);
+        Owner newOwner = ENTITY_FACTORY.createOwner();
+        newOwner.setVkId(2);
         newOwner.setName("NewTestName");
         newOwner.setDomain("NewTestDomain");
         newOwner.setUserId(1);

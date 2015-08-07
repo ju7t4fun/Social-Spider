@@ -1,11 +1,9 @@
 package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.controller.utils.UTF8;
-import com.epam.lab.spider.model.db.entity.NewPost;
-import com.epam.lab.spider.model.db.service.NewPostService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import org.apache.http.protocol.HttpService;
+import com.epam.lab.spider.model.entity.PostingTask;
+import com.epam.lab.spider.persistence.service.PostingTaskService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -18,12 +16,12 @@ import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
 /**
- * Created by Boyarsky Vitaliy on 09.07.2015.
+ * @author Boyarsky Vitaliy
  */
 public class ChangeTimePostedCommand implements ActionCommand {
 
     private static ServiceFactory factory = ServiceFactory.getInstance();
-    private static NewPostService service = factory.create(NewPostService.class);
+    private static PostingTaskService service = factory.create(PostingTaskService.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -32,7 +30,7 @@ public class ChangeTimePostedCommand implements ActionCommand {
         String time = request.getParameter("time");
         String dateDelete = request.getParameter("date_delete");
         String timeDelete = request.getParameter("time_delete");
-        NewPost post = service.getById(postId);
+        PostingTask post = service.getById(postId);
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
             post.setPostTime(formatter.parse(date + " " + time));

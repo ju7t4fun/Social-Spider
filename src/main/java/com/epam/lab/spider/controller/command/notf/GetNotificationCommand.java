@@ -1,10 +1,10 @@
 package com.epam.lab.spider.controller.command.notf;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.Event;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.EventService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Event;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.EventService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by Boyarsky Vitaliy on 29.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class GetNotificationCommand implements ActionCommand {
 

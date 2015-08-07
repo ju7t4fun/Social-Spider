@@ -1,9 +1,10 @@
 package com.epam.lab.spider.controller.command.admin.users;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.UserService;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.UserService;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -16,9 +17,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Created by Орест on 22.06.2015.
+ * @author Dzyuba Orest
  */
 public class UserFillingTableCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(UserFillingTableCommand.class);
 
     private String GLOBAL_SEARCH_TERM;
     private String COLUMN_NAME;
@@ -85,7 +87,7 @@ public class UserFillingTableCommand implements ActionCommand {
         try {
             jsonResult = getPersonDetails(totalRecords, request);
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
 
         response.setContentType("application/json");
@@ -117,17 +119,17 @@ public class UserFillingTableCommand implements ActionCommand {
         String emailSearch = "  WHERE city like '%" + EMAIL_SEARCH_TERM + "%'";
         String stateSearch = " WHERE  state like '%" + STATE_SEARCH_TERM + "%'";
 
-        if (GLOBAL_SEARCH_TERM != "") {
+        if (!GLOBAL_SEARCH_TERM.isEmpty()) {
             searchSQL = globeSearch;
-        } else if (ID_SEARCH_TERM != "") {
+        } else if (!ID_SEARCH_TERM.isEmpty()) {
             searchSQL = idSearch;
-        } else if (NAME_SEARCH_TERM != "") {
+        } else if (!NAME_SEARCH_TERM.isEmpty()) {
             searchSQL = nameSearch;
-        } else if (SURNAME_SEARCH_TERM != "") {
+        } else if (!SURNAME_SEARCH_TERM.isEmpty()) {
             searchSQL = surnameSearch;
-        } else if (EMAIL_SEARCH_TERM != "") {
+        } else if (!EMAIL_SEARCH_TERM.isEmpty()) {
             searchSQL = emailSearch;
-        } else if (STATE_SEARCH_TERM != "") {
+        } else if (!STATE_SEARCH_TERM.isEmpty()) {
             searchSQL = stateSearch;
         }
 
@@ -150,11 +152,11 @@ public class UserFillingTableCommand implements ActionCommand {
         }
         String query = "SELECT COUNT(*) FROM user";
 
-        if (GLOBAL_SEARCH_TERM != "" || ID_SEARCH_TERM != "" || NAME_SEARCH_TERM != "" ||
-                SURNAME_SEARCH_TERM != "" || EMAIL_SEARCH_TERM != "" || STATE_SEARCH_TERM != "") {
+        if (!GLOBAL_SEARCH_TERM.isEmpty() || !ID_SEARCH_TERM.isEmpty() || !NAME_SEARCH_TERM.isEmpty() ||
+                !SURNAME_SEARCH_TERM.isEmpty() || !EMAIL_SEARCH_TERM.isEmpty() || STATE_SEARCH_TERM.isEmpty()) {
             query += searchSQL;
-            UserService serv = ServiceFactory.getInstance().create(UserService.class);
-            totalAfterSearch = serv.getCountWithQuery(query);
+            UserService userService = ServiceFactory.getInstance().create(UserService.class);
+            totalAfterSearch = userService.getCountWithQuery(query);
         }
         try {
             result.put("iTotalRecords", totalRecords);
@@ -167,9 +169,8 @@ public class UserFillingTableCommand implements ActionCommand {
 
     public int getTotalRecordCount() {
         String sql = "SELECT COUNT(*) FROM  user";
-        UserService serv = ServiceFactory.getInstance().create(UserService.class);
-        int totalRecords = serv.getCountWithQuery(sql);
-        return totalRecords;
+        UserService userService = ServiceFactory.getInstance().create(UserService.class);
+        return userService.getCountWithQuery(sql);
     }
 
 }

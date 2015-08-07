@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.websocket;
 
 /**
- * Created by Orest Dzyuba on 19.06.2015.
+ * @author Dzyuba Orest
  */
 
 import javax.servlet.http.HttpSession;

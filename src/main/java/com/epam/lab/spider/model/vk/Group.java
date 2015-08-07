@@ -1,6 +1,6 @@
 package com.epam.lab.spider.model.vk;
 
-import com.epam.lab.spider.controller.vk.Node;
+import com.epam.lab.spider.integration.vk.Node;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Marian Voronovskyi on 29.06.2015.
+ * @author Marian Voronovskyi
  */
 public class CategoriesCommand implements ActionCommand {
 

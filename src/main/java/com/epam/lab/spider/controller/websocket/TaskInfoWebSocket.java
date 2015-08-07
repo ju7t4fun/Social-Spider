@@ -1,9 +1,9 @@
 package com.epam.lab.spider.controller.websocket;
 
 
-import com.epam.lab.spider.model.db.entity.Task;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.TaskService;
+import com.epam.lab.spider.model.entity.Task;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.TaskService;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -13,7 +13,6 @@ import org.json.simple.parser.ParseException;
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,32 +28,6 @@ public class TaskInfoWebSocket {
     private static final Map<Session, Integer> sessions = new HashMap<>();
     private static final Map<Integer,List<Session>> sessionsBack = new HashMap<>();
 
-    private HttpSession getHttpSession(EndpointConfig config) {
-        return (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
-    }
-
-    @OnOpen
-    public void onOpen(Session session, EndpointConfig config) {
-        HttpSession httpSession = getHttpSession(config);
-        User user = (User) httpSession.getAttribute("user");
-
-        if (sessions.containsKey(user.getId())) {
-            LOG.fatal("FATAL STATE");
-        }else{
-            sessions.put(session, user.getId());
-            List<Session> userSessions;
-            if(sessionsBack.containsKey(user.getId())){
-                userSessions = sessionsBack.get(user.getId());
-            }else{
-                userSessions = new ArrayList<>();
-                sessionsBack.put(user.getId(),userSessions);
-            }
-            userSessions.add(session);
-//            AutoWebSocket autoWebSocket = new AutoWebSocket(user);
-//            new Thread(autoWebSocket).start();
-        }
-    }
-
     public static String formatJSON(Integer taskId, String state, Long unixTimeMS){
 
         JSONObject response = new JSONObject();
@@ -62,10 +35,10 @@ public class TaskInfoWebSocket {
         JSONArray responseJSONArray = new JSONArray();
         JSONObject taskStateCell = new JSONObject();
         taskStateCell.put("id", taskId);
-        if (state == "runnable") {
+        if (state.equals("runnable")) {
             taskStateCell.put("state", "runnable");
             taskStateCell.put("unix_time_ms", unixTimeMS);
-        } else if (state == "running") {
+        } else if (state.equals("running")) {
             taskStateCell.put("state", "running");
         } else {
             taskStateCell.put("state", "stopped");
@@ -75,6 +48,7 @@ public class TaskInfoWebSocket {
         response.put("data", responseJSONArray);
         return response.toString();
     }
+
     public static boolean sendTaskInfo(Integer userId, Integer taskId, String state, Long unixTimeMS ) {
         try {
             if (sessions.containsValue(userId)) {
@@ -85,9 +59,52 @@ public class TaskInfoWebSocket {
                 return true;
             }
         } catch (IOException|RuntimeException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         return false;
+    }
+
+    public static boolean send(Integer userId, String message) {
+        try {
+            if (sessions.containsValue(userId)) {
+
+                for (Session session : sessionsBack.get(userId)) {
+                    LOG.info("Session " + session + " id " + userId + " - " + message);
+                    session.getBasicRemote().sendText(message);
+                }
+                return true;
+            }
+        } catch (IOException e) {
+            LOG.error(e.getLocalizedMessage(), e);
+        }
+        return false;
+
+    }
+
+    private HttpSession getHttpSession(EndpointConfig config) {
+        return (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
+    }
+
+    @OnOpen
+    public void onOpen(Session session, EndpointConfig config) {
+        HttpSession httpSession = getHttpSession(config);
+        User user = (User) httpSession.getAttribute("user");
+
+        if (sessionsBack.containsKey(user.getId())) {
+            LOG.fatal("FATAL STATE");
+        } else {
+            sessions.put(session, user.getId());
+            List<Session> userSessions;
+            if (sessionsBack.containsKey(user.getId())) {
+                userSessions = sessionsBack.get(user.getId());
+            } else {
+                userSessions = new ArrayList<>();
+                sessionsBack.put(user.getId(), userSessions);
+            }
+            userSessions.add(session);
+//            AutoWebSocket autoWebSocket = new AutoWebSocket(user);
+//            new Thread(autoWebSocket).start();
+        }
     }
 
     @OnMessage
@@ -126,14 +143,14 @@ public class TaskInfoWebSocket {
                 response.put("data", responseJSONArray);
             }
         } catch (ParseException| RuntimeException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
             response.put("state","error");
             response.put("error",e.getClass().getName().toString());
         }
         try {
             if(noEmpty)session.getBasicRemote().sendText(response.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
 //        LOG.debug("onMessage (message=" + message + ")");
     }
@@ -163,28 +180,10 @@ public class TaskInfoWebSocket {
         t.printStackTrace();
     }
 
-
-    public static boolean send(Integer userId, String message) {
-        try {
-            if (sessions.containsValue(userId)) {
-
-                for(Session session:sessionsBack.get(userId)){
-                    LOG.info("Session " + session + " id " + userId + " - " + message);
-                    session.getBasicRemote().sendText(message);
-                }
-                return true;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-
-    }
-
     static class AutoWebSocket implements Runnable {
 
-        private User user;
         boolean stop = false;
+        private User user;
 
         public AutoWebSocket(User user) {
             this.user = user;
@@ -201,7 +200,7 @@ public class TaskInfoWebSocket {
                     }
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
             }
             LOG.info("END OF RUN FOR USER " + user.getId());
         }

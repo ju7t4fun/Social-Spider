@@ -1,9 +1,9 @@
 package com.epam.lab.spider.controller.command.user.restore;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.UserService;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.UserService;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.servlet.ServletException;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * Created by Orest Dzyuba on 15.06.2015.
+ * @author Dzyuba Orest
  */
 public class RetrieveRestoreCommand implements ActionCommand {
 
@@ -38,7 +38,6 @@ public class RetrieveRestoreCommand implements ActionCommand {
                 return;
             }
             request.setAttribute("email", email);
-            System.out.println("---------" );
             request.getRequestDispatcher("jsp/user/pwrestore_newpw.jsp").forward(request, response);
         } else
             response.sendError(HttpServletResponse.SC_NOT_FOUND);

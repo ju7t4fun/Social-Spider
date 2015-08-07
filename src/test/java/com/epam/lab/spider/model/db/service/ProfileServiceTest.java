@@ -1,25 +1,27 @@
 package com.epam.lab.spider.model.db.service;
 
-import com.epam.lab.spider.model.db.entity.Profile;
+import com.epam.lab.spider.model.entity.AbstractEntityFactory;
+import com.epam.lab.spider.model.entity.Profile;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.persistence.service.ProfileService;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 /**
- * Created by Sasha on 12.07.2015.
+ * @author Oleksandra Lobanok
  */
 public class ProfileServiceTest {
+    public static final AbstractEntityFactory ENTITY_FACTORY = BasicEntityFactory.getSynchronized();
 
     Profile profile;
     ProfileService ps = new ProfileService();
 
     @Before
     public void setUp() throws Exception {
-        profile = new Profile();
+        profile = ENTITY_FACTORY.createProfile();
         profile.setUserId(1);
         profile.setVkId(1);
         profile.setAccessToken("testAccessToken");
@@ -34,7 +36,7 @@ public class ProfileServiceTest {
 
     @Test
     public void testUpdate() throws Exception {
-        Profile newProfile = new Profile();
+        Profile newProfile = ENTITY_FACTORY.createProfile();
         newProfile.setUserId(1);
         newProfile.setVkId(2);
         newProfile.setAccessToken("NewTestAccessToken");

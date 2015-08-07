@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Boyarsky Vitaliy on 26.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class ShowProfileCommand implements ActionCommand {
     @Override

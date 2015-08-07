@@ -3,7 +3,7 @@ package com.epam.lab.spider.controller.utils;
 import java.io.UnsupportedEncodingException;
 
 /**
- * Created by Boyarsky Vitaliy on 08.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class UTF8 {
 

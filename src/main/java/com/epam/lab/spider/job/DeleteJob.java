@@ -2,13 +2,15 @@ package com.epam.lab.spider.job;
 
 import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.utils.EventLogger;
-import com.epam.lab.spider.controller.vk.Parameters;
-import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.model.db.entity.NewPost;
-import com.epam.lab.spider.model.db.entity.Profile;
-import com.epam.lab.spider.model.db.entity.Wall;
-import com.epam.lab.spider.model.db.service.*;
+import com.epam.lab.spider.integration.vk.Parameters;
+import com.epam.lab.spider.integration.vk.Vkontakte;
+import com.epam.lab.spider.integration.vk.auth.AccessToken;
+import com.epam.lab.spider.model.entity.PostingTask;
+import com.epam.lab.spider.model.entity.Profile;
+import com.epam.lab.spider.model.entity.Wall;
+import com.epam.lab.spider.model.entity.impl.PostingTaskImpl;
+import com.epam.lab.spider.persistence.service.PostingTaskService;
+import com.epam.lab.spider.persistence.service.WallService;
 import org.apache.log4j.Logger;
 import org.quartz.*;
 
@@ -20,15 +22,13 @@ import static org.quartz.TriggerBuilder.newTrigger;
 
 
 /**
- * Created by hell-engine on 7/9/2015.
+ * @author Yura Kovalik
  */
 public class DeleteJob implements Job {
     public static final Logger LOG = Logger.getLogger(PostManagerJob.class);
-    NewPostService newPostService = new NewPostService();
+    PostingTaskService postingTaskService = new PostingTaskService();
 
     WallService wallService = new WallService();
-    OwnerService ownerService = new OwnerService();
-    ProfileService profileService = new ProfileService();
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
@@ -37,8 +37,8 @@ public class DeleteJob implements Job {
         Date date = new Date(System.currentTimeMillis());
         Date nextDate = new Date(System.currentTimeMillis() + 60 * 1000);
         LOG.info("'DeleteJob' start at " + dateFormat.format(date) + " next 'DeleteJob' at " + dateFormat.format(nextDate));
-        List<NewPost> postToDelete = newPostService.getAllUndeletedByDate(nextDate);
-        for (NewPost postToDeleting : postToDelete) {
+        List<PostingTask> postToDelete = postingTaskService.getAllUndeletedByDate(nextDate);
+        for (PostingTask postToDeleting : postToDelete) {
             try {
                 Wall wall = wallService.getById(postToDeleting.getWallId());
                 Profile profile = wall.getProfile();
@@ -67,8 +67,8 @@ public class DeleteJob implements Job {
                 EventLogger eventLogger = EventLogger.getLogger(postToDeleting.getUserId());
 
                 if(response){
-                    postToDeleting.setState(NewPost.State.DELETED);
-                    newPostService.updateStage(postToDeleting);
+                    postToDeleting.setState(PostingTaskImpl.State.DELETED);
+                    postingTaskService.updateStage(postToDeleting);
                     String info = "Success to delete post" + wall.getOwner().getVkId() + "_" + postToDeleting.getVkPostId();
                     LOG.info(info);
                     eventLogger.info(info, info);
@@ -81,7 +81,7 @@ public class DeleteJob implements Job {
 
 
             } catch (Throwable e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
             }
         }
         SimpleTrigger trigger = (SimpleTrigger) newTrigger()
@@ -91,7 +91,7 @@ public class DeleteJob implements Job {
         try {
             jobExecutionContext.getScheduler().scheduleJob(trigger);
         } catch (SchedulerException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
 
     }

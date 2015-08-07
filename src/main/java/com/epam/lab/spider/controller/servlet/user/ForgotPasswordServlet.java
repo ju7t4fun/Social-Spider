@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Орест on 15.06.2015.
+ * @author Dzyuba Orest
  */
 public class ForgotPasswordServlet extends HttpServlet {
 

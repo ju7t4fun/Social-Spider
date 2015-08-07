@@ -2,10 +2,11 @@ package com.epam.lab.spider.controller.command.task;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
-import com.epam.lab.spider.model.db.entity.CategoryHasTask;
-import com.epam.lab.spider.model.db.entity.Wall;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.TaskService;
+import com.epam.lab.spider.model.entity.CategoryHasTask;
+import com.epam.lab.spider.model.entity.Wall;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.TaskService;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,9 +21,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * Created by Орест on 7/10/2015.
+ * @author Dzyuba Orest
  */
 public class BindCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(BindCommand.class);
+
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static TaskService taskService = factory.create(TaskService.class);
 
@@ -38,7 +41,7 @@ public class BindCommand implements ActionCommand {
             while ((line = reader.readLine()) != null)
                 sb.append(line);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         JSONObject json = new JSONObject(sb.toString());
 
@@ -94,7 +97,7 @@ public class BindCommand implements ActionCommand {
 
     private boolean hasCatIdInCHTList(List<CategoryHasTask> cthS, Integer id) {
         for (CategoryHasTask cth : cthS) {
-            if ( cth.getCategoryId() == id)
+            if (cth.getCategoryId().intValue() == id.intValue())
                 return true;
         }
         return false;

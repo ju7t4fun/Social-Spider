@@ -1,9 +1,9 @@
 package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.NewPost;
-import com.epam.lab.spider.model.db.service.NewPostService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.PostingTask;
+import com.epam.lab.spider.persistence.service.PostingTaskService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -14,17 +14,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Boyarsky Vitaliy on 09.07.2015.
+ * @author Boyarsky Vitaliy
  */
 public class GetPostedDateCommand implements ActionCommand {
 
     private static ServiceFactory factory = ServiceFactory.getInstance();
-    private static NewPostService service = factory.create(NewPostService.class);
+    private static PostingTaskService service = factory.create(PostingTaskService.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int postId = Integer.parseInt(request.getParameter("post_id"));
-        NewPost post = service.getById(postId);
+        PostingTask post = service.getById(postId);
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat time = new SimpleDateFormat("HH:mm");
         JSONObject json = new JSONObject();

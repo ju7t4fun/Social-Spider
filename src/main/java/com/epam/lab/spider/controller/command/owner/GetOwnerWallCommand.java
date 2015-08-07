@@ -1,12 +1,11 @@
 package com.epam.lab.spider.controller.command.owner;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.Owner;
-import com.epam.lab.spider.model.db.entity.Profile;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.entity.Wall;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.WallService;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.entity.Wall;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.WallService;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -21,9 +20,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Sasha on 03.07.2015.
+ * @author Oleksandra Lobanok
  */
 public class GetOwnerWallCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(GetOwnerWallCommand.class);
 
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static WallService service = factory.create(WallService.class);
@@ -81,7 +81,7 @@ public class GetOwnerWallCommand implements ActionCommand {
             obj.put("del_time", currentTime);
         }
         obj.put("owner", row);
-        System.out.println(obj);
+        LOG.debug(obj);
         response.getWriter().write(obj.toString());
     }
 

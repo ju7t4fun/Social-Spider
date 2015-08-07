@@ -6,7 +6,7 @@ import com.epam.lab.spider.controller.utils.UTF8;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.json.JSONArray;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import javax.servlet.ServletContext;
@@ -16,18 +16,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
- * Created by Marian Voronovskyi on 13.06.2015.
+ * @author Marian Voronovskyi
  */
 public class UploadFileCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(UploadFileCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -64,7 +63,7 @@ public class UploadFileCommand implements ActionCommand {
 
                             urlType.put(type.getPath() + "/" + fileName, type.toString());
                             //filesUrl.add(type.getPath() + "/" + fileName);
-                            System.out.println("File uploaded successfully");
+                            LOG.debug("File uploaded successfully");
                             response.getWriter().print(new JSONObject().put("success", UTF8.encoding(bundle.getString("notification.upload.file.success"))));
                         } else {
                             jsonError = UTF8.encoding(bundle.getString("notification.wrong.file.format"));
@@ -75,14 +74,14 @@ public class UploadFileCommand implements ActionCommand {
                 jsonError = UTF8.encoding(bundle.getString("notification.request.error"));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
             jsonError = UTF8.encoding(bundle.getString("notification.upload.file.error"));
         } finally {
             if (!urlType.isEmpty()) {
-                System.out.println(urlType);
+                LOG.debug(urlType);
                 request.getSession().setAttribute("files_url", urlType);
             }
-            if (jsonError != "") {
+            if (!jsonError.isEmpty()) {
                 response.getWriter().print(new JSONObject().put("error", jsonError));
             }
         }

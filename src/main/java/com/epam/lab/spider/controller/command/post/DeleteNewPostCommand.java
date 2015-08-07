@@ -2,9 +2,8 @@ package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
-import com.epam.lab.spider.model.db.service.NewPostService;
-import com.epam.lab.spider.model.db.service.PostService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.PostingTaskService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -15,11 +14,11 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 /**
- * Created by Орест on 6/29/2015.
+ * @author Dzyuba Orest
  */
 public class DeleteNewPostCommand implements ActionCommand {
     private static ServiceFactory factory = ServiceFactory.getInstance();
-    private static NewPostService service = factory.create(NewPostService.class);
+    private static PostingTaskService service = factory.create(PostingTaskService.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

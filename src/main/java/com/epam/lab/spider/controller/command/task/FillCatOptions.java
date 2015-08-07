@@ -1,24 +1,23 @@
 package com.epam.lab.spider.controller.command.task;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.*;
-import com.epam.lab.spider.model.db.service.CategoryService;
-import com.epam.lab.spider.model.db.service.ProfileService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.TaskService;
+import com.epam.lab.spider.model.entity.Category;
+import com.epam.lab.spider.model.entity.CategoryHasTask;
+import com.epam.lab.spider.persistence.service.CategoryService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.TaskService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * Created by Орест on 7/10/2015.
+ * @author Dzyuba Orest
  */
 public class FillCatOptions implements ActionCommand {
 
@@ -63,7 +62,7 @@ public class FillCatOptions implements ActionCommand {
     private boolean isInCHT(Category cat, List<CategoryHasTask> chtS ) {
 
         for(CategoryHasTask cht : chtS ) {
-            if (cht.getCategoryId() == cat.getId()) {
+            if (cht.getCategoryId().intValue() == cat.getId().intValue()) {
                 return true;
             }
         }

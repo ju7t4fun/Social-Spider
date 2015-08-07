@@ -1,6 +1,10 @@
 package com.epam.lab.spider.model.db.service;
 
-import com.epam.lab.spider.model.db.entity.Event;
+import com.epam.lab.spider.model.entity.AbstractEntityFactory;
+import com.epam.lab.spider.model.entity.Event;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.model.entity.impl.EventImpl;
+import com.epam.lab.spider.persistence.service.EventService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,18 +15,19 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by Sasha on 12.07.2015.
+ * @author Oleksandra Lobanok
  */
 public class EventServiceTest {
+    public static final AbstractEntityFactory ENTITY_FACTORY = BasicEntityFactory.getSynchronized();
 
     Event event;
     EventService es = new EventService();
 
     @Before
     public void setUp() throws Exception {
-        event = new Event();
+        event = ENTITY_FACTORY.createEvent();
         event.setUserId(1);
-        event.setType(Event.Type.valueOf("WARN"));
+        event.setType(EventImpl.Type.valueOf("WARN"));
         event.setTitle("TestTitle");
         event.setMessage("TestMessage");
     }
@@ -36,7 +41,7 @@ public class EventServiceTest {
     @Test
     public void testUpdate() throws Exception {
         es.insert(event);
-        Event newEvent = new Event();
+        Event newEvent = ENTITY_FACTORY.createEvent();
         newEvent.setUserId(1);
         newEvent.setTitle("NewTitle");
         newEvent.setMessage("NewMessage");

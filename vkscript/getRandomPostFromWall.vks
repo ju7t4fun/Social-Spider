@@ -1,10 +1,10 @@
-var owner_id = parseInt(Args.owner_id);
+var ownerId = parseInt(Args.ownerId);
 var count = parseInt(Args.count);
 var exclude_post = Args.exclude_post;
 var exclude_post_array = [];
 
 var likes = parseInt(Args.likes);
-var reposts = parseInt(Args.reposts);
+var rePosts = parseInt(Args.rePosts);
 var comments = parseInt(Args.comments);
 
 var total_loops = parseInt(Args.max_loops);
@@ -33,7 +33,7 @@ if(length!=0){
 var api_call_count = 1;
 var responses = [];
 var response = API.wall.get({
-    "owner_id" : owner_id,
+    "ownerId" : ownerId,
     "filter": "owner",
     "count": 100
 });
@@ -68,7 +68,7 @@ while(j < count && t < total_loops){
         var query_offset = 100*basket;
         api_call_count = api_call_count + 1;
         var response_item = API.wall.get({
-            "owner_id" : owner_id,
+            "ownerId" : ownerId,
             "filter": "owner",
             "count": 100,
             "offset": query_offset
@@ -84,7 +84,7 @@ while(j < count && t < total_loops){
             if(post_likes < likes )needAdd = false;
         }
         if(needAdd){
-            if(post.reposts.count < reposts )needAdd = false;
+            if(post.rePosts.count < rePosts )needAdd = false;
         } 
         if(needAdd){
             if(post.comments.count < comments )needAdd = false;

@@ -1,8 +1,8 @@
 package com.epam.lab.spider.controller.command.category;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.service.CategoryService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.CategoryService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 /**
- * Created by Орест on 7/1/2015.
+ * @author Dzyuba Orest
  */
 public class RemoveCategoryCommand implements ActionCommand {
 

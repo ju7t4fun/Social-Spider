@@ -11,18 +11,11 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Marian Voronovskyi on 27.06.2015.
+ * @author Marian Voronovskyi
  */
 public class FeedsServlet extends HttpServlet {
 
     private static ActionFactory factory = new FeedsFactory();
-
-    private static class FeedsFactory extends ActionFactory {
-        public FeedsFactory() {
-            commands = new HashMap<>();
-            commands.put("feeds", new CategoriesCommand());
-        }
-    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         factory.action(request, response);
@@ -30,5 +23,12 @@ public class FeedsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         factory.action(request, response);
+    }
+
+    private static class FeedsFactory extends ActionFactory {
+        public FeedsFactory() {
+            commands = new HashMap<>();
+            commands.put("feeds", new CategoriesCommand());
+        }
     }
 }
