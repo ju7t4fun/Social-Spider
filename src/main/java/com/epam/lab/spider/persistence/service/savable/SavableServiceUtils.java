@@ -22,8 +22,8 @@ import java.util.List;
 /**
  * @author Yura Kovalik
  */
-public class SavableServiceUtil {
-    public static final Logger LOG = Logger.getLogger(SavableServiceUtil.class);
+public class SavableServiceUtils {
+    public static final Logger LOG = Logger.getLogger(SavableServiceUtils.class);
     private static DAOFactory daoFactory = DAOFactory.getInstance();
     private static ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
@@ -69,7 +69,7 @@ public class SavableServiceUtil {
 
     public static <E extends PersistenceIdentifiable> boolean customSave(Connection connection, E entity, Object[] before, Object[] after, CustomizeSavableAction[] actions)
             throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiceException {
-        boolean result = true;
+        boolean result ;
         List<PersistenceIdentifiable> beforeEntityList = null;
         List<PersistenceIdentifiable> afterEntityList = null;
         if(before!=null)

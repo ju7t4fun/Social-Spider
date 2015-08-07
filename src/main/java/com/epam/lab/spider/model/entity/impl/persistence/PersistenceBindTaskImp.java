@@ -14,9 +14,9 @@ import java.util.Set;
  * @author Yura Kovalik
  */
 public class PersistenceBindTaskImp extends TaskImpl {
-    private static final ServiceFactory factory = ServiceFactory.getInstance();
-    private static final WallService service = PersistenceBindTaskImp.factory.create(WallService.class);
-    private static final FilterService filterService = PersistenceBindTaskImp.factory.create(FilterService.class);
+    private static ServiceFactory factory = ServiceFactory.getInstance();
+    private static WallService wallService = PersistenceBindTaskImp.factory.create(WallService.class);
+    private static FilterService filterService = PersistenceBindTaskImp.factory.create(FilterService.class);
 
 
     @Override
@@ -25,7 +25,7 @@ public class PersistenceBindTaskImp extends TaskImpl {
             if (getId() == null)
                 setDestination(new HashSet<Wall>());
             else
-                setDestination(new HashSet<>(service.getDestinationByTaskId(getId())));
+                setDestination(new HashSet<>(wallService.getDestinationByTaskId(getId())));
         }
         return super.getDestination();
     }
@@ -35,7 +35,7 @@ public class PersistenceBindTaskImp extends TaskImpl {
             if (getId() == null)
                 setSource(new HashSet<Wall>());
             else
-                setSource(new HashSet<>(service.getSourceByTaskId(getId())));
+                setSource(new HashSet<>(wallService.getSourceByTaskId(getId())));
         }
         return super.getSource();
     }

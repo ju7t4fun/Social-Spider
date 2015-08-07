@@ -14,7 +14,7 @@ import com.epam.lab.spider.persistence.service.WallService;
  */
 public class PersistenceBindPostingTaskImpl extends PostingTaskImpl {
     private static ServiceFactory factory = ServiceFactory.getInstance();
-    private static PostService service = PersistenceBindPostingTaskImpl.factory.create(PostService.class);
+    private static PostService postService = PersistenceBindPostingTaskImpl.factory.create(PostService.class);
     private static WallService wallService = PersistenceBindPostingTaskImpl.factory.create(WallService.class);
 
     @Override
@@ -23,7 +23,7 @@ public class PersistenceBindPostingTaskImpl extends PostingTaskImpl {
             if (getPostId() == null)
                 setPost(new PostImpl());
             else
-                setPost(service.getById(getPostId()));
+                setPost(postService.getById(getPostId()));
         }
         return super.getPost();
     }

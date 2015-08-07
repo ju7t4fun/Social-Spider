@@ -12,15 +12,15 @@ import java.util.Set;
  * @author Yura Kovalik
  */
 public class PersistenceBindPostImpl extends PostImpl {
-    private static final ServiceFactory factory = ServiceFactory.getInstance();
-    private static final AttachmentService service = PersistenceBindPostImpl.factory.create(AttachmentService.class);
+    private static ServiceFactory factory = ServiceFactory.getInstance();
+    private static AttachmentService attachmentService = PersistenceBindPostImpl.factory.create(AttachmentService.class);
 
     public Set<Attachment> getAttachments() {
         if (super.getAttachments() == null) {
             if (getId() == null)
                 setAttachments(new HashSet<Attachment>());
             else
-                setAttachments(new HashSet<>(service.getByPostId(getId())));
+                setAttachments(new HashSet<>(attachmentService.getByPostId(getId())));
         }
         return super.getAttachments();
     }

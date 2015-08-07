@@ -1,6 +1,6 @@
 package com.epam.lab.spider.controller.command.user.profile;
 
-import com.epam.lab.spider.ServerResolver;
+import com.epam.lab.spider.ServerLocationUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.FileType;
 import com.epam.lab.spider.model.entity.User;
@@ -54,11 +54,11 @@ public class ChangeAvatarCommand implements ActionCommand {
                             item.write(new File(filePath + File.separator + fileName));
                             LOG.info("File uploaded successfully: " + fileName);
                             userService.updateByParameter("avatar_url",
-                                    (ServerResolver.getServerPath(request)+"/upload/images/" + fileName), user.getId());
+                                    (ServerLocationUtils.getServerPath(request)+"/upload/images/" + fileName), user.getId());
                             user = userService.getById(user.getId());
                             session.setAttribute("user", user);
                             response.getWriter().print(new JSONObject().put("success",
-                                    ServerResolver.getServerPath(request)+"/upload/images/" + fileName).put("status", "success").put
+                                    ServerLocationUtils.getServerPath(request)+"/upload/images/" + fileName).put("status", "success").put
                                     ("msg", "Change avatar"));
                         } else {
                             jsonError = "Wrong file format!";

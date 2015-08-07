@@ -14,7 +14,7 @@ import com.epam.lab.spider.persistence.dao.savable.exception.InvalidEntityExcept
 import com.epam.lab.spider.persistence.dao.savable.exception.ResolvableDAOException;
 import com.epam.lab.spider.persistence.dao.savable.exception.UnsupportedDAOException;
 import com.epam.lab.spider.persistence.service.savable.SavableService;
-import com.epam.lab.spider.persistence.service.savable.SavableServiceUtil;
+import com.epam.lab.spider.persistence.service.savable.SavableServiceUtils;
 import com.epam.lab.spider.persistence.service.savable.exception.UnsupportedServiceException;
 import org.apache.log4j.Logger;
 
@@ -40,13 +40,13 @@ public class PostService implements BaseService<Post>, SavableService<Post> {
     @Override
     public boolean save(Post entity) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException,
             UnsupportedServiceException {
-        return SavableServiceUtil.saveFromInterface(entity, this);
+        return SavableServiceUtils.saveFromInterface(entity, this);
     }
 
     @Override
     public boolean save(Post entity, Connection conn) throws InvalidEntityException, UnsupportedDAOException,
             ResolvableDAOException, UnsupportedServiceException {
-        return SavableServiceUtil.customSave(conn, entity, new Object[]{}, new Object[]{entity.getAttachments()});
+        return SavableServiceUtils.customSave(conn, entity, new Object[]{}, new Object[]{entity.getAttachments()});
     }
 
     @Override

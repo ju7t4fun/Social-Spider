@@ -1,6 +1,6 @@
 package com.epam.lab.spider.persistence.dao.mysql;
 
-import com.epam.lab.spider.model.EntitySynchronizedCacheWrapperUtil;
+import com.epam.lab.spider.model.SynchronizedWrapperUtils;
 import com.epam.lab.spider.model.entity.Event;
 import com.epam.lab.spider.model.entity.impl.EventImpl;
 import com.epam.lab.spider.persistence.dao.EventDAO;
@@ -82,7 +82,7 @@ public class EventDAOImp extends BaseDAO implements EventDAO {
             event.setMessage(rs.getString("message"));
             event.setTitle(rs.getString("title"));
             event.setShown(rs.getBoolean("shown"));
-            events.add(EntitySynchronizedCacheWrapperUtil.wrap(event));
+            events.add(SynchronizedWrapperUtils.wrap(event));
         }
         return events;
     }

@@ -11,7 +11,7 @@ import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
 import com.epam.lab.spider.persistence.service.ServiceFactory;
 import com.epam.lab.spider.persistence.service.TaskService;
 import com.epam.lab.spider.persistence.service.WallService;
-import com.epam.lab.spider.persistence.service.savable.SavableServiceUtil;
+import com.epam.lab.spider.persistence.service.savable.SavableServiceUtils;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -247,7 +247,7 @@ public class SaveTaskCommand implements ActionCommand {
                 throw new RuntimeException("Invalid [DEMO-MODE] destination wall count!");
             }
             warningToDisplay.addAll(wallWarning);
-            SavableServiceUtil.safeSave(task);
+            SavableServiceUtils.safeSave(task);
             if (task.getId() == null) {
                 response.sendError(400);
                 return;

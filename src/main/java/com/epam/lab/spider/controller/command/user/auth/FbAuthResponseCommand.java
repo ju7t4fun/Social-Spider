@@ -1,6 +1,6 @@
 package com.epam.lab.spider.controller.command.user.auth;
 
-import com.epam.lab.spider.ServerResolver;
+import com.epam.lab.spider.ServerLocationUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.utils.facebookauth.FBConnection;
@@ -61,7 +61,7 @@ public class FbAuthResponseCommand implements ActionCommand {
             request.getSession().setAttribute("name", fbProfileData.get("first_name"));
             request.getSession().setAttribute("surname", fbProfileData.get("last_name"));
             request.getSession().setAttribute("email", fbProfileData.get("email"));
-            response.sendRedirect(ServerResolver.getServerPath(request)+"/register");
+            response.sendRedirect(ServerLocationUtils.getServerPath(request)+"/register");
         }
 
 

@@ -1,6 +1,6 @@
 package com.epam.lab.spider.persistence.dao.mysql;
 
-import com.epam.lab.spider.model.EntitySynchronizedCacheWrapperUtil;
+import com.epam.lab.spider.model.SynchronizedWrapperUtils;
 import com.epam.lab.spider.model.entity.Wall;
 import com.epam.lab.spider.persistence.dao.WallDAO;
 
@@ -157,7 +157,7 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
             wall.setProfileId(rs.getInt("profile_id"));
             wall.setPermission(Wall.Permission.valueOf(rs.getString("permission").toUpperCase()));
             wall.setDeleted(rs.getBoolean("deleted"));
-            walls.add(EntitySynchronizedCacheWrapperUtil.wrap(wall));
+            walls.add(SynchronizedWrapperUtils.wrap(wall));
         }
         return walls;
     }

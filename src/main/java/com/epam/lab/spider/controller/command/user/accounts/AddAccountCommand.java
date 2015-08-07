@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.command.user.accounts;
 
-import com.epam.lab.spider.ServerResolver;
-import com.epam.lab.spider.SocialNetworkUtils;
+import com.epam.lab.spider.ServerLocationUtils;
+import com.epam.lab.spider.SocialNetworkCredentialsUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.integration.vk.*;
 import com.epam.lab.spider.integration.vk.auth.AccessToken;
@@ -23,7 +23,7 @@ import java.io.IOException;
 public class AddAccountCommand implements ActionCommand {
     private static final Logger LOG = Logger.getLogger(AddAccountCommand.class);
 
-    private static final Integer APP_ID = SocialNetworkUtils.getDefaultVkAppsIdAsApps();
+    private static final Integer APP_ID = SocialNetworkCredentialsUtils.getDefaultVkAppsIdAsApps();
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static ProfileService service = factory.create(ProfileService.class);
 
@@ -43,7 +43,7 @@ public class AddAccountCommand implements ActionCommand {
         } else {
             // Користувач не підтвердив прав доступу
             if (request.getParameter("user_id").equals("undefined")) {
-                response.sendRedirect(ServerResolver.getServerPath(request)+"/accounts");
+                response.sendRedirect(ServerLocationUtils.getServerPath(request)+"/accounts");
                 return;
             }
 
@@ -71,7 +71,7 @@ public class AddAccountCommand implements ActionCommand {
             } else {
                 service.update(oldProfile.getId(), profile);
             }
-            response.sendRedirect(ServerResolver.getServerPath(request)+"/accounts");
+            response.sendRedirect(ServerLocationUtils.getServerPath(request)+"/accounts");
         }
     }
 

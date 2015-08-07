@@ -19,9 +19,9 @@ import java.sql.SQLException;
 /**
  * @author Yura Kovalik
  */
-public class SavableCRUDUtil {
+public class SavableDAOUtils {
     public static final boolean VALIDATION_SUPPORT = true;
-    private static final Logger LOG = Logger.getLogger(SavableCRUDUtil.class);
+    private static final Logger LOG = Logger.getLogger(SavableDAOUtils.class);
 
     public static <E extends PersistenceIdentifiable> boolean safeSave(Connection conn, E entity, BaseDAO dao) {
         try {
@@ -84,7 +84,7 @@ public class SavableCRUDUtil {
 
     public static <E extends PersistenceIdentifiable> boolean saveFromInterface(java.sql.Connection conn, E entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException {
         BaseDAO dao = DAOFactory.getInstance().getCrudDAOByEntity(entity.getClass());
-        return SavableCRUDUtil.save(conn,entity, dao);
+        return SavableDAOUtils.save(conn, entity, dao);
     }
 
 }

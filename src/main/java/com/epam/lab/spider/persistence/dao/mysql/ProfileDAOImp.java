@@ -1,6 +1,6 @@
 package com.epam.lab.spider.persistence.dao.mysql;
 
-import com.epam.lab.spider.model.EntitySynchronizedCacheWrapperUtil;
+import com.epam.lab.spider.model.SynchronizedWrapperUtils;
 import com.epam.lab.spider.model.entity.Profile;
 import com.epam.lab.spider.persistence.dao.ProfileDAO;
 
@@ -90,7 +90,7 @@ public class ProfileDAOImp extends BaseDAO implements ProfileDAO {
             profile.setAppId(rs.getInt("app_id"));
             profile.setDeleted(rs.getBoolean("deleted"));
             profile.setName(rs.getString("name"));
-            profiles.add(EntitySynchronizedCacheWrapperUtil.wrap(profile));
+            profiles.add(SynchronizedWrapperUtils.wrap(profile));
         }
         return profiles;
     }

@@ -1,9 +1,9 @@
 package com.epam.lab.spider.persistence.dao.mysql;
 
-import com.epam.lab.spider.model.EntitySynchronizedCacheWrapperUtil;
+import com.epam.lab.spider.model.SynchronizedWrapperUtils;
 import com.epam.lab.spider.model.entity.Filter;
 import com.epam.lab.spider.persistence.dao.FilterDAO;
-import com.epam.lab.spider.persistence.dao.savable.SavableCRUDUtil;
+import com.epam.lab.spider.persistence.dao.savable.SavableDAOUtils;
 import com.epam.lab.spider.persistence.dao.savable.exception.InvalidEntityException;
 import com.epam.lab.spider.persistence.dao.savable.exception.ResolvableDAOException;
 import com.epam.lab.spider.persistence.dao.savable.exception.UnsupportedDAOException;
@@ -72,7 +72,7 @@ public class FilterDAOImp extends BaseDAO implements FilterDAO {
             filter.setMinTime(rs.getLong("min_time"));
             filter.setMaxTime(rs.getLong("max_time"));
             filter.setDeleted(rs.getBoolean("deleted"));
-            filterList.add(EntitySynchronizedCacheWrapperUtil.wrap(filter));
+            filterList.add(SynchronizedWrapperUtils.wrap(filter));
         }
         return filterList;
     }
@@ -89,6 +89,6 @@ public class FilterDAOImp extends BaseDAO implements FilterDAO {
 
     @Override
     public boolean save(Connection conn, Filter entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException {
-        return SavableCRUDUtil.save(conn, entity, this);
+        return SavableDAOUtils.save(conn, entity, this);
     }
 }

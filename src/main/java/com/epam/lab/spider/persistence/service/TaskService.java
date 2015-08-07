@@ -13,7 +13,7 @@ import com.epam.lab.spider.persistence.dao.savable.exception.ResolvableDAOExcept
 import com.epam.lab.spider.persistence.dao.savable.exception.UnsupportedDAOException;
 import com.epam.lab.spider.persistence.service.savable.CustomizeSavableAction;
 import com.epam.lab.spider.persistence.service.savable.SavableService;
-import com.epam.lab.spider.persistence.service.savable.SavableServiceUtil;
+import com.epam.lab.spider.persistence.service.savable.SavableServiceUtils;
 import com.epam.lab.spider.persistence.service.savable.exception.UnsupportedServiceException;
 import org.apache.log4j.Logger;
 
@@ -40,12 +40,12 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
 
     @Override
     public boolean save(Task entity) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiceException {
-        return SavableServiceUtil.saveFromInterface(entity, this);
+        return SavableServiceUtils.saveFromInterface(entity, this);
     }
 
     @Override
     public boolean save(Task entity, final Connection conn) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiceException {
-        return SavableServiceUtil.customSave(conn, entity, new PersistenceIdentifiable[]{entity.getFilter()}, null, new CustomizeSavableAction[]{
+        return SavableServiceUtils.customSave(conn, entity, new PersistenceIdentifiable[]{entity.getFilter()}, null, new CustomizeSavableAction[]{
                 new CustomizeSavableAction() {
                     @Override
                     public void action(Object entity) throws SQLException {

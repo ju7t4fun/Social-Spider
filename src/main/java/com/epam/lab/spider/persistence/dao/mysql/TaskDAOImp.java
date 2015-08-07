@@ -1,8 +1,8 @@
 package com.epam.lab.spider.persistence.dao.mysql;
 
-import com.epam.lab.spider.model.EntitySynchronizedCacheWrapperUtil;
+import com.epam.lab.spider.model.SynchronizedWrapperUtils;
 import com.epam.lab.spider.persistence.dao.TaskDAO;
-import com.epam.lab.spider.persistence.dao.savable.SavableCRUDUtil;
+import com.epam.lab.spider.persistence.dao.savable.SavableDAOUtils;
 import com.epam.lab.spider.persistence.dao.savable.exception.InvalidEntityException;
 import com.epam.lab.spider.persistence.dao.savable.exception.ResolvableDAOException;
 import com.epam.lab.spider.persistence.dao.savable.exception.UnsupportedDAOException;
@@ -72,7 +72,7 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
 
     @Override
     public boolean save(Connection conn, Task entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException {
-        return SavableCRUDUtil.save(conn, entity, this);
+        return SavableDAOUtils.save(conn, entity, this);
     }
     @Override
     public boolean insert(Connection connection, Task task) throws SQLException {
@@ -182,7 +182,7 @@ public class TaskDAOImp extends BaseDAO implements TaskDAO {
             task.setRepeat(Task.Repeat.valueOf(rs.getString("repeat_type")));
             task.setRepeatCount(rs.getInt("repeat_count"));
 
-            taskList.add(EntitySynchronizedCacheWrapperUtil.wrap(task));
+            taskList.add(SynchronizedWrapperUtils.wrap(task));
         }
         return taskList;
     }

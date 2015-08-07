@@ -13,9 +13,9 @@ import com.epam.lab.spider.persistence.service.ServiceFactory;
  * @author Yura Kovalik
  */
 public class PersistenceBindWallImpl extends WallImpl {
-    private static final ServiceFactory factory = ServiceFactory.getInstance();
-    private static final OwnerService ownerService = PersistenceBindWallImpl.factory.create(OwnerService.class);
-    private static final ProfileService profileService = PersistenceBindWallImpl.factory.create(ProfileService.class);
+    private static ServiceFactory factory = ServiceFactory.getInstance();
+    private static OwnerService ownerService = PersistenceBindWallImpl.factory.create(OwnerService.class);
+    private static ProfileService profileService = PersistenceBindWallImpl.factory.create(ProfileService.class);
 
     @Override
     public Owner getOwner() {

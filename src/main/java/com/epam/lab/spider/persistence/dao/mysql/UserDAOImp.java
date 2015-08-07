@@ -1,6 +1,6 @@
 package com.epam.lab.spider.persistence.dao.mysql;
 
-import com.epam.lab.spider.model.EntitySynchronizedCacheWrapperUtil;
+import com.epam.lab.spider.model.SynchronizedWrapperUtils;
 import com.epam.lab.spider.persistence.dao.UserDAO;
 import com.epam.lab.spider.model.entity.User;
 
@@ -82,7 +82,7 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
             user.setState(User.State.valueOf(rs.getString("state").toUpperCase()));
             user.setDeleted(rs.getBoolean("deleted"));
             user.setAvatarURL(rs.getString("avatar_url"));
-            users.add(EntitySynchronizedCacheWrapperUtil.wrap(user));
+            users.add(SynchronizedWrapperUtils.wrap(user));
         }
         return users;
     }

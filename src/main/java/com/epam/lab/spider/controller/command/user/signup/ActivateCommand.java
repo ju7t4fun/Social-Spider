@@ -1,6 +1,6 @@
 package com.epam.lab.spider.controller.command.user.signup;
 
-import com.epam.lab.spider.ServerResolver;
+import com.epam.lab.spider.ServerLocationUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.utils.hash.HashSHA;
@@ -41,7 +41,7 @@ public class ActivateCommand implements ActionCommand {
                 ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
                 session.setAttribute("toastr_notification", "success|" + UTF8.encoding(bundle.getString("reg.activate" +
                         ".success")));
-                response.sendRedirect(ServerResolver.getServerPath(request)+"/login");
+                response.sendRedirect(ServerLocationUtils.getServerPath(request)+"/login");
                 return;
             }
         }

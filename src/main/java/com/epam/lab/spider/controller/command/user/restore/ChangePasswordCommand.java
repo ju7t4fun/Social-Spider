@@ -1,6 +1,6 @@
 package com.epam.lab.spider.controller.command.user.restore;
 
-import com.epam.lab.spider.ServerResolver;
+import com.epam.lab.spider.ServerLocationUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.utils.hash.HashMD5;
@@ -37,7 +37,7 @@ public class ChangePasswordCommand implements ActionCommand {
                 service.update(user.getId(), user);
                 session.setAttribute("toastr_notification", "success|" + UTF8.encoding(bundle.getString("restore" +
                         ".notification.success")));
-                response.sendRedirect(ServerResolver.getServerPath(request)+"/login");
+                response.sendRedirect(ServerLocationUtils.getServerPath(request)+"/login");
                 return;
             }
             response.sendError(HttpServletResponse.SC_NOT_FOUND);

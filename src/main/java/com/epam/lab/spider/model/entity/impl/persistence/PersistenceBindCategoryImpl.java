@@ -12,8 +12,8 @@ import java.util.Set;
  * @author Yura Kovalik
  */
 public class PersistenceBindCategoryImpl extends CategoryImpl {
-    private static final ServiceFactory factory = ServiceFactory.getInstance();
-    private static final TaskService service = PersistenceBindCategoryImpl.factory.create(TaskService.class);
+    private static ServiceFactory factory = ServiceFactory.getInstance();
+    private static TaskService taskService = PersistenceBindCategoryImpl.factory.create(TaskService.class);
 
     @Override
     public Set<Task> getTasks() {
@@ -21,7 +21,7 @@ public class PersistenceBindCategoryImpl extends CategoryImpl {
             if (getId() == null)
                 setTasks(new HashSet<Task>());
             else
-                setTasks(new HashSet<>(service.getByCategoryId(getId())));
+                setTasks(new HashSet<>(taskService.getByCategoryId(getId())));
         }
         return super.getTasks();
     }

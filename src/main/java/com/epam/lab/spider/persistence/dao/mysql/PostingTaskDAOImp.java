@@ -1,11 +1,10 @@
 package com.epam.lab.spider.persistence.dao.mysql;
 
-import com.epam.lab.spider.model.EntitySynchronizedCacheWrapperUtil;
+import com.epam.lab.spider.model.SynchronizedWrapperUtils;
 import com.epam.lab.spider.model.entity.PostingTask;
-import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
 import com.epam.lab.spider.model.entity.impl.PostingTaskImpl;
 import com.epam.lab.spider.persistence.dao.PostingTaskDAO;
-import com.epam.lab.spider.persistence.dao.savable.SavableCRUDUtil;
+import com.epam.lab.spider.persistence.dao.savable.SavableDAOUtils;
 import com.epam.lab.spider.persistence.dao.savable.exception.InvalidEntityException;
 import com.epam.lab.spider.persistence.dao.savable.exception.ResolvableDAOException;
 import com.epam.lab.spider.persistence.dao.savable.exception.UnsupportedDAOException;
@@ -222,7 +221,7 @@ public class PostingTaskDAOImp extends BaseDAO implements PostingTaskDAO {
             nPost.setDeleted(rs.getBoolean("deleted"));
             nPost.setUserId(rs.getInt("user_id"));
             nPost.setVkPostId(rs.getInt("vk_post_id"));
-            posts.add(EntitySynchronizedCacheWrapperUtil.wrap(nPost));
+            posts.add(SynchronizedWrapperUtils.wrap(nPost));
         }
         return posts;
     }
@@ -287,7 +286,7 @@ public class PostingTaskDAOImp extends BaseDAO implements PostingTaskDAO {
     @Override
     public boolean save(Connection conn, PostingTask entity) throws UnsupportedDAOException, ResolvableDAOException,
             InvalidEntityException {
-        return SavableCRUDUtil.saveFromInterface(conn, entity);
+        return SavableDAOUtils.saveFromInterface(conn, entity);
     }
 //    public boolean setRestoredStateByProfile(Connection connection, Integer profileId) throws SQLException {
 //        return changeQuery(connection, SQL_SET_RESTORED_STAGE_BY_PROFILE_ID, profileId);

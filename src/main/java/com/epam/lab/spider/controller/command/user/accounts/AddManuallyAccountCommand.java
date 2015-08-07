@@ -1,6 +1,6 @@
 package com.epam.lab.spider.controller.command.user.accounts;
 
-import com.epam.lab.spider.SocialNetworkUtils;
+import com.epam.lab.spider.SocialNetworkCredentialsUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.integration.vk.Parameters;
 import com.epam.lab.spider.integration.vk.VKException;
@@ -27,7 +27,7 @@ import java.util.ResourceBundle;
  */
 public class AddManuallyAccountCommand implements ActionCommand {
 
-    private static final Integer APP_ID = SocialNetworkUtils.getDefaultVkAppsIdAsApps();
+    private static final Integer APP_ID = SocialNetworkCredentialsUtils.getDefaultVkAppsIdAsApps();
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static ProfileService service = factory.create(ProfileService.class);
 

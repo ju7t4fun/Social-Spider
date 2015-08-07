@@ -1,6 +1,6 @@
 package com.epam.lab.spider.persistence.dao.mysql;
 
-import com.epam.lab.spider.model.EntitySynchronizedCacheWrapperUtil;
+import com.epam.lab.spider.model.SynchronizedWrapperUtils;
 import com.epam.lab.spider.model.entity.Owner;
 import com.epam.lab.spider.persistence.dao.OwnerDAO;
 import org.apache.log4j.Logger;
@@ -91,7 +91,7 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
             owner.setDeleted(rs.getBoolean("deleted"));
             owner.setBanned(rs.getBoolean("banned"));
             owner.setUserId(rs.getInt("user_id"));
-            ownerList.add(EntitySynchronizedCacheWrapperUtil.wrap(owner));
+            ownerList.add(SynchronizedWrapperUtils.wrap(owner));
         }
         return ownerList;
     }

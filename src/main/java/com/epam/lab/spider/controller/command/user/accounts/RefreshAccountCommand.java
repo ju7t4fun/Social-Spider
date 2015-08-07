@@ -1,6 +1,6 @@
 package com.epam.lab.spider.controller.command.user.accounts;
 
-import com.epam.lab.spider.SocialNetworkUtils;
+import com.epam.lab.spider.SocialNetworkCredentialsUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.integration.vk.Authorization;
 import com.epam.lab.spider.integration.vk.Scope;
@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class RefreshAccountCommand implements ActionCommand {
 
-    private static final Integer APP_ID = SocialNetworkUtils.getDefaultVkAppsIdAsApps();
+    private static final Integer APP_ID = SocialNetworkCredentialsUtils.getDefaultVkAppsIdAsApps();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

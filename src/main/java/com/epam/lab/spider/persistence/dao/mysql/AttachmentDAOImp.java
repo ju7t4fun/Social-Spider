@@ -1,11 +1,11 @@
 package com.epam.lab.spider.persistence.dao.mysql;
 
-import com.epam.lab.spider.model.EntitySynchronizedCacheWrapperUtil;
+import com.epam.lab.spider.model.SynchronizedWrapperUtils;
 import com.epam.lab.spider.model.entity.AbstractEntityFactory;
 import com.epam.lab.spider.model.entity.Attachment;
 import com.epam.lab.spider.model.entity.impl.persistence.PersistenceEntityFactory;
 import com.epam.lab.spider.persistence.dao.AttachmentDAO;
-import com.epam.lab.spider.persistence.dao.savable.SavableCRUDUtil;
+import com.epam.lab.spider.persistence.dao.savable.SavableDAOUtils;
 import com.epam.lab.spider.persistence.dao.savable.exception.InvalidEntityException;
 import com.epam.lab.spider.persistence.dao.savable.exception.ResolvableDAOException;
 import com.epam.lab.spider.persistence.dao.savable.exception.UnsupportedDAOException;
@@ -78,7 +78,7 @@ public class AttachmentDAOImp extends BaseDAO implements AttachmentDAO {
             attachment.setType(Attachment.Type.valueOf(rs.getString("type").toUpperCase()));
             attachment.setDeleted(rs.getBoolean("deleted"));
             attachment.setMode(Attachment.Mode.valueOf(rs.getString("mode").toUpperCase()));
-            attachments.add(EntitySynchronizedCacheWrapperUtil.wrap(attachment));
+            attachments.add(SynchronizedWrapperUtils.wrap(attachment));
         }
         return attachments;
     }
@@ -105,7 +105,7 @@ public class AttachmentDAOImp extends BaseDAO implements AttachmentDAO {
 
     @Override
     public boolean save(Connection conn, Attachment entity) throws UnsupportedDAOException, ResolvableDAOException, InvalidEntityException {
-        return SavableCRUDUtil.saveFromInterface(conn, entity);
+        return SavableDAOUtils.saveFromInterface(conn, entity);
     }
 
 

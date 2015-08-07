@@ -1,6 +1,6 @@
 package com.epam.lab.spider.job;
 
-import com.epam.lab.spider.SocialNetworkUtils;
+import com.epam.lab.spider.SocialNetworkCredentialsUtils;
 import com.epam.lab.spider.controller.utils.EventLogger;
 import com.epam.lab.spider.integration.vk.Parameters;
 import com.epam.lab.spider.integration.vk.Request;
@@ -14,7 +14,7 @@ import com.epam.lab.spider.job.util.PostAttachmentUtil;
 import com.epam.lab.spider.model.entity.*;
 import com.epam.lab.spider.model.entity.impl.PostingTaskImpl;
 import com.epam.lab.spider.persistence.service.*;
-import com.epam.lab.spider.persistence.service.savable.SavableServiceUtil;
+import com.epam.lab.spider.persistence.service.savable.SavableServiceUtils;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -82,7 +82,7 @@ public class PostExecutorJob implements Job {
             try {
                 Integer appId = profile.getAppId();
                 if (appId == null) {
-                    appId = SocialNetworkUtils.getDefaultVkAppsIdAsApps();
+                    appId = SocialNetworkCredentialsUtils.getDefaultVkAppsIdAsApps();
                 }
                 Vkontakte vk = new Vkontakte(appId);
 
@@ -163,7 +163,7 @@ public class PostExecutorJob implements Job {
                 if(response!=null){
                     postingTask.setState(PostingTaskImpl.State.POSTED);
                     postingTask.setVkPostId(Integer.parseInt(response.toString()));
-                    SavableServiceUtil.safeSave(postingTask);
+                    SavableServiceUtils.safeSave(postingTask);
                     limit.markPostExecute(postingTask.getUserId());
                     String info = "Success to posting wall" + wall.getOwner().getVkId() + "_" + postingTask.getVkPostId();
                     LOG.info(info);

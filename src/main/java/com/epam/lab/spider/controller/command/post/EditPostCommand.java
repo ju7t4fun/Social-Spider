@@ -1,6 +1,6 @@
 package com.epam.lab.spider.controller.command.post;
 
-import com.epam.lab.spider.ServerResolver;
+import com.epam.lab.spider.ServerLocationUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
 import com.epam.lab.spider.controller.utils.UTF8;
@@ -40,7 +40,7 @@ public class EditPostCommand implements ActionCommand {
         Set<Attachment> attachments = new HashSet<>();
         for (Map.Entry<String, String> entry : urlType.entrySet()) {
             attachment = BasicEntityFactory.getSynchronized().createAttachment();
-            attachment.setPayload(ServerResolver.getServerPath(request) + entry.getKey());
+            attachment.setPayload(ServerLocationUtils.getServerPath(request) + entry.getKey());
             attachment.setType(Attachment.Type.valueOf(entry.getValue()));
             attachment.setDeleted(false);
             attachment.setPostId(postID);

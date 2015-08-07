@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
+ * @author Yura Kovalik
  * @author Boyarsky Vitaliy
  */
 public class PoolConnection {

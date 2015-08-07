@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * @author Yura Kovalik
  */
-public class EntitySynchronizedCacheWrapperUtil {
+public class SynchronizedWrapperUtils {
     abstract static class Command<E extends PersistenceIdentifiable>{
         public abstract EntitySynchronized<E> wrap(E entity);
     }

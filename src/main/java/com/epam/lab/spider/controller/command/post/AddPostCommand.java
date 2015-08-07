@@ -1,6 +1,6 @@
 package com.epam.lab.spider.controller.command.post;
 
-import com.epam.lab.spider.ServerResolver;
+import com.epam.lab.spider.ServerLocationUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
 import com.epam.lab.spider.model.entity.*;
@@ -78,7 +78,7 @@ public class AddPostCommand implements ActionCommand {
         Set<Attachment> attachments = new HashSet<>();
         for (Map.Entry<String, String> entry : urlType.entrySet()) {
             attachment = BasicEntityFactory.getSynchronized().createAttachment();
-            attachment.setPayload(ServerResolver.getServerPath(request) + entry.getKey());
+            attachment.setPayload(ServerLocationUtils.getServerPath(request) + entry.getKey());
             attachment.setType(Attachment.Type.valueOf(entry.getValue()));
             attachment.setDeleted(false);
             attachments.add(attachment);
@@ -90,7 +90,7 @@ public class AddPostCommand implements ActionCommand {
         postService.insert(post);
         if (request.getParameter("typePost") == null) {
             session.setAttribute("toastr_notification", "success|" + "Створено новий пост!");
-            response.sendRedirect(ServerResolver.getServerPath(request)+"/post?action=created");
+            response.sendRedirect(ServerLocationUtils.getServerPath(request)+"/post?action=created");
             return;
         } else {
             String date = request.getParameter("date");

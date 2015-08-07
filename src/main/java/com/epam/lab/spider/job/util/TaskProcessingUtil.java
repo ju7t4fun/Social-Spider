@@ -14,7 +14,7 @@ import com.epam.lab.spider.model.vk.PostOffsetDecorator;
 import com.epam.lab.spider.persistence.service.TaskHistoryService;
 import com.epam.lab.spider.persistence.service.TaskSynchronizedInfoService;
 import com.epam.lab.spider.persistence.service.WallService;
-import com.epam.lab.spider.persistence.service.savable.SavableServiceUtil;
+import com.epam.lab.spider.persistence.service.savable.SavableServiceUtils;
 import org.apache.log4j.Logger;
 
 import java.text.SimpleDateFormat;
@@ -293,7 +293,7 @@ public class TaskProcessingUtil {
 
             }
             for (PostingTask postingTask : postingTasks) {
-                boolean result = SavableServiceUtil.safeSave(postingTask);
+                boolean result = SavableServiceUtils.safeSave(postingTask);
                 if (!result) LOG.fatal("ТЕРМІНОВО ФІКСИТЬ БАЗУ!");
             }
             for (Map.Entry<Wall, LinkedList<Integer>> entry : blockMap.entrySet()) {

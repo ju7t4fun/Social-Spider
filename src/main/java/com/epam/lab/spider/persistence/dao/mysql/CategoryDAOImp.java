@@ -1,6 +1,6 @@
 package com.epam.lab.spider.persistence.dao.mysql;
 
-import com.epam.lab.spider.model.EntitySynchronizedCacheWrapperUtil;
+import com.epam.lab.spider.model.SynchronizedWrapperUtils;
 import com.epam.lab.spider.model.entity.Category;
 import com.epam.lab.spider.persistence.dao.CategoryDAO;
 
@@ -64,7 +64,7 @@ public class CategoryDAOImp extends BaseDAO implements CategoryDAO {
             setId(category, rs.getInt("id"));
             category.setName(rs.getString("name"));
             category.setImageUrl(rs.getString("image_url"));
-            categories.add(EntitySynchronizedCacheWrapperUtil.wrap(category));
+            categories.add(SynchronizedWrapperUtils.wrap(category));
         }
         return categories;
     }

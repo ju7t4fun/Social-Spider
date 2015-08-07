@@ -1,6 +1,6 @@
 package com.epam.lab.spider.controller.command.category;
 
-import com.epam.lab.spider.ServerResolver;
+import com.epam.lab.spider.ServerLocationUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.FileType;
 import com.epam.lab.spider.controller.utils.UTF8;
@@ -56,7 +56,7 @@ public class UploadCatImage implements ActionCommand {
                             fileName = new BigInteger(130, random).toString(32) +
                                     FileType.parseFileFormat(fileName);
                             item.write(new File(filePath + File.separator + fileName));
-                            request.getSession().setAttribute("urlCat", ServerResolver.getServerPath(request) + type.getPath() + "/" + fileName);
+                            request.getSession().setAttribute("urlCat", ServerLocationUtils.getServerPath(request) + type.getPath() + "/" + fileName);
                             LOG.debug("File uploaded successfully");
                             response.getWriter().print(new JSONObject().put("success", UTF8.encoding(bundle.getString("notification.upload.file.success"))));
                         } else {

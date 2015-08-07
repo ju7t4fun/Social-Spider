@@ -1,6 +1,6 @@
 package com.epam.lab.spider.controller.command.user.auth;
 
-import com.epam.lab.spider.ServerResolver;
+import com.epam.lab.spider.ServerLocationUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 
 import javax.servlet.ServletException;
@@ -18,6 +18,6 @@ public class SignOutCommand implements ActionCommand {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.invalidate();
-        response.sendRedirect(ServerResolver.getServerPath(request)+"/");
+        response.sendRedirect(ServerLocationUtils.getServerPath(request)+"/");
     }
 }

@@ -8,7 +8,7 @@ import com.epam.lab.spider.model.entity.*;
 public class BasicEntityFactory implements AbstractEntityFactory {
 
     private static AbstractEntityFactory instance = new BasicEntityFactory();
-    private static AbstractEntityFactory synchronizedCacheVersion = new SynchronizedCacheEntityFactory(instance);
+    private static AbstractEntityFactory synchronizedCacheVersion = new SynchronizedEntityFactory(instance);
 
     private BasicEntityFactory() {
     }

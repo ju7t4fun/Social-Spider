@@ -1,6 +1,6 @@
 package com.epam.lab.spider.persistence.dao.mysql;
 
-import com.epam.lab.spider.model.EntitySynchronizedCacheWrapperUtil;
+import com.epam.lab.spider.model.SynchronizedWrapperUtils;
 import com.epam.lab.spider.model.entity.UserActions;
 import com.epam.lab.spider.persistence.dao.UserActionsDAO;
 
@@ -83,7 +83,7 @@ public class UserActionsDAOImpl extends BaseDAO implements UserActionsDAO<UserAc
             userActions.setPostExecuteCount(rs.getInt("post_count"));
             userActions.setAttachmentExecuteCount(rs.getInt("attachment_count"));
             userActions.setAttachmentTraffic(rs.getInt("attachment_traffic"));
-            userActionsList.add(EntitySynchronizedCacheWrapperUtil.wrap(userActions));
+            userActionsList.add(SynchronizedWrapperUtils.wrap(userActions));
         }
         return userActionsList;
     }

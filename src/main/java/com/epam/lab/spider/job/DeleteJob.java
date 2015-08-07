@@ -1,6 +1,6 @@
 package com.epam.lab.spider.job;
 
-import com.epam.lab.spider.SocialNetworkUtils;
+import com.epam.lab.spider.SocialNetworkCredentialsUtils;
 import com.epam.lab.spider.controller.utils.EventLogger;
 import com.epam.lab.spider.integration.vk.Parameters;
 import com.epam.lab.spider.integration.vk.Vkontakte;
@@ -47,7 +47,7 @@ public class DeleteJob implements Job {
 
                     Integer appId = profile.getAppId();
                     if (appId == null) {
-                        appId = SocialNetworkUtils.getDefaultVkAppsIdAsApps();
+                        appId = SocialNetworkCredentialsUtils.getDefaultVkAppsIdAsApps();
                     }
                     Vkontakte vk = new Vkontakte(appId);
 

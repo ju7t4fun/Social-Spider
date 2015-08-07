@@ -8,7 +8,7 @@ import com.epam.lab.spider.persistence.dao.savable.exception.InvalidEntityExcept
 import com.epam.lab.spider.persistence.dao.savable.exception.ResolvableDAOException;
 import com.epam.lab.spider.persistence.dao.savable.exception.UnsupportedDAOException;
 import com.epam.lab.spider.persistence.service.savable.SavableService;
-import com.epam.lab.spider.persistence.service.savable.SavableServiceUtil;
+import com.epam.lab.spider.persistence.service.savable.SavableServiceUtils;
 import com.epam.lab.spider.persistence.service.savable.exception.UnsupportedServiceException;
 import org.apache.log4j.Logger;
 
@@ -28,12 +28,12 @@ public class AttachmentService implements BaseService<Attachment>, SavableServic
 
     @Override
     public boolean save(Attachment entity) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiceException {
-        return SavableServiceUtil.saveFromInterface(entity, this);
+        return SavableServiceUtils.saveFromInterface(entity, this);
     }
 
     @Override
     public boolean save(Attachment entity, Connection conn) throws InvalidEntityException, UnsupportedDAOException, ResolvableDAOException, UnsupportedServiceException {
-        return SavableServiceUtil.customSave(conn, entity);
+        return SavableServiceUtils.customSave(conn, entity);
     }
 
     @Deprecated

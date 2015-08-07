@@ -14,9 +14,9 @@ import java.util.Set;
  * @author Yura Kovalik
  */
 public class PersistenceBindUserImpl extends UserImpl {
-    private static final ServiceFactory factory = ServiceFactory.getInstance();
-    private static final TaskService taskService = PersistenceBindUserImpl.factory.create(TaskService.class);
-    private static final ProfileService profileService = PersistenceBindUserImpl.factory.create(ProfileService.class);
+    private static ServiceFactory factory = ServiceFactory.getInstance();
+    private static TaskService taskService = PersistenceBindUserImpl.factory.create(TaskService.class);
+    private static ProfileService profileService = PersistenceBindUserImpl.factory.create(ProfileService.class);
 
     @Override public Set<Task> getTasks() {
         if (super.getTasks() == null) {

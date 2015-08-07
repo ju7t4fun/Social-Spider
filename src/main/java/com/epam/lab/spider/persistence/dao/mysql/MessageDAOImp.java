@@ -1,6 +1,6 @@
 package com.epam.lab.spider.persistence.dao.mysql;
 
-import com.epam.lab.spider.model.EntitySynchronizedCacheWrapperUtil;
+import com.epam.lab.spider.model.SynchronizedWrapperUtils;
 import com.epam.lab.spider.model.entity.Message;
 import com.epam.lab.spider.persistence.dao.MessageDAO;
 
@@ -82,7 +82,7 @@ public class MessageDAOImp extends BaseDAO implements MessageDAO {
             message.setType(Message.Type.valueOf(rs.getString("type").toUpperCase()));
             message.setDeleted(rs.getBoolean("deleted"));
             message.setRead(rs.getBoolean("is_read"));
-            messages.add(EntitySynchronizedCacheWrapperUtil.wrap(message));
+            messages.add(SynchronizedWrapperUtils.wrap(message));
         }
         return messages;
     }

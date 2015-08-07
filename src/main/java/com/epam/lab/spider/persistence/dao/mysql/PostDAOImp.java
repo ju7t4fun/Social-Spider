@@ -1,9 +1,9 @@
 package com.epam.lab.spider.persistence.dao.mysql;
 
-import com.epam.lab.spider.model.EntitySynchronizedCacheWrapperUtil;
+import com.epam.lab.spider.model.SynchronizedWrapperUtils;
 import com.epam.lab.spider.model.entity.Post;
 import com.epam.lab.spider.persistence.dao.PostDAO;
-import com.epam.lab.spider.persistence.dao.savable.SavableCRUDUtil;
+import com.epam.lab.spider.persistence.dao.savable.SavableDAOUtils;
 import com.epam.lab.spider.persistence.dao.savable.exception.InvalidEntityException;
 import com.epam.lab.spider.persistence.dao.savable.exception.ResolvableDAOException;
 import com.epam.lab.spider.persistence.dao.savable.exception.UnsupportedDAOException;
@@ -78,7 +78,7 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
             post.setMessage(rs.getString("message"));
             post.setDeleted(rs.getBoolean("deleted"));
             post.setUserId(rs.getInt("user_id"));
-            posts.add(EntitySynchronizedCacheWrapperUtil.wrap(post));
+            posts.add(SynchronizedWrapperUtils.wrap(post));
         }
         return posts;
     }
@@ -101,7 +101,7 @@ public class PostDAOImp extends BaseDAO implements PostDAO {
     @Override
     public boolean save(Connection conn, Post entity) throws UnsupportedDAOException, ResolvableDAOException,
             InvalidEntityException {
-        return SavableCRUDUtil.saveFromInterface(conn, entity);
+        return SavableDAOUtils.saveFromInterface(conn, entity);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.epam.lab.spider.controller.command.user.auth;
 
-import com.epam.lab.spider.ServerResolver;
+import com.epam.lab.spider.ServerLocationUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.integration.vk.Parameters;
@@ -72,7 +72,7 @@ public class VkAuthResponseCommand implements ActionCommand {
                     return;
                 case ACTIVATED:
                     request.getSession().setAttribute("user", user);
-                    response.sendRedirect(ServerResolver.getServerPath(request)+"/");
+                    response.sendRedirect(ServerLocationUtils.getServerPath(request)+"/");
             }
         } else {
             // Перехід на реєстрацію
@@ -81,7 +81,7 @@ public class VkAuthResponseCommand implements ActionCommand {
             session.setAttribute("email", token.getEmail());
             session.setAttribute("vkId", token.getUserId());
             session.setAttribute("photo_200", vkUser.getPhoto200().toString());
-            response.sendRedirect(ServerResolver.getServerPath(request)+"/register");
+            response.sendRedirect(ServerLocationUtils.getServerPath(request)+"/register");
         }
     }
 

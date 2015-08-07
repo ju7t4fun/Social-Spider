@@ -1,6 +1,6 @@
 package com.epam.lab.spider.model.entity.impl;
 
-import com.epam.lab.spider.SocialNetworkUtils;
+import com.epam.lab.spider.SocialNetworkCredentialsUtils;
 import com.epam.lab.spider.integration.vk.auth.AccessToken;
 import com.epam.lab.spider.model.PersistenceIdentificationChangeable;
 import com.epam.lab.spider.model.entity.Profile;
@@ -19,7 +19,7 @@ public class ProfileImpl implements Profile, PersistenceIdentificationChangeable
     private Integer vkId;
     private String accessToken;
     private Date extTime;
-    private Integer appId = SocialNetworkUtils.getDefaultVkAppsIdAsApps();
+    private Integer appId = SocialNetworkCredentialsUtils.getDefaultVkAppsIdAsApps();
     private String name = "NO NAME";
     private Boolean deleted = false;
 

@@ -1,6 +1,6 @@
 package com.epam.lab.spider.integration.vk.auth;
 
-import com.epam.lab.spider.ServerResolver;
+import com.epam.lab.spider.ServerLocationUtils;
 import com.epam.lab.spider.integration.vk.Authorization;
 import com.epam.lab.spider.integration.vk.Configuration;
 import org.apache.http.HttpEntity;
@@ -22,7 +22,7 @@ public class ServerAuthorization implements Authorization {
     private static final Logger LOG = Logger.getLogger(ServerAuthorization.class);
 
     private static final String API_VERSION = "5.27";
-    private static final String REDIRECT_URI = ServerResolver.getDefaultServerPath() + "/login";
+    private static final String REDIRECT_URI = ServerLocationUtils.getDefaultServerPath() + "/login";
 
     private Configuration conf;
 

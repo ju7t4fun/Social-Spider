@@ -1,6 +1,6 @@
 package com.epam.lab.spider.controller.command.user.auth;
 
-import com.epam.lab.spider.ServerResolver;
+import com.epam.lab.spider.ServerLocationUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.UTF8;
 import com.epam.lab.spider.controller.utils.hash.HashMD5;
@@ -51,7 +51,7 @@ public class SignInCommand implements ActionCommand {
                     return;
                 case ACTIVATED:
                     request.getSession().setAttribute("user", user);
-                    response.sendRedirect(ServerResolver.getServerPath(request)+"/");
+                    response.sendRedirect(ServerLocationUtils.getServerPath(request)+"/");
             }
         } else {
             // Помилка авторизації
