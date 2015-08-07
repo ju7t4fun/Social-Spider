@@ -1,10 +1,10 @@
 package com.epam.lab.spider.controller.command.wall;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.entity.Wall;
-import com.epam.lab.spider.model.db.service.*;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.entity.Wall;
 
+import com.epam.lab.spider.persistence.service.*;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -18,7 +18,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 /**
- * Created by shell on 6/27/2015.
+ * @author Yura Kovalik
  */
 public class GetWallsCommand implements ActionCommand {
     public static final ServiceFactory factory = ServiceFactory.getInstance();
@@ -51,9 +51,8 @@ public class GetWallsCommand implements ActionCommand {
             for(Wall wall:walls){
                 wall.getOwner().getVkId();
                 if(activeFilter){
-                    if(wall.getOwner().getName().contains(search) ||
-                            wall.getOwner().getDomain().contains(search));
-                    else continue;
+                    if(!(wall.getOwner().getName().contains(search) ||
+                            wall.getOwner().getDomain().contains(search)))continue;
                 }
                 jsonRow = new JSONObject();
                 jsonRow.put("value", wall.getId());
@@ -66,7 +65,5 @@ public class GetWallsCommand implements ActionCommand {
         PrintWriter out = response.getWriter();
         out.print(result);
         out.flush();
-        return;
-
     }
 }

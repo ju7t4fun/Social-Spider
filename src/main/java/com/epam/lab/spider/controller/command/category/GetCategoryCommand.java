@@ -1,10 +1,10 @@
 package com.epam.lab.spider.controller.command.category;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.Category;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.CategoryService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Category;
+import com.epam.lab.spider.persistence.service.CategoryService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -17,9 +17,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * Created by Marian Voronovskyi on 29.06.2015.
+ * @author Marian Voronovskyi
  */
 public class GetCategoryCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(GetCategoryCommand.class);
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static CategoryService service = factory.create(CategoryService.class);
 
@@ -31,7 +32,7 @@ public class GetCategoryCommand implements ActionCommand {
         String pageSize = request.getParameter("iDisplayLength");
 
         int start = 0;
-        int ammount = 5;
+        int amount = 5;
 
         if (pageNo!=null) {
             start = Integer.parseInt(pageNo);
@@ -41,21 +42,21 @@ public class GetCategoryCommand implements ActionCommand {
         }
 
         if (pageSize!=null) {
-            ammount = Integer.parseInt(pageSize);
-            if (ammount < 5) {
-                ammount = 5;
+            amount = Integer.parseInt(pageSize);
+            if (amount < 5) {
+                amount = 5;
             }
         }
 
-        int totalCount = 0;
+        int totalCount;
         List<Category> categories;
-        if (toSearch == null || toSearch == "") {
-            categories = service.getAllWithLimit(start,ammount);
+        if (toSearch == null || toSearch.isEmpty()) {
+            categories = service.getAllWithLimit(start,amount);
             totalCount = service.getCountAll();
         } else {
             toSearch = "%" + toSearch + "%";
-            System.out.println("toSearch: " + toSearch);
-            categories = service.getAllWithSearchLimited(toSearch, start, ammount);
+            LOG.debug("toSearch: " + toSearch);
+            categories = service.getAllWithSearchLimited(toSearch, start, amount);
             totalCount = service.getCountAllWithSearch(toSearch);
         }
         JSONObject result = new JSONObject();
@@ -64,7 +65,7 @@ public class GetCategoryCommand implements ActionCommand {
         HttpSession session = request.getSession();
         ResourceBundle bundle = (ResourceBundle) session.getAttribute("bundle");
         int lang = Integer.parseInt(bundle.getString("categoryLangCode"));
-        System.out.println("code = " + lang);
+        LOG.debug("code = " + lang);
 
         for (Category category : categories) {
             JSONArray row = new JSONArray();
@@ -73,7 +74,7 @@ public class GetCategoryCommand implements ActionCommand {
             row.put(category.getName());
             table.put(row);
         }
-        System.out.println(categories.size());
+        LOG.debug(categories.size());
 
         result.put("iTotalDisplayRecords", totalCount);
         result.put("aaData", table);

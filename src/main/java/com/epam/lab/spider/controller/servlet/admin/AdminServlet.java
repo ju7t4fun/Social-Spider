@@ -4,7 +4,6 @@ import com.epam.lab.spider.controller.command.ActionFactory;
 import com.epam.lab.spider.controller.command.admin.stats.GetServiceStatisticCommand;
 import com.epam.lab.spider.controller.command.admin.stats.GetVisitorsStatsCommand;
 import com.epam.lab.spider.controller.command.admin.users.ShowAdminAllUsers;
-import com.epam.lab.spider.controller.command.admin.users.UserChangeRoleCommand;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Orest Dzyuba on 17.06.2015.
+ * @author Dzyuba Orest
  */
 public class AdminServlet extends HttpServlet {
 

@@ -2,11 +2,12 @@ package com.epam.lab.spider.controller.websocket;
 
 import com.epam.lab.spider.controller.utils.EventLogger;
 import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
-import com.epam.lab.spider.model.db.entity.Message;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.MessageService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.UserService;
+import com.epam.lab.spider.model.entity.Message;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.persistence.service.MessageService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.UserService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
@@ -17,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by Boyarsky Vitaliy on 22.06.2015.
+ * @author Boyarsky Vitaliy
  */
 @ServerEndpoint(value = "/websocket/support", configurator = GetHttpSessionConfigurator.class)
 public class SupportWebSocket {
@@ -52,7 +53,7 @@ public class SupportWebSocket {
                     break;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         if (LOG.isDebugEnabled())
             LOG.debug("onOpen (clientId=" + id + ")");
@@ -68,7 +69,7 @@ public class SupportWebSocket {
         try {
             switch (Command.valueOf(args[0].toUpperCase())) {
                 case TO_ADMIN: {
-                    Message msg = new Message();
+                    Message msg = BasicEntityFactory.getSynchronized().createMessage();
                     msg.setUserId(id);
                     msg.setText(args[1]);
                     msg.setType(Message.Type.TO_ADMIN);
@@ -98,7 +99,7 @@ public class SupportWebSocket {
                     break;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
     }
 
@@ -165,7 +166,7 @@ public class SupportWebSocket {
 
     private Message adminSendUser(String[] args) throws IOException {
         int id = Integer.parseInt(args[1]);
-        Message msg = new Message();
+        Message msg = BasicEntityFactory.getSynchronized().createMessage();
         msg.setUserId(id);
         msg.setText(args[2]);
         msg.setType(Message.Type.TO_USER);

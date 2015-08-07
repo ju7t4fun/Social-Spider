@@ -1,17 +1,15 @@
 package com.epam.lab.spider.job.util;
 
 import com.epam.lab.spider.controller.utils.EventLogger;
-import com.epam.lab.spider.model.db.entity.DataLock;
-import com.epam.lab.spider.model.db.entity.NewPost;
-import com.epam.lab.spider.model.db.entity.Profile;
-import com.epam.lab.spider.model.db.entity.Wall;
-import com.epam.lab.spider.model.db.service.*;
+import com.epam.lab.spider.model.entity.*;
+import com.epam.lab.spider.model.entity.impl.PostingTaskImpl;
+import com.epam.lab.spider.persistence.service.*;
 import org.apache.log4j.Logger;
 
 import java.util.*;
 
 /**
- * Created by shell on 6/17/2015.
+ * @author Yura Kovalik
  */
 public class Locker {
     public static final Logger LOG = Logger.getLogger(Locker.class);
@@ -19,7 +17,7 @@ public class Locker {
     private static ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private static DataLockService dataLockService = new DataLockService();
 
-    private static NewPostService newPostService = serviceFactory.create(NewPostService.class);
+    private static PostingTaskService postingTaskService = serviceFactory.create(PostingTaskService.class);
     private static ProfileService profileService = serviceFactory.create(ProfileService.class);
     private static WallService wallService = serviceFactory.create(WallService.class);
 
@@ -40,7 +38,7 @@ public class Locker {
     public synchronized boolean isLock(Wall wall) {
         return isLockOrNull("owner", wall.getOwnerId())
                 || isLockOrNull("wall", wall.getId())
-                || isLockOrNull("profile", wall.getProfile_id());
+                || isLockOrNull("profile", wall.getProfileId());
 
     }
 
@@ -53,7 +51,7 @@ public class Locker {
 
         if (mode == DataLock.Mode.ACCESS_DENY || mode == DataLock.Mode.DEFAULT || mode == DataLock.Mode.POST_LIMIT) {
             if (!isLock(wall)) {
-                newPostService.setSpecialStageByWall(wall.getId(), NewPost.State.ERROR);
+                postingTaskService.setSpecialStageByWall(wall.getId(), PostingTaskImpl.State.ERROR);
             }
 
             table = "wall";
@@ -99,7 +97,7 @@ public class Locker {
         Map<Integer, Set<DataLock.Mode>> currentLockTable;
         if (mode == DataLock.Mode.DEFAULT || mode == DataLock.Mode.AUTH_KEY || mode == DataLock.Mode.CAPTCHA) {
             if (!isLock(profile)) {
-                newPostService.setSpecialStageByProfile(profile.getId(), NewPost.State.ERROR);
+                postingTaskService.setSpecialStageByProfile(profile.getId(), PostingTaskImpl.State.ERROR);
             }
             table = "profile";
             index = profile.getId();
@@ -189,16 +187,16 @@ public class Locker {
                 List<Wall> walls = wallService.getWallsByProfileId(profile.getId());
                 for (Wall wall : walls) {
                     if (!isLock(wall)) {
-                        newPostService.setRestoredStageByWall(wall.getId());
-//                    newPostService.setSpecialStageByWall(wall.getId(), NewPost.State.RESTORED);
+                        postingTaskService.setRestoredStageByWall(wall.getId());
+//                    postingTaskService.setSpecialStageByWall(wall.getId(), PostingTask.State.RESTORED);
                     }
                 }
             }
             if (table.equals("wall")) {
                 Wall wall = wallService.getById(index);
                 if (!isLock(wall)) {
-                    newPostService.setRestoredStageByWall(wall.getId());
-                    newPostService.setSpecialStageByWall(wall.getId(), NewPost.State.RESTORED);
+                    postingTaskService.setRestoredStageByWall(wall.getId());
+                    postingTaskService.setSpecialStageByWall(wall.getId(), PostingTaskImpl.State.RESTORED);
                 }
             }
         }

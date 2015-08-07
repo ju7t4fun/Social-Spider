@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Boyarsky Vitaliy on 09.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class LoginServlet extends HttpServlet {
 

@@ -1,16 +1,16 @@
 package com.epam.lab.spider.job.util;
 
-import com.epam.lab.spider.controller.vk.VKException;
-import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.controller.vk.auth.AccessToken;
+import com.epam.lab.spider.integration.vk.VKException;
+import com.epam.lab.spider.integration.vk.Vkontakte;
+import com.epam.lab.spider.integration.vk.auth.AccessToken;
 import com.epam.lab.spider.job.exception.FindingEmptyResultException;
 import com.epam.lab.spider.job.exception.WallAlreadyStopped;
 import com.epam.lab.spider.job.exception.WallStopException;
-import com.epam.lab.spider.job.limit.UserLimit;
+import com.epam.lab.spider.job.limit.UserLimitProcessor;
 import com.epam.lab.spider.job.limit.UserLimitsFactory;
-import com.epam.lab.spider.model.db.entity.*;
-import com.epam.lab.spider.model.db.service.TaskSynchronizedDataService;
-import com.epam.lab.spider.model.db.service.TaskSynchronizedNewDataService;
+import com.epam.lab.spider.model.entity.*;
+import com.epam.lab.spider.persistence.service.TaskSynchronizedDataService;
+import com.epam.lab.spider.persistence.service.TaskSynchronizedNewDataService;
 import com.epam.lab.spider.model.vk.Post;
 import org.apache.log4j.Logger;
 
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by hell-engine on 7/24/2015.
+ * @author Yura Kovalik
  */
 public class GrabbingUtils {
     public static final Logger LOG = Logger.getLogger(GrabbingUtils.class);
@@ -27,7 +27,7 @@ public class GrabbingUtils {
 
     static TaskSynchronizedNewDataService syncNewService = new TaskSynchronizedNewDataService();
 
-    public static UserLimit limit = UserLimitsFactory.getUserLimit();
+    public static UserLimitProcessor limit = UserLimitsFactory.getUserLimitProcessor();
     public static List<Post> grabbingWall(Wall wall, Task task) throws WallStopException, WallAlreadyStopped, FindingEmptyResultException {
         List<com.epam.lab.spider.model.vk.Post> toPostingQueue = new ArrayList<>();
         Owner owner = wall.getOwner();
@@ -72,9 +72,9 @@ public class GrabbingUtils {
             if (e.getExceptionCode() == VKException.VK_AUTHORIZATION_FAILED) {
                 Locker.getInstance().lock(profile, DataLock.Mode.AUTH_KEY);
             }
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         return toPostingQueue;
     }

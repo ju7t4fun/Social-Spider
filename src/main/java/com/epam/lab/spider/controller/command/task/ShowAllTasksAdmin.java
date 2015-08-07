@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Орест on 7/8/2015.
+ * @author Dzyuba Orest
  */
 public class ShowAllTasksAdmin implements ActionCommand {
     @Override

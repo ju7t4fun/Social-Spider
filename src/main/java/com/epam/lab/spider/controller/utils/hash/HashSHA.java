@@ -1,12 +1,15 @@
 package com.epam.lab.spider.controller.utils.hash;
 
+import org.apache.log4j.Logger;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by Dmytro on 13.06.2015.
+ * @author Dzyuba Orest
  */
 public class HashSHA {
+    private static final Logger LOG = Logger.getLogger(HashSHA.class);
 
     public String hash(String someStr) {
 
@@ -14,7 +17,7 @@ public class HashSHA {
         try {
             md = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         md.update(someStr.getBytes());
 

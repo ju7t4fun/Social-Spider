@@ -1,9 +1,9 @@
 package com.epam.lab.spider.controller.command.user.profile;
 
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
-import com.epam.lab.spider.model.db.service.UserService;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import com.epam.lab.spider.persistence.service.UserService;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.servlet.ServletException;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * Created by Boyarsky Vitaliy on 26.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class ProfileChangePasswordCommand implements ActionCommand {
 

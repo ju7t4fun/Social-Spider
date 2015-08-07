@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Marian Voronovskyi on 09.07.2015.
+ * @author Marian Voronovskyi
  */
 public class AdminOwnerCommand implements ActionCommand {
     @Override

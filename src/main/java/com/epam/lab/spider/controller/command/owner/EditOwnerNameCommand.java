@@ -3,10 +3,10 @@ package com.epam.lab.spider.controller.command.owner;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
 import com.epam.lab.spider.controller.utils.UTF8;
-import com.epam.lab.spider.model.db.entity.Owner;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.OwnerService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.Owner;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.OwnerService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 /**
- * Created by Marian Voronovskyi on 01.07.2015.
+ * @author Marian Voronovskyi
  */
 public class EditOwnerNameCommand implements ActionCommand {
     private static ServiceFactory factory = ServiceFactory.getInstance();

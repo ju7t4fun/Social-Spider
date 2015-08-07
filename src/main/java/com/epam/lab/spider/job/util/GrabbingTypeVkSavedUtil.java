@@ -1,19 +1,17 @@
 package com.epam.lab.spider.job.util;
 
-import com.epam.lab.spider.controller.vk.VKException;
-import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.model.db.entity.Filter;
-import com.epam.lab.spider.model.db.entity.Owner;
-import com.epam.lab.spider.model.db.entity.Task;
+import com.epam.lab.spider.integration.vk.VKException;
+import com.epam.lab.spider.integration.vk.Vkontakte;
+import com.epam.lab.spider.model.entity.Filter;
+import com.epam.lab.spider.model.entity.Owner;
+import com.epam.lab.spider.model.entity.Task;
 import com.epam.lab.spider.model.vk.Post;
-import com.epam.lab.spider.model.vk.PostOffsetDecorator;
-import org.apache.http.conn.HttpHostConnectException;
 import org.apache.log4j.Logger;
 
 import java.util.*;
 
 /**
- * Created by hell-engine on 7/5/2015.
+ * @author Yura Kovalik
  */
 public class GrabbingTypeVkSavedUtil {
     public static final Logger LOG = Logger.getLogger(GrabbingTypeServerUtil.class);

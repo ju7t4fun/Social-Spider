@@ -3,13 +3,13 @@ package com.epam.lab.spider.controller.command.post;
 import com.epam.lab.spider.ServerResolver;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.ReplaceHtmlTags;
-import com.epam.lab.spider.model.db.entity.Attachment;
-import com.epam.lab.spider.model.db.entity.NewPost;
-import com.epam.lab.spider.model.db.entity.Post;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.NewPostService;
-import com.epam.lab.spider.model.db.service.PostService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.model.entity.*;
+import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
+import com.epam.lab.spider.model.entity.impl.PostingTaskImpl;
+import com.epam.lab.spider.persistence.service.PostingTaskService;
+import com.epam.lab.spider.persistence.service.PostService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -21,16 +21,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
- * Created by Marian Voronovskyi on 25.06.2015.
+ * @author Marian Voronovskyi
  */
 public class AddPostCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(Object.class);
 
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static PostService postService = factory.create(PostService.class);
-    private static NewPostService newPostService = factory.create(NewPostService.class);
+    private static PostingTaskService postingTaskService = factory.create(PostingTaskService.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -51,7 +53,7 @@ public class AddPostCommand implements ActionCommand {
 
         Map<String, String> urlType = (Map<String, String>) request.getSession().getAttribute("files_url");
         String message = request.getParameter("message");
-        if (message == null || message == "") {
+        if (message == null || Objects.equals(message, "")) {
             message = "Empty post";
         }
         message = ReplaceHtmlTags.reaplaceAll(message);
@@ -70,12 +72,12 @@ public class AddPostCommand implements ActionCommand {
             }
         }
 
-        Post post = new Post();
+        Post post = BasicEntityFactory.getSynchronized().createPost();
         post.setUserId(user.getId());
         Attachment attachment;
         Set<Attachment> attachments = new HashSet<>();
         for (Map.Entry<String, String> entry : urlType.entrySet()) {
-            attachment = new Attachment();
+            attachment = BasicEntityFactory.getSynchronized().createAttachment();
             attachment.setPayload(ServerResolver.getServerPath(request) + entry.getKey());
             attachment.setType(Attachment.Type.valueOf(entry.getValue()));
             attachment.setDeleted(false);
@@ -97,28 +99,27 @@ public class AddPostCommand implements ActionCommand {
             String timeDelete = request.getParameter("time_delete");
             String groups = request.getParameter("groups");
 
-            NewPost newPost = new NewPost();
+            PostingTask postingTask = BasicEntityFactory.getSynchronized().createPostingTask();
 
-            newPost.setUserId(user.getId());
-            newPost.setPostId(post.getId());
-//            newPost.setPost(post);
-            newPost.setState(NewPost.State.CREATED);
+            postingTask.setUserId(user.getId());
+            postingTask.setPostId(post.getId());
+            postingTask.setState(PostingTaskImpl.State.CREATED);
 
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-                newPost.setPostTime(formatter.parse(date + " " + time));
+                postingTask.setPostTime(formatter.parse(date + " " + time));
                 if (request.getParameter("checked").equals("true")) {
-                    newPost.setDeleteTime(formatter.parse(dateDelete + " " + timeDelete));
+                    postingTask.setDeleteTime(formatter.parse(dateDelete + " " + timeDelete));
                 }
             } catch (ParseException e) {
-                e.printStackTrace();
+                LOG.error(e.getLocalizedMessage(), e);
             }
 
-            newPost.setDeleted(false);
+            postingTask.setDeleted(false);
             String[] groupsId = groups.split(",");
             for (String id : groupsId) {
-                newPost.setWallId(Integer.parseInt(id));
-                newPostService.insert(newPost);
+                postingTask.setWallId(Integer.parseInt(id));
+                postingTaskService.insert(postingTask);
             }
         }
 

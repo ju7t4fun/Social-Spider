@@ -4,7 +4,6 @@ import com.epam.lab.spider.controller.command.ActionFactory;
 import com.epam.lab.spider.controller.command.category.AddCategoryCommand;
 import com.epam.lab.spider.controller.command.category.GetCategoryCommand;
 import com.epam.lab.spider.controller.command.controller.*;
-import com.epam.lab.spider.controller.command.post.GetPostByIdCommand;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Boyarsky Vitaliy on 09.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class ControllerServlet extends HttpServlet {
 

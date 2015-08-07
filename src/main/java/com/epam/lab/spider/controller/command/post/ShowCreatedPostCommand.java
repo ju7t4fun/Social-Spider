@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Boyarsky Vitaliy on 28.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class ShowCreatedPostCommand implements ActionCommand {
     @Override

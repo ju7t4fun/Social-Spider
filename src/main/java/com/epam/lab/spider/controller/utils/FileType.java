@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.utils;
 
 /**
- * Created by Marian Voronovskyi on 21.06.2015.
+ * @author Marian Voronovskyi
  */
 public class FileType {
 
@@ -30,20 +30,19 @@ public class FileType {
     public static String parseFileFormat(String fileName) {
         fileName = fileName.toLowerCase();
         int dotPosition = fileName.lastIndexOf(".");
-        String format = fileName.substring(dotPosition, fileName.length());
-        return format;
+        return fileName.substring(dotPosition, fileName.length());
     }
 
     public static Type getType(String fileName) {
         String format = parseFileFormat(fileName);
         Type[] values = Type.values();
-        for (int i = 0; i < values.length; i++) {
-            for (int j = 0; j < values[i].getFormats().length; j++) {
-                if (values[i] == Type.PHOTO && values[i].getFormats()[j].equals(format)) {
+        for (Type value : values) {
+            for (int j = 0; j < value.getFormats().length; j++) {
+                if (value == Type.PHOTO && value.getFormats()[j].equals(format)) {
                     return Type.PHOTO;
-                } else if (values[i] == Type.VIDEO && values[i].getFormats()[j].equals(format)) {
+                } else if (value == Type.VIDEO && value.getFormats()[j].equals(format)) {
                     return Type.VIDEO;
-                } else if (values[i] == Type.AUDIO && values[i].getFormats()[j].equals(format)) {
+                } else if (value == Type.AUDIO && value.getFormats()[j].equals(format)) {
                     return Type.AUDIO;
                 }
             }

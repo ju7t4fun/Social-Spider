@@ -2,15 +2,16 @@ package com.epam.lab.spider.controller.command.post;
 
 import com.epam.lab.spider.SocialNetworkUtils;
 import com.epam.lab.spider.controller.command.ActionCommand;
-import com.epam.lab.spider.controller.vk.VKException;
-import com.epam.lab.spider.controller.vk.Vkontakte;
-import com.epam.lab.spider.controller.vk.auth.AccessToken;
-import com.epam.lab.spider.model.db.entity.Attachment;
-import com.epam.lab.spider.model.db.entity.Post;
-import com.epam.lab.spider.model.db.entity.Profile;
-import com.epam.lab.spider.model.db.service.PostService;
-import com.epam.lab.spider.model.db.service.ProfileService;
-import com.epam.lab.spider.model.db.service.ServiceFactory;
+import com.epam.lab.spider.integration.vk.VKException;
+import com.epam.lab.spider.integration.vk.Vkontakte;
+import com.epam.lab.spider.integration.vk.auth.AccessToken;
+import com.epam.lab.spider.model.entity.Attachment;
+import com.epam.lab.spider.model.entity.Post;
+import com.epam.lab.spider.model.entity.Profile;
+import com.epam.lab.spider.persistence.service.PostService;
+import com.epam.lab.spider.persistence.service.ProfileService;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,10 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
+
 /**
- * Created by Marian Voronovskyi on 06.07.2015.
+ * @author Marian Voronovskyi
  */
 public class GetPostWithoutHtmlCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(GetPostWithoutHtmlCommand.class);
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static PostService service = factory.create(PostService.class);
     private static ProfileService profileService = factory.create(ProfileService.class);
@@ -118,7 +121,7 @@ public class GetPostWithoutHtmlCommand implements ActionCommand {
                     }
                 }
             } catch (VKException e) {
-                System.out.print(e.getMessage());
+                LOG.debug(e.getMessage(), e);
             }
         }
         return attachmentJson;

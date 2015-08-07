@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by Dmytro on 11.06.2015.
+ * @author Dzyuba Orest
  */
 public class RegisterServlet extends HttpServlet {
 

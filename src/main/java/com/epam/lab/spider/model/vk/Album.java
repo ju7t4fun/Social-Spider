@@ -1,22 +1,22 @@
 package com.epam.lab.spider.model.vk;
 
-import com.epam.lab.spider.controller.vk.Node;
+import com.epam.lab.spider.integration.vk.Node;
 
 import java.util.Date;
 
 public class Album extends Model implements Attachment {
 
-    public static final String ID = "id";
-    public static final String OWNER_ID = "owner_id";
-    public static final String TITLE = "title";
-    public static final String DESCRIPTION = "description";
-    public static final String CREATED = "created";
-    public static final String UPDATED = "updated";
-    public static final String SIZE = "size";
+    private static final String ID = "id";
+    private static final String OWNER_ID = "owner_id";
+    private static final String TITLE = "title";
+    private static final String DESCRIPTION = "description";
+    private static final String CREATED = "created";
+    private static final String UPDATED = "updated";
+    private static final String SIZE = "size";
 
     private Photo thumb;
 
-    public Album() {
+    private Album() {
         super();
     }
 

@@ -1,7 +1,8 @@
 package com.epam.lab.spider.model.vk;
 
-import com.epam.lab.spider.controller.vk.Node;
-import com.epam.lab.spider.controller.vk.Value;
+import com.epam.lab.spider.integration.vk.Node;
+import com.epam.lab.spider.integration.vk.Value;
+import org.apache.log4j.Logger;
 
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
@@ -9,6 +10,7 @@ import java.net.URL;
 import java.util.*;
 
 public class Model {
+    private static final Logger LOG = Logger.getLogger(Model.class);
 
     private Map<String, String> fields = new HashMap<String, String>();
 
@@ -27,9 +29,9 @@ public class Model {
             for (Field field : fields)
                 keys.add((String) field.get(String.class));
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
         return keys;
     }

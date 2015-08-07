@@ -1,5 +1,5 @@
 var apps = ["4949213"];
-var host = "/localhost:8080/";
+var host = "/social-copybot.rhcloud.com";
 
 // Файл конфігурації default
 var config = {

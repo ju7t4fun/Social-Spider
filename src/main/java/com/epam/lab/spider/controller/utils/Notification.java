@@ -1,7 +1,7 @@
 package com.epam.lab.spider.controller.utils;
 
 
-import com.epam.lab.spider.model.db.entity.Event;
+import com.epam.lab.spider.model.entity.Event;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
- * Created by Boyarsky Vitaliy on 20.06.2015.
+ * @author Boyarsky Vitaliy
  */
 public class Notification {
 

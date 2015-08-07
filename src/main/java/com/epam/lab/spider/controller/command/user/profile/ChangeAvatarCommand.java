@@ -3,11 +3,12 @@ package com.epam.lab.spider.controller.command.user.profile;
 import com.epam.lab.spider.ServerResolver;
 import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.controller.utils.FileType;
-import com.epam.lab.spider.model.db.entity.User;
-import com.epam.lab.spider.model.db.service.UserService;
+import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.UserService;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import javax.servlet.ServletContext;
@@ -20,11 +21,13 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Objects;
 
 /**
- * Created by Marian Voronovskyi on 22.06.2015.
+ * @author Marian Voronovskyi
  */
 public class ChangeAvatarCommand implements ActionCommand {
+    private static final Logger LOG = Logger.getLogger(ChangeAvatarCommand.class) ;
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,9 +41,9 @@ public class ChangeAvatarCommand implements ActionCommand {
                 AvatarExtension avatarExtension = AvatarExtension.IMAGES;
                 String fileName;
                 String filePath;
-                List<FileItem> multiparts = new ServletFileUpload(
+                List<FileItem> multiParts = new ServletFileUpload(
                         new DiskFileItemFactory()).parseRequest(request);
-                for (FileItem item : multiparts) {
+                for (FileItem item : multiParts) {
                     if (!item.isFormField()) {
                         fileName = new File(item.getName()).getName();
                         if (avatarExtension.checkExtension(FileType.parseFileFormat(fileName))) {
@@ -49,7 +52,7 @@ public class ChangeAvatarCommand implements ActionCommand {
                             fileName = new BigInteger(130, random).toString(32) +
                                     FileType.parseFileFormat(fileName);
                             item.write(new File(filePath + File.separator + fileName));
-                            System.out.println("File uploaded successfully: " + fileName);
+                            LOG.info("File uploaded successfully: " + fileName);
                             userService.updateByParameter("avatar_url",
                                     (ServerResolver.getServerPath(request)+"/upload/images/" + fileName), user.getId());
                             user = userService.getById(user.getId());
@@ -66,10 +69,10 @@ public class ChangeAvatarCommand implements ActionCommand {
                 jsonError = "Request error!";
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
             jsonError = "Upload error! Please try again!";
         } finally {
-            if (jsonError != "") {
+            if (!Objects.equals(jsonError, "")) {
                 response.getWriter().print(new JSONObject().put("error", jsonError).put("status", "error").put("msg",
                         jsonError));
             }
@@ -88,9 +91,9 @@ public class ChangeAvatarCommand implements ActionCommand {
             return extensions;
         }
 
-        public boolean checkExtension(String extesion) {
+        public boolean checkExtension(String extension) {
             for (String e : extensions) {
-                if (e.equals(extesion)) {
+                if (e.equals(extension)) {
                     return true;
                 }
             }

@@ -1,29 +1,29 @@
 package com.epam.lab.spider.job;
 
-import com.epam.lab.spider.job.limit.UserLimit;
+import com.epam.lab.spider.job.limit.UserLimitProcessor;
 import com.epam.lab.spider.job.limit.UserLimitsFactory;
-import com.epam.lab.spider.job.util.*;
-import com.epam.lab.spider.model.db.entity.*;
-
-
-import com.epam.lab.spider.model.db.service.*;
+import com.epam.lab.spider.job.util.TaskInfoUtil;
+import com.epam.lab.spider.job.util.TaskProcessingUtil;
+import com.epam.lab.spider.model.entity.Task;
+import com.epam.lab.spider.persistence.service.TaskService;
 import org.apache.log4j.Logger;
 import org.quartz.*;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
- * Created by shell on 6/16/2015.
+ * @author Yura Kovalik
  */
 public class TaskJob implements Job {
     public static final Logger LOG = Logger.getLogger(TaskJob.class);
     TaskService taskService = new TaskService();
 
-    public static UserLimit limit = UserLimitsFactory.getUserLimit();
+    public static UserLimitProcessor limit = UserLimitsFactory.getUserLimitProcessor();
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
@@ -56,7 +56,7 @@ public class TaskJob implements Job {
         try {
             jobExecutionContext.getScheduler().scheduleJob(trigger);
         } catch (SchedulerException e) {
-            e.printStackTrace();
+            LOG.error(e.getLocalizedMessage(), e);
         }
     }
 
