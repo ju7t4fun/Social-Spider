@@ -28,7 +28,7 @@ import java.util.Set;
  * @author Marian Voronovskyi
  */
 public class AddPostCommand implements ActionCommand {
-    private static final Logger LOG = Logger.getLogger(Object.class);
+    private static final Logger LOG = Logger.getLogger(AddPostCommand.class);
 
     private static ServiceFactory factory = ServiceFactory.getInstance();
     private static PostService postService = factory.create(PostService.class);

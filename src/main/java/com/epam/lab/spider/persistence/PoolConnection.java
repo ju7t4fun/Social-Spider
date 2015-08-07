@@ -20,6 +20,7 @@ public class PoolConnection {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
+            LOG.fatal("WG WTF?");
             LOG.error(e.getLocalizedMessage(), e);
         }
     }
@@ -76,6 +77,7 @@ public class PoolConnection {
         try {
             InitialContext ctx = new InitialContext();
             ds = (DataSource) ctx.lookup("java:jboss/datasources/MySQLDS");
+            return ds;
         } catch (NamingException e) {
             LOG.error(e.getMessage());
         }
@@ -83,6 +85,7 @@ public class PoolConnection {
             try {
                 InitialContext ctx = new InitialContext();
                 ds = (DataSource) ctx.lookup("java:comp/env/jdbc/MySQLDS");
+                return ds;
             } catch (NamingException e) {
                 LOG.error(e.getMessage());
             }
@@ -91,11 +94,12 @@ public class PoolConnection {
             try {
                 InitialContext ctx = new InitialContext();
                 ds = (DataSource) ctx.lookup("java:comp/env/jdbc/vk_spider");
+                return ds;
             } catch (NamingException e) {
                 LOG.error(e.getMessage());
             }
         }
-        return ds;
+        return null;
     }
 
 }

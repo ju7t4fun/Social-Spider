@@ -109,7 +109,7 @@ public class PostingTaskDAOImp extends BaseDAO implements PostingTaskDAO {
     }
 
     @Override
-    public boolean updateState(Connection connection, int id, PostingTaskImpl.State state) throws SQLException {
+    public boolean updateState(Connection connection, int id, PostingTask.State state) throws SQLException {
         return changeQuery(connection, SQL_UPDATE_STATE_QUERY,
                 state.toString().toUpperCase(),
                 id);
@@ -212,7 +212,7 @@ public class PostingTaskDAOImp extends BaseDAO implements PostingTaskDAO {
         ResultSet rs = selectQuery(connection, query, args);
         PostingTask nPost;
         while (rs.next()) {
-            nPost = BasicEntityFactory.getSynchronized().createPostingTask();
+            nPost = ENTITY_FACTORY.createPostingTask();
             setId(nPost, rs.getInt("id"));
             nPost.setPostId(rs.getInt("post_id"));
             nPost.setWallId(rs.getInt("wall_id"));
@@ -226,23 +226,10 @@ public class PostingTaskDAOImp extends BaseDAO implements PostingTaskDAO {
         }
         return posts;
     }
-
+    @Deprecated
     @Override
     public List<PostingTask> getAllWithQuery(Connection connection, String someQuery) throws SQLException {
-        List<PostingTask> posts = new ArrayList<>();
-        ResultSet rs = selectQuery(connection, someQuery);
-        PostingTask nPost;
-        while (rs.next()) {
-            nPost = BasicEntityFactory.getSynchronized().createPostingTask();
-            setId(nPost, rs.getInt("id"));
-            nPost.setPostId(rs.getInt("post_id"));
-            nPost.setWallId(rs.getInt("wall_id"));
-            nPost.setPostTime(rs.getTimestamp("post_time"));
-            nPost.setState(PostingTaskImpl.State.valueOf(rs.getString("state")));
-            nPost.setVkPostId(rs.getInt("vk_post_id"));
-            posts.add(EntitySynchronizedCacheWrapperUtil.wrap(nPost));
-        }
-        return posts;
+        return select(connection,someQuery);
     }
 
     @Override
@@ -254,7 +241,7 @@ public class PostingTaskDAOImp extends BaseDAO implements PostingTaskDAO {
     public PostingTask getById(Connection connection, int id) throws SQLException {
         return first(select(connection, SQL_GET_BY_ID_QUERY, id));
     }
-
+    @Deprecated
     @Override
     public String getMessageById(Connection connection, int id) throws SQLException {
         ResultSet rs = selectQuery(connection, SQL_GET_MESSAGE_BY_newPostQUERY, id);

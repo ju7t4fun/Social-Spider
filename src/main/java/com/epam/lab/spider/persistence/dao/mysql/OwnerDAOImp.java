@@ -149,18 +149,10 @@ public class OwnerDAOImp extends BaseDAO implements OwnerDAO {
     }
 
     //should remake later
+    @Deprecated
     @Override
     public List<Owner> getWithQuery(Connection connection, String SQL_SOME_QUERY) throws SQLException {
-        List<Owner> ownerList = new ArrayList<>();
-        ResultSet rs = selectQuery(connection, SQL_SOME_QUERY);
-        Owner owner;
-        while (rs.next()) {
-            owner = ENTITY_FACTORY.createOwner();
-            owner.setVkId(rs.getInt("vk_id"));
-            owner.setName(rs.getString("name"));
-            ownerList.add(EntitySynchronizedCacheWrapperUtil.wrap(owner));
-        }
-        return ownerList;
+        return select(connection, SQL_SOME_QUERY);
     }
 
     //should remake later

@@ -12,7 +12,7 @@ import java.util.List;
  * @author Boyarsky Vitaliy
  */
 public abstract class BaseDAO {
-    public static final Logger LOG = Logger.getLogger(Object.class);
+    public static final Logger LOG = Logger.getLogger(BaseDAO.class);
 
     protected static final AbstractEntityFactory ENTITY_FACTORY = PersistenceEntityFactory.getInstance();
 

@@ -157,7 +157,7 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
             wall.setProfileId(rs.getInt("profile_id"));
             wall.setPermission(Wall.Permission.valueOf(rs.getString("permission").toUpperCase()));
             wall.setDeleted(rs.getBoolean("deleted"));
-            walls.add(wall);
+            walls.add(EntitySynchronizedCacheWrapperUtil.wrap(wall));
         }
         return walls;
     }
@@ -176,19 +176,7 @@ public class WallDAOImp extends BaseDAO implements WallDAO {
 
     @Override
     public List<Wall> getAllByProfileID(Connection connection, int profile_id) throws SQLException {
-        List<Wall> walls = new ArrayList<>();
-        ResultSet rs = selectQuery(connection, SQL_GET_ALL_BY_PROFILE_ID_QUERY, profile_id);
-        Wall wall;
-        while (rs.next()) {
-            wall = ENTITY_FACTORY.createWall();
-            setId(wall, rs.getInt("id"));
-            wall.setOwnerId(rs.getInt("owner_id"));
-            wall.setProfileId(rs.getInt("profile_id"));
-            wall.setPermission(Wall.Permission.valueOf(rs.getString("permission").toUpperCase()));
-            wall.setDeleted(rs.getBoolean("deleted"));
-            walls.add(EntitySynchronizedCacheWrapperUtil.wrap(wall));
-        }
-        return walls;
+        return select(connection, SQL_GET_ALL_BY_PROFILE_ID_QUERY, profile_id);
     }
 
 

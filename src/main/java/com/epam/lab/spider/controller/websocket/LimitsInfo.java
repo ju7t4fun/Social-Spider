@@ -65,8 +65,8 @@ public class LimitsInfo {
         HttpSession httpSession = getHttpSession(config);
         User user = (User) httpSession.getAttribute("user");
 
-        AutoWebSocket autoWebSocket = new AutoWebSocket(user);
-        new Thread(autoWebSocket).start();
+//        AutoWebSocket autoWebSocket = new AutoWebSocket(user);
+//        new Thread(autoWebSocket).start();
         {
             sessions.put(session, user.getId());
             List<Session> userSessions;
@@ -82,7 +82,6 @@ public class LimitsInfo {
 
     @OnMessage
     public void onMessage(String message, Session session) {
-//        LOG.debug("onMessage (message=" + message + ")");
     }
 
     @OnClose

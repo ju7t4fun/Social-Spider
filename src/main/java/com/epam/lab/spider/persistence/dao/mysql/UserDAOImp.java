@@ -93,22 +93,10 @@ public class UserDAOImp extends BaseDAO implements UserDAO {
     }
 
     //should remake later
+    @Deprecated
     @Override
     public List<User> getWithQuery(Connection connection, String SQL_SOME_QUERY) throws SQLException {
-        List<User> users = new ArrayList<>();
-        ResultSet rs = selectQuery(connection, SQL_SOME_QUERY);
-        User user;
-        while (rs.next()) {
-            user = ENTITY_FACTORY.createUser();
-            setId(user, rs.getInt("id"));
-            user.setName(rs.getString("name"));
-            user.setSurname(rs.getString("surname"));
-            user.setEmail(rs.getString("email"));
-            user.setState(User.State.valueOf(rs.getString("state").toUpperCase()));
-            user.setRole(User.Role.valueOf(rs.getString("role").toUpperCase()));
-            users.add(EntitySynchronizedCacheWrapperUtil.wrap(user));
-        }
-        return users;
+        return select(connection, SQL_SOME_QUERY);
     }
 
     //should remake later

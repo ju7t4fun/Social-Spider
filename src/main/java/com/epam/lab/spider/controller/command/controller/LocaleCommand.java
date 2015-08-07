@@ -19,8 +19,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * @author Boyarsky Vitaliy
  * @author Yura Kovalik
+ * @author Boyarsky Vitaliy
  * @since 1.0.2
  */
 public class LocaleCommand implements ActionCommand {
