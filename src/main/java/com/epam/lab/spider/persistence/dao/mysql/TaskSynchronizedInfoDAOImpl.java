@@ -1,6 +1,6 @@
 package com.epam.lab.spider.persistence.dao.mysql;
 
-import com.epam.lab.spider.persistence.dao.TaskSynchronizedNewDataDAO;
+import com.epam.lab.spider.persistence.dao.TaskSynchronizedInfoDAO;
 import com.epam.lab.spider.model.entity.SynchronizedData;
 import com.epam.lab.spider.persistence.factory.SynchronizedDataAbstractFactory;
 import com.epam.lab.spider.persistence.factory.SynchronizedDataFactoryImpl;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author Yura Kovalik
  */
-public class TaskSynchronizedNewDataDAOImpl extends BaseDAO implements TaskSynchronizedNewDataDAO<SynchronizedData> {
+public class TaskSynchronizedInfoDAOImpl extends BaseDAO implements TaskSynchronizedInfoDAO<SynchronizedData> {
     private static final SynchronizedDataAbstractFactory<SynchronizedData> FACTORY = new SynchronizedDataFactoryImpl();
     private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS task_synchronized_new_data ( " +
             "task_id INT NOT NULL,  wall_id INT NOT NULL,  " +
@@ -25,7 +25,7 @@ public class TaskSynchronizedNewDataDAOImpl extends BaseDAO implements TaskSynch
     private static final String SQL_UPDATE = "UPDATE task_synchronized_new_data SET offset=?, vk_inner_post_id=? WHERE task_id=? and wall_id=?";
     private static final String SQL_DELETE = "DELETE FROM task_synchronized_new_data WHERE task_id=? and wall_id=?";
 
-    public TaskSynchronizedNewDataDAOImpl() {
+    public TaskSynchronizedInfoDAOImpl() {
     }
 
     @Override

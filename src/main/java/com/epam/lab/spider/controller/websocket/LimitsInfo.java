@@ -11,6 +11,9 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * @author Yura Kovalik
+ */
 @ServerEndpoint(value = "/websocket/limits-info", configurator = GetHttpSessionConfigurator.class)
 public class LimitsInfo {
 

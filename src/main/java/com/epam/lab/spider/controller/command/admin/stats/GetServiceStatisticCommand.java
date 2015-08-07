@@ -4,7 +4,7 @@ import com.epam.lab.spider.controller.command.ActionCommand;
 import com.epam.lab.spider.persistence.service.EventService;
 import com.epam.lab.spider.persistence.service.PostingTaskService;
 import com.epam.lab.spider.persistence.service.ServiceFactory;
-import com.epam.lab.spider.persistence.service.TaskSynchronizedDataService;
+import com.epam.lab.spider.persistence.service.TaskHistoryService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -40,7 +40,7 @@ public class GetServiceStatisticCommand implements ActionCommand {
     }
 
     private JSONArray buildTaskExecutionDiagram(String date) {
-        TaskSynchronizedDataService service = new TaskSynchronizedDataService();
+        TaskHistoryService service = new TaskHistoryService();
         Map<Long, Integer> statistics = service.statisticsExecution(date);
         return buildDiagram(statistics, date);
     }

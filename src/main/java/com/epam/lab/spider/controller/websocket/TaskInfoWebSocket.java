@@ -3,6 +3,7 @@ package com.epam.lab.spider.controller.websocket;
 
 import com.epam.lab.spider.model.entity.Task;
 import com.epam.lab.spider.model.entity.User;
+import com.epam.lab.spider.persistence.service.ServiceFactory;
 import com.epam.lab.spider.persistence.service.TaskService;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -18,13 +19,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * @author Yura Kovalik
+ */
 @ServerEndpoint(value = "/websocket/task-info", configurator = GetHttpSessionConfigurator.class)
 public class TaskInfoWebSocket {
+    private static final ServiceFactory factory = ServiceFactory.getInstance();
 
     private static final Logger LOG = Logger.getLogger(TaskInfoWebSocket.class);
 
-    private static final TaskService taskService = new TaskService();
+    private static final TaskService taskService = factory.create(TaskService.class);
     private static final Map<Session, Integer> sessions = new HashMap<>();
     private static final Map<Integer,List<Session>> sessionsBack = new HashMap<>();
 

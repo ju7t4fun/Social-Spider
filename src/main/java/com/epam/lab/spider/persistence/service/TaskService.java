@@ -35,7 +35,7 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
     private TaskSourceDAO sourceDAO = factory.create(TaskSourceDAO.class);
     private TaskDestinationDAO destinationDAO = factory.create(TaskDestinationDAO.class);
     private CategoryHasTaskDAO categoryHasTaskDAO = factory.create(CategoryHasTaskDAO.class);
-    private TaskSynchronizedDataDAO taskSynchronizedDataDAO = factory.create(TaskSynchronizedDataDAO.class);
+    private TaskHistoryDAO taskHistoryDAO = factory.create(TaskHistoryDAO.class);
     private FilterDAO filterDAO = factory.create(FilterDAO.class);
 
     @Override
@@ -136,7 +136,7 @@ public class TaskService implements BaseService<Task>, SavableService<Task> {
                 destinationDAO.deleteByTaskId(connection, id);
                 sourceDAO.deleteByTaskId(connection, id);
                 categoryHasTaskDAO.deleteByTaskId(connection, id);
-                taskSynchronizedDataDAO.deleteByTaskId(connection, id);
+                taskHistoryDAO.deleteByTaskId(connection, id);
                 taskDAO.delete(connection, id);
                 connection.commit();
             } catch (SQLTransactionException e) {

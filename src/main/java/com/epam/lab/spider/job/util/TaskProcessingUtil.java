@@ -11,8 +11,8 @@ import com.epam.lab.spider.model.entity.*;
 import com.epam.lab.spider.model.entity.impl.BasicEntityFactory;
 import com.epam.lab.spider.model.entity.impl.PostingTaskImpl;
 import com.epam.lab.spider.model.vk.PostOffsetDecorator;
-import com.epam.lab.spider.persistence.service.TaskSynchronizedDataService;
-import com.epam.lab.spider.persistence.service.TaskSynchronizedNewDataService;
+import com.epam.lab.spider.persistence.service.TaskHistoryService;
+import com.epam.lab.spider.persistence.service.TaskSynchronizedInfoService;
 import com.epam.lab.spider.persistence.service.WallService;
 import com.epam.lab.spider.persistence.service.savable.SavableServiceUtil;
 import org.apache.log4j.Logger;
@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.epam.lab.spider.persistence.service.TaskSynchronizedNewDataService.getSynchronizedDataFactory;
+import static com.epam.lab.spider.persistence.service.TaskSynchronizedInfoService.getSynchronizedDataFactory;
 
 /**
  * @author Yura Kovalik
@@ -28,9 +28,9 @@ import static com.epam.lab.spider.persistence.service.TaskSynchronizedNewDataSer
 public class TaskProcessingUtil {
     private static final Logger LOG = Logger.getLogger(TaskProcessingUtil.class);
     private static WallService wallService = new WallService();
-    private static TaskSynchronizedDataService synchronizedService = new TaskSynchronizedDataService();
+    private static TaskHistoryService synchronizedService = new TaskHistoryService();
 
-    private static TaskSynchronizedNewDataService syncNewService = new TaskSynchronizedNewDataService();
+    private static TaskSynchronizedInfoService syncNewService = new TaskSynchronizedInfoService();
 
     private static UserLimitProcessor limit = UserLimitsFactory.getUserLimitProcessor();
     public static boolean processingTask(Task task){

@@ -4,7 +4,7 @@ import com.epam.lab.spider.model.entity.SynchronizedData;
 import com.epam.lab.spider.model.entity.Task;
 import com.epam.lab.spider.model.entity.Wall;
 import com.epam.lab.spider.persistence.PoolConnection;
-import com.epam.lab.spider.persistence.dao.TaskSynchronizedNewDataDAO;
+import com.epam.lab.spider.persistence.dao.TaskSynchronizedInfoDAO;
 import com.epam.lab.spider.persistence.factory.SynchronizedDataAbstractFactory;
 import com.epam.lab.spider.persistence.factory.SynchronizedDataAuditableFactoryImpl;
 import com.epam.lab.spider.persistence.factory.SynchronizedDataFactoryImpl;
@@ -16,12 +16,12 @@ import java.sql.SQLException;
 /**
  * @author Yura Kovalik
  */
-public class TaskSynchronizedNewDataService {
-    private static final Logger LOG = Logger.getLogger(TaskSynchronizedNewDataService.class);
+public class TaskSynchronizedInfoService {
+    private static final Logger LOG = Logger.getLogger(TaskSynchronizedInfoService.class);
 
     private static final boolean AUDITABLE = true;
     private static final SynchronizedDataAbstractFactory synchronizedDataFactory;
-    private static TaskSynchronizedNewDataDAO taskSynchronizedNewDataDAO;
+    private static TaskSynchronizedInfoDAO taskSynchronizedInfoDAO;
     private static boolean created = false;
 
     static {
@@ -30,7 +30,7 @@ public class TaskSynchronizedNewDataService {
         } else {
             synchronizedDataFactory = new SynchronizedDataFactoryImpl();
         }
-        taskSynchronizedNewDataDAO = synchronizedDataFactory.createTaskSynchronizedNewDataDAO();
+        taskSynchronizedInfoDAO = synchronizedDataFactory.createTaskSynchronizedNewDataDAO();
     }
 
     public static SynchronizedDataAbstractFactory getSynchronizedDataFactory() {
@@ -39,7 +39,7 @@ public class TaskSynchronizedNewDataService {
     public void createTableIfNotExist(){
         if(!created) {
             try (Connection connection = PoolConnection.getConnection()) {
-                taskSynchronizedNewDataDAO.createTable(connection);
+                taskSynchronizedInfoDAO.createTable(connection);
                 created = true;
             } catch (SQLException e) {
                 LOG.error(e.getLocalizedMessage(), e);
@@ -52,7 +52,7 @@ public class TaskSynchronizedNewDataService {
     protected boolean insert(Integer taskId, Integer wallId, Integer offset, Integer lastId ){
             try (Connection connection = PoolConnection.getConnection()) {
                 createTableIfNotExist();
-                return taskSynchronizedNewDataDAO.insert(connection,synchronizedDataFactory.createSynchronizedData(taskId,wallId,offset,lastId));
+                return taskSynchronizedInfoDAO.insert(connection,synchronizedDataFactory.createSynchronizedData(taskId,wallId,offset,lastId));
             } catch (SQLException e) {
                 LOG.error(e.getLocalizedMessage(), e);
                 return false;
@@ -61,31 +61,31 @@ public class TaskSynchronizedNewDataService {
     protected boolean update(SynchronizedData sync){
         try (Connection connection = PoolConnection.getConnection()) {
             createTableIfNotExist();
-            return taskSynchronizedNewDataDAO.update(connection,sync);
+            return taskSynchronizedInfoDAO.update(connection,sync);
         } catch (SQLException e) {
             LOG.error(e.getLocalizedMessage(), e);
             return false;
         }
     }
-//    public boolean delete(Task task, Wall wall){
-//        return delete(task.getId(), wall.getId());
-//    }
-//    public boolean delete(Integer taskId, Integer wallId){
-//        try (Connection connection = PoolConnection.getConnection()) {
-//            createTableIfNotExist();
-//            return taskSynchronizedNewDataDAO.delete(connection, taskId, wallId);
-//        } catch (SQLException e) {
-//            LOG.error(e.getLocalizedMessage(), e);
-//            return false;
-//        }
-//    }
+    public boolean delete(Task task, Wall wall){
+        return delete(task.getId(), wall.getId());
+    }
+    public boolean delete(Integer taskId, Integer wallId){
+        try (Connection connection = PoolConnection.getConnection()) {
+            createTableIfNotExist();
+            return taskSynchronizedInfoDAO.delete(connection, taskId, wallId);
+        } catch (SQLException e) {
+            LOG.error(e.getLocalizedMessage(), e);
+            return false;
+        }
+    }
     public SynchronizedData getBy(Task task, Wall wall){
         return getBy(task.getId(),wall.getId());
     }
     public SynchronizedData getBy(Integer taskId, Integer wallId){
         try (Connection connection = PoolConnection.getConnection()) {
             createTableIfNotExist();
-            return taskSynchronizedNewDataDAO.getById(connection, taskId, wallId);
+            return taskSynchronizedInfoDAO.getById(connection, taskId, wallId);
         } catch (SQLException e) {
             LOG.error(e.getLocalizedMessage(), e);
             return null;
@@ -94,12 +94,12 @@ public class TaskSynchronizedNewDataService {
     public boolean save(SynchronizedData syncNew){
         try (Connection connection = PoolConnection.getConnection()) {
             createTableIfNotExist();
-            SynchronizedData sync = taskSynchronizedNewDataDAO.getById(connection, syncNew.getTaskId(), syncNew.getWallId());
+            SynchronizedData sync = taskSynchronizedInfoDAO.getById(connection, syncNew.getTaskId(), syncNew.getWallId());
             if(sync!=null){
                 sync.syncWith(syncNew);
-                return taskSynchronizedNewDataDAO.update(connection,sync);
+                return taskSynchronizedInfoDAO.update(connection,sync);
             }
-            else return taskSynchronizedNewDataDAO.insert(connection,syncNew);
+            else return taskSynchronizedInfoDAO.insert(connection,syncNew);
         } catch (SQLException e) {
             LOG.error(e.getLocalizedMessage(), e);
             return false;

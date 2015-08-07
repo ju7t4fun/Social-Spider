@@ -1,9 +1,8 @@
 package com.epam.lab.spider.persistence.service;
 
 
-import com.epam.lab.spider.model.entity.sync.TaskSynchronized;
 import com.epam.lab.spider.persistence.PoolConnection;
-import com.epam.lab.spider.persistence.dao.TaskSynchronizedDataDAO;
+import com.epam.lab.spider.persistence.dao.TaskHistoryDAO;
 import com.epam.lab.spider.persistence.dao.mysql.DAOFactory;
 import com.epam.lab.spider.model.entity.Task;
 import com.epam.lab.spider.model.entity.Wall;
@@ -16,11 +15,11 @@ import java.util.*;
 /**
  * @author Yura Kovalik
  */
-public class TaskSynchronizedDataService {
-    private static final Logger LOG = Logger.getLogger(TaskSynchronizedDataService.class);
+public class TaskHistoryService {
+    private static final Logger LOG = Logger.getLogger(TaskHistoryService.class);
 
     private DAOFactory factory = DAOFactory.getInstance();
-    private TaskSynchronizedDataDAO tsdDao = factory.create(TaskSynchronizedDataDAO.class);
+    private TaskHistoryDAO tsdDao = factory.create(TaskHistoryDAO.class);
 
     public Integer getIdLastProcessedPost(Task task, Wall wall) {
 

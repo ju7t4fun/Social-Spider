@@ -23,11 +23,6 @@ import java.util.List;
 public class GetWallsCommand implements ActionCommand {
     public static final ServiceFactory factory = ServiceFactory.getInstance();
 
-
-    OwnerService ownerService = new OwnerService();
-    ProfileService profileService = new ProfileService();
-
-    TaskService taskService = factory.create(TaskService.class);
     WallService wallService =  factory.create(WallService.class);
     public static final Logger LOG = Logger.getLogger(GetWallsCommand.class);
     @Override

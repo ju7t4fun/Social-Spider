@@ -1,6 +1,6 @@
 package com.epam.lab.spider.persistence.dao.mysql;
 
-import com.epam.lab.spider.persistence.dao.TaskSynchronizedDataDAO;
+import com.epam.lab.spider.persistence.dao.TaskHistoryDAO;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * @author Yura Kovalik
  */
-public class TaskSynchronizedDataDAOImpl extends BaseDAO implements TaskSynchronizedDataDAO {
+public class TaskHistoryDAOImpl extends BaseDAO implements TaskHistoryDAO {
 
     private static final String SQL_GET_VK_INNER_POST_ID = "SELECT DISTINCT vk_inner_post_id FROM " +
             "task_synchronized_data " +

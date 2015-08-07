@@ -6,15 +6,15 @@ import com.epam.lab.spider.model.entity.Wall;
 import com.epam.lab.spider.model.entity.impl.SynchronizedDataImpl;
 import com.epam.lab.spider.model.vk.Post;
 import com.epam.lab.spider.model.vk.PostOffsetDecorator;
-import com.epam.lab.spider.persistence.dao.TaskSynchronizedNewDataDAO;
-import com.epam.lab.spider.persistence.dao.mysql.TaskSynchronizedNewDataDAOImpl;
+import com.epam.lab.spider.persistence.dao.TaskSynchronizedInfoDAO;
+import com.epam.lab.spider.persistence.dao.mysql.TaskSynchronizedInfoDAOImpl;
 
 /**
  * @author Yura Kovalik
  */
 public class SynchronizedDataFactoryImpl extends SynchronizedDataAbstractFactory<SynchronizedData> {
-    private static final TaskSynchronizedNewDataDAO dao = new TaskSynchronizedNewDataDAOImpl();
-    public TaskSynchronizedNewDataDAO createTaskSynchronizedNewDataDAO() {
+    private static final TaskSynchronizedInfoDAO dao = new TaskSynchronizedInfoDAOImpl();
+    public TaskSynchronizedInfoDAO createTaskSynchronizedNewDataDAO() {
         return dao;
     }
     public SynchronizedData createSynchronizedData() {

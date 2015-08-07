@@ -8,7 +8,7 @@ import java.sql.SQLException;
 /**
  * @author Yura Kovalik
  */
-public interface TaskSynchronizedNewDataDAO<T extends SynchronizedData> {
+public interface TaskSynchronizedInfoDAO<T extends SynchronizedData> {
     boolean createTable(Connection conn) throws SQLException;
 
     boolean insert(Connection connection, T sync) throws SQLException ;

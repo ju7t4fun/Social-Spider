@@ -9,8 +9,8 @@ import com.epam.lab.spider.job.exception.WallStopException;
 import com.epam.lab.spider.job.limit.UserLimitProcessor;
 import com.epam.lab.spider.job.limit.UserLimitsFactory;
 import com.epam.lab.spider.model.entity.*;
-import com.epam.lab.spider.persistence.service.TaskSynchronizedDataService;
-import com.epam.lab.spider.persistence.service.TaskSynchronizedNewDataService;
+import com.epam.lab.spider.persistence.service.TaskHistoryService;
+import com.epam.lab.spider.persistence.service.TaskSynchronizedInfoService;
 import com.epam.lab.spider.model.vk.Post;
 import org.apache.log4j.Logger;
 
@@ -23,9 +23,9 @@ import java.util.Set;
  */
 public class GrabbingUtils {
     public static final Logger LOG = Logger.getLogger(GrabbingUtils.class);
-    static TaskSynchronizedDataService synchronizedService = new TaskSynchronizedDataService();
+    static TaskHistoryService synchronizedService = new TaskHistoryService();
 
-    static TaskSynchronizedNewDataService syncNewService = new TaskSynchronizedNewDataService();
+    static TaskSynchronizedInfoService syncNewService = new TaskSynchronizedInfoService();
 
     public static UserLimitProcessor limit = UserLimitsFactory.getUserLimitProcessor();
     public static List<Post> grabbingWall(Wall wall, Task task) throws WallStopException, WallAlreadyStopped, FindingEmptyResultException {

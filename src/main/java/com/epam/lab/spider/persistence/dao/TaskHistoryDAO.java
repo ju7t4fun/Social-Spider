@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * @author Yura Kovalik
  */
-public interface TaskSynchronizedDataDAO {
+public interface TaskHistoryDAO {
 
     Integer getIdLastProcessedPost(Connection connection, Integer taskId, Integer wallId) throws SQLException;
 

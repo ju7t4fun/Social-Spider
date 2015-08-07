@@ -1,7 +1,7 @@
 package com.epam.lab.spider.persistence.dao.mysql;
 
 import com.epam.lab.spider.model.entity.SynchronizedDataAuditable;
-import com.epam.lab.spider.persistence.dao.TaskSynchronizedNewDataDAO;
+import com.epam.lab.spider.persistence.dao.TaskSynchronizedInfoDAO;
 import com.epam.lab.spider.persistence.factory.SynchronizedDataAbstractFactory;
 import com.epam.lab.spider.persistence.factory.SynchronizedDataAuditableFactoryImpl;
 
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author Yura Kovalik
  */
-public class TaskSynchronizedNewDataAuditableDAOImpl extends BaseDAO implements TaskSynchronizedNewDataDAO<SynchronizedDataAuditable> {
+public class TaskSynchronizedInfoAuditableDAOImpl extends BaseDAO implements TaskSynchronizedInfoDAO<SynchronizedDataAuditable> {
     private static final SynchronizedDataAbstractFactory<SynchronizedDataAuditable> FACTORY = new SynchronizedDataAuditableFactoryImpl();
     private static final String TABLE_NAME = "task_synchronized_new_data_auditable";
     private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ( " +

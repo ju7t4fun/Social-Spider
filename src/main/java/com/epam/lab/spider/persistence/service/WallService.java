@@ -5,7 +5,7 @@ import com.epam.lab.spider.persistence.PoolConnection;
 import com.epam.lab.spider.persistence.SQLTransactionException;
 import com.epam.lab.spider.persistence.dao.TaskDestinationDAO;
 import com.epam.lab.spider.persistence.dao.TaskSourceDAO;
-import com.epam.lab.spider.persistence.dao.TaskSynchronizedDataDAO;
+import com.epam.lab.spider.persistence.dao.TaskHistoryDAO;
 import com.epam.lab.spider.persistence.dao.WallDAO;
 import com.epam.lab.spider.persistence.dao.mysql.DAOFactory;
 import org.apache.log4j.Logger;
@@ -25,7 +25,7 @@ public class WallService implements BaseService<Wall> {
     private WallDAO wallDAO = factory.create(WallDAO.class);
     private TaskSourceDAO sourceDAO = factory.create(TaskSourceDAO.class);
     private TaskDestinationDAO destinationDAO = factory.create(TaskDestinationDAO.class);
-    private TaskSynchronizedDataDAO synchronizedDataDAO = factory.create(TaskSynchronizedDataDAO.class);
+    private TaskHistoryDAO synchronizedDataDAO = factory.create(TaskHistoryDAO.class);
     private PostingTaskService postingTaskService = new PostingTaskService();
 
     @Override

@@ -6,15 +6,15 @@ import com.epam.lab.spider.model.entity.Wall;
 import com.epam.lab.spider.model.entity.impl.SynchronizedDataAuditableImpl;
 import com.epam.lab.spider.model.vk.Post;
 import com.epam.lab.spider.model.vk.PostOffsetDecorator;
-import com.epam.lab.spider.persistence.dao.TaskSynchronizedNewDataDAO;
-import com.epam.lab.spider.persistence.dao.mysql.TaskSynchronizedNewDataAuditableDAOImpl;
+import com.epam.lab.spider.persistence.dao.TaskSynchronizedInfoDAO;
+import com.epam.lab.spider.persistence.dao.mysql.TaskSynchronizedInfoAuditableDAOImpl;
 
 /**
  * @author Yura Kovalik
  */
 public class SynchronizedDataAuditableFactoryImpl extends SynchronizedDataAbstractFactory<SynchronizedDataAuditable> {
-    private static final TaskSynchronizedNewDataDAO dao = new TaskSynchronizedNewDataAuditableDAOImpl();
-    public TaskSynchronizedNewDataDAO createTaskSynchronizedNewDataDAO() {
+    private static final TaskSynchronizedInfoDAO dao = new TaskSynchronizedInfoAuditableDAOImpl();
+    public TaskSynchronizedInfoDAO createTaskSynchronizedNewDataDAO() {
         return dao;
     }
     public SynchronizedDataAuditable createSynchronizedData() {
